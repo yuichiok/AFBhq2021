@@ -1,5 +1,12 @@
 # temp files
 *~
+
+#output files
+*.root
+*.lcio
+*.slcio
+*.log
+
 # Prerequisites
 *.d
 
