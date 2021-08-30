@@ -83,10 +83,10 @@ void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float
   TH1F * h_costheta_nocuts = new TH1F("h_costheta_nocuts","h_costheta_nocuts",20,0,1);
 
   //costheta
-  TH1F * h_costheta_th_vs_lab_bb = new TH1F("h_costheta_th_vs_lab_bb","h_costheta_th_vs_lab_bb",200,-1,1);
-  TH1F * h_costheta_th_vs_lab_qq = new TH1F("h_costheta_th_vs_lab_qq","h_costheta_th_vs_lab_qq",200,-1,1);
-  TH1F * h_costheta_th_vs_lab_cc = new TH1F("h_costheta_th_vs_lab_cc","h_costheta_th_vs_lab_cc",200,-1,1);
-  TH1F * h_costheta_th_vs_lab_radreturn = new TH1F("h_costheta_th_vs_lab_radreturn","h_costheta_th_vs_lab_radreturn",200,-1,1);
+  TH1F * h_costheta_th_vs_lab_bb = new TH1F("h_costheta_th_vs_lab_bb","h_costheta_th_vs_lab_bb",4000,-1,1);
+  TH1F * h_costheta_th_vs_lab_qq = new TH1F("h_costheta_th_vs_lab_qq","h_costheta_th_vs_lab_qq",4000,-1,1);
+  TH1F * h_costheta_th_vs_lab_cc = new TH1F("h_costheta_th_vs_lab_cc","h_costheta_th_vs_lab_cc",4000,-1,1);
+  TH1F * h_costheta_th_vs_lab_radreturn = new TH1F("h_costheta_th_vs_lab_radreturn","h_costheta_th_vs_lab_radreturn",4000,-1,1);
 
 //costheta
   TH1F * h_costheta_bb = new TH1F("h_costheta_bb","h_costheta_bb",20,0,1);

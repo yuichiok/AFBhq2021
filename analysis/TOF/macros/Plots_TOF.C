@@ -59,7 +59,7 @@ void EffPurity_TOF() {
   // TGaxis::SetMaxDigits(2);
 
   
-  TString filename = "../results/tof_all_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_cut_2_1track.root";
+  TString filename = "../results/tof_all_primary_tracks_ignoreoverlay_2f_hadronic_and_rad_eL_pR_cut_0_1track_plt2.root";
 
   TGraph* efficiency[4];
   TGraph* purity[4];
@@ -273,47 +273,48 @@ void Mass() {
   TGaxis::SetMaxDigits(3);
   
   
-  TString filename = "../results/tof_250_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_cut_0_trackmom.root";
+  TString filename = "../results/tof_all_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_cut_2_1track_plt2.root";
   TFile *f = new TFile(filename);
 
-  TH1F*  mass_fit_kaon = (TH1F*)f->Get("mass_fit_kaon");
-  TH1F*  mass_fit_pion = (TH1F*)f->Get("mass_fit_pion");
-  TH1F*  mass_fit_proton = (TH1F*)f->Get("mass_fit_proton");
+  TH1F*  mass_fit_kaon = (TH1F*)f->Get("mass_kaon_1");
+  TH1F*  mass_fit_pion = (TH1F*)f->Get("mass_pion_1");
+  TH1F*  mass_fit_proton = (TH1F*)f->Get("mass_proton_1");
 
-  TH1F*  mass_closest_kaon = (TH1F*)f->Get("mass_closest_kaon");
-  TH1F*  mass_closest_pion = (TH1F*)f->Get("mass_closest_pion");
-  TH1F*  mass_closest_proton = (TH1F*)f->Get("mass_closest_proton");
+  TH1F*  mass_closest_kaon = (TH1F*)f->Get("mass_kaon_0");
+  TH1F*  mass_closest_pion = (TH1F*)f->Get("mass_pion_0");
+  TH1F*  mass_closest_proton = (TH1F*)f->Get("mass_proton_0");
 
-  TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
+  TCanvas* c_mom = new TCanvas("c_mass","c_mass",800,800);
   c_mom->cd(1);
   c_mom->SetGrid();
+  gPad->SetLogy();
   mass_closest_pion->GetXaxis()->SetTitle("mass [GeV]");
   mass_closest_pion->GetYaxis()->SetTitle("a.u.");
   //mass_fit_pion->GetYaxis()->SetTitleOffset(1.25);
-  //mass_fit_pion->GetXaxis()->SetTitleOffset(1.);
+  mass_closest_pion->GetXaxis()->SetRangeUser(-0.02,3.02);
 
   mass_closest_pion->SetLineColor(4);
-  mass_closest_pion->SetLineWidth(3);
+  mass_closest_pion->SetLineWidth(1);
   mass_closest_pion->SetLineStyle(1);
   mass_closest_pion->Draw("histo");
 
   mass_closest_kaon->SetLineColor(2);
-  mass_closest_kaon->SetLineWidth(3);
+  mass_closest_kaon->SetLineWidth(1);
   mass_closest_kaon->SetLineStyle(1);
   mass_closest_kaon->Draw("histosame");
 
   mass_closest_proton->SetLineColor(1);
-  mass_closest_proton->SetLineWidth(3);
+  mass_closest_proton->SetLineWidth(1);
   mass_closest_proton->SetLineStyle(1);
   mass_closest_proton->Draw("histosame");
 
   mass_fit_pion->SetLineColor(4);
-  mass_fit_pion->SetLineWidth(2);
+  mass_fit_pion->SetLineWidth(3);
   mass_fit_pion->SetLineStyle(2);
   mass_fit_pion->Draw("histosame");
 
   mass_fit_kaon->SetLineColor(2);
-  mass_fit_kaon->SetLineWidth(2);
+  mass_fit_kaon->SetLineWidth(3);
   mass_fit_kaon->SetLineStyle(2);
   mass_fit_kaon->Draw("histosame");
 
@@ -325,14 +326,191 @@ void Mass() {
  
   Labels("eL");
   
-  TLegend *leg = new TLegend(0.6,0.25,0.8,0.35);
+  TLegend *leg = new TLegend(0.6,0.25,0.8,0.55);
   leg->SetTextSize(0.035);
   leg->SetTextFont(42);
   leg->AddEntry(mass_fit_pion,"pions","l");
   leg->AddEntry(mass_fit_kaon,"kaons","lp");
   leg->AddEntry(mass_fit_proton,"protons","lp");
-  leg->AddEntry(mass_fit_proton,"Fit","lp");
+  leg->AddEntry(mass_fit_proton,"Fastest","lp");
   leg->AddEntry(mass_closest_proton,"Closest","lp");
+  leg->SetFillColor(0);
+  leg->SetLineColor(0);
+  leg->SetShadowColor(0);
+  leg->Draw();
+
+
+
+}
+
+
+void Mass2() {
+
+  
+  SetQQbarStyle();
+  gStyle->SetOptFit(0); 
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  
+  gStyle->SetTitleBorderSize(0);
+  gStyle->SetTitleStyle(0);
+  gStyle->SetTitleX(0.2);
+  gStyle->SetMarkerSize(0.2);
+  TGaxis::SetMaxDigits(3);
+  
+  
+  TString filename = "../results/tof_all_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_cut_2_1track_plt2_softtrack.root";
+  TFile *f = new TFile(filename);
+
+  TH1F*  mass_soft_kaon = (TH1F*)f->Get("mass_kaon_1");
+  TH1F*  mass_soft_pion = (TH1F*)f->Get("mass_pion_1");
+  TH1F*  mass_soft_proton = (TH1F*)f->Get("mass_proton_1");
+
+  filename = "../results/tof_all_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_cut_2_1track_plt2.root";
+  f = new TFile(filename);
+
+  TH1F*  mass_kaon = (TH1F*)f->Get("mass_kaon_1");
+  TH1F*  mass_pion = (TH1F*)f->Get("mass_pion_1");
+  TH1F*  mass_proton = (TH1F*)f->Get("mass_proton_1");
+
+  TCanvas* c_mom = new TCanvas("c_mass2","c_mass2",800,800);
+  c_mom->cd(1);
+  c_mom->SetGrid();
+  gPad->SetLogy();
+  mass_pion->GetXaxis()->SetTitle("mass [GeV]");
+  mass_pion->GetYaxis()->SetTitle("a.u.");
+  //mass_soft_pion->GetYaxis()->SetTitleOffset(1.25);
+  mass_pion->GetXaxis()->SetRangeUser(-0.02,3.02);
+
+  mass_pion->SetLineColor(4);
+  mass_pion->SetLineWidth(1);
+  mass_pion->SetLineStyle(1);
+  mass_pion->Draw("histo");
+
+  mass_kaon->SetLineColor(2);
+  mass_kaon->SetLineWidth(1);
+  mass_kaon->SetLineStyle(1);
+  mass_kaon->Draw("histosame");
+
+  mass_proton->SetLineColor(1);
+  mass_proton->SetLineWidth(1);
+  mass_proton->SetLineStyle(1);
+  mass_proton->Draw("histosame");
+
+  mass_soft_pion->SetLineColor(4);
+  mass_soft_pion->SetLineWidth(3);
+  mass_soft_pion->SetLineStyle(2);
+  mass_soft_pion->Draw("histosame");
+
+  mass_soft_kaon->SetLineColor(2);
+  mass_soft_kaon->SetLineWidth(3);
+  mass_soft_kaon->SetLineStyle(2);
+  mass_soft_kaon->Draw("histosame");
+
+  mass_soft_proton->SetLineColor(1);
+  mass_soft_proton->SetLineWidth(2);
+  mass_soft_proton->SetLineStyle(2);
+  mass_soft_proton->Draw("histosame");
+  
+ 
+  Labels("eL");
+  
+  TLegend *leg = new TLegend(0.4,0.55,0.6,0.85);
+  leg->SetTextSize(0.035);
+  leg->SetTextFont(42);
+  leg->AddEntry(mass_soft_pion,"pions","l");
+  leg->AddEntry(mass_soft_kaon,"kaons","lp");
+  leg->AddEntry(mass_soft_proton,"protons","lp");
+  leg->AddEntry(mass_soft_proton,"Fastest - Including pT<1GeV  Tracks","lp");
+  leg->AddEntry(mass_proton,"Fastest","lp");
+  leg->SetFillColor(0);
+  leg->SetLineColor(0);
+  leg->SetShadowColor(0);
+  leg->Draw();
+
+
+
+}
+
+void Mass3() {
+
+  
+  SetQQbarStyle();
+  gStyle->SetOptFit(0); 
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  
+  gStyle->SetTitleBorderSize(0);
+  gStyle->SetTitleStyle(0);
+  gStyle->SetTitleX(0.2);
+  gStyle->SetMarkerSize(0.2);
+  TGaxis::SetMaxDigits(3);
+  
+  
+  TString filename = "../results/tof_all_secondary_tracks_ignoreoverlay_2f_hadronic_mitaroff2_eL_pR_cut_0_1track_plt2.root";
+  TFile *f = new TFile(filename);
+
+  TH1F*  mass_hitbyhit_kaon = (TH1F*)f->Get("mass_kaon_1");
+  TH1F*  mass_hitbyhit_pion = (TH1F*)f->Get("mass_pion_1");
+  TH1F*  mass_hitbyhit_proton = (TH1F*)f->Get("mass_proton_1");
+
+  filename = "../results/tof_all_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_cut_0_1track_plt2.root";
+  f = new TFile(filename);
+
+  TH1F*  mass_kaon = (TH1F*)f->Get("mass_kaon_1");
+  TH1F*  mass_pion = (TH1F*)f->Get("mass_pion_1");
+  TH1F*  mass_proton = (TH1F*)f->Get("mass_proton_1");
+
+  TCanvas* c_mom = new TCanvas("c_mass3","c_mass3",800,800);
+  c_mom->cd(1);
+  c_mom->SetGrid();
+  gPad->SetLogy();
+  mass_pion->GetXaxis()->SetTitle("mass [GeV]");
+  mass_pion->GetYaxis()->SetTitle("a.u.");
+  //mass_hitbyhit_pion->GetYaxis()->SetTitleOffset(1.25);
+  mass_pion->GetXaxis()->SetRangeUser(-0.02,3.02);
+
+  mass_pion->SetLineColor(4);
+  mass_pion->SetLineWidth(1);
+  mass_pion->SetLineStyle(1);
+  mass_pion->Draw("histo");
+
+  mass_kaon->SetLineColor(2);
+  mass_kaon->SetLineWidth(1);
+  mass_kaon->SetLineStyle(1);
+  mass_kaon->Draw("histosame");
+
+  mass_proton->SetLineColor(1);
+  mass_proton->SetLineWidth(1);
+  mass_proton->SetLineStyle(1);
+  mass_proton->Draw("histosame");
+
+  mass_hitbyhit_pion->SetLineColor(4);
+  mass_hitbyhit_pion->SetLineWidth(3);
+  mass_hitbyhit_pion->SetLineStyle(2);
+  mass_hitbyhit_pion->Draw("histosame");
+
+  mass_hitbyhit_kaon->SetLineColor(2);
+  mass_hitbyhit_kaon->SetLineWidth(3);
+  mass_hitbyhit_kaon->SetLineStyle(2);
+  mass_hitbyhit_kaon->Draw("histosame");
+
+  mass_hitbyhit_proton->SetLineColor(1);
+  mass_hitbyhit_proton->SetLineWidth(2);
+  mass_hitbyhit_proton->SetLineStyle(2);
+  mass_hitbyhit_proton->Draw("histosame");
+  
+ 
+  Labels("eL");
+  
+  TLegend *leg = new TLegend(0.4,0.55,0.6,0.85);
+  leg->SetTextSize(0.035);
+  leg->SetTextFont(42);
+  leg->AddEntry(mass_hitbyhit_pion,"pions","l");
+  leg->AddEntry(mass_hitbyhit_kaon,"kaons","lp");
+  leg->AddEntry(mass_hitbyhit_proton,"protons","lp");
+  leg->AddEntry(mass_hitbyhit_proton,"Fastest - HitBy Hit Length","lp");
+  leg->AddEntry(mass_proton,"Fastest - simple length","lp");
   leg->SetFillColor(0);
   leg->SetLineColor(0);
   leg->SetShadowColor(0);
@@ -357,14 +535,16 @@ void MassMom() {
   gStyle->SetMarkerSize(0.2);
   TGaxis::SetMaxDigits(3);
   
-  TString filename = "../results/tof_all_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_cut_0_1track.root";
+  //  TString filename = "../results/tof_all_primary_tracks_ignoreoverlay_2f_hadronic_and_rad_eL_pR_cut_0_1track_plt2.root";
+  TString filename = "../results/tof_all_secondary_tracks_ignoreoverlay_2f_hadronic_hitbyhitlength_eL_pR_cut_2_1track_plt2_softtrack.root";
+
   TFile *f = new TFile(filename);
   TH2F*  mass_kaon = (TH2F*)f->Get("p_mass_kaon_1");
   TH2F*  mass_pion = (TH2F*)f->Get("p_mass_pion_1");
   TH2F*  mass_proton = (TH2F*)f->Get("p_mass_proton_1");
 
 
-  TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
+  TCanvas* c_mom = new TCanvas("c_mass_mom","c_mass_mom",800,800);
   c_mom->cd(1);
   c_mom->SetGrid();
   mass_pion->GetXaxis()->SetTitle("momentum [GeV]");
@@ -648,9 +828,11 @@ void MassMom3() {
 
 
 void Plots_TOF() {
-  // MassMom3();
+  //Mass();
+  Mass3();
+  //MassMom();
   // EffPurity_TOF();
-  EffPurity_TOF();
+  // EffPurity_TOF();
 
   //  dEdxdist();
 }

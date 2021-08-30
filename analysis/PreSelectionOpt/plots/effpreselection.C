@@ -79,7 +79,7 @@ void effpreselection() {
   if(i==0) cuts=0;
   if(i==1) cuts=step;
 
-  TString folder=TString::Format("../selection_cuts%i_",cuts);
+  TString folder=TString::Format("../results/selection_cuts%i_",cuts);
 
   //----------------------------------
   TString filename = folder+"bbbar_Kgamma35_250GeV_"+pol+".root";//folder+"bbbar_"+kt+sel+"250GeV_"+pol+".root";

@@ -11,12 +11,39 @@ int analysis_tof(TString file, TString output, bool ignoreoverlay){
   //file=folder+file;
   cout<<file<<endl;
   observable ss3(file);
-
-  ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),0),true,ignoreoverlay,0);
-  ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),1),true,ignoreoverlay,1);
-  ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),2),true,ignoreoverlay,2);
-  ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),3),true,ignoreoverlay,3);
   
+  for(int i=0; i<5; i++) {
+    int j=i;
+    
+    //cut2 GeV, 1= standard cut 
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),true,ignoreoverlay,j,2,1);
+    //cut2GeV, include soft tracks
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),true,ignoreoverlay,j,2,0);
+    //cut5 GeV, 1= standard cut                             
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),true,ignoreoverlay,j,5,1);
+    //cut5GeV, include soft tracks             
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),true,ignoreoverlay,j,5,0);
+    //cut5 250eV, 1= standard cut
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),true,ignoreoverlay,j,250,1);
+    //cut250GeV, include soft tracks 
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),true,ignoreoverlay,j,250,0);
+    
+    
+    //cut2 GeV, 1= standard cut
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),false,ignoreoverlay,j,2,1);
+    //cut2GeV, include soft tracks    
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),false,ignoreoverlay,j,2,0);
+    //cut5 GeV, 1= standard cut       
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),false,ignoreoverlay,j,5,1);
+    //cut5GeV, include soft tracks    
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),false,ignoreoverlay,j,5,0);
+    //cut5 250eV, 1= standard cut     
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),false,ignoreoverlay,j,250,1);
+    //cut250GeV, include soft tracks  
+    ss3.TOF(-1,TString::Format("%s_cut_%i",output.Data(),j),false,ignoreoverlay,j,250,0);
+
+  }
+    
   
   //ss3.dEdx(-1,TString::Format("%s_cut_%i",output.Data(),2),true,ignoreoverlay,2.);
   //  ss3.dEdx(-1,TString::Format("%s_cut_%i",output.Data(),0),true,ignoreoverlay,0.);

@@ -77,14 +77,14 @@ void selection_plots(int polarisation=0, bool normalised=true) {
   TString pol="eL_pR";
   if(polarisation==1) pol="eR_pL";
     
-  for(int i=0; i<2; i++) {
+  for(int i=0; i<7; i++) {
 
     //if(i==1) i=8;
 
     int cuts=i;
     
     //**********************************************************
-    // ZZ
+    // /*ZZ
     TString folder=TString::Format("../results/selection_cuts%i_",cuts);
     
     TString filename = folder+"2f_hadronic_sample_"+pol+"_250GeV.root";
@@ -260,8 +260,11 @@ void selection_plots(int polarisation=0, bool normalised=true) {
 
     // cout<<std::setprecision(3)<< cut_string<<" & "<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & "<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & "<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & "<<100.*radreturn_integral[i+1]/radreturn_integral[0]<<"\\% & "<< 100.*qqH_integral[i+1]/qqH_integral[0]<<"\\% & "<< 100.*zz_integral[i+1]/zz_integral[0]<<"\\% & "<< 100.*ww_integral[i+1]/ww_integral[0]<<" \\\\"<<endl;
 
-    cout<<std::setprecision(3)<< cut_string<<" & bb:"<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & cc:"<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & qq:"<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & rad:"<<100.*radreturn_integral[i+1]/radreturn_integral[0]<<"\\% & WW:"<<100.*ww_integral[i+1]/ww_integral[0]<<"\\% &  ZZ:"<<100.*zz_integral[i+1]/zz_integral[0]<<"\\% & qqH:"<<100.*qqH_integral[i+1]/qqH_integral[0]<<"\\% & \\\\"<<endl;
+    //cout<<std::setprecision(3)<< cut_string<<" & bb:"<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & cc:"<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & qq:"<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & rad:"<<100.*radreturn_integral[i+1]/radreturn_integral[0]<<"\\% & WW:"<<100.*ww_integral[i+1]/ww_integral[0]<<"\\% &  ZZ:"<<100.*zz_integral[i+1]/zz_integral[0]<<"\\% & qqH:"<<100.*qqH_integral[i+1]/qqH_integral[0]<<"\\% & \\\\"<<endl;
   
+    cout<<std::setprecision(3)<< cut_string<<" & bb:"<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & cc:"<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & qq:"<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & rad:"<<100.*radreturn_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & WW:"<<100.*ww_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% &  ZZ:"<<100.*zz_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & qqH:"<<100.*qqH_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & \\\\"<<endl;
+    
+   
     SetQQbarStyle();
     gStyle->SetOptFit(0); 
     gStyle->SetOptStat(0);
@@ -272,6 +275,7 @@ void selection_plots(int polarisation=0, bool normalised=true) {
     gStyle->SetTitleX(0.2);
     gStyle->SetMarkerSize(1.5);
 
+    
     TCanvas * canvas = new TCanvas("canvas_y23","canvas_y23",1800,800);
     canvas->Divide(3,2);
     canvas->cd(1);
@@ -505,7 +509,7 @@ void selection_plots(int polarisation=0, bool normalised=true) {
       h_mj1_mj2_qqH->Draw("histosame");
     }
   
-  
+
 
   }
 

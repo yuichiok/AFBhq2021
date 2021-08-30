@@ -6,7 +6,7 @@
 #include "observable.h"
 #include "TPad.h"
 
-void observable::TOF(int n_entries=-1, TString process="",bool secondary=false, bool ignoreoverlay=true, int resolution=0) {
+void observable::TOF(int n_entries=-1, TString process="",bool secondary=false, bool ignoreoverlay=true, int resolution=0, float ptcut=10000, int typecut=0) {
 
   //--------------------------------------------------
   TH1F* mass_kaon[4];
@@ -93,15 +93,17 @@ void observable::TOF(int n_entries=-1, TString process="",bool secondary=false, 
 	  float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
 	  //float momentum = pfo_pidtof_p_at_calo[ipfo];
 
-	  if(momentum>2) continue;
+	  if(momentum>ptcut) continue;
 	  if(secondary==true &&  pfo_vtx[ipfo]<1) continue;
 	  if(secondary==false &&  pfo_vtx[ipfo]!=1) continue;
 	  if(ignoreoverlay==false && pfo_isoverlay[ipfo]==1) continue;
 	  if( pfo_ntracks[ipfo]!=1) continue;
-	  if(sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2))<1) continue;
-	  //if(nhits_bool==false) continue;
-	  if(pfo_tpc_hits[ipfo]<200) continue;
-	  
+	  if(typecut==0) {
+	    if(sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2))<1) continue;      
+	    if(pfo_tpc_hits[ipfo]<200) continue; 
+	  } else {
+	    if(nhits_bool==false) continue;
+	  }
 	  float beta[4]={0};
 	  if(resolution==0) {
 	    beta[0]=pfo_pidtof_closest_beta_0ps[ipfo];
@@ -187,7 +189,9 @@ void observable::TOF(int n_entries=-1, TString process="",bool secondary=false, 
   TString fname="primary_tracks";
   if(secondary==true) fname = "secondary_tracks";
   if(ignoreoverlay==true) fname += "_ignoreoverlay";
-  fname = TString::Format("tof_all_%s_%s_1track_plt2.root",fname.Data(),process.Data());
+  if(typecut==1) fname = TString::Format("tof_all_%s_%s_1track_plt%i_softtrack.root",fname.Data(),process.Data(),int(ptcut));
+  else fname = TString::Format("tof_all_%s_%s_1track_plt%i.root",fname.Data(),process.Data(),int(ptcut));
+
   
   TFile *MyFile = new TFile(fname,"RECREATE");
   MyFile->cd();

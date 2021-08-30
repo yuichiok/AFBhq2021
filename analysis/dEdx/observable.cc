@@ -239,6 +239,8 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	  p_track.push_back(pfo_py[ipfo]);
 	  p_track.push_back(pfo_pz[ipfo]);
 	  costheta=GetCostheta(p_track);
+
+	  if(fabs(costheta)<0.8) continue;
 	  float dedx=pfo_dedx[ipfo];
 
 	  bool nhits_bool=false;
@@ -566,8 +568,8 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   TString fname="all_tracks";
   if(secondary==true) fname = "secondary_tracks";
   if(ignoreoverlay==true) fname += "_ignoreoverlay";
-  if(pdg==4) fname = TString::Format("output_250_%s_%s_cquark.root",fname.Data(),process.Data());
-  if(pdg==5) fname = TString::Format("output_250_%s_%s_bquark.root",fname.Data(),process.Data());
+  if(pdg==4) fname = TString::Format("output_250_%s_%s_cquark_costheta_lt08.root",fname.Data(),process.Data());
+  if(pdg==5) fname = TString::Format("output_250_%s_%s_bquark_costheta_lt08.root",fname.Data(),process.Data());
 
   
   TFile *MyFile = new TFile(fname,"RECREATE");

@@ -46,7 +46,7 @@ public :
   virtual Long64_t LoadTree(Long64_t entry);
   virtual void     Init(TTree *tree);
 
-  virtual void     TOF(int n, TString, bool, bool, int);
+  virtual void     TOF(int n, TString, bool, bool, int, float, int);
 
    
   virtual Bool_t   Notify();
