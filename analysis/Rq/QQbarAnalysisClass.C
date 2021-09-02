@@ -74,8 +74,8 @@ void QQbarAnalysisClass::Rq(int n_entries=-1, int test_quark=5, float Kvcut=2500
     if(iquark<0 && bkg==0) continue;
     
     //parton level distributions
-    if(bkg==1) h_Nparton[0]->Fill(costheta_qqbar);
-    else h_Nparton[iquark]->Fill(costheta_qqbar);
+    if(bkg==1) h_Nparton[0]->Fill(costheta_thrust);
+    else h_Nparton[iquark]->Fill(costheta_thrust);
 
 
     //reco level distributions
