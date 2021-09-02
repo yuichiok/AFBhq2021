@@ -31,56 +31,6 @@
 
 
 
-TH1F* MCuneff(int sample=0, int pol=0, int iquark=5, int iquark2=4, float lum=900){
-
-  int ipdgquark=0;
-  if(iquark2==5) ipdgquark=0;
-  if(iquark2==4) ipdgquark=1;
-  if(iquark2==3) ipdgquark=2;
-
-
-  TH1F *htags=GetHisto(sample,TString::Format("h_N1_%i",ipdgquark),pol,iquark,lum,1);
-  TH1F *hnjets=GetHisto(sample,TString::Format("h_N0_%i",ipdgquark),pol,iquark,lum,2);
-
-  htags->Divide(hnjets);
-  return htags;
-
-}
-
-
-TH1F* MCeff(int sample=0, int pol=0, int iquark=5, float lum=900){
-
-  int ipdgquark=0;
-  if(iquark==4) ipdgquark=1;
-
-  TH1F *htags=GetHisto(sample,TString::Format("h_N1_%i",ipdgquark),pol,iquark,lum,1);
-  TH1F *hnjets=GetHisto(sample,TString::Format("h_N0_%i",ipdgquark),pol,iquark,lum,2);
-
-  htags->Divide(hnjets);
-  return htags;
-
-}
-
-std::pair<TH1F*, TH1F* > DTeff_cheat(int sample=0, int pol=0, int iquark=5, float lum=900){
-
-  int ipdgquark=0;
-  if(iquark==4) ipdgquark=1;
-
-  TH1F *h0_2=GetHisto(sample,TString::Format("h_N0_%i",ipdgquark),pol,iquark,lum,2);
-  TH1F *h0=GetHisto(sample,TString::Format("h_N0_%i",ipdgquark),pol,iquark,lum,1);
-  TH1F *h1=GetHisto(sample,TString::Format("h_N1_%i",ipdgquark),pol,iquark,lum,1);
-  TH1F *h2=GetHisto(sample,TString::Format("h_N2_%i",ipdgquark),pol,iquark,lum,1);
-
-  h1->Divide(h0_2);
-  
-  h2->Divide(h0);
-  h2->Divide(h1);
-  h2->Divide(h1);
-
-  std::pair<TH1F*, TH1F* > result{h1,h2};
-  return result;
-
-}
 
 
 
@@ -146,7 +96,7 @@ void DTeffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   leg->SetBorderSize(0);
   leg->Draw();
 
-  c_eff_DT->Print(TString::Format("summaryplots/EffDT_sample_%i_pdg_%i_twopols.png",sample,iquark));
+  c_eff_DT->Print(TString::Format("summaryplots/EffDT_sample_%i_pdg_%i_twopols.eps",sample,iquark));
   c_eff_DT->Update();
 
   TCanvas* c_rho_DT = new TCanvas("c_rho_DT","c_rho_DT",800,800);
@@ -180,7 +130,7 @@ void DTeffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   leg2->SetBorderSize(0);
   leg2->Draw();
 
-  c_rho_DT->Print(TString::Format("summaryplots/RhoDT_sample_%i_pdg_%i_twopols.png",sample,iquark));
+  c_rho_DT->Print(TString::Format("summaryplots/RhoDT_sample_%i_pdg_%i_twopols.eps",sample,iquark));
   c_rho_DT->Update();
 
 }
@@ -243,7 +193,7 @@ void MCeffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   leg2->SetBorderSize(0);
   leg2->Draw();
 
-  c_eff_MC->Print(TString::Format("summaryplots/Eff_sample_%i_pdg_%i_twopols.png",sample,iquark));
+  c_eff_MC->Print(TString::Format("summaryplots/Eff_sample_%i_pdg_%i_twopols.eps",sample,iquark));
   c_eff_MC->Update();
 
 }
@@ -331,7 +281,7 @@ void MCuneffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   leg2->Draw();
 
 
-  c_eff_MC->Print(TString::Format("summaryplots/UnEff_sample_%i_pdg_%i_twopols.png",sample,iquark));
+  c_eff_MC->Print(TString::Format("summaryplots/UnEff_sample_%i_pdg_%i_twopols.eps",sample,iquark));
   c_eff_MC->Update();
 }
 
@@ -339,9 +289,10 @@ void MCuneffPlotPols(int sample=0, int iquark=5, float lum=-1) {
 
 void JetTag() {
 
-  int sample=3; //3= signal, no cuts in rad return; 4= signa+radreturncut, 0=zz, 1=hz, 2=ww
+  int sample=4; //3= signal, no cuts in rad return; 4= signa+radreturncut, 0=zz, 1=hz, 2=ww
 
-  DTeffPlotPols(sample,4,200);
-
+  DTeffPlotPols(sample,4,900);
+  MCeffPlotPols(sample,4,900);
+  MCuneffPlotPols(sample,4,900);
 
 }
