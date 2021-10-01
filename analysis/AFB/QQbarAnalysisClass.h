@@ -39,9 +39,19 @@ public :
   virtual void     Init(TTree *tree);
 
   //analysis
-  virtual void AFBc1(int , float, float);
-  virtual void ChargeKJet(int ,float , bool, bool);
-  virtual void ChargeVtxJet(int , float);
+  virtual void AFBc1(int , int, float, float);
+  virtual float ChargeKJet(int, int ,float , bool, bool);
+  virtual float ChargeVtxJet(int, int , float);
+
+  virtual float ChargeKJetMethod0(int ,float , bool, bool);
+  virtual float ChargeKJetMethod1(int ,float , bool, bool);
+  virtual float ChargeKJetMethod2(int ,float , bool, bool);
+
+  virtual float ChargeVtxJetMethod0(int , float);
+  virtual float ChargeVtxJetMethod1(int , float);
+  virtual float ChargeVtxJetMethod2(int , float);
+
+
 
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);

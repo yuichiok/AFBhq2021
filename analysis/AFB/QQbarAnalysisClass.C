@@ -318,9 +318,9 @@ float QQbarAnalysisClass::ChargeKJetMethod2(int ijet, float pcut=2., bool cheat=
       }
   }
 
-  if(cheat==true && ipfo_max_cheat>-0.5 && mom_max_cheat>pcut) charge=pfo_charge[ipfo_max_cheat];
-  if(tof==true && ipfo_max_cheat>-0.5 && mom_max_cheat<pcut) charge=pfo_charge[ipfo_max_cheat];
-  if(cheat==false && ipfo_max>-0.5) charge=pfo_charge[ipfo_max];
+  if(cheat==true && ipfo_max_cheat>-0.5 && mom_max_cheat>pcut) charge=-pfo_charge[ipfo_max_cheat];
+  if(tof==true && ipfo_max_cheat>-0.5 && mom_max_cheat<pcut) charge=-pfo_charge[ipfo_max_cheat];
+  if(cheat==false && ipfo_max>-0.5) charge=-pfo_charge[ipfo_max];
 
   return charge;
 }
