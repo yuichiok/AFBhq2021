@@ -5,8 +5,6 @@ folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2020/"${process}"_"${pol}"/"
 local=$PWD
 counter=0
 
-bkg=$3
-
 
 for file in ${folder}/*
 do
@@ -19,33 +17,36 @@ do
     if [ $counter -gt 99 ]; then
         name=$counter
     fi
-    
-    cat > ${local}/steer/afb_${process}_${pol}_${name}.sh <<EOF
+  
+    for method in 0 1 2
+    do  
+	cat > ${local}/steer/afb_method${method}_${process}_${pol}_${name}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
-root -l ${local}/test_AFBc1.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},35\) > ${local}/output/log_AFBc1_${process}_${pol}_${name}
-mv AFBc1_${process}_${pol}_file_${name}_250GeV.root ${local}/output/.
+root -l ${local}/test_AFBc1.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},35,${method}\) > ${local}/output/log_AFBc1_method${method}_${process}_${pol}_${name}
+mv AFBc1_method${method}_${process}_${pol}_file_${name}_250GeV.root ${local}/output/.
 EOF
 
-    cat > ${local}/steer/afb_${process}_${pol}_${name}.sub <<EOF
+	cat > ${local}/steer/afb_method${method}_${process}_${pol}_${name}.sub <<EOF
 # Unix submit description file
 # kt_xNAMEfile.sub -- simple Marlin job
-executable              = ${local}/steer/afb_${process}_${pol}_${name}.sh
-log                     = ${local}/log/afb_${process}_${pol}_${name}.log
-output                  = ${local}/log/outfile_afb_${process}_${pol}_${name}.txt
-error                   = ${local}/log/errors_afb_${process}_${pol}_${name}.txt
+executable              = ${local}/steer/afb_method${method}_${process}_${pol}_${name}.sh
+log                     = ${local}/log/afb_method${method}_${process}_${pol}_${name}.log
+output                  = ${local}/log/outfile_afb_method${method}_${process}_${pol}_${name}.txt
+error                   = ${local}/log/errors_afb_method${method}_${process}_${pol}_${name}.txt
 should_transfer_files   = Yes
 when_to_transfer_output = ON_EXIT
 queue 1
 EOF
       	
-    if [ -f ${local}/output/AFBc1_${process}_${pol}_file_${name}_250GeV.root ];
-    then
-        echo "Skip ${process}_${pol}_${name}"
-    else	
-	condor_submit ${local}/steer/afb_${process}_${pol}_${name}.sub
-    fi
-
-    counter=$((counter+1))
+	if [ -f ${local}/output/AFBc1_method${method}_${process}_${pol}_file_${name}_250GeV.root ];
+	then
+            echo "Skip method${method}_${process}_${pol}_${name}"
+	else	
+	    condor_submit ${local}/steer/afb_method${method}_${process}_${pol}_${name}.sub
+	fi
+	
+	counter=$((counter+1))
+    done
 done
 
 
