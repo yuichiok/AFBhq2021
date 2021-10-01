@@ -385,7 +385,7 @@ void EffPurity_dedxdist3() {
     float n_protons=  kdEdxdist_proton->Integral(i, i,16,22);
     float n_muons=  kdEdxdist_muon->Integral(i, i,16,22);
     float n_electrons=  kdEdxdist_electron->Integral(i, i,16,22);
-    float nkaons=  kdEdxdist_kaon->Integral(i, i,0,40);
+    float nkaons=  kdEdxdist_kaon->Integral(i, i,0,1000);
     x[i-2]=i-1.5;
     //    eff[i-16]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;
     eff[i-2]=100.*(n_kaons)/nkaons;                    
@@ -417,7 +417,7 @@ void EffPurity_dedxdist3() {
     float n_protons=  kdEdxdist_proton2->Integral(i, i,16,23);
     float n_muons=  kdEdxdist_muon2->Integral(i, i,16,23);
     float n_electrons=  kdEdxdist_electron2->Integral(i, i,16,23);
-    float nkaons=  kdEdxdist_kaon2->Integral(i, i,0,40);
+    float nkaons=  kdEdxdist_kaon2->Integral(i, i,0,1000);
     x2[i-2]=i-1.5;
     //    eff[i-16]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;
     eff2[i-2]=100.*(n_kaons)/nkaons;                    
@@ -537,7 +537,7 @@ void EffPurity_dedxdist4() {
     float n_protons=  kdEdxdist_proton->Integral(i, i,16,ipion);
     float n_muons=  kdEdxdist_muon->Integral(i, i,16,ipion);
     float n_electrons=  kdEdxdist_electron->Integral(i, i,16,ipion);
-    float nkaons=  kdEdxdist_kaon->Integral(i, i);
+    float nkaons=  kdEdxdist_kaon->Integral(i, i,0,1000);
     if(nkaons==0) nkaons=10000000;
     x[i-1]=i*1./20;
     eff[i-1]=100.*(n_kaons)/nkaons;       
@@ -574,7 +574,7 @@ void EffPurity_dedxdist4() {
     float n_protons=  kdEdxdist_proton2->Integral(i, i,16,ipion);
     float n_muons=  kdEdxdist_muon2->Integral(i, i,16,ipion);
     float n_electrons=  kdEdxdist_electron2->Integral(i, i,16,ipion);
-    float nkaons=  kdEdxdist_kaon2->Integral(i, i);
+    float nkaons=  kdEdxdist_kaon2->Integral(i, i,0,1000);
     if(nkaons==0) nkaons=10000000;
     x2[i-1]=i*1./20;
     eff2[i-1]=100.*(n_kaons)/nkaons;       
@@ -699,7 +699,7 @@ void EffPurity_dedxdist5() {
     float n_protons=  kdEdxdist_proton->Integral(i, i,16,ipion);
     float n_muons=  kdEdxdist_muon->Integral(i, i,16,ipion);
     float n_electrons=  kdEdxdist_electron->Integral(i, i,16,ipion);
-    float nkaons=  kdEdxdist_kaon->Integral(i, i);
+    float nkaons=  kdEdxdist_kaon->Integral(i, i,0,1000);
     if(nkaons==0) nkaons=10000000;
     x[i]=i;
     eff[i]=100.*(n_kaons)/nkaons;       
@@ -736,7 +736,7 @@ void EffPurity_dedxdist5() {
     float n_protons=  kdEdxdist_proton2->Integral(i, i,16,ipion);
     float n_muons=  kdEdxdist_muon2->Integral(i, i,16,ipion);
     float n_electrons=  kdEdxdist_electron2->Integral(i, i,16,ipion);
-    float nkaons=  kdEdxdist_kaon2->Integral(i, i);
+    float nkaons=  kdEdxdist_kaon2->Integral(i, i,0,1000);
     if(nkaons==0) nkaons=10000000;
     x2[i]=i;//*1./20;
     eff2[i]=100.*(n_kaons)/nkaons;       
@@ -1073,7 +1073,7 @@ void Mom() {
 
 }
 
-void dEdxdist() {
+void dEdxdist(bool cquark_analysis=true) {
 
   
   SetQQbarStyle();
@@ -1088,8 +1088,11 @@ void dEdxdist() {
   //  gStyle->SetGridStyle(1);
   TGaxis::SetMaxDigits(3);
   
+  if(cquark_analysis==true) cquark=true;
+  else cquark=false;
   
   TString filename = "../results/histos_cquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_2GeV.root";
+  if(cquark==false) filename = "../results/histos_bquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_2GeV.root";
   TFile *f = new TFile(filename);
 
   TH1F*  kdEdx_dist_kaon = (TH1F*)f->Get("kdEdx_dist_kaon");
@@ -1098,13 +1101,14 @@ void dEdxdist() {
 
 
   TString filename2 = "../results/histos_cquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_2GeV.root";
+  if(cquark==false) filename2 = "../results/histos_bquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_2GeV.root";
+
   TFile *f2 = new TFile(filename2);
 
   TH1F*  kdEdx_dist_kaon2 = (TH1F*)f2->Get("kdEdx_dist_kaon");
   TH1F*  kdEdx_dist_pion2 = (TH1F*)f2->Get("kdEdx_dist_pion");
   TH1F*  kdEdx_dist_proton2 = (TH1F*)f2->Get("kdEdx_dist_proton");
 
-  cquark=true;
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
   c_mom->cd(1);
   c_mom->SetGrid();
@@ -1205,10 +1209,10 @@ void dEdxdist() {
 
 
 void Plots_dEdx() {
-  //Mom();
+  Mom();
   //  EffPurity_default();
   // EffPurity_dedxdist4();
   // EffPurity_dedxdist2();
-  EffPurity_dedxdist5();
-  //dEdxdist();
+  // EffPurity_dedxdist5();
+  // dEdxdist(false);
 }
