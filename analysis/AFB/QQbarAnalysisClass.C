@@ -116,6 +116,11 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
       charge[ijet][1]=ChargeKJet(method,ijet,pcut,true,false);
       charge[ijet][2]=ChargeKJet(method,ijet,pcut,true,true);
       charge[ijet][3]=ChargeVtxJet(method,ijet,pcut);
+      if(quark==5) {
+	charge[ijet][0]*=-1;
+	charge[ijet][1]*=-1;
+	charge[ijet][2]*=-1;
+      }
     }
 
     //Efficiencies && charge purity
