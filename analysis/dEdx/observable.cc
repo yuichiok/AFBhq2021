@@ -51,6 +51,11 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   TH1F* p_electron = new TH1F("p_electron","p_electron",125,-0.5,124.5);
   TH1F* p_muon = new TH1F("p_muon","p_muon",125,-0.5,124.5);
   TH1F* p_others = new TH1F("p_others","p_others",125,-0.5,124.5);
+
+  TH1F* p_leading_kaon = new TH1F("p_leading_kaon","p_leading_kaon",125,-0.5,124.5);
+  TH1F* p_leading_proton = new TH1F("p_leading_proton","p_leading_proton",125,-0.5,124.5);
+  TH1F* p_leading_pion = new TH1F("p_leading_pion","p_leading_pion",125,-0.5,124.5);
+
   TH1F* costheta_kaon = new TH1F("costheta_kaon","costheta_kaon",40,-1,1);
   TH1F* costheta_proton = new TH1F("costheta_proton","costheta_proton",40,-1,1);
   TH1F* costheta_pion = new TH1F("costheta_pion","costheta_pion",40,-1,1);
@@ -224,6 +229,11 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	double nt=0;
 	//	if(jet_btag[ijet]>0.8) {
 	int nkaonvtx=0;
+
+	float leading_k=-1;
+        float leading_pion=-1;
+        float leading_p=-1;
+	
 	for(int ipfo=0; ipfo<pfo_n; ipfo++) {
 
 	  float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
@@ -254,6 +264,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	      nkaonjet++;
 	      nkaonvtx++;
 	      p_kaon->Fill(momentum);
+	      if(momentum>leading_k)leading_k=momentum;
 	      costheta_kaon->Fill(costheta);
 	      p_costheta_kaon->Fill(momentum,costheta);
 	      kdEdx_dist_kaon->Fill(pfo_piddedx_k_dedxdist[ipfo]);
@@ -285,6 +296,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	    } else {
 	      if( fabs(pfo_pdgcheat[ipfo])==211 ) {
 		p_pion->Fill(momentum);
+		if(momentum>leading_pion)leading_pion=momentum;
 		costheta_pion->Fill(costheta);
 		p_costheta_pion->Fill(momentum,costheta);
 		kdEdx_dist_pion->Fill(pfo_piddedx_k_dedxdist[ipfo]);
@@ -314,6 +326,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	      } else {
 		if( fabs(pfo_pdgcheat[ipfo])==2212 ) {
 		  p_proton->Fill(momentum);
+		  if(momentum>leading_p)leading_p=momentum;
 		  costheta_proton->Fill(costheta);
 		  p_costheta_proton->Fill(momentum,costheta);
 		  kdEdx_dist_proton->Fill(pfo_piddedx_k_dedxdist[ipfo]);
@@ -617,6 +630,10 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   p_electron->Write();
   p_muon->Write();
   p_others->Write();
+
+  p_leading_kaon->Write();
+  p_leading_proton->Write();
+  p_leading_pion->Write();
 
   costheta_kaon->Write();
   costheta_proton->Write();
