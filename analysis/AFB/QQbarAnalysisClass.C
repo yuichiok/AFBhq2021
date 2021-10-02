@@ -5,12 +5,25 @@
 
 void QQbarAnalysisClass::AFBc1(int n_entries=-1, int method=0, float Kvcut=35, float pcut=2)
 {
+  AFB1(n_entries, method,  Kvcut, pcut,4);
+
+}
+
+void QQbarAnalysisClass::AFBb1(int n_entries=-1, int method=0, float Kvcut=35, float pcut=2)
+{
+  AFB1(n_entries, method,  Kvcut, pcut,5);
+}
+
+void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, float pcut=2, int quark=4)
+{
   
   TString filename=TString::Format("AFBc1_method%i_%s_250GeV.root",method,process.Data());
+  if(quark==5) filename=TString::Format("AFBb1_method%i_%s_250GeV.root",method,process.Data());
   TFile *MyFile = new TFile(filename,"RECREATE");
   MyFile->cd();
 
   //Ntotal_nocuts
+  TH1F * h_Ntotal_nocuts = new TH1F("h_Ntotal_nocuts","h_Ntotal_nocuts",20,0,1);
   TH1F * h_Nparton = new TH1F("h_Nparton","h_Nparton",20,0,1);
   TH1F * h_N0[4];//events after charge measurement (two flavour tag already done)
   TH1F * h_N1[4];//events 1 tag
@@ -48,16 +61,17 @@ void QQbarAnalysisClass::AFBc1(int n_entries=-1, int method=0, float Kvcut=35, f
     float gamma1_e= mc_ISR_E[1];
     float gamma_e = gamma0_e+gamma1_e;
 
-    if(fabs(mc_quark_pdg[0])!=4 || gamma_e>Kvcut) continue;
-    
-    if ( jentry > 1000 && jentry % 1000 ==0 ) std::cout << "Progress: " << 100.*jentry/nentries <<" %"<<endl;
-
     float costheta_thrust;
     std::vector<float> p_thrust;
     p_thrust.push_back(principle_thrust_axis[0]);
     p_thrust.push_back(principle_thrust_axis[1]);
     p_thrust.push_back(principle_thrust_axis[2]);
     costheta_thrust=fabs(GetCostheta(p_thrust));
+    h_Ntotal_nocuts->Fill(costheta_thrust);
+
+    if(fabs(mc_quark_pdg[0])!=quark || gamma_e>Kvcut) continue;
+    
+    if ( jentry > 1000 && jentry % 1000 ==0 ) std::cout << "Progress: " << 100.*jentry/nentries <<" %"<<endl;
 
     float costheta_ccbar;
     std::vector<float> p_bbar;
@@ -83,8 +97,16 @@ void QQbarAnalysisClass::AFBc1(int n_entries=-1, int method=0, float Kvcut=35, f
     if(selection==false) continue;
     //jet flavour
     bool jettag[2]={false,false};
-    if(jet_ctag[0]>ctag1) jettag[0]=true;
-    if(jet_ctag[1]>ctag2) jettag[1]=true;
+    if(quark==4) {
+      if(jet_ctag[0]>ctag1) jettag[0]=true;
+      if(jet_ctag[1]>ctag2) jettag[1]=true;
+    } else if(quark==5) {
+      if(jet_btag[0]>btag1) jettag[0]=true;
+      if(jet_btag[1]>btag2) jettag[1]=true;
+    } else {
+      cout<<"ERROR, wrong argument for the quark quark-to-study"<<endl;
+      break;
+    }
 
     if(jettag[0]==false || jettag[1]==false) continue;
 
@@ -122,6 +144,7 @@ void QQbarAnalysisClass::AFBc1(int n_entries=-1, int method=0, float Kvcut=35, f
   
   cout<<filename<<endl;
   
+  h_Ntotal_nocuts->Write();
   h_Nparton->Write();
   for(int i=0; i<4; i++) {
     h_N0[i]->Write();
@@ -171,7 +194,7 @@ float QQbarAnalysisClass::ChargeVtxJetMethod1(int ijet, float pcut=2.){//, int e
     momtotal+=momentum;
     charge+=pfo_charge[ipfo]*momentum;
   }
-  charge/=momtotal;
+  if(momtotal>0) charge/=momtotal;
   return charge;
 }
 
@@ -192,7 +215,7 @@ float QQbarAnalysisClass::ChargeVtxJetMethod2(int ijet, float pcut=2.){//, int e
       mom_max=momentum;
     }
   }
-  if(ipfo_max>-0.5)  charge+=pfo_charge[ipfo_max];
+  if(ipfo_max>-0.5)  charge=pfo_charge[ipfo_max];
 
   return charge;
 }
@@ -280,7 +303,7 @@ float QQbarAnalysisClass::ChargeKJetMethod1(int ijet, float pcut=2., bool cheat=
 	if(dedx_dist >-2.25 && dedx_dist < 0.75) charge-=pfo_charge[ipfo]*momentum;
       }
   }
-  charge/=momtotal;
+  if(momtotal>0) charge/=momtotal;
   return charge;
 }
 
