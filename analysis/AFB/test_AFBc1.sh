@@ -3,23 +3,24 @@ process=$1
 pol=$2
 folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2020/"${process}"_"${pol}"/"
 local=$PWD
-counter=0
 
 
-for file in ${folder}/*
+for method in 0 1 2
 do
-    echo $file $counter
-    name="00"$counter
-    if [ $counter -gt 9 ]; then
-        name="0"$counter
-    fi
-    
-    if [ $counter -gt 99 ]; then
-        name=$counter
-    fi
-  
-    for method in 0 1 2
-    do  
+    counter=0
+       
+    for file in ${folder}/*
+    do
+	echo $file $counter
+	name="00"$counter
+	if [ $counter -gt 9 ]; then
+            name="0"$counter
+	fi
+	
+	if [ $counter -gt 99 ]; then
+            name=$counter
+	fi
+	
 	cat > ${local}/steer/afb_method${method}_${process}_${pol}_${name}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
 root -l ${local}/test_AFBc1.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},35,${method}\) > ${local}/output/log_AFBc1_method${method}_${process}_${pol}_${name}
