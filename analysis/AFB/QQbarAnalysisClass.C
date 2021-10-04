@@ -37,6 +37,20 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
     dedxcut_down=-2.45;
   }
 
+  if(dedxcut==5) {
+    dedxcut_up=1.0;
+    dedxcut_down=-2.45;
+  }
+
+  if(dedxcut==6) {
+    dedxcut_up=0.9;
+    dedxcut_down=-2.45;
+  }
+
+  if(dedxcut==7) {
+    dedxcut_up=1.1;
+    dedxcut_down=-2.45;
+  }
 
 
   TString filename=TString::Format("AFBc%i_method%i_%s_250GeV.root",dedxcut,method,process.Data());
@@ -65,7 +79,6 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
     h_Nrej[i] = new TH1F(TString::Format("h_Nrej_%i",i),TString::Format("h_Nrej_%i",i),40,-1,1);
     // 0=K, 1=Kcheat, 2=Kcheat&TOF, 3=Vtx
   }
-
 
   Long64_t nentries;
   if(n_entries>0) nentries= n_entries;
@@ -108,7 +121,6 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
 
     h_Nparton->Fill(fabs(costheta_thrust));
     h_AFB->Fill(costheta_thrust);
-
 
     std::vector<float> p;
     p.push_back(jet_px[0]-jet_px[1]);
@@ -185,8 +197,8 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
     h_Charge[i]->Write();
     h_Nacc[i]->Write();
     h_Nrej[i]->Write();
-
   }
+
 }
 
 
