@@ -16,15 +16,38 @@ void QQbarAnalysisClass::AFBb1(int n_entries=-1, int method=0, float Kvcut=35, f
 
 void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, float pcut=2, int quark=4)
 {
-  
-  TString filename=TString::Format("AFBc1_method%i_%s_250GeV.root",method,process.Data());
-  if(quark==5) filename=TString::Format("AFBb1_method%i_%s_250GeV.root",method,process.Data());
+
+  if(dedxcut==1) {
+    dedxcut_up=0.75;
+    dedxcut_down=-2.25;
+  }
+
+  if(dedxcut==2) {
+    dedxcut_up=0.75;
+    dedxcut_down=-2.45;
+  }
+
+  if(dedxcut==3) {
+    dedxcut_up=0.8;
+    dedxcut_down=-2.25;
+  }
+
+  if(dedxcut==4) {
+    dedxcut_up=0.8;
+    dedxcut_down=-2.45;
+  }
+
+
+
+  TString filename=TString::Format("AFBc%i_method%i_%s_250GeV.root",dedxcut,method,process.Data());
+  if(quark==5) filename=TString::Format("AFBb%i_method%i_%s_250GeV.root",dedxcut,method,process.Data());
   TFile *MyFile = new TFile(filename,"RECREATE");
   MyFile->cd();
 
   //Ntotal_nocuts
   TH1F * h_Ntotal_nocuts = new TH1F("h_Ntotal_nocuts","h_Ntotal_nocuts",20,0,1);
   TH1F * h_Nparton = new TH1F("h_Nparton","h_Nparton",20,0,1);
+  TH1F * h_AFB = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_N0[4];//events after charge measurement (two flavour tag already done)
   TH1F * h_N1[4];//events 1 tag
   TH1F * h_N2[4];//events 2 tags
@@ -47,7 +70,7 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
   Long64_t nentries;
   if(n_entries>0) nentries= n_entries;
   else nentries= fChain->GetEntriesFast();
-
+  //nentries=30000;
 
   Long64_t nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -80,9 +103,11 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
     p_bbar.push_back(mc_quark_pz[0]-mc_quark_pz[1]);
     costheta_ccbar=GetCostheta(p_bbar);
     costheta_ccbar=  (mc_quark_charge[0] < 0) ? -costheta_ccbar: costheta_ccbar;
+    if(quark==5) costheta_ccbar*=-1;
     if(costheta_ccbar<0) costheta_thrust*=-1.;
-      
-    h_Nparton->Fill(costheta_thrust);
+
+    h_Nparton->Fill(fabs(costheta_thrust));
+    h_AFB->Fill(costheta_thrust);
 
 
     std::vector<float> p;
@@ -126,14 +151,14 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
     //Efficiencies && charge purity
     for(int i=0; i<4; i++) {
       //Efficiencies
-      h_N0[i]->Fill(costheta_thrust);
+      h_N0[i]->Fill(fabs(costheta_thrust));
       for(int ijet=0; ijet<2; ijet++) {
 	if(charge[ijet][i]!=0) {
 	  h_Charge[i]->Fill(charge[ijet][i]);
-	  h_N1[i]->Fill(costheta_thrust);
+	  h_N1[i]->Fill(fabs(costheta_thrust));
 	}
       }
-      if(charge[0][i]!=0 && charge[1][i]!=0) h_N2[i]->Fill(costheta_thrust);
+      if(charge[0][i]!=0 && charge[1][i]!=0) h_N2[i]->Fill(fabs(costheta_thrust));
 
       float costheta_temp=  (charge[0][i] < 0) ? -costheta_jet: costheta_jet;
 
@@ -151,6 +176,8 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
   
   h_Ntotal_nocuts->Write();
   h_Nparton->Write();
+  h_AFB->Write();
+
   for(int i=0; i<4; i++) {
     h_N0[i]->Write();
     h_N1[i]->Write();
@@ -265,7 +292,7 @@ float QQbarAnalysisClass::ChargeKJetMethod0(int ijet, float pcut=2., bool cheat=
 
       if(  nhits_bool==true) {
 	float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
-	if(dedx_dist >-2.25 && dedx_dist < 0.75) charge-=pfo_charge[ipfo];
+	if(dedx_dist >dedxcut_down && dedx_dist < dedxcut_up) charge-=pfo_charge[ipfo];
       }
   }
 
@@ -305,7 +332,7 @@ float QQbarAnalysisClass::ChargeKJetMethod1(int ijet, float pcut=2., bool cheat=
 
       if(  nhits_bool==true) {
 	float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
-	if(dedx_dist >-2.25 && dedx_dist < 0.75) charge-=pfo_charge[ipfo]*momentum;
+	if(dedx_dist >dedxcut_down && dedx_dist < dedxcut_up) charge-=pfo_charge[ipfo]*momentum;
       }
   }
   if(momtotal>0) charge/=momtotal;
@@ -346,7 +373,7 @@ float QQbarAnalysisClass::ChargeKJetMethod2(int ijet, float pcut=2., bool cheat=
 
       if(  nhits_bool==true) {
 	float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
-	if(dedx_dist >-2.25 && dedx_dist < 0.75) {
+	if(dedx_dist >dedxcut_down && dedx_dist < dedxcut_up) {
 	  if(momentum>mom_max) {
 	    ipfo_max=ipfo;
 	    mom_max=momentum;

@@ -59,6 +59,10 @@ public :
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
 
+  int dedxcut=1;
+  float dedxcut_up=0.75;
+  float dedxcut_down=-2.25;
+
  private: 
 
 
