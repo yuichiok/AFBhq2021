@@ -172,7 +172,7 @@ void NPlots(int iquark=5, float lum=-1, int pol=0) {
     leg->SetShadowColor(0);
     leg->Draw();
 
-    c_f1_MC->Print(TString::Format("summaryplots/N%i_pdg_%i_pol_%i.eps",ihisto,iquark,pol));
+    c_f1_MC->Print(TString::Format("summaryplots/N%i_pdg_%i_pol_%i.pdf",ihisto,iquark,pol));
   }
   
 }
@@ -180,7 +180,7 @@ void NPlots(int iquark=5, float lum=-1, int pol=0) {
 
 
 void N0N1N2() {
-
+  
   NPlots(4,900,0);
   NPlots(5,900,0);
   NPlots(4,900,1);

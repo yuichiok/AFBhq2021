@@ -52,7 +52,7 @@ void Labels(int i=0, TString pol="eL"){
 
 
 
-void selection_plots(int polarisation=0, bool normalised=true) {
+void selection_plots(int polarisation=1, bool normalised=true) {
 
   cout<< "bb qq radreturn ww zz hz "<<endl;
 
@@ -262,9 +262,11 @@ void selection_plots(int polarisation=0, bool normalised=true) {
 
     //cout<<std::setprecision(3)<< cut_string<<" & bb:"<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & cc:"<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & qq:"<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & rad:"<<100.*radreturn_integral[i+1]/radreturn_integral[0]<<"\\% & WW:"<<100.*ww_integral[i+1]/ww_integral[0]<<"\\% &  ZZ:"<<100.*zz_integral[i+1]/zz_integral[0]<<"\\% & qqH:"<<100.*qqH_integral[i+1]/qqH_integral[0]<<"\\% & \\\\"<<endl;
   
-    cout<<std::setprecision(3)<< cut_string<<" & bb:"<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & cc:"<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & qq:"<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & rad:"<<100.*radreturn_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & WW:"<<100.*ww_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% &  ZZ:"<<100.*zz_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & qqH:"<<100.*qqH_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & \\\\"<<endl;
+    //    cout<<std::setprecision(3)<< cut_string<<" & bb:"<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & cc:"<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & qq:"<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & rad:"<<100.*radreturn_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & WW:"<<100.*ww_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% &  ZZ:"<<100.*zz_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & qqH:"<<100.*qqH_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & \\\\"<<endl;
     
-   
+    cout<<std::setprecision(3)<< cut_string<<" "<< 100.*bb_integral[i+1]/bb_integral[0]<<" "<<100.*cc_integral[i+1]/cc_integral[0]<<" "<<100.*qq_integral[i+1]/qq_integral[0]<<" "<<100.*radreturn_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<" "<<100.*ww_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<" "<<100.*zz_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<" "<<100.*qqH_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<" "<<endl;
+
+
     SetQQbarStyle();
     gStyle->SetOptFit(0); 
     gStyle->SetOptStat(0);

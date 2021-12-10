@@ -26,7 +26,7 @@ TH1F* FHistoBKG(int pol=0, int histo=1, int iquark=5,  float lum=900, float erro
   if(histo==1) factor=2;
   
   //BKG--------------------------------
-   //ZZ
+  //ZZ
   hb0[0]=GetHisto(0,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
   //hz
   hb0[1]=GetHisto(1,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
@@ -129,10 +129,10 @@ TH1F* FHistoEffErr(int pol=0, int histo=1, int iquark=5,  float lum=900, float e
     float epsilon_b=0;
     if(histo==1) epsilon_b = (effb+effb*error_b);
     if(histo==2) epsilon_b = (effb*effb+2.*effb*(effb*error_b));
-    cout<<i<<" "<<histo<<" "<<effb<<" "<<error_b<<" "<<epsilon_b<<" "<<h1[1]->GetBinError(i)<<" "<<h2[1]->GetBinError(i)<<endl;
+    //    cout<<i<<" "<<histo<<" "<<effb<<" "<<error_b<<" "<<epsilon_b<<" "<<h1[1]->GetBinError(i)<<" "<<h2[1]->GetBinError(i)<<endl;
     h1[1]->SetBinError(i,sqrt( pow(h1[1]->GetBinError(i),2)+ pow(sqrt(h1[1]->GetBinContent(i) + h0[1]->GetBinContent(i)*epsilon_b),2)));
     h2[1]->SetBinError(i,sqrt( pow(h2[1]->GetBinError(i),2)+ pow(sqrt(h1[1]->GetBinContent(i) + h0[1]->GetBinContent(i)*epsilon_b),2)));
-    cout<<h1[1]->GetBinError(i)<<" "<<h2[1]->GetBinError(i)<<endl;
+    //    cout<<h1[1]->GetBinError(i)<<" "<<h2[1]->GetBinError(i)<<endl;
 
     //error uds
     float effuds=0;
@@ -157,7 +157,7 @@ TH1F* FHistoEffErr(int pol=0, int histo=1, int iquark=5,  float lum=900, float e
   
   if(histo==1) return h1[0];
   if(histo==2) return h2[0];
-
+  return NULL;
 }
 
 
@@ -167,7 +167,7 @@ TH1F* FHisto(int pol=0, int histo=1, int iquark=5,  float lum=900){
   TH1F *h0[10];
   TH1F *hj[10];
 
-   double factor=1;
+  double factor=1;
   if(histo==1) factor=2;
   h0[0]=GetHisto(4,TString::Format("h_N%i_%i",0,0),pol,iquark,lum,factor);
   h0[1]=GetHisto(4,TString::Format("h_N%i_%i",0,1),pol,iquark,lum,factor);
@@ -215,11 +215,11 @@ double RParton_value(int pol=0, int iquark=5,  float lum=900){
 
 TH1F* RCheat(int pol, int iquark=5,  float lum=900){
 
-int ipdg1=0, ipdg2=1;
-if(iquark==4) {
-  ipdg1=1;
-  ipdg2=0;
- }
+  int ipdg1=0, ipdg2=1;
+  if(iquark==4) {
+    ipdg1=1;
+    ipdg2=0;
+  }
   TH1F *h0=GetHisto(4,TString::Format("h_N0_%i",ipdg1),pol,4,lum,1);
   TH1F *h1=GetHisto(4,TString::Format("h_N0_%i",ipdg2),pol,4,lum,1);
   TH1F *h2=GetHisto(4,TString::Format("h_N0_%i",2),pol,4,lum,1);
