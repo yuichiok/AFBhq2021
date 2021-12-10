@@ -63,7 +63,7 @@ void DTeffPlotPols(int sample=0, int iquark=5, float lum=-1) {
 
   }
 
-  
+ 
   
   TCanvas* c_eff_DT = new TCanvas("c_eff_DT","c_eff_DT",800,800);
   c_eff_DT->cd(1);
@@ -96,7 +96,7 @@ void DTeffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   leg->SetBorderSize(0);
   leg->Draw();
 
-  c_eff_DT->Print(TString::Format("summaryplots/EffDT_sample_%i_pdg_%i_twopols.eps",sample,iquark));
+  c_eff_DT->Print(TString::Format("summaryplots/EffDT_sample_%i_pdg_%i_twopols.pdf",sample,iquark));
   c_eff_DT->Update();
 
   TCanvas* c_rho_DT = new TCanvas("c_rho_DT","c_rho_DT",800,800);
@@ -130,7 +130,7 @@ void DTeffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   leg2->SetBorderSize(0);
   leg2->Draw();
 
-  c_rho_DT->Print(TString::Format("summaryplots/RhoDT_sample_%i_pdg_%i_twopols.eps",sample,iquark));
+  c_rho_DT->Print(TString::Format("summaryplots/RhoDT_sample_%i_pdg_%i_twopols.pdf",sample,iquark));
   c_rho_DT->Update();
 
 }
@@ -160,6 +160,11 @@ void MCeffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   }
 
   
+  TFile * newfile=new TFile("eff_btag.root","RECREATE");
+  newfile->cd();
+  eff[0]->SetName("Eff-b");
+  eff[0]->SetTitle("Eff-b");
+  eff[0]->Write();
 
 
   TCanvas* c_eff_MC = new TCanvas("c_eff_MC","c_eff_MC",800,800);
@@ -193,8 +198,10 @@ void MCeffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   leg2->SetBorderSize(0);
   leg2->Draw();
 
-  c_eff_MC->Print(TString::Format("summaryplots/Eff_sample_%i_pdg_%i_twopols.eps",sample,iquark));
+  c_eff_MC->Print(TString::Format("summaryplots/Eff_sample_%i_pdg_%i_twopols.pdf",sample,iquark));
   c_eff_MC->Update();
+
+
 
 }
 
@@ -237,7 +244,7 @@ void MCuneffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   g_eff[0]->GetYaxis()->SetTitle("Mis-ID [%]");
   g_eff[0]->GetYaxis()->SetTitleOffset(1.25);
   g_eff[0]->GetXaxis()->SetTitleOffset(1.);
-  g_eff[0]->GetYaxis()->SetRangeUser(0,2);
+  g_eff[0]->GetYaxis()->SetRangeUser(0,5);
   g_eff[0]->GetXaxis()->SetRangeUser(0,1);
   g_eff[0]->SetLineColor(4);
   g_eff[0]->SetLineWidth(1);
@@ -281,7 +288,7 @@ void MCuneffPlotPols(int sample=0, int iquark=5, float lum=-1) {
   leg2->Draw();
 
 
-  c_eff_MC->Print(TString::Format("summaryplots/UnEff_sample_%i_pdg_%i_twopols.eps",sample,iquark));
+  c_eff_MC->Print(TString::Format("summaryplots/UnEff_sample_%i_pdg_%i_twopols.pdf",sample,iquark));
   c_eff_MC->Update();
 }
 
@@ -291,8 +298,8 @@ void JetTag() {
 
   int sample=4; //3= signal, no cuts in rad return; 4= signa+radreturncut, 0=zz, 1=hz, 2=ww
 
-  DTeffPlotPols(sample,4,900);
-  MCeffPlotPols(sample,4,900);
-  MCuneffPlotPols(sample,4,900);
+  DTeffPlotPols(sample,5,900);
+  // MCeffPlotPols(sample,5,900);
+  //  MCuneffPlotPols(sample,5,900);
 
 }

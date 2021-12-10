@@ -53,7 +53,7 @@ void RPartonPlots( int pol=0, float lum=-1) {
   leg->SetBorderSize(0);
   leg->SetShadowColor(0);
   leg->Draw();
-  c_f1_MC->Print(TString::Format("summaryplots/Rparton_pol_%i.eps",pol));
+  c_f1_MC->Print(TString::Format("summaryplots/Rparton_pol_%i.pdf",pol));
 
   
 }
@@ -157,7 +157,7 @@ void RPlots_c( int pol=0, float lum=-1) {
   //double tag eff quark estimation
   TH1F* h_eff_quark = epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto[0] , h_Fhisto[1] , h_mistag_b,h_mistag_uds, rho_MC,true);
 
-  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" ()=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
+  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" 0=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
   //RParton
   TH1F *h_Rhisto=RCheat(pol, 4, -1);
   TH1F *Rmeasured=DT_R(h_Fhisto[0], h_Fhisto[1], h_eff_quark, rho_MC, d_Rparton[0], h_mistag_b, h_mistag_uds);
@@ -198,7 +198,7 @@ void RPlots_c( int pol=0, float lum=-1) {
   leg->SetShadowColor(0);
   leg->Draw();
 
-  c_F_MC->Print(TString::Format("summaryplots/F_pdg_%i_pol_%i.eps",4,pol));
+  c_F_MC->Print(TString::Format("summaryplots/F_pdg_%i_pol_%i.pdf",4,pol));
 
   //*************************************************************
   // Plots efficiencies
@@ -206,7 +206,7 @@ void RPlots_c( int pol=0, float lum=-1) {
   c_eff_MC->cd(1);
   c_eff_MC->SetGrid();
   h_eff_quark->GetXaxis()->SetTitle("|cos #theta_{thr.}|");
-  h_eff_quark->GetYaxis()->SetTitle("[no units]");
+  h_eff_quark->GetYaxis()->SetTitle("#epsilon_{c} [%]");
   h_eff_quark->GetYaxis()->SetRangeUser(0,50);
 
   h_eff_quark->SetLineColor(2);
@@ -231,7 +231,7 @@ void RPlots_c( int pol=0, float lum=-1) {
   leg2->SetShadowColor(0);
   leg2->Draw();
 
-  c_eff_MC->Print(TString::Format("summaryplots/eff_MC_vs_DT_pdg_%i_pol_%i.eps",4,pol));
+  c_eff_MC->Print(TString::Format("summaryplots/eff_MC_vs_DT_pdg_%i_pol_%i.pdf",4,pol));
 
   //*************************************************************
   // Plots R
@@ -262,7 +262,7 @@ void RPlots_c( int pol=0, float lum=-1) {
   leg3->SetBorderSize(0);
   leg3->SetShadowColor(0);
   leg3->Draw();
-  c_R_MC->Print(TString::Format("summaryplots/Rmeasured_pdg_%i_pol_%i.eps",4,pol));
+  c_R_MC->Print(TString::Format("summaryplots/Rmeasured_pdg_%i_pol_%i.pdf",4,pol));
   
 }
 
@@ -323,7 +323,7 @@ void R_c( int pol=0, float lum=-1) {
   TH1F* h_eff_quark_eb10= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effb10[0] , h_Fhisto_effb10[1] , h_mistag_b_truth,h_mistag_uds, rho_MC,true);
   TH1F* h_eff_quark_euds10= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effb10[0] , h_Fhisto_effb10[1] , h_mistag_b_truth,h_mistag_uds, rho_MC,true);
 
-  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" ()=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
+  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" 0=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
   //RParton
   TH1F *h_Rhisto=RCheat(pol, 4, -1);
   fit_Rq(h_Rhisto," Parton LeveL: ");
@@ -368,7 +368,7 @@ void R_cpol( int pol=0, float lum=-1) {
   gStyle->SetMarkerSize(0.2);
   TGaxis::SetMaxDigits(3);
 
-  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" ()=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
+  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" 0=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
     
   //R theory
   double d_Rparton[3];
@@ -421,7 +421,6 @@ void R_cpol( int pol=0, float lum=-1) {
       k++;
     }
   }
-  cout<<"  "<<endl;
  
   value/=k;
   float var = 0;
@@ -449,7 +448,7 @@ void R_cbkg( int pol=0, float lum=-1) {
   gStyle->SetMarkerSize(0.2);
   TGaxis::SetMaxDigits(3);
 
-  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" ()=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
+  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" 0=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
     
   //R theory
   double d_Rparton[3];
@@ -503,7 +502,7 @@ void R_theory_vs_reco( int pol=0, float lum=-1) {
   gStyle->SetMarkerSize(0.2);
   TGaxis::SetMaxDigits(3);
 
-  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" ()=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
+  cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" 0=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
     
  
   float k=0;
@@ -529,21 +528,20 @@ void R_theory_vs_reco( int pol=0, float lum=-1) {
 
 void Rc_calculations() {
 
-
-  for(int pol=2; pol<3; pol++) {
+  for(int pol=2; pol<3;pol++) {
     cout<<" Plots "<<endl;
     cout<<"  ------------------------------------------ "<<endl;
     //   RPartonPlots(pol,900);
     //PreSelection(pol,900);
-     RPlots_c(pol,900);
+    RPlots_c(pol,-1);
     // cout<<"  ------------------------------------------ "<<endl;
-     R_c(pol,900);
+    /*    R_c(pol,900);
     // cout<<" polarization "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
-     R_cpol(pol,900);
+    R_cpol(pol,900);
     // cout<<" bkg "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
     R_cbkg(pol,900);
-    R_theory_vs_reco(pol,900);
+    R_theory_vs_reco(pol,900);*/
   }
 }

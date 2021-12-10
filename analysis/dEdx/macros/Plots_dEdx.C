@@ -28,7 +28,7 @@
 bool cquark;
 
 void Labels(TString pol){
-  QQBARLabel(0.86,0.952,"");
+  QQBARLabel(0.86,0.952,"Work in Progress");
   // QQBARLabel2(0.3,0.97, "e^{-}e^{+} #rightarrow q#bar{q}, q=udscb, 250 GeV, 250fb^{-1}",kGray+2);
   if(cquark==false) {
     if(pol=="eL")
@@ -42,7 +42,7 @@ void Labels(TString pol){
     QQBARLabel2(0.2,0.22, "Secondary Tracks in b-jets",kGray+4);
   } else {
     if(pol=="eL")
-      QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow c#bar{c} mc-2020",kGray+2);
+      QQBARLabel2(0.3,0.965, "e_{L}^{-}e_{R}^{+} #rightarrow c#bar{c} mc-2020",kGray+2);
     else 
       if(pol=="eR")
 	QQBARLabel2(0.3,0.965, "e_{R}^{-}e_{L}^{+} #rightarrow c#bar{c} mc-2020",kGray+2);
@@ -691,7 +691,7 @@ void EffPurity_dedxdist5() {
   //  option 1, 87eff, 87 pur = 16,23
 
 
-  for(int i=0;i<80; i++) {
+  for(int i=2;i<80; i++) {
     int ipion=22;
     // if(i>16) ipion=22-(i-16);
     float n_kaons=  kdEdxdist_kaon->Integral(i, i,16,ipion);
@@ -701,10 +701,10 @@ void EffPurity_dedxdist5() {
     float n_electrons=  kdEdxdist_electron->Integral(i, i,16,ipion);
     float nkaons=  kdEdxdist_kaon->Integral(i, i,0,1000);
     if(nkaons==0) nkaons=10000000;
-    x[i]=i;
-    eff[i]=100.*(n_kaons)/nkaons;       
+    x[i-2]=i;
+    eff[i-2]=100.*(n_kaons)/nkaons;       
     //  eff2[i-1]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                    
-    pur[i]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
+    pur[i-2]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
     n++;
   }
 
@@ -728,7 +728,7 @@ void EffPurity_dedxdist5() {
   //  option 1, 80eff, 92 pur = 16,21
   //  option 1, 87eff, 87 pur = 16,23
 
-  for(int i=0;i<80; i++) {
+  for(int i=2;i<80; i++) {
     int ipion=22;
     //  if(i>16) ipion=22-(i-16);
     float n_kaons=  kdEdxdist_kaon2->Integral(i, i,16,ipion);
@@ -738,10 +738,10 @@ void EffPurity_dedxdist5() {
     float n_electrons=  kdEdxdist_electron2->Integral(i, i,16,ipion);
     float nkaons=  kdEdxdist_kaon2->Integral(i, i,0,1000);
     if(nkaons==0) nkaons=10000000;
-    x2[i]=i;//*1./20;
-    eff2[i]=100.*(n_kaons)/nkaons;       
+    x2[i-2]=i;//*1./20;
+    eff2[i-2]=100.*(n_kaons)/nkaons;       
     //  eff2[i-1]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                    
-    pur2[i]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
+    pur2[i-2]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
     n2++;
   }
  
@@ -760,16 +760,17 @@ void EffPurity_dedxdist5() {
   efficiency->GetYaxis()->SetTitleOffset(1.25);
   efficiency->GetXaxis()->SetTitleOffset(1.);
   efficiency->GetYaxis()->SetRangeUser(0,100);
+  efficiency->GetXaxis()->SetRangeUser(0,60);
 
-  efficiency->SetLineColor(4);
+  efficiency->SetLineColor(kMagenta+1);
   efficiency->SetLineWidth(3);
-  efficiency->SetLineStyle(2);
+  efficiency->SetLineStyle(1);
   efficiency->Draw("alp");
   
-  purity->SetLineColor(kGreen+1);
-  purity->SetLineWidth(1);
+  purity->SetLineColor(kGreen+2);
+  purity->SetLineWidth(3);
   purity->SetLineStyle(1);
-  purity->Draw("lp");
+  purity->Draw("lsame");
 
   
   Labels("");
@@ -784,9 +785,11 @@ void EffPurity_dedxdist5() {
   leg0->SetShadowColor(0);
   leg0->Draw();
 
+  c_mom->Print("eff_purity_kaons_cquark.png");
+  
   cquark=false;
 
- TCanvas* c_mom2 = new TCanvas("c_mom2","c_mom2",800,800);
+  TCanvas* c_mom2 = new TCanvas("c_mom2","c_mom2",800,800);
   c_mom2->cd(1);
   c_mom2->SetGrid();
   efficiency2->GetXaxis()->SetTitle("p [GeV]");
@@ -794,16 +797,17 @@ void EffPurity_dedxdist5() {
   efficiency2->GetYaxis()->SetTitleOffset(1.25);
   efficiency2->GetXaxis()->SetTitleOffset(1.);
   efficiency2->GetYaxis()->SetRangeUser(0,100);
+  efficiency2->GetXaxis()->SetRangeUser(0,30);
 
-  efficiency2->SetLineColor(4);
+  efficiency2->SetLineColor(kMagenta+1);
   efficiency2->SetLineWidth(3);
-  efficiency2->SetLineStyle(2);
+  efficiency2->SetLineStyle(1);
   efficiency2->Draw("alp");
   
-  purity2->SetLineColor(kGreen+1);
-  purity2->SetLineWidth(1);
+  purity2->SetLineColor(kGreen+2);
+  purity2->SetLineWidth(2);
   purity2->SetLineStyle(1);
-  purity2->Draw("lp");
+  purity2->Draw("l");
 
   
   Labels("");
@@ -817,7 +821,9 @@ void EffPurity_dedxdist5() {
   leg2->SetLineColor(0);
   leg2->SetShadowColor(0);
   leg2->Draw();
- 
+
+  c_mom2->Print("eff_purity_kaons_bquark.png");
+  
 
 
 }
@@ -1209,10 +1215,10 @@ void dEdxdist(bool cquark_analysis=true) {
 
 
 void Plots_dEdx() {
-  Mom();
+  //Mom();
   //  EffPurity_default();
   // EffPurity_dedxdist4();
   // EffPurity_dedxdist2();
-  // EffPurity_dedxdist5();
-  // dEdxdist(false);
+    EffPurity_dedxdist5();
+    //dEdxdist(true);
 }

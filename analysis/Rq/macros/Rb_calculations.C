@@ -80,7 +80,7 @@ void RPlots_b( int pol=0, float lum=-1) {
   leg->SetShadowColor(0);
   leg->Draw();
 
-  c_F_MC->Print(TString::Format("summaryplots/F_pdg_%i_pol_%i.eps",4,pol));
+  c_F_MC->Print(TString::Format("summaryplots/F_pdg_%i_pol_%i.pdf",4,pol));
 
   //*************************************************************
   // Plots efficiencies
@@ -88,7 +88,7 @@ void RPlots_b( int pol=0, float lum=-1) {
   c_eff_MC->cd(1);
   c_eff_MC->SetGrid();
   h_eff_quark->GetXaxis()->SetTitle("|cos #theta_{thr.}|");
-  h_eff_quark->GetYaxis()->SetTitle("[no units]");
+  h_eff_quark->GetYaxis()->SetTitle("#varepsilon_{b} [ % ]");
   h_eff_quark->GetYaxis()->SetRangeUser(0,90);
 
   h_eff_quark->SetLineColor(2);
@@ -113,7 +113,7 @@ void RPlots_b( int pol=0, float lum=-1) {
   leg2->SetShadowColor(0);
   leg2->Draw();
 
-  c_eff_MC->Print(TString::Format("summaryplots/eff_MC_vs_DT_pdg_%i_pol_%i.eps",4,pol));
+  c_eff_MC->Print(TString::Format("summaryplots/eff_MC_vs_DT_pdg_%i_pol_%i.pdf",4,pol));
 
   //*************************************************************
   // Plots R
@@ -144,7 +144,7 @@ void RPlots_b( int pol=0, float lum=-1) {
   leg3->SetBorderSize(0);
   leg3->SetShadowColor(0);
   leg3->Draw();
-  c_R_MC->Print(TString::Format("summaryplots/Rmeasured_pdg_%i_pol_%i.eps",4,pol));
+  c_R_MC->Print(TString::Format("summaryplots/Rmeasured_pdg_%i_pol_%i.pdf",4,pol));
   
 }
 
@@ -412,12 +412,13 @@ void R_theory_vs_reco( int pol=0, float lum=-1) {
 void Rb_calculations() {
 
 
-  for(int pol=2; pol<4; pol++) {
+  for(int pol=2; pol<3; pol++) {
     cout<<" Plots "<<endl;
     cout<<"  ------------------------------------------ "<<endl;
     RPlots_b(pol,900);
     // cout<<"  ------------------------------------------ "<<endl;
-    R_b(pol,900);
+    /*
+      R_b(pol,900);
     // cout<<" polarization "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
     R_bpol(pol,900);
@@ -425,5 +426,6 @@ void Rb_calculations() {
     // cout<<"  ------------------------------------------ "<<endl;
     R_bbkg(pol,900);
     R_theory_vs_reco(pol,900);
+    */
   }
 }

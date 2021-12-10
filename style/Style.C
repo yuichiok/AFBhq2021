@@ -2,7 +2,6 @@
 //  Style, based on a style file from BaBar
 //
 
-#include <iostream>
 #include "Style.h"
 #include "TROOT.h"
 
