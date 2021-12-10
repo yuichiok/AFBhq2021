@@ -165,11 +165,11 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
       charge[ijet][1]=ChargeKJet(method,ijet,pcut,true,false);
       charge[ijet][2]=ChargeKJet(method,ijet,pcut,true,true);
       charge[ijet][3]=ChargeVtxJet(method,ijet,pcut);
-      if(quark==5) {
+      /*      if(quark==5) {
 	charge[ijet][0]*=-1;
 	charge[ijet][1]*=-1;
 	charge[ijet][2]*=-1;
-      }
+	}*/
     }
 
     //Efficiencies && charge purity
@@ -304,10 +304,7 @@ float QQbarAnalysisClass::ChargeKJetMethod0(int ijet, float pcut=2., bool cheat=
       p_track.push_back(pfo_pz[ipfo]);
       costheta=GetCostheta(p_track);
       if(pfo_ntracks[ipfo]!=1) continue;
-      if(cheat==true && fabs(pfo_pdgcheat[ipfo])==321 && momentum>pcut) {
-	charge-=pfo_charge[ipfo];
-	continue;
-      }
+
       if(tof==false && momentum<pcut) continue;
       if(tof==true && momentum<pcut && fabs(pfo_pdgcheat[ipfo])==321) {
 	charge-=pfo_charge[ipfo];
@@ -317,6 +314,11 @@ float QQbarAnalysisClass::ChargeKJetMethod0(int ijet, float pcut=2., bool cheat=
       if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
       if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
       if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
+
+      if(nhits_bool==true && cheat==true && fabs(pfo_pdgcheat[ipfo])==321 && momentum>pcut) {
+        charge-=pfo_charge[ipfo];
+        continue;
+      }
 
       if(  nhits_bool==true) {
 	float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
@@ -344,10 +346,7 @@ float QQbarAnalysisClass::ChargeKJetMethod1(int ijet, float pcut=2., bool cheat=
       p_track.push_back(pfo_pz[ipfo]);
       costheta=GetCostheta(p_track);
       if(pfo_ntracks[ipfo]!=1) continue;
-      if(cheat==true && fabs(pfo_pdgcheat[ipfo])==321 && momentum>pcut) {
-	charge-=pfo_charge[ipfo]*momentum;
-	continue;
-      }
+
       if(tof==false && momentum<pcut) continue;
       if(tof==true && momentum<pcut && fabs(pfo_pdgcheat[ipfo])==321) {
 	charge-=pfo_charge[ipfo]*momentum;
@@ -357,6 +356,11 @@ float QQbarAnalysisClass::ChargeKJetMethod1(int ijet, float pcut=2., bool cheat=
       if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
       if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
       if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
+
+      if(nhits_bool==true && cheat==true && fabs(pfo_pdgcheat[ipfo])==321 && momentum>pcut) {
+	charge-=pfo_charge[ipfo]*momentum;
+        continue;
+      }
 
       if(  nhits_bool==true) {
 	float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
@@ -387,17 +391,18 @@ float QQbarAnalysisClass::ChargeKJetMethod2(int ijet, float pcut=2., bool cheat=
       p_track.push_back(pfo_pz[ipfo]);
       costheta=GetCostheta(p_track);
       if(pfo_ntracks[ipfo]!=1) continue;
-      if(cheat==true && fabs(pfo_pdgcheat[ipfo])==321 && momentum>pcut) {
-	if(momentum>mom_max_cheat) {
-	  ipfo_max_cheat=ipfo;
-	  mom_max_cheat=momentum;
-	}
-      }
   
       bool nhits_bool=false;
       if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
       if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
       if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
+
+      if(nhits_bool==true && cheat==true && fabs(pfo_pdgcheat[ipfo])==321 && momentum>pcut) {
+        if(momentum>mom_max_cheat) {
+          ipfo_max_cheat=ipfo;
+          mom_max_cheat=momentum;
+        }
+      }
 
       if(  nhits_bool==true) {
 	float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
