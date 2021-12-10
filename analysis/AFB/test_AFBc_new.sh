@@ -5,9 +5,9 @@ folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2020/"${process}"_"${pol}"/"
 local=$PWD
 
 
-for method in 0 1 2
+for method in 0 1 2 
 do
-    for dedx in 2 3 4
+    for dedx in 7
     do
 	counter=0
 	

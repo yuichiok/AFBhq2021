@@ -7,7 +7,7 @@ local=$PWD
 
 for method in 0 1 2
 do
-    for dedx in 2 3 4
+    for dedx in 1 7
     do
 	counter=0
 	
