@@ -42,7 +42,7 @@ public :
   virtual void AFBc1(int , int, float, float);
   virtual void AFBb1(int , int, float, float);
   virtual void AFB1(int , int, float, float, int);
-
+  virtual void AFBanalysis(int , int , float , int );
   virtual float ChargeKJet(int, int ,float , bool, bool);
   virtual float ChargeVtxJet(int, int , float);
 
