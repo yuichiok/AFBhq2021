@@ -402,7 +402,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
   cout<<filename<<endl;
   
   h_Ntotal_nocuts->Write();
-  for(int i=0; i<5; i++) {
+  for(int i=0; i<4; i++) {
     h_Ntotal_nocuts2[i]->Write();
     h_Nparton[i]->Write();
     h_AFB[i]->Write();
