@@ -249,14 +249,14 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
   TH1F * h_N2tag[4];//= new TH1F("h_N2tag","h_N2tag",20,0,1);;//events 2 tags
 
   //second dimension indexes: Kc, KcCheatdEdx, KcCheatdEdxTOF, Vtx
-  TString methodnames[4]={"Kc","KcCheatdEdx","KcCheatdEdxTOF","Vtx"};
-  TH1F * h_N0[4][4];//N after two flavour tag, 
-  TH1F * h_N1[4][4];//events 1 charge
-  TH1F * h_N2[4][4];//events 2 charge
+  TString methodnames[5]={"Kc","KcCheatdEdx","KcCheatdEdxTOF","KcCheatTOF","Vtx"};
+  TH1F * h_N0[4][5];//N after two flavour tag, 
+  TH1F * h_N1[4][5];//events 1 charge
+  TH1F * h_N2[4][5];//events 2 charge
 
-  TH1F * h_Charge[4][4];
-  TH1F * h_Nacc[4][4];//events with compatible charge
-  TH1F * h_Nrej[4][4];//events with non compatible charge
+  TH1F * h_Charge[4][5];
+  TH1F * h_Nacc[4][5];//events with compatible charge
+  TH1F * h_Nrej[4][5];//events with non compatible charge
 
   for(int i=0;i<4;i++) {
 
@@ -268,7 +268,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
     h_N1tag[i] = new TH1F(TString::Format("h_N1tag_%i",i),TString::Format("h_N1tag_%i",i),20,0,1);//events 1 tag
     h_N2tag[i] = new TH1F(TString::Format("h_N2tag_%i",i),TString::Format("h_N2tag_%i",i),20,0,1);//events 2 tags
 
-    for(int j=0; j<4; j++) {
+    for(int j=0; j<5; j++) {
       h_N0[i][j] = new TH1F(TString::Format("h_N0_%s_%i",methodnames[j].Data(),i),TString::Format("h_N0_%s_%i",methodnames[j].Data(),i),20,0,1);
       h_N1[i][j] = new TH1F(TString::Format("h_N1_%s_%i",methodnames[j].Data(),i),TString::Format("h_N1_%s_%i",methodnames[j].Data(),i),20,0,1);
       h_N2[i][j] = new TH1F(TString::Format("h_N2_%s_%i",methodnames[j].Data(),i),TString::Format("h_N2_%s_%i",methodnames[j].Data(),i),20,0,1);
@@ -313,6 +313,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
     p_thrust.push_back(principle_thrust_axis[2]);
     costheta_thrust=fabs(GetCostheta(p_thrust));
     h_Ntotal_nocuts->Fill(costheta_thrust);
+    h_Ntotal_nocuts2[iquark]->Fill(costheta_thrust);
 
     if ( jentry > 1000 && jentry % 1000 ==0 ) std::cout << "Progress: " << 100.*jentry/nentries <<" %"<<endl;
 
@@ -341,7 +342,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
     //analysis
     h_N0tag[iquark]->Fill(fabs(costheta_thrust));  
     h_Nq[iquark]->Fill(fabs(costheta_thrust));
-    h_Nparton[quark]->Fill(fabs(costheta_thrust));
+    h_Nparton[iquark]->Fill(fabs(costheta_thrust));
     h_AFB[iquark]->Fill(costheta_thrust);
 
  
@@ -364,16 +365,18 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
     if(jettag[0]==false || jettag[1]==false) continue;
     h_N2tag[iquark]->Fill(fabs(costheta_thrust));
     
-    float charge[2][4]={0};
+    float charge[2][5]={0};
     for(int ijet=0; ijet<2; ijet++) {
       charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
       charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,false);
       charge[ijet][2]=ChargeKJet(0,ijet,pcut,true,true);
-      charge[ijet][3]=ChargeVtxJet(0,ijet,pcut);
+      charge[ijet][3]=ChargeKJet(0,ijet,pcut,false,true);     
+      charge[ijet][4]=ChargeVtxJet(0,ijet,pcut);
+      if(quark==5) charge[ijet][4]*=-1;
     }
 
     //Efficiencies && charge purity
-    for(int i=0; i<4; i++) {
+    for(int i=0; i<5; i++) {
       //Efficiencies
       h_N0[iquark][i]->Fill(fabs(costheta_thrust));
       for(int ijet=0; ijet<2; ijet++) {
@@ -399,7 +402,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
   cout<<filename<<endl;
   
   h_Ntotal_nocuts->Write();
-  for(int i=0; i<4; i++) {
+  for(int i=0; i<5; i++) {
     h_Ntotal_nocuts2[i]->Write();
     h_Nparton[i]->Write();
     h_AFB[i]->Write();
@@ -408,7 +411,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
     h_N1tag[i]->Write();
     h_N2tag[i]->Write();
 
-    for(int j=0; j<4; j++) {
+    for(int j=0; j<5; j++) {
       h_N0[i][j]->Write();
       h_N1[i][j]->Write();
       h_N2[i][j]->Write();
