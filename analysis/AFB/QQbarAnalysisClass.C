@@ -64,9 +64,9 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
   TH1F * h_Nparton = new TH1F("h_Nparton","h_Nparton",20,0,1);
   TH1F * h_AFB = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_Nq = new TH1F("h_Nq","h_Nq",20,0,1);//quarks before preselection
-  TH1F * h_N0tag= new TH1F("h_N0tag","h_N0tag",20,0,1);;//N after preselection
-  TH1F * h_N1tag= new TH1F("h_N1tag","h_N1tag",20,0,1);;//events 1 tag
-  TH1F * h_N2tag= new TH1F("h_N2tag","h_N2tag",20,0,1);;//events 2 tags
+  TH1F * h_N0tag= new TH1F("h_N0","h_N0",20,0,1);;//N after preselection
+  TH1F * h_N1tag= new TH1F("h_N1","h_N1",20,0,1);;//events 1 tag
+  TH1F * h_N2tag= new TH1F("h_N2","h_N2",20,0,1);;//events 2 tags
   
   TH1F * h_N0[4];//N after two flavour tag
   TH1F * h_N1[4];//events 1 charge
@@ -77,9 +77,9 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
   TH1F * h_Nrej[4];//events with non compatible charge
 
   for(int i=0;i<4;i++) {
-    h_N0[i] = new TH1F(TString::Format("h_N0_%i",i),TString::Format("h_N0_%i",i),20,0,1);
-    h_N1[i] = new TH1F(TString::Format("h_N1_%i",i),TString::Format("h_N1_%i",i),20,0,1);
-    h_N2[i] = new TH1F(TString::Format("h_N2_%i",i),TString::Format("h_N2_%i",i),20,0,1);
+    h_N0[i] = new TH1F(TString::Format("h_N0c_%i",i),TString::Format("h_N0c_%i",i),20,0,1);
+    h_N1[i] = new TH1F(TString::Format("h_N1c_%i",i),TString::Format("h_N1c_%i",i),20,0,1);
+    h_N2[i] = new TH1F(TString::Format("h_N2c_%i",i),TString::Format("h_N2c_%i",i),20,0,1);
     h_Charge[i] = new TH1F(TString::Format("h_Charge_%i",i),TString::Format("h_Charge_%i",i),400,-10,10);
     h_Nacc[i] = new TH1F(TString::Format("h_Nacc_%i",i),TString::Format("h_Nacc_%i",i),40,-1,1);
     h_Nrej[i] = new TH1F(TString::Format("h_Nrej_%i",i),TString::Format("h_Nrej_%i",i),40,-1,1);
@@ -264,9 +264,9 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
     h_Nparton[i] = new TH1F(TString::Format("h_Nparton_%i",i),TString::Format("h_Nparton_%i",i),20,0,1);
     h_AFB[i] = new TH1F(TString::Format("h_AFB_%i",i),TString::Format("h_AFB_%i",i),40,-1,1);
     h_Nq[i] = new TH1F(TString::Format("h_Nq_%i",i),TString::Format("h_Nq_%i",i),20,0,1);//quarks before preselection
-    h_N0tag[i] = new TH1F(TString::Format("h_N0tag_%i",i),TString::Format("h_N0tag_%i",i),20,0,1);//N after preselection
-    h_N1tag[i] = new TH1F(TString::Format("h_N1tag_%i",i),TString::Format("h_N1tag_%i",i),20,0,1);//events 1 tag
-    h_N2tag[i] = new TH1F(TString::Format("h_N2tag_%i",i),TString::Format("h_N2tag_%i",i),20,0,1);//events 2 tags
+    h_N0tag[i] = new TH1F(TString::Format("h_N0_%i",i),TString::Format("h_N0_%i",i),20,0,1);//N after preselection
+    h_N1tag[i] = new TH1F(TString::Format("h_N1_%i",i),TString::Format("h_N1_%i",i),20,0,1);//events 1 tag
+    h_N2tag[i] = new TH1F(TString::Format("h_N2_%i",i),TString::Format("h_N2_%i",i),20,0,1);//events 2 tags
 
     for(int j=0; j<5; j++) {
       h_N0[i][j] = new TH1F(TString::Format("h_N0_%s_%i",methodnames[j].Data(),i),TString::Format("h_N0_%s_%i",methodnames[j].Data(),i),20,0,1);
