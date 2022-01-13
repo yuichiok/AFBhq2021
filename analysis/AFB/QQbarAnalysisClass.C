@@ -219,7 +219,7 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
 }
 
 
-void QQbarAnalysisClass::AFBanalysis(int n_entries=-1, int bkg=0, float Kvcut=35, int quark=4)
+void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0, float Kvcut=35, int quark=4)
 {
 
   float pcut=3.;
@@ -269,12 +269,12 @@ void QQbarAnalysisClass::AFBanalysis(int n_entries=-1, int bkg=0, float Kvcut=35
     h_N2tag[i] = new TH1F(TString::Format("h_N2tag_%i",i),TString::Format("h_N2tag_%i",i),20,0,1);//events 2 tags
 
     for(int j=0; j<4; j++) {
-      h_N0[i] = new TH1F(TString::Format("h_N0_%s_%i",methodnames[j].Data(),i),TString::Format("h_N0_%s_%i",methodnames[j].Data(),i),20,0,1);
-      h_N1[i] = new TH1F(TString::Format("h_N1_%s_%i",methodnames[j].Data(),i),TString::Format("h_N1_%s_%i",methodnames[j].Data(),i),20,0,1);
-      h_N2[i] = new TH1F(TString::Format("h_N2_%s_%i",methodnames[j].Data(),i),TString::Format("h_N2_%s_%i",methodnames[j].Data(),i),20,0,1);
-      h_Charge[i] = new TH1F(TString::Format("h_Charge_%s_%i",methodnames[j].Data(),i),TString::Format("h_Charge_%s_%i",methodnames[j].Data(),i),400,-10,10);
-      h_Nacc[i] = new TH1F(TString::Format("h_Nacc_%s_%i",methodnames[j].Data(),i),TString::Format("h_Nacc_%s_%i",methodnames[j].Data(),i),40,-1,1);
-      h_Nrej[i] = new TH1F(TString::Format("h_Nrej_%s_%i",methodnames[j].Data(),i),TString::Format("h_Nrej_%s_%i",methodnames[j].Data(),i),40,-1,1);
+      h_N0[i][j] = new TH1F(TString::Format("h_N0_%s_%i",methodnames[j].Data(),i),TString::Format("h_N0_%s_%i",methodnames[j].Data(),i),20,0,1);
+      h_N1[i][j] = new TH1F(TString::Format("h_N1_%s_%i",methodnames[j].Data(),i),TString::Format("h_N1_%s_%i",methodnames[j].Data(),i),20,0,1);
+      h_N2[i][j] = new TH1F(TString::Format("h_N2_%s_%i",methodnames[j].Data(),i),TString::Format("h_N2_%s_%i",methodnames[j].Data(),i),20,0,1);
+      h_Charge[i][j] = new TH1F(TString::Format("h_Charge_%s_%i",methodnames[j].Data(),i),TString::Format("h_Charge_%s_%i",methodnames[j].Data(),i),400,-10,10);
+      h_Nacc[i][j] = new TH1F(TString::Format("h_Nacc_%s_%i",methodnames[j].Data(),i),TString::Format("h_Nacc_%s_%i",methodnames[j].Data(),i),40,-1,1);
+      h_Nrej[i][j] = new TH1F(TString::Format("h_Nrej_%s_%i",methodnames[j].Data(),i),TString::Format("h_Nrej_%s_%i",methodnames[j].Data(),i),40,-1,1);
     }
   }
 
@@ -302,7 +302,7 @@ void QQbarAnalysisClass::AFBanalysis(int n_entries=-1, int bkg=0, float Kvcut=35
       if(fabs(mc_quark_pdg[0])<4 && gamma_e<Kvcut) iquark=2;
       if(gamma_e>Kvcut ) iquark=3;
     } else {
-      iquark=1:
+      iquark=1;
     }
 
     //reconsturcet thrust angle
@@ -324,7 +324,7 @@ void QQbarAnalysisClass::AFBanalysis(int n_entries=-1, int bkg=0, float Kvcut=35
     p_bbar.push_back(mc_quark_pz[0]-mc_quark_pz[1]);
     costheta_ccbar=GetCostheta(p_bbar);
     costheta_ccbar=  (mc_quark_charge[0] < 0) ? -costheta_ccbar: costheta_ccbar;
-    if(quark==5 || quark==3 || quark==1) costheta_ccbar*=-1;
+    if(fabs(mc_quark_pdg[0])==5 || fabs(mc_quark_pdg[0])==3 || fabs(mc_quark_pdg[0])==1) costheta_ccbar*=-1;
     costheta_thrust=fabs(costheta_thrust)*costheta_ccbar/fabs(costheta_ccbar);
 
     std::vector<float> p;
@@ -409,12 +409,12 @@ void QQbarAnalysisClass::AFBanalysis(int n_entries=-1, int bkg=0, float Kvcut=35
     h_N2tag[i]->Write();
 
     for(int j=0; j<4; j++) {
-      h_N0[i]->Write();
-      h_N1[i]->Write();
-      h_N2[i]->Write();
-      h_Charge[i]->Write();
-      h_Nacc[i]->Write();
-      h_Nrej[i]->Write();
+      h_N0[i][j]->Write();
+      h_N1[i][j]->Write();
+      h_N2[i][j]->Write();
+      h_Charge[i][j]->Write();
+      h_Nacc[i][j]->Write();
+      h_Nrej[i][j]->Write();
     }
   }
 

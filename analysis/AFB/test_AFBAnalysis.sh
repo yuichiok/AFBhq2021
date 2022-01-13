@@ -25,8 +25,8 @@ do
 	
 	cat > ${local}/steer/afb_$quark${quark}_${process}_${pol}_${name}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
-root -l ${local}/AFBAnalysis.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},35,${quark},$bkg}\) > ${local}/output/log_AFBAnalysis_$quark${quark}_${process}_${pol}_${name}
-mv AFB_$quark${quark}_${process}_${pol}_file_${name}_250GeV.root ${local}/output/.
+root -l ${local}/AFBAnalysis.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},35,${quark},${bkg}\) > ${local}/output/log_AFBAnalysis_$quark${quark}_${process}_${pol}_${name}
+mv AFB_quark${quark}_${process}_${pol}_file_${name}_250GeV.root ${local}/output/.
 EOF
 	
 	cat > ${local}/steer/afb_$quark${quark}_${process}_${pol}_${name}.sub <<EOF
