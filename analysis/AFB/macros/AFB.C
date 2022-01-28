@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "histograms.h"
+#include "../../common/histograms.h"
 
 //pol=0 eLpR
 //pol=1 eRpL
