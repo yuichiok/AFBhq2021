@@ -1,6 +1,4 @@
-
-
-for pol in "eL_pR" "eR_pL"
+for pol in "eR_pL" "eL_pR"
 do
     source test_AFBAnalysis.sh 2f_hadronic $pol 0
     source test_AFBAnalysis.sh 2f_hadronic_sample $pol 0

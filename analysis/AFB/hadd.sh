@@ -1,7 +1,7 @@
 for pol in "eL_pR" "eR_pL" 
 do
     
-    for sample in "2f_hadronic_sample" "2f_hadronic"
+    for sample in "2f_hadronic_sample"
     do
 	for dedx in 7
 	do
@@ -16,7 +16,7 @@ done
 for pol in "eL_pR" "eR_pL"
 do
 
-    for sample in "2f_hadronic_sample" "2f_hadronic"
+    for sample in "2f_hadronic_sample"
     do
         for dedx in 1 7
         do
