@@ -24,7 +24,7 @@
 #include "../../common/cross_sections.h"
 
 
-TString folder="../results/AFB";
+TString folder="../results/AFB_";
 float p1error=0;
 float p2error=0;
 //pol=0 eLpR
@@ -124,7 +124,8 @@ float MCLum(int iprocess, int pol, int iquark) {
 
 }
 
-TH1F* GetHisto(int iprocess, TString histo, int pol, int imethod, float lum, float norm=1, int quark=4) {
+
+TH1F* GetHistoMethod(int iprocess, TString histo, int pol, int imethod, float lum, float norm=1, int quark=4) {
   //  cout<<quark<<endl;
   int dedxcut=7;
   TString filename = TString::Format("%sc%i_method%i_%s_eL_pR_250GeV.root",folder.Data(),dedxcut,imethod,process[iprocess].Data());
@@ -169,5 +170,47 @@ TH1F* GetHisto(int iprocess, TString histo, int pol, int imethod, float lum, flo
 
 }
 
+TH1F* GetHisto(int iprocess, TString histo, int pol, int iquark, float lum, float norm=1, TString PQ="") {
 
+    
+  TString filename = TString::Format("%spdg%i_%s_eL_pR_250GeV.root",folder.Data(),iquark,process[iprocess].Data());
+  if(PQ!="") filename= TString::Format("%s%s_pdg%i_%s_eL_pR_250GeV.root",folder.Data(),PQ.Data(),iquark,process[iprocess].Data());
+  cout<<filename<<" "<<histo<<endl;
+  TFile *f = new TFile(filename);
+  TH1F *hstats[2];
+  hstats[0]=(TH1F*)f->Get("h_Ntotal_nocuts");
+  TH1F *h[2];
+  h[0]= (TH1F*)f->Get(histo);
+
+  filename = TString::Format("%spdg%i_%s_eR_pL_250GeV.root",folder.Data(),iquark,process[iprocess].Data());
+  if(PQ!="") filename= TString::Format("%s%s_pdg%i_%s_eR_pL_250GeV.root",folder.Data(),PQ.Data(),iquark,process[iprocess].Data());
+  TFile *f2 = new TFile(filename);
+  hstats[1]=(TH1F*)f2->Get("h_Ntotal_nocuts");
+  h[1]= (TH1F*)f2->Get(histo);
+
+  float luminosity[2];
+  luminosity[0]=hstats[0]->GetEntries()/cross_section[0][iprocess];
+  luminosity[1]=hstats[1]->GetEntries()/cross_section[1][iprocess];
+
+  
+  if(pol==0 || pol==1) {
+    //    cout<<"Scale pol:"<<pol<<endl;
+    h[pol]=ScaleHisto(h[pol],luminosity[pol],lum,norm);
+    //    h[pol]->Sumw2();
+    return h[pol];
+  }
+
+  if(pol>1) {
+    
+    TH1F* hpol=PolHisto(h[0],h[1],pol,luminosity,lum,norm);
+    //hpol->Sumw2();
+    //hpol->Rebin(40);
+    delete f;
+    return hpol;
+  }
+
+
+  return NULL;
+
+}
 

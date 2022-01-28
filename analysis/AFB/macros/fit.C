@@ -22,7 +22,7 @@ float dAfb_v(float plus, float minus, float plus_e, float minus_e) {
 
 }
 
-TF1 * fit_histo(TH1F * histo, float range_down=-0.8, float range_up=0.8) {
+TF1 * fit_histo(TH1F * histo, float range_down=-0.8, float range_up=0.8, bool draw=false) {
 
   double x[40], ex[40], y[40], ey[40];
   for(int i=0; i<40; i++) {
@@ -44,7 +44,7 @@ TF1 * fit_histo(TH1F * histo, float range_down=-0.8, float range_up=0.8) {
   TFitResultPtr r = g_histo->Fit("asymmetry_f", "QRS");
   // r->Print("V");
 
-  g_histo->Draw("alp");
+  if(draw==true)   g_histo->Draw("alp");
   TF1 *func = new TF1("asymmetry_f",asymmetry_f,-1,1,2);
   func->SetParNames("S","A");
   func->SetParameter(0,func_fit->GetParameter(0));

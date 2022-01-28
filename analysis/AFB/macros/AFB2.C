@@ -1,5 +1,7 @@
 #include "fit.C"
 
+// test macro to see the AFB for every different type of charge measurement
+// no corrections applied
 void AFBplots( int pol=0, float lum=-1, int quark=4) {
 
   SetQQbarStyle();
@@ -27,11 +29,11 @@ void AFBplots( int pol=0, float lum=-1, int quark=4) {
     leg->SetHeader(chargemethod_string[i]);
 
     for(int j=0; j<1;j++) {
-      TH1F *hacc=GetHisto(4,TString::Format("h_Nacc_%i",i),pol,j,lum,1,quark);
-      TH1F *hrej=GetHisto(4,TString::Format("h_Nrej_%i",i),pol,j,lum,1,quark);
+      TH1F *hacc=GetHistoMethod(3,TString::Format("h_Nacc_%i",i),pol,j,lum,1,quark);
+      TH1F *hrej=GetHistoMethod(3,TString::Format("h_Nrej_%i",i),pol,j,lum,1,quark);
 
-      //  corrected[j] = MakeCorrection(hacc,hrej);
-      corrected[j]=GetHisto(3,"h_AFB",pol,j,lum,1,quark);
+      corrected[j] = MakeCorrection(hacc,hrej);
+      // corrected[j]=GetHistoMethod(3,"h_AFB",pol,j,lum,1,quark);
 
       if(j==0) {
 	corrected[j]->GetXaxis()->SetTitle("cos #theta_{thr.}");
@@ -51,7 +53,12 @@ void AFBplots( int pol=0, float lum=-1, int quark=4) {
 
       TF1 * fitresult3 = fit_histo(corrected[j],-0.9,0.9);
 
-      
+      corrected[1]=GetHistoMethod(3,"h_AFB",pol,j,lum,1,quark);
+      cout<<"  --------- Parton Level ----------"<<endl;
+      TF1 * fitresult2 = fit_histo(corrected[1],-0.9,0.9);
+      cout<<"  ---------------------------------"<<endl;
+
+
       Labels(pol,quark,lum);
     }
     
@@ -67,8 +74,9 @@ void AFBplots( int pol=0, float lum=-1, int quark=4) {
 
 void AFB2() {
 
+  folder="../results/AFB";
 
-  for(int pol=3; pol<4; pol++) {
-    AFBplots(pol,900*0.03,4);
+  for(int pol=2; pol<3; pol++) {
+    AFBplots(pol,900,4);
   }
 }
