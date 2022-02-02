@@ -119,7 +119,7 @@ void Mom(int quarkid=4) {
   // c_mom->SetGrid();
   p_pion->GetXaxis()->SetTitle("momentum [GeV]");
   p_pion->GetYaxis()->SetTitle("a.u.");
-  p_pion->GetXaxis()->SetRangeUser(0,80);
+  p_pion->GetXaxis()->SetRangeUser(0,60);
 
   p_pion->SetLineColor(4);
   p_pion->SetLineWidth(3);
@@ -246,9 +246,9 @@ void dEdx(int quarkid=4) {
   proton->Draw("psame");
 
   Labels("");
-  if(quarkid==3)   QQBARLabel2(0.2,0.85,"Secondary Tracks in q-jets (q=uds)",kGray+4);
-  if(quarkid==4)   QQBARLabel2(0.2,0.85,"Secondary Tracks in c-jets",kGray+4);
-  if(quarkid==5)   QQBARLabel2(0.2,0.85,"Secondary Tracks in b-jets",kGray+4);
+  if(quarkid==3)   QQBARLabel2(0.2,0.87,"Secondary Tracks in q-jets (q=uds)",kGray+4);
+  if(quarkid==4)   QQBARLabel2(0.2,0.87,"Secondary Tracks in c-jets",kGray+4);
+  if(quarkid==5)   QQBARLabel2(0.2,0.87,"Secondary Tracks in b-jets",kGray+4);
 
   TLegend *leg = new TLegend(0.6,0.7,0.8,0.85);
   leg->SetTextSize(0.035);
@@ -287,6 +287,9 @@ void Ntracks() {
   TH1F*  n_sectracks_eL[3];
   TH1F*  n_sectracks_eR[3];
 
+  TH1F*  test;
+  TH1F*  test2;
+
   for(int quarkid=3; quarkid<6; quarkid++) {
     TString squark="udsquark";
     if(quarkid==4) squark="cquark";
@@ -296,12 +299,13 @@ void Ntracks() {
     TFile *f = new TFile(filename);
     cout<<filename<<endl;
     n_sectracks_eL[quarkid-3] = (TH1F*)f->Get("n_sectracks");
-    
+    if(quarkid==3) test = (TH1F*)f->Get("kdEdx_dist_proton");
+
     filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
     TFile *f2 = new TFile(filename);
     n_sectracks_eR[quarkid-3] = (TH1F*)f2->Get("n_sectracks");
-  n_sectracks_eR[quarkid-3]->Scale(n_sectracks_eL[quarkid-3]->GetEntries()/n_sectracks_eR[quarkid-3]->GetEntries());
-
+    n_sectracks_eR[quarkid-3]->Scale(n_sectracks_eL[quarkid-3]->GetEntries()/n_sectracks_eR[quarkid-3]->GetEntries());
+    if(quarkid==3) test2 = (TH1F*)f2->Get("kdEdx_dist_proton");
   }
 
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
@@ -341,14 +345,22 @@ void Ntracks() {
   n_sectracks_eR[2]->SetLineStyle(2);
   n_sectracks_eR[2]->Draw("histosame");
 
-  iquark=0;
+  
+  test->SetLineColor(1);
+  test->SetLineWidth(3);
+  test->SetLineStyle(1);
+
+  test2->SetLineColor(1);
+  test2->SetLineWidth(3);
+  test2->SetLineStyle(2);
+
   Labels("");
 
   TLegend *leg = new TLegend(0.6,0.55,0.8,0.75);
   leg->SetTextSize(0.035);
   leg->SetTextFont(42);
-  leg->AddEntry(n_sectracks_eL[0],"e_{L}^{-}e_{R}^{+}","l");
-  leg->AddEntry(n_sectracks_eR[0],"e_{R}^{-}e_{L}^{+}","l");
+  leg->AddEntry(test,"e_{L}^{-}e_{R}^{+}","l");
+  leg->AddEntry(test2,"e_{R}^{-}e_{L}^{+}","l");
 
   leg->AddEntry(n_sectracks_eL[2],"b-jets","l");
   leg->AddEntry(n_sectracks_eL[1],"c-jets","l");
@@ -798,7 +810,7 @@ void Plots_dEdx_draft() {
   for(int i=4; i<6; i++)  dEdxdist(i);
   for(int i=4; i<6; i++) EffPurity_momentum(i);
   for(int i=4; i<6; i++) EffPurity_angle(i);
-
+  
   //EffPurity_default();
   // EffPurity_dedxdist4();
   // EffPurity_dedxdist2();
