@@ -24,7 +24,7 @@ do
         name=$counter
     fi
 
-    for cuts in {0..8}
+    for cuts in 0 1 2 3 4 5 6
     do
 
 	cat > ${local}/steer/sel_${process}_${pol}_${name}_cuts${cuts}.sh <<EOF
@@ -44,7 +44,6 @@ should_transfer_files   = Yes
 when_to_transfer_output = ON_EXIT
 queue 1
 EOF
-	
 	if [ -f ${local}/output/selection_cuts${cuts}_${process}_${pol}_file_${name}_250GeV.root ];
         then
             echo "Skip ${process}_${pol}_${name}_cuts${cuts}"

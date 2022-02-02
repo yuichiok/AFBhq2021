@@ -39,8 +39,8 @@ public :
    virtual void     Init(TTree *tree);
 
   //analysis
-   virtual void     JetTag(int , int , float);
-   virtual void     Selection(int , int , float, int);
+   virtual void     JetTag(int , int , float, float);
+   virtual void     Selection(int , int , float, int, float);
   
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);

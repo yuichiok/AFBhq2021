@@ -36,7 +36,7 @@ void Labels(TString pol){
     if(pol=="eR")
       QQBARLabel2(0.3,0.965, "e_{R}^{-}e_{L}^{+} #rightarrow c#bar{c} mc-2020",kGray+2);
     else 
-      QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow q#bar{q} mc-2020",kGray+2);
+      QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow q#bar{q}",kGray+2);
 
   //QQBARLabel2(0.2,0.22, "Secondary Tracks in c-jets",kGray+4);
 
@@ -114,19 +114,20 @@ void Plots() {
 
   TCanvas* c_eff_b = new TCanvas("c_eff_b","c_eff_b",800,800);
   c_eff_b->cd(1);
-  c_eff_b->SetGrid();
+  gPad->SetLogy();
   efficiency_b_b_eL->GetXaxis()->SetTitle("btag_{cut}");
   efficiency_b_b_eL->GetYaxis()->SetTitle("[%]");
   efficiency_b_b_eL->GetYaxis()->SetTitleOffset(1.25);
   efficiency_b_b_eL->GetXaxis()->SetTitleOffset(1.);
-  efficiency_b_b_eL->GetYaxis()->SetRangeUser(0,100);
+  efficiency_b_b_eL->GetYaxis()->SetRangeUser(5,101);
+  efficiency_b_b_eL->GetXaxis()->SetRangeUser(0,1);
 
   efficiency_b_b_eL->SetLineColor(4);
   efficiency_b_b_eL->SetLineWidth(2);
   efficiency_b_b_eL->SetLineStyle(1);
   efficiency_b_b_eL->Draw("alp");
 
-  efficiency_c_b_eL->SetLineColor(1);
+  efficiency_c_b_eL->SetLineColor(kGreen+2);
   efficiency_c_b_eL->SetLineWidth(2);
   efficiency_c_b_eL->SetLineStyle(1);
   efficiency_c_b_eL->Draw("lp");
@@ -141,7 +142,7 @@ void Plots() {
   efficiency_b_b_eR->SetLineStyle(2);
   efficiency_b_b_eR->Draw("lp");
 
-  efficiency_c_b_eR->SetLineColor(1);
+  efficiency_c_b_eR->SetLineColor(kGreen+2);
   efficiency_c_b_eR->SetLineWidth(3);
   efficiency_c_b_eR->SetLineStyle(2);
   efficiency_c_b_eR->Draw("lp");
@@ -151,22 +152,27 @@ void Plots() {
   efficiency_uds_b_eR->SetLineStyle(2);
   efficiency_uds_b_eR->Draw("lp");
   
-  
+  btag[1][1]->SetLineColor(1);
+  btag[1][1]->SetLineStyle(1);
+  btag[1][2]->SetLineColor(1);
+  btag[1][2]->SetLineStyle(2);
+
   Labels("");
   
   TLegend *leg_b = new TLegend(0.6,0.25,0.8,0.45);
   leg_b->SetTextSize(0.035);
   leg_b->SetTextFont(42);
-  leg_b->AddEntry(efficiency_b_b_eL,"#varepsilon_{b}","lp");
-  leg_b->AddEntry(efficiency_c_b_eL,"1-#varepsilon_{c}","lp");
-  leg_b->AddEntry(efficiency_uds_b_eL,"1-#varepsilon_{uds}","lp");
-  leg_b->AddEntry(efficiency_c_b_eL,"Left Pol","lp");
-  leg_b->AddEntry(efficiency_c_b_eR,"Right Pol","lp");
+  leg_b->AddEntry(efficiency_b_b_eL,"#varepsilon_{b}","l");
+  leg_b->AddEntry(efficiency_c_b_eL,"1-#varepsilon_{c}","l");
+  leg_b->AddEntry(efficiency_uds_b_eL,"1-#varepsilon_{uds}","l");
+  leg_b->AddEntry(btag[1][1],"e_{L}^{-}e_{R}^{+}","l");
+  leg_b->AddEntry(btag[1][2],"e_{R}^{-}e_{L}^{+}","l");
   leg_b->SetFillColor(0);
   leg_b->SetLineColor(0);
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
+  c_eff_b->Print("plots_draft/btagging_performance.eps");
 
   ///---------------------------------------------
   TGraph* efficiency_c_c_eL = new TGraph(n,x,eff_c[0][1]);
@@ -179,59 +185,66 @@ void Plots() {
 
   TCanvas* c_eff_c = new TCanvas("c_eff_c","c_eff_c",800,800);
   c_eff_c->cd(1);
-  c_eff_c->SetGrid();
+  gPad->SetLogy();
+  // c_eff_c->SetGrid();
   efficiency_c_c_eL->GetXaxis()->SetTitle("ctag_{cut}");
   efficiency_c_c_eL->GetYaxis()->SetTitle("[%]");
   efficiency_c_c_eL->GetYaxis()->SetTitleOffset(1.25);
   efficiency_c_c_eL->GetXaxis()->SetTitleOffset(1.);
-  efficiency_c_c_eL->GetYaxis()->SetRangeUser(0,100);
+  efficiency_c_c_eL->GetYaxis()->SetRangeUser(5,101);
+  efficiency_c_c_eL->GetXaxis()->SetRangeUser(0,1);
 
   efficiency_c_c_eL->SetLineColor(4);
   efficiency_c_c_eL->SetLineWidth(2);
   efficiency_c_c_eL->SetLineStyle(1);
-  efficiency_c_c_eL->Draw("alp");
+  efficiency_c_c_eL->Draw("al");
 
-  efficiency_b_c_eL->SetLineColor(1);
+  efficiency_b_c_eL->SetLineColor(kGreen+2);
   efficiency_b_c_eL->SetLineWidth(2);
   efficiency_b_c_eL->SetLineStyle(1);
-  efficiency_b_c_eL->Draw("lp");
+  efficiency_b_c_eL->Draw("l");
 
   efficiency_uds_c_eL->SetLineColor(2);
   efficiency_uds_c_eL->SetLineWidth(2);
   efficiency_uds_c_eL->SetLineStyle(1);
-  efficiency_uds_c_eL->Draw("lp");
+  efficiency_uds_c_eL->Draw("l");
 
   efficiency_c_c_eR->SetLineColor(4);
   efficiency_c_c_eR->SetLineWidth(3);
   efficiency_c_c_eR->SetLineStyle(2);
-  efficiency_c_c_eR->Draw("lp");
+  efficiency_c_c_eR->Draw("l");
 
-  efficiency_b_c_eR->SetLineColor(1);
+  efficiency_b_c_eR->SetLineColor(kGreen+2);
   efficiency_b_c_eR->SetLineWidth(3);
   efficiency_b_c_eR->SetLineStyle(2);
-  efficiency_b_c_eR->Draw("lp");
+  efficiency_b_c_eR->Draw("l");
 
   efficiency_uds_c_eR->SetLineColor(2);
   efficiency_uds_c_eR->SetLineWidth(3);
   efficiency_uds_c_eR->SetLineStyle(2);
-  efficiency_uds_c_eR->Draw("lp");
-  
+  efficiency_uds_c_eR->Draw("l");
+   
+  ctag[1][1]->SetLineColor(1);
+  ctag[1][1]->SetLineStyle(1);
+  ctag[1][2]->SetLineColor(1);
+  ctag[1][2]->SetLineStyle(2);
+
   
   Labels("");
   
   TLegend *leg_c = new TLegend(0.6,0.25,0.8,0.45);
   leg_c->SetTextSize(0.035);
   leg_c->SetTextFont(42);
-  leg_c->AddEntry(efficiency_c_c_eL,"#varepsilon_{c}","lp");
-  leg_c->AddEntry(efficiency_b_c_eL,"1-#varepsilon_{b}","lp");
-  leg_c->AddEntry(efficiency_uds_c_eL,"1-#varepsilon_{uds}","lp");
-  leg_c->AddEntry(efficiency_b_c_eL,"Left Pol","lp");
-  leg_c->AddEntry(efficiency_b_c_eR,"Right Pol","lp");
+  leg_c->AddEntry(efficiency_c_c_eL,"#varepsilon_{c}","l");
+  leg_c->AddEntry(efficiency_b_c_eL,"1-#varepsilon_{b}","l");
+  leg_c->AddEntry(efficiency_uds_c_eL,"1-#varepsilon_{uds}","l");
+  leg_c->AddEntry(btag[1][1],"e_{L}^{-}e_{R}^{+}","l");
+  leg_c->AddEntry(btag[1][2],"e_{R}^{-}e_{L}^{+}","l");
   leg_c->SetFillColor(0);
   leg_c->SetLineColor(0);
   leg_c->SetShadowColor(0);
   leg_c->Draw();
-
+  c_eff_c->Print("plots_draft/ctagging_performance.eps");
 }
 
 
