@@ -36,11 +36,11 @@ TStyle* QQbarStyle()
   qqbarStyle->SetPadTopMargin(0.05);
   qqbarStyle->SetPadRightMargin(0.05);
   qqbarStyle->SetPadBottomMargin(0.16);
-  qqbarStyle->SetPadLeftMargin(0.16);
+  qqbarStyle->SetPadLeftMargin(0.18);
 
   // set title offsets (for axis label)
   //  qqbarStyle->SetTitleXOffset(1.4);
-  //qqbarStyle->SetTitleYOffset(1.4);
+  //  qqbarStyle->SetTitleYOffset(1.4);
 
   // use large fonts
   //Int_t font=72; // Helvetica italics
@@ -52,11 +52,11 @@ TStyle* QQbarStyle()
   qqbarStyle->SetTitleY(0.92);
   
   qqbarStyle->SetLabelFont(42,"xyz");
-  qqbarStyle->SetLabelSize(0.04,"xyz");
+  qqbarStyle->SetLabelSize(0.038,"xyz");
   qqbarStyle->SetLabelOffset(0.015,"xyz");
   qqbarStyle->SetTitleFont(42,"xyz");
   qqbarStyle->SetTitleSize(0.05,"xyz");
-  qqbarStyle->SetTitleOffset(1.35,"yz");
+  qqbarStyle->SetTitleOffset(1.63,"yz");
   qqbarStyle->SetTitleOffset(1.1,"x");
   
   /*qqbarStyle->SetTextSize(tsize);
