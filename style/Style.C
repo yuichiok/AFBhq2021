@@ -36,7 +36,7 @@ TStyle* QQbarStyle()
   qqbarStyle->SetPadTopMargin(0.05);
   qqbarStyle->SetPadRightMargin(0.05);
   qqbarStyle->SetPadBottomMargin(0.16);
-  qqbarStyle->SetPadLeftMargin(0.18);
+  qqbarStyle->SetPadLeftMargin(0.13);
 
   // set title offsets (for axis label)
   //  qqbarStyle->SetTitleXOffset(1.4);
@@ -78,7 +78,8 @@ TStyle* QQbarStyle()
   // use bold lines and markers
   qqbarStyle->SetMarkerStyle(20);
   qqbarStyle->SetMarkerSize(0.8);
-  qqbarStyle->SetHistLineWidth(2.);
+  qqbarStyle->SetMarkerSize(2);
+  qqbarStyle->SetLineWidth(2);
   qqbarStyle->SetLineStyleString(2,"[12 12]"); // postscript dashes
 
   // get rid of X error bars 
