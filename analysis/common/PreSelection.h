@@ -1,19 +1,16 @@
 #include "variables_dedx.h"
 
-//Optimized cuts by Jesus
-//----------------------------------------------------------  
-
 //  bbmass:  
 double bbmasscut=140;
 //  npfos:  
-double NPFOS_cut=1.5;
+double NPFOS_cut=1.;
 // n charged_npfos:
-double CNPFOS_cut=0.5;
+double CNPFOS_cut=1.0;
 // LOS LIMITES DEL CORTE en h_e_costheta_gamma:cuts in energy and angle of detected photons
 double costheta_isr=0.97;
-double energy_isr_cut=110;
+double energy_isr_cut=115;
 // cuts in y23
-double y23cut=0.02;
+double y23cut=0.0125;
 // ----------------------------------
 
 
@@ -122,9 +119,9 @@ double  photonjet_costheta[2]={-2};
 void PFOphotonQuantities() {
 
   for(int i_=0; i_<2; i_++) {
-    npfo[i_]=-1;
-    npfo_photon[i_]=-1;
-    npfo_charge[i_]=-1;
+    npfo[i_]=0;
+    npfo_photon[i_]=0;
+    npfo_charge[i_]=0;
     photonjet_E[i_]=0;
     photonjet_costheta[i_]=-2;
   }
@@ -218,7 +215,8 @@ bool PreSelection(int type=0,float Kvcut=25, float acolcut=0.35) {
    /* cut_[2]=(cut_[1] && bbmass>bbmasscut ) ;  */
    /* cut_[3]=(cut_[2] && npfo_charge[0]>CNPFOS_cut && npfo_charge[1]>CNPFOS_cut); */
    /* cut_[4]=(cut_[3] && npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut); */
-   cut_[1]=( npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut && npfo_charge[0]>CNPFOS_cut && npfo_charge[1]>CNPFOS_cut);
+   //   cut_[1]=( npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut && npfo_charge[0]>CNPFOS_cut && npfo_charge[1]>CNPFOS_cut);
+   cut_[1]=( npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut);
    cut_[2]=( cut_[1] &&  fabs(photonjet_cos_max)<costheta_isr && photonjet_e_max<energy_isr_cut ) ;
    cut_[3]=( cut_[2] && acol_value<acolcut );
    cut_[4]=( cut_[3] && Kv < Kvcut);
