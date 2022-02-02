@@ -26,30 +26,47 @@
 
 
 bool cquark;
+int iquark=3;
 
 void Labels(TString pol){
-  QQBARLabel(0.86,0.952,"Work in Progress");
+  // QQBARLabel(0.86,0.952,"Work in Progress");
+  QQBARLabel(0.86,0.952,"");
   // QQBARLabel2(0.3,0.97, "e^{-}e^{+} #rightarrow q#bar{q}, q=udscb, 250 GeV, 250fb^{-1}",kGray+2);
-  if(cquark==false) {
+  if(iquark==5) {
     if(pol=="eL")
-      QQBARLabel2(0.3,0.965, "e_{L}^{-}e_{R}^{+} #rightarrow b#bar{b} mc-2020",kGray+2);
+      QQBARLabel2(0.3,0.965, "e_{L}^{-}e_{R}^{+} #rightarrow b#bar{b}",kGray+2);
     else 
       if(pol=="eR")
-	QQBARLabel2(0.3,0.965, "e_{R}^{-}e_{L}^{+} #rightarrow b#bar{b} mc-2020",kGray+2);
+	QQBARLabel2(0.3,0.965, "e_{R}^{-}e_{L}^{+} #rightarrow b#bar{b}",kGray+2);
       else 
-	QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow b#bar{b} mc-2020",kGray+2);
+	QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow b#bar{b}",kGray+2);
     
-    QQBARLabel2(0.2,0.22, "Secondary Tracks in b-jets",kGray+4);
-  } else {
+    QQBARLabel2(0.4,0.8, "Secondary Tracks in b-jets",kGray+4);
+  }
+
+  if(iquark==4) {
     if(pol=="eL")
-      QQBARLabel2(0.3,0.965, "e_{L}^{-}e_{R}^{+} #rightarrow c#bar{c} mc-2020",kGray+2);
+      QQBARLabel2(0.3,0.965, "e_{L}^{-}e_{R}^{+} #rightarrow c#bar{c}",kGray+2);
     else 
       if(pol=="eR")
-	QQBARLabel2(0.3,0.965, "e_{R}^{-}e_{L}^{+} #rightarrow c#bar{c} mc-2020",kGray+2);
+	QQBARLabel2(0.3,0.965, "e_{R}^{-}e_{L}^{+} #rightarrow c#bar{c}",kGray+2);
       else 
-	QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow c#bar{c} mc-2020",kGray+2);
+	QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow c#bar{c}",kGray+2);
     
-    QQBARLabel2(0.2,0.22, "Secondary Tracks in c-jets",kGray+4);
+    QQBARLabel2(0.4,0.8,"Secondary Tracks in c-jets",kGray+4);
+  }
+      
+
+  if(iquark==3) {
+    if(pol=="eL")
+      QQBARLabel2(0.3,0.965, "e_{L}^{-}e_{R}^{+} #rightarrow q#bar{q} (q=uds)",kGray+2);
+    else 
+      if(pol=="eR")
+	QQBARLabel2(0.3,0.965, "e_{R}^{-}e_{L}^{+} #rightarrow q#bar{q} (q=uds)",kGray+2);
+      else 
+	QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow q#bar{q} (q=uds)",kGray+2);
+    
+    QQBARLabel2(0.4,0.8,"Secondary Tracks in uds-jets",kGray+4);
   }
       
 
@@ -972,7 +989,7 @@ void EffPurity_dedxdist2() {
 
 }
 
-void Mom() {
+void MomNtracks(int quarkid=4) {
 
   
   SetQQbarStyle();
@@ -986,29 +1003,37 @@ void Mom() {
   gStyle->SetMarkerSize(0.2);
   TGaxis::SetMaxDigits(3);
   
-  
-  TString filename = "../results/histos_cquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+  iquark=quarkid;
+  TString squark="cquark";
+  if(iquark==3) squark="udsquark";
+  if(iquark==5) squark="bquark";
+
+  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
   TFile *f = new TFile(filename);
+  cout<<filename<<endl;
 
   TH1F*  p_kaon = (TH1F*)f->Get("p_kaon");
   TH1F*  p_pion = (TH1F*)f->Get("p_pion");
   TH1F*  p_proton = (TH1F*)f->Get("p_proton");
+  TH1F*  p_kaontest = (TH1F*)f->Get("kdEdx_dist_kaon");
 
-  TString filename2 = "../results/histos_cquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
+  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
   TFile *f2 = new TFile(filename2);
-
   TH1F*  p_kaon2 = (TH1F*)f2->Get("p_kaon");
   TH1F*  p_pion2 = (TH1F*)f2->Get("p_pion");
   TH1F*  p_proton2 = (TH1F*)f2->Get("p_proton");
+  TH1F*  p_kaontest2 = (TH1F*)f2->Get("kdEdx_dist_kaon");
 
-  cquark=true;
+  p_pion2->Scale(p_pion->GetEntries()/p_pion2->GetEntries());
+  p_kaon2->Scale(p_pion->GetEntries()/p_pion2->GetEntries());
+  p_proton2->Scale(p_pion->GetEntries()/p_pion2->GetEntries());
+
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
   c_mom->cd(1);
-  c_mom->SetGrid();
+  // c_mom->SetGrid();
   p_pion->GetXaxis()->SetTitle("momentum [GeV]");
   p_pion->GetYaxis()->SetTitle("a.u.");
-  //p_pion->GetYaxis()->SetTitleOffset(1.25);
-  //p_pion->GetXaxis()->SetTitleOffset(1.);
+  p_pion->GetXaxis()->SetRangeUser(0,80);
 
   p_pion->SetLineColor(4);
   p_pion->SetLineWidth(3);
@@ -1024,58 +1049,47 @@ void Mom() {
   p_proton->SetLineWidth(3);
   p_proton->SetLineStyle(1);
   p_proton->Draw("histosame");
+
+  p_pion2->SetLineColor(4);
+  p_pion2->SetLineWidth(3);
+  p_pion2->SetLineStyle(2);
+  p_pion2->Draw("histosame");
+
+  p_kaon2->SetLineColor(2);
+  p_kaon2->SetLineWidth(3);
+  p_kaon2->SetLineStyle(2);
+  p_kaon2->Draw("histosame");
+
+  p_proton2->SetLineColor(1);
+  p_proton2->SetLineWidth(3);
+  p_proton2->SetLineStyle(2);
+  p_proton2->Draw("histosame");
+   
+  p_kaontest->SetLineColor(1);
+  p_kaontest->SetLineWidth(3);
+  p_kaontest->SetLineStyle(1);
+  p_kaontest2->SetLineColor(1);
+  p_kaontest2->SetLineWidth(3);
+  p_kaontest2->SetLineStyle(2);
+
+  Labels("");
   
- 
-  Labels("eL");
-  
-  TLegend *leg = new TLegend(0.6,0.25,0.8,0.35);
+  TLegend *leg = new TLegend(0.6,0.55,0.8,0.75);
   leg->SetTextSize(0.035);
   leg->SetTextFont(42);
+  leg->AddEntry(p_kaontest,"e_{L}^{-}e_{R}^{+}","lp");
+  leg->AddEntry(p_kaontest2,"e_{R}^{-}e_{L}^{+}","lp");
+
   leg->AddEntry(p_pion,"pions","l");
   leg->AddEntry(p_kaon,"kaons","lp");
   leg->AddEntry(p_proton,"protons","lp");
-  leg->SetFillColor(0);
+  leg->SetFillStyle(0);
   leg->SetLineColor(0);
   leg->SetShadowColor(0);
   leg->Draw();
 
 
-  TCanvas* c_mom2 = new TCanvas("c_mom2","c_mom2",800,800);
-  c_mom2->cd(1);
-  c_mom2->SetGrid();
-  p_pion2->GetXaxis()->SetTitle("momentum [GeV]");
-  p_pion2->GetYaxis()->SetTitle("a.u.");
-  //p_pion->GetYaxis()->SetTitleOffset(1.25);                                                                                                                                                              
-  //p_pion->GetXaxis()->SetTitleOffset(1.);                                                                                                                                                                
-
-  p_pion2->SetLineColor(4);
-  p_pion2->SetLineWidth(3);
-  p_pion2->SetLineStyle(1);
-  p_pion2->Draw("histo");
-
-  p_kaon2->SetLineColor(2);
-  p_kaon2->SetLineWidth(3);
-  p_kaon2->SetLineStyle(1);
-  p_kaon2->Draw("histosame");
-
-  p_proton2->SetLineColor(1);
-  p_proton2->SetLineWidth(3);
-  p_proton2->SetLineStyle(1);
-  p_proton2->Draw("histosame");
-
-
-  Labels("eR");
-  TLegend *leg2 = new TLegend(0.6,0.25,0.8,0.35);
-  leg2->SetTextSize(0.035);
-  leg2->SetTextFont(42);
-  leg2->AddEntry(p_pion2,"pions","l");
-  leg2->AddEntry(p_kaon2,"kaons","lp");
-  leg2->AddEntry(p_proton2,"protons","lp");
-  leg2->SetFillColor(0);
-  leg2->SetLineColor(0);
-  leg2->SetShadowColor(0);
-  leg2->Draw();
-
+  c_mom->Print("plots_draft/MomentumSecTracks_in_"+squark+"jets.eps");
 
 }
 
@@ -1215,10 +1229,10 @@ void dEdxdist(bool cquark_analysis=true) {
 
 
 void Plots_dEdx() {
-  //Mom();
-  //  EffPurity_default();
-  // EffPurity_dedxdist4();
-  // EffPurity_dedxdist2();
-    EffPurity_dedxdist5();
-    //dEdxdist(true);
+  //MomNtracks(5);
+  //EffPurity_default();
+  //EffPurity_dedxdist4();
+  //EffPurity_dedxdist2();
+  EffPurity_dedxdist5();
+  // dEdxdist(false);
 }

@@ -3,7 +3,7 @@
 #include "observable.cc"
 #include "TApplication.h"
 
-int analysis(TString file, TString output, bool ignoreoverlay, int cut, int quark){
+int analysis(TString file, TString output, bool ignoreoverlay, float cut_p, float cut_theta, int quark){
 
   cout<< " "<<endl;
   cout<< file << endl;
@@ -12,7 +12,7 @@ int analysis(TString file, TString output, bool ignoreoverlay, int cut, int quar
   cout<<file<<endl;
   observable ss3(file);
   
-  ss3.dEdx(-1,TString::Format("%s_cut_%i",output.Data(),cut),true,ignoreoverlay,float(cut),quark); 
+  ss3.dEdx(-1,TString::Format("%s_cut_%i",output.Data(),int(cut_p)),true,ignoreoverlay,cut_p,cut_theta,quark); 
 
   //  ss3.dEdx(-1,output,false,ignoreoverlay);
   

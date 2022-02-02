@@ -6,12 +6,12 @@
 #include "observable.h"
 #include "TPad.h"
 
-
-void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false, bool ignoreoverlay=true,float momentum_min=0, int pdg=4) {
+void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false, bool ignoreoverlay=true,float momentum_min=3, float costheta_max=0.8, int pdg=4) {
 
   //  1.,1.33,1.667
-  Float_t bins_p[]={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2,2.5,3,4,5,6,7,8,9,10,12,14,16,18,20,24,28,32,36,40,44,48,52,56,60,64,68,72,80,90,100};
+  //  Float_t bins_p[]={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2,2.5,3,4,5,6,7,8,9,10,12,14,16,18,20,24,28,32,36,40,44,48,52,56,60,64,68,72,80,90,100};
   //13.33,16.667,20,30,40,50,60,70,80,90,100};
+  Float_t bins_p[]={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2,2.5,3,4,5,6,7,8,9,10,12,14,18,24,34,44,50,70,100};
   Int_t nbinnum_p=sizeof(bins_p)/sizeof(Float_t) - 1;
 
   Float_t bins_cos[50]={};
@@ -43,7 +43,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   TH2F* electron_dEdx_pid = new TH2F("electron_dEdx_pid","electron_dEdx_pid",nbinnum_p,bins_p,nbinnumy,binsy);
   TH2F* muon_dEdx_pid = new TH2F("muon_dEdx_pid","muon_dEdx_pid",nbinnum_p,bins_p,nbinnumy,binsy);
 
-  TH1F* n_kaon_jet = new TH1F("n_kaon_jet","n_kaon_jet",15,-0.5,14.5);
+  TH1F* n_sectracks = new TH1F("n_sectracks","n_sectracks",25,0.5,25.5);
   TH1F* n_kaon_vtx = new TH1F("n_kaon_vtx","n_kaon_vtx",15,-0.5,14.5);
   TH1F* p_kaon = new TH1F("p_kaon","p_kaon",125,-0.5,124.5);
   TH1F* p_proton = new TH1F("p_proton","p_proton",125,-0.5,124.5);
@@ -69,7 +69,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   TH2F* p_costheta_muon = new TH2F("p_costheta_muon","p_costheta_muon",125,-0.5,124.5,40,-1,1);
   TH2F* p_costheta_others = new TH2F("p_costheta_others","p_costheta_others",125,-0.5,124.5,40,-1,1);
 
-  TH2F* n_costheta_kaon = new TH2F("p_costheta_kaon","p_costheta_kaon",40,-1,1,25,0,250);
+  TH2F* n_costheta_kaon = new TH2F("n_costheta_kaon","n_costheta_kaon",40,-1,1,25,0,250);
 
 
   //
@@ -215,20 +215,26 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 
 
     double gamma_e=mc_ISR_E[0]+mc_ISR_E[1];
- 
+    TVector3 v1(mc_quark_ps_jet_px[0],mc_quark_ps_jet_py[0],mc_quark_ps_jet_pz[0]);
+    TVector3 v2(mc_quark_ps_jet_px[1],mc_quark_ps_jet_py[1],mc_quark_ps_jet_pz[1]);
+    float acol=GetSinacol(v1,v2);
+
     bool selection=false;
-    if(pdg==5) selection = PreSelection(7,35);
-    if(pdg==4) selection = PreSelection(8,35);
+    selection = PreSelection(6,35);
 
     if(selection==false) continue;
 
-    //for the moment, we restrict the analysis to the bb events without radaitive return
-    if(fabs(mc_quark_pdg[0])==pdg && gamma_e<35) {
+    //for the moment, we restrict the analysis to the bb events without radiative return
+    bool quarkid=false;
+    if(pdg>3 &&  fabs(mc_quark_pdg[0])==pdg) quarkid=true;
+    if(pdg==3 && fabs(mc_quark_pdg[0])<4) quarkid=true;
+    if( quarkid && gamma_e<35 && acol<0.35) {
       for(int ijet=0; ijet<2; ijet++){
 	int nkaonjet=0;
 	double nt=0;
 	//	if(jet_btag[ijet]>0.8) {
 	int nkaonvtx=0;
+	int ntracksvtx=0;
 
 	float leading_k=-1;
         float leading_pion=-1;
@@ -243,6 +249,8 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	  // if(secondary==false &&  pfo_vtx[ipfo]>0) continue;
 	  if(ignoreoverlay==false && pfo_isoverlay[ipfo]==1) continue;
 	  
+	  ntracksvtx++;
+
 	  float costheta;
 	  std::vector<float> p_track;
 	  p_track.push_back(pfo_px[ipfo]);
@@ -250,7 +258,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	  p_track.push_back(pfo_pz[ipfo]);
 	  costheta=GetCostheta(p_track);
 
-	  //	  if(fabs(costheta)<0.8) continue;
+	  if(fabs(costheta)>costheta_max && costheta_max>0) continue;
 	  float dedx=pfo_dedx[ipfo];
 
 	  bool nhits_bool=false;
@@ -466,6 +474,8 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	  }
 	}
 	n_kaon_vtx->Fill(nkaonvtx);
+	n_sectracks->Fill(ntracksvtx);
+
 	//	}//btag
       }//ijet
     }//bb
@@ -575,15 +585,20 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   leg1->SetShadowColor(0);
   leg1->Draw();
   
-
  
 
   TString fname="all_tracks";
   if(secondary==true) fname = "secondary_tracks";
   if(ignoreoverlay==true) fname += "_ignoreoverlay";
-  if(pdg==4) fname = TString::Format("output_250_%s_%s_cquark.root",fname.Data(),process.Data());
-  if(pdg==5) fname = TString::Format("output_250_%s_%s_bquark.root",fname.Data(),process.Data());
-
+  if(costheta_max>0.) {
+    if(pdg==4) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_cquark.root",fname.Data(),process.Data());
+    if(pdg==5) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_bquark.root",fname.Data(),process.Data());
+    if(pdg==3) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_udsquark.root",fname.Data(),process.Data());
+  } else {
+    if(pdg==4) fname = TString::Format("output/output_250_%s_%s_cquark.root",fname.Data(),process.Data());
+    if(pdg==5) fname = TString::Format("output/output_250_%s_%s_bquark.root",fname.Data(),process.Data());
+    if(pdg==3) fname = TString::Format("output/output_250_%s_%s_udsquark.root",fname.Data(),process.Data());
+  }
   
   TFile *MyFile = new TFile(fname,"RECREATE");
   MyFile->cd();
@@ -598,7 +613,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   electron_dEdx_truth->Write();
   muon_dEdx_truth->Write();
   c_dEdx_truth_0->Write();
-  n_kaon_jet->Write();
+  n_sectracks->Write();
 
   pion_dEdx_cos->SetName("pion_cos");
   kaon_dEdx_cos->SetName("kaon_cos");
