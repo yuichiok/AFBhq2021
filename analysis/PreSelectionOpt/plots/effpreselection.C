@@ -57,7 +57,7 @@ void effpreselection() {
 
   cout<< "bb qq radreturn ww zz hz "<<endl;
 
-  for(int step=2; step<3; step++) {
+  for(int step=6; step<7; step++) {
     
   TH1F *h_costheta_bb[2]; 
   TH1F *h_costheta_cc[2]; 

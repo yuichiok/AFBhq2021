@@ -62,7 +62,7 @@ TH1F* N0HistoBKG(int pol=0, int iquark=5,  float lum=900, float error=0.1){
   //ww
   hb0[2]=GetHisto(2,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
   //rad return
-  hb0[3]=GetHisto(3,TString::Format("h_N%i_3",0),pol,iquark,lum,factor);
+  hb0[3]=GetHisto(4,TString::Format("h_N%i_3",0),pol,iquark,lum,factor);
   hb0[0]->Add(hb0[1]);
   hb0[0]->Add(hb0[2]);
   hb0[0]->Add(hb0[3]);

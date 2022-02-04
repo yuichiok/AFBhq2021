@@ -56,7 +56,7 @@ TStyle* QQbarStyle()
   qqbarStyle->SetLabelOffset(0.015,"xyz");
   qqbarStyle->SetTitleFont(42,"xyz");
   qqbarStyle->SetTitleSize(0.05,"xyz");
-  qqbarStyle->SetTitleOffset(1.63,"yz");
+  qqbarStyle->SetTitleOffset(1.2,"yz");
   qqbarStyle->SetTitleOffset(1.1,"x");
   
   /*qqbarStyle->SetTextSize(tsize);

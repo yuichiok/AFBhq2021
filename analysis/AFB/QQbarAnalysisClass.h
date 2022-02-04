@@ -43,6 +43,8 @@ public :
   virtual void AFBb1(int , int, float, float);
   virtual void AFB1(int , int, float, float, int);
   virtual void AFB_histos_for_PQ_analysis(int , int , float , int );
+  virtual void AFB_energyDependence(int , int , float , float );
+
   virtual void AFBreconstruction(int , float , int, TString , int );
   virtual float ChargeKJet(int, int ,float , bool, bool);
   virtual float ChargeVtxJet(int, int , float);

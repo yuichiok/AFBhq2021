@@ -84,3 +84,27 @@ TF1 * fit_histo(TH1F * histo, float range_down=-0.8, float range_up=0.8, bool dr
 
 
 }
+
+
+
+std::vector<double> fit_histo_value(TH1F * histo, float range_down=-0.8, float range_up=0.8, bool draw=false) {
+
+  
+
+  TF1 *func=fit_histo(histo, range_down, range_up, draw);
+ 
+  float plus = func->Integral(0,1);
+  float minus = func->Integral(-1,0);
+  float plus_e = func->IntegralError(0,1);
+  float minus_e = func->IntegralError(1,0);
+  
+
+  float Afb=Afb_v(plus,minus);
+  float dAfb=dAfb_v(plus,minus, plus_e, minus_e);
+  std::vector<double>  result;
+  result.push_back(Afb);
+  result.push_back(dAfb);
+
+  return result;
+
+}
