@@ -529,6 +529,7 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
 
+
     //if(fabs(mc_quark_pdg[0])<4) continue;
     //-------------------
     //Kv parton
@@ -549,6 +550,7 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float
     costheta_ccbar=  (mc_quark_charge[0] < 0) ? -costheta_ccbar: costheta_ccbar;
     if(fabs(mc_quark_pdg[0])==5 || fabs(mc_quark_pdg[0])==3 || fabs(mc_quark_pdg[0])==1) costheta_ccbar*=-1;
 
+    h_Ntotal_nocuts->Fill(fabs(costheta_ccbar));
     //center of mass boost
     TLorentzVector MyParticle1;
     TLorentzVector MyParticle2;
@@ -609,6 +611,7 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float
   }
 
   MyFile->cd();
+  h_Ntotal_nocuts->Write();
 
   for(int i=0;i<150;i++) {
     h_AFBb_com[i] ->Write();

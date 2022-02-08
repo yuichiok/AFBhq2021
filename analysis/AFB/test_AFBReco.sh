@@ -5,7 +5,7 @@ folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2020/"${process}"_"${pol}"/"
 local=$PWD
 
 
-for quark in 4 5
+for quark in 5 4
 do
     counter=0
     

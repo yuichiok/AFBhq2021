@@ -1,4 +1,4 @@
-for pol in "eR_pL" "eL_pR"
+for pol in "eL_pR" "eR_pL"
 do
     source test_AFBAnalysis.sh 2f_hadronic $pol 0
     source test_AFBAnalysis.sh 2f_hadronic_sample $pol 0
@@ -7,5 +7,11 @@ do
     source test_AFBAnalysis.sh 4f_WW_hadronic $pol 1
 done
 
-
+sleep 10h
+source hadd_AFB_PQ.sh
+cd macros
+source Weights_c.sh
+mv *root ../weights/.
+cd ..
+source launchAFBReco.sh
 
