@@ -361,7 +361,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
     h_Ntotal_nocuts->Fill(fabs(costheta));
     h_Ntotal_nocuts2[iquark]->Fill(fabs(costheta));
 
-    costheta=fabs(costheta)*costheta/fabs(costheta);
+    // costheta=fabs(costheta)*costheta/fabs(costheta);
 
       //reco level distributions
     float Kv=Kreco();
@@ -483,21 +483,30 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float
 
   //Ntotal_nocuts
   TH1F * h_Ntotal_nocuts = new TH1F("h_Ntotal_nocuts","h_Ntotal_nocuts",20,0,1);
+  
+  TH2F * h_acol_vs_K = new TH2F("h_acol_vs_K","h_acol_vs_K",105,5.5,110.5,99,0.005,0.995);
+
   TH1F * h_AFBb_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBb[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBb_K35_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBb_K35[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
-
+  TH1F * h_AFBb_acol30_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
+  TH1F * h_AFBb_acol30[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
+  
   TH1F * h_AFBc_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBc[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBc_K35_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBc_K35[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
-
+  TH1F * h_AFBc_acol30_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
+  TH1F * h_AFBc_acol30[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
+  
   TH1F * h_AFBuds_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBuds[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBuds_K35_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBuds_K35[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
-
+  TH1F * h_AFBuds_acol30_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
+  TH1F * h_AFBuds_acol30[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
+  
   for(int i=0;i<150;i++) {
     h_AFBb_com[i] = new TH1F(TString::Format("h_AFBb_COM_KLowerThan%i",i),TString::Format("h_AFBb_COM_KLowerThan%i",i),40,-1,1);
     h_AFBb[i] = new TH1F(TString::Format("h_AFBb_KLowerThan%i",i),TString::Format("h_AFBb_KLowerThan%i",i),40,-1,1);
@@ -505,17 +514,27 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float
     h_AFBb_K35_com[i] = new TH1F(TString::Format("h_AFBb_COM_K35_AcolLowerThan%i",i),TString::Format("h_AFBb_COM_K35_AcolLowerThan%i",i),40,-1,1);
     h_AFBb_K35[i] = new TH1F(TString::Format("h_AFBb_K35_AcolLowerThan%i",i),TString::Format("h_AFBb_KLowerThan%i",i),40,-1,1);
 
+    h_AFBb_acol30_com[i] = new TH1F(TString::Format("h_AFBb_COM_acol30_KLowerThan%i",i),TString::Format("h_AFBb_COM_acol30_KLowerThan%i",i),40,-1,1);
+    h_AFBb_acol30[i] = new TH1F(TString::Format("h_AFBb_acol30_KLowerThan%i",i),TString::Format("h_AFBb_KLowerThan%i",i),40,-1,1);
+
     h_AFBc_com[i] = new TH1F(TString::Format("h_AFBc_COM_KLowerThan%i",i),TString::Format("h_AFBc_COM_KLowerThan%i",i),40,-1,1);
     h_AFBc[i] = new TH1F(TString::Format("h_AFBc_KLowerThan%i",i),TString::Format("h_AFBc_KLowerThan%i",i),40,-1,1);
 
-    h_AFBc_K35_com[i] = new TH1F(TString::Format("h_AFBc_COM_K35_AcolLowerThan%i",i),TString::Format("h_AFBc_COM_K35_AcolLowerThan%i",i),40,-1,1);
+    h_AFBc_K35_com[i] = new TH1F(TString::Format("h_AFBc_COM_K35_KLowerThan%i",i),TString::Format("h_AFBc_COM_K35_AcolLowerThan%i",i),40,-1,1);
     h_AFBc_K35[i] = new TH1F(TString::Format("h_AFBc_K35_AcolLowerThan%i",i),TString::Format("h_AFBc_KLowerThan%i",i),40,-1,1);
+
+    h_AFBc_acol30_com[i] = new TH1F(TString::Format("h_AFBc_COM_acol30_KLowerThan%i",i),TString::Format("h_AFBc_COM_acol30_KLowerThan%i",i),40,-1,1);
+    h_AFBc_acol30[i] = new TH1F(TString::Format("h_AFBc_acol30_KLowerThan%i",i),TString::Format("h_AFBc_KLowerThan%i",i),40,-1,1);
 
     h_AFBuds_com[i] = new TH1F(TString::Format("h_AFBuds_COM_KLowerThan%i",i),TString::Format("h_AFBuds_COM_KLowerThan%i",i),40,-1,1);
     h_AFBuds[i] = new TH1F(TString::Format("h_AFBuds_KLowerThan%i",i),TString::Format("h_AFBuds_KLowerThan%i",i),40,-1,1);
 
     h_AFBuds_K35_com[i] = new TH1F(TString::Format("h_AFBuds_COM_K35_AcolLowerThan%i",i),TString::Format("h_AFBuds_COM_K35_AcolLowerThan%i",i),40,-1,1);
     h_AFBuds_K35[i] = new TH1F(TString::Format("h_AFBuds_K35_AcolLowerThan%i",i),TString::Format("h_AFBuds_KLowerThan%i",i),40,-1,1);
+
+    h_AFBuds_acol30_com[i] = new TH1F(TString::Format("h_AFBuds_COM_acol30_KLowerThan%i",i),TString::Format("h_AFBuds_COM_acol30_KLowerThan%i",i),40,-1,1);
+    h_AFBuds_acol30[i] = new TH1F(TString::Format("h_AFBuds_acol30_KLowerThan%i",i),TString::Format("h_AFBuds_KLowerThan%i",i),40,-1,1);
+
   }
 
   Long64_t nentries;
@@ -578,6 +597,8 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float
     p_bbar_COM.push_back(MyParticle1_newSys.Pz());
     costheta_ccbar_COM=GetCostheta(p_bbar_COM);
 
+    h_acol_vs_K->Fill(gamma_e,acol);
+
     //Fill AFB vs K
     for(int i=0;i<150;i++) {
 
@@ -607,30 +628,53 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float
 	h_AFBuds_K35_com[i]->Fill(costheta_ccbar_COM);
       }
 
+      if(fabs(mc_quark_pdg[0])==5 && gamma_e<i && acol<30./100.) {
+	h_AFBb_acol30[i]->Fill(costheta_ccbar);
+	h_AFBb_acol30_com[i]->Fill(costheta_ccbar_COM);
+      }
+      if(fabs(mc_quark_pdg[0])==4 && gamma_e<i && acol<30./100.) {
+	h_AFBc_acol30[i]->Fill(costheta_ccbar);
+	h_AFBc_acol30_com[i]->Fill(costheta_ccbar_COM);
+      }
+      if(fabs(mc_quark_pdg[0])<4 && gamma_e<i && acol<30./100.) {
+	h_AFBuds_acol30[i]->Fill(costheta_ccbar);
+	h_AFBuds_acol30_com[i]->Fill(costheta_ccbar_COM);
+      }
+
     }
   }
 
   MyFile->cd();
   h_Ntotal_nocuts->Write();
+  h_acol_vs_K->Write();
 
   for(int i=0;i<150;i++) {
-    h_AFBb_com[i] ->Write();
-    h_AFBb[i] ->Write();
+    h_AFBb_com[i]->Write();
+    h_AFBb[i]->Write();
 
     h_AFBb_K35_com[i]->Write();
     h_AFBb_K35[i]->Write();
 
+    h_AFBb_acol30_com[i]->Write();
+    h_AFBb_acol30[i]->Write();
+    
     h_AFBc_com[i]->Write();
-    h_AFBc[i] ->Write();
+    h_AFBc[i]->Write();
 
-    h_AFBc_K35_com[i] ->Write();
-    h_AFBc_K35[i] ->Write();
+    h_AFBc_K35_com[i]->Write();
+    h_AFBc_K35[i]->Write();
+
+    h_AFBc_acol30_com[i]->Write();
+    h_AFBc_acol30[i]->Write();
 
     h_AFBuds_com[i]->Write();
-    h_AFBuds[i] ->Write();
+    h_AFBuds[i]->Write();
 
-    h_AFBuds_K35_com[i] ->Write();
-    h_AFBuds_K35[i] ->Write();
+    h_AFBuds_K35_com[i]->Write();
+    h_AFBuds_K35[i]->Write();
+
+    h_AFBuds_acol30_com[i]->Write();
+    h_AFBuds_acol30[i]->Write();
   }
 
 
