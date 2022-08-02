@@ -87,6 +87,57 @@ TF1 * fit_histo(TH1F * histo, float range_down=-0.8, float range_up=0.8, bool dr
 
 
 
+std::vector<double> fit_histo_value(TH1F * histo, TH1F * histo_eR, float range_down=-0.8, float range_up=0.8, bool draw=false,int pol=0) {
+
+  //  if(pol==0) histo_eR->Scale(0.);
+  // if(pol==1) histo->Scale(0.);
+
+  TH1F * h = (TH1F*)histo->Clone("h");
+  TH1F * h_eR = (TH1F*)histo_eR->Clone("h_eR");
+
+  if(pol==2) {
+    h->Scale(0.58);
+    h_eR->Scale(0.035);
+  }
+  if(pol==3) {
+    h_eR->Scale(0.58);
+    h->Scale(0.035);
+  }
+  
+  TF1 *func;
+  if(pol==0) func=fit_histo(h, range_down, range_up, draw);
+  else if(pol==1) func=fit_histo(h_eR, range_down, range_up, draw);
+  else {
+    if(pol==2) {
+      h->Add(h_eR);
+      func=fit_histo(h, range_down, range_up, draw);
+    }
+    if(pol==3) {
+      h_eR->Add(h);
+      func=fit_histo(h_eR, range_down, range_up, draw);
+    }
+  }
+
+  delete h;
+  delete h_eR;
+  
+  float plus = func->Integral(0,1);
+  float minus = func->Integral(-1,0);
+  float plus_e = func->IntegralError(0,1);
+  float minus_e = func->IntegralError(1,0);
+  
+
+  float Afb=Afb_v(plus,minus);
+  float dAfb=dAfb_v(plus,minus, plus_e, minus_e);
+  std::vector<double>  result;
+  result.push_back(Afb);
+  result.push_back(dAfb);
+
+  return result;
+
+}
+
+
 std::vector<double> fit_histo_value(TH1F * histo, float range_down=-0.8, float range_up=0.8, bool draw=false) {
 
   
