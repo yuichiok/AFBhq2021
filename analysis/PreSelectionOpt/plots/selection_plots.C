@@ -91,7 +91,7 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
   float luminosity_0=1;
 
 
-  for(int i=2; i<3; i++) {
+  for(int i=0; i<1; i++) {
 
     //if(i==1) i=8;
 
@@ -108,6 +108,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
 
     TH1F *h_mjj_bb = (TH1F*)f->Get("h_mjj_bb");
     TH1F *h_mj1_mj2_bb = (TH1F*)f->Get("h_mj1_mj2_bb");
+    TH1F *h_thrust_bb = (TH1F*)f->Get("h_thrust_bb");
+    TH1F *h_sphericity_bb = (TH1F*)f->Get("h_sphericity_bb");
     TH1F *h_y23_bb = (TH1F*)f->Get("h_y23_bb");
     TH1F *h_d23_bb = (TH1F*)f->Get("h_d23_bb");
     TH1F *h_acol_bb = (TH1F*)f->Get("h_acol_bb");
@@ -116,6 +118,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
    
     TH1F *h_mjj_cc = (TH1F*)f->Get("h_mjj_cc");
     TH1F *h_mj1_mj2_cc = (TH1F*)f->Get("h_mj1_mj2_cc");
+    TH1F *h_thrust_cc = (TH1F*)f->Get("h_thrust_cc");
+    TH1F *h_sphericity_cc = (TH1F*)f->Get("h_sphericity_cc");
     TH1F *h_y23_cc = (TH1F*)f->Get("h_y23_cc");
     TH1F *h_d23_cc = (TH1F*)f->Get("h_d23_cc");
     TH1F *h_acol_cc = (TH1F*)f->Get("h_acol_cc");
@@ -124,6 +128,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     
     TH1F *h_mjj_qq = (TH1F*)f->Get("h_mjj_qq");
     TH1F *h_mj1_mj2_qq = (TH1F*)f->Get("h_mj1_mj2_qq");
+    TH1F *h_thrust_qq = (TH1F*)f->Get("h_thrust_qq");
+    TH1F *h_sphericity_qq = (TH1F*)f->Get("h_sphericity_qq");
     TH1F *h_y23_qq = (TH1F*)f->Get("h_y23_qq");
     TH1F *h_d23_qq = (TH1F*)f->Get("h_d23_qq");
     TH1F *h_acol_qq = (TH1F*)f->Get("h_acol_qq");
@@ -133,6 +139,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
 
     TH1F *h_mjj_radreturn = (TH1F*)f->Get("h_mjj_radreturn");
     TH1F *h_mj1_mj2_radreturn = (TH1F*)f->Get("h_mj1_mj2_radreturn");
+    TH1F *h_thrust_radreturn = (TH1F*)f->Get("h_thrust_radreturn");
+    TH1F *h_sphericity_radreturn = (TH1F*)f->Get("h_sphericity_radreturn");
     TH1F *h_y23_radreturn = (TH1F*)f->Get("h_y23_radreturn");
     TH1F *h_d23_radreturn = (TH1F*)f->Get("h_d23_radreturn");
     TH1F *h_acol_radreturn = (TH1F*)f->Get("h_acol_radreturn");
@@ -150,6 +158,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     if(i>0) {
       h_mjj_bb->Scale(luminosity_0/luminosity);
       h_mj1_mj2_bb->Scale(luminosity_0/luminosity);
+      h_thrust_bb->Scale(luminosity_0/luminosity);
+      h_sphericity_bb->Scale(luminosity_0/luminosity);
       h_y23_bb->Scale(luminosity_0/luminosity);
       h_d23_bb->Scale(luminosity_0/luminosity);
       h_acol_bb->Scale(luminosity_0/luminosity);
@@ -158,6 +168,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
 
       h_mjj_cc->Scale(luminosity_0/luminosity);
       h_mj1_mj2_cc->Scale(luminosity_0/luminosity);
+      h_thrust_cc->Scale(luminosity_0/luminosity);
+      h_sphericity_cc->Scale(luminosity_0/luminosity);
       h_y23_cc->Scale(luminosity_0/luminosity);
       h_d23_cc->Scale(luminosity_0/luminosity);
       h_acol_cc->Scale(luminosity_0/luminosity);
@@ -166,6 +178,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
 
       h_mjj_qq->Scale(luminosity_0/luminosity);
       h_mj1_mj2_qq->Scale(luminosity_0/luminosity);
+      h_thrust_qq->Scale(luminosity_0/luminosity);
+      h_sphericity_qq->Scale(luminosity_0/luminosity);
       h_y23_qq->Scale(luminosity_0/luminosity);
       h_d23_qq->Scale(luminosity_0/luminosity);
       h_acol_qq->Scale(luminosity_0/luminosity);
@@ -174,6 +188,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
 
       h_mjj_radreturn->Scale(luminosity_0/luminosity);
       h_mj1_mj2_radreturn->Scale(luminosity_0/luminosity);
+      h_thrust_radreturn->Scale(luminosity_0/luminosity);
+      h_sphericity_radreturn->Scale(luminosity_0/luminosity);
       h_y23_radreturn->Scale(luminosity_0/luminosity);
       h_d23_radreturn->Scale(luminosity_0/luminosity);
       h_acol_radreturn->Scale(luminosity_0/luminosity);
@@ -188,6 +204,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     TH1F *h_luminosity_cross_ww = (TH1F*)f2->Get("h_costheta_nocuts");
     TH1F *h_mjj_ww = (TH1F*)f2->Get("h_mjj_bb");
     TH1F *h_mj1_mj2_ww = (TH1F*)f2->Get("h_mj1_mj2_bb");
+    TH1F *h_thrust_ww = (TH1F*)f2->Get("h_thrust_bb");
+    TH1F *h_sphericity_ww = (TH1F*)f2->Get("h_sphericity_bb");
     TH1F *h_y23_ww = (TH1F*)f2->Get("h_y23_bb");
     TH1F *h_d23_ww = (TH1F*)f2->Get("h_d23_bb");
     TH1F *h_acol_ww = (TH1F*)f2->Get("h_acol_bb");
@@ -199,6 +217,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
 
     h_mjj_ww->Scale(luminosity/luminosity_ww);
     h_mj1_mj2_ww->Scale(luminosity/luminosity_ww);
+    h_thrust_ww->Scale(luminosity/luminosity_ww);
+    h_sphericity_ww->Scale(luminosity/luminosity_ww);   
     h_y23_ww->Scale(luminosity/luminosity_ww);
     h_d23_ww->Scale(luminosity/luminosity_ww);
     h_acol_ww->Scale(luminosity/luminosity_ww);
@@ -212,6 +232,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     TH1F *h_luminosity_cross_qqH = (TH1F*)f3->Get("h_costheta_nocuts");
     TH1F *h_mjj_qqH = (TH1F*)f3->Get("h_mjj_bb");
     TH1F *h_mj1_mj2_qqH = (TH1F*)f3->Get("h_mj1_mj2_bb");
+    TH1F *h_thrust_qqH = (TH1F*)f3->Get("h_thrust_bb");
+    TH1F *h_sphericity_qqH = (TH1F*)f3->Get("h_sphericity_bb");
     TH1F *h_y23_qqH = (TH1F*)f3->Get("h_y23_bb");
     TH1F *h_d23_qqH = (TH1F*)f3->Get("h_d23_bb");
     TH1F *h_acol_qqH = (TH1F*)f3->Get("h_acol_bb");
@@ -223,6 +245,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
 
     h_mjj_qqH->Scale(luminosity/luminosity_qqH);
     h_mj1_mj2_qqH->Scale(luminosity/luminosity_qqH);
+    h_thrust_qqH->Scale(luminosity/luminosity_qqH);
+    h_sphericity_qqH->Scale(luminosity/luminosity_qqH);
     h_y23_qqH->Scale(luminosity/luminosity_qqH);
     h_d23_qqH->Scale(luminosity/luminosity_qqH);
     h_acol_qqH->Scale(luminosity/luminosity_qqH);
@@ -237,6 +261,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     TH1F *h_luminosity_cross_zz = (TH1F*)f4->Get("h_costheta_nocuts");
     TH1F *h_mjj_zz = (TH1F*)f4->Get("h_mjj_bb");
     TH1F *h_mj1_mj2_zz = (TH1F*)f4->Get("h_mj1_mj2_bb");
+    TH1F *h_thrust_zz = (TH1F*)f4->Get("h_thrust_bb");
+    TH1F *h_sphericity_zz = (TH1F*)f4->Get("h_sphericity_bb");
     TH1F *h_y23_zz = (TH1F*)f4->Get("h_y23_bb");
     TH1F *h_d23_zz = (TH1F*)f4->Get("h_d23_bb");
     TH1F *h_acol_zz = (TH1F*)f4->Get("h_acol_bb");
@@ -248,9 +274,11 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
 
     h_mjj_zz->Scale(luminosity/luminosity_zz);
     h_mj1_mj2_zz->Scale(luminosity/luminosity_zz);
+    h_thrust_zz->Scale(luminosity/luminosity_zz);
+    h_sphericity_zz->Scale(luminosity/luminosity_zz);
     h_y23_zz->Scale(luminosity/luminosity_zz);
     h_d23_zz->Scale(luminosity/luminosity_zz);
-    //h_acol_zz->Scale(luminosity/luminosity_zz);
+    h_acol_zz->Scale(luminosity/luminosity_zz);
     h_costheta_zz->Scale(luminosity/luminosity_zz);
     h_K_zz->Scale(luminosity/luminosity_zz);
  
@@ -299,6 +327,14 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     h_K_zz->Rebin(10);
     h_K_qqH->Rebin(10);
     h_K_ww->Rebin(10);
+
+    h_sphericity_bb->Rebin(10);
+    h_sphericity_cc->Rebin(10);
+    h_sphericity_qq->Rebin(10);
+    h_sphericity_radreturn->Rebin(10);
+    h_sphericity_zz->Rebin(10);
+    h_sphericity_qqH->Rebin(10);
+    h_sphericity_ww->Rebin(10);
 
 
     TString cut_string= "";//Nocuts";
@@ -391,9 +427,9 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     TLegend *leg2 = new TLegend(0.47,0.76,0.75,0.9);//(0.4,0.3,0.5,0.6);
     leg2->SetTextSize(0.035);
     leg2->AddEntry(h_acol_radreturn,"#font[42]{#gammaZ#rightarrow #gammaq#bar{q} (q=udscb)}","l");
-    leg2->AddEntry(h_acol_qqH,"#font[42]{qqH}","l");
-    leg2->AddEntry(h_acol_zz,"#font[42]{ZZ}","l");
-    leg2->AddEntry(h_acol_ww,"#font[42]{WW}","l");
+    //  leg2->AddEntry(h_acol_qqH,"#font[42]{qqH}","l");
+    //  leg2->AddEntry(h_acol_zz,"#font[42]{ZZ}","l");
+    // leg2->AddEntry(h_acol_ww,"#font[42]{WW}","l");
     leg2->SetFillStyle(0);
     leg2->SetLineWidth(0);
     leg2->SetLineColor(0);
@@ -544,8 +580,7 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     leg1->Draw();
     leg2->Draw();
 
-
-    TCanvas * canvas4 = new TCanvas("canvas_mj1_mj2","canvas_mj1_mj2",800,800);
+    TCanvas* canvas4 = new TCanvas("canvas_mj1_mj2","canvas_mj1_mj2",800,800);
     canvas4->cd(1);
     //  gPad->SetLogy();
     if(normalised==true) h_mj1_mj2_bb->GetYaxis()->SetTitle("norm to 1");
@@ -581,7 +616,82 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     Labels(i,pol);
     leg1->Draw();
     leg2->Draw();
+  
 
+    TCanvas * canvas5 = new TCanvas("canvas_thrust","canvas_thrust",800,800);
+    canvas5->cd(1);
+    gPad->SetLogy();
+    if(normalised==true) h_thrust_bb->GetYaxis()->SetTitle("norm to 1");
+    else h_thrust_bb->GetYaxis()->SetTitle("Entries"); 
+    h_thrust_bb->GetXaxis()->SetTitle("Thrust (principle value)");
+    h_thrust_bb->GetYaxis()->SetRangeUser(1,h_thrust_bb->GetMaximum()/2.);
+    h_thrust_bb->GetXaxis()->SetRangeUser(0.7,1);
+    h_thrust_bb->SetLineColor(4);
+    h_thrust_qq->SetLineColor(1);
+    h_thrust_cc->SetLineStyle(2);
+    h_thrust_radreturn->SetLineColor(2);
+    h_thrust_ww->SetLineColor(kOrange);
+    h_thrust_zz->SetLineColor(6);
+    h_thrust_qqH->SetLineColor(7);
+
+    if(normalised==true) {
+      h_thrust_bb->DrawNormalized("histo");
+      h_thrust_qq->DrawNormalized("histosame");
+      h_thrust_cc->DrawNormalized("histosame");
+      h_thrust_radreturn->DrawNormalized("histosame");
+      //   h_thrust_ww->DrawNormalized("histosame");
+      //  h_thrust_zz->DrawNormalized("histosame");
+      //  h_thrust_qqH->DrawNormalized("histosame");
+    } else {
+      h_thrust_bb->Draw("histo");
+      h_thrust_qq->Draw("histosame");
+      h_thrust_cc->Draw("histosame");
+      h_thrust_radreturn->Draw("histosame");
+      //  h_thrust_ww->Draw("histosame");
+      //   h_thrust_zz->Draw("histosame");
+      //   h_thrust_qqH->Draw("histosame");
+    }
+    Labels(i,pol);
+    leg1->Draw();
+    leg2->Draw();
+
+     TCanvas * canvas6 = new TCanvas("canvas_sphericity","canvas_sphericity",800,800);
+    canvas6->cd(1);
+    gPad->SetLogy();
+    if(normalised==true) h_sphericity_bb->GetYaxis()->SetTitle("norm to 1");
+    else h_sphericity_bb->GetYaxis()->SetTitle("Entries"); 
+    h_sphericity_bb->GetXaxis()->SetTitle("Sphericity (principle value)");
+    h_sphericity_bb->GetYaxis()->SetRangeUser(1,h_sphericity_bb->GetMaximum());
+    //  h_sphericity_bb->GetXaxis()->SetRangeUser(0.7,1);
+    h_sphericity_bb->SetLineColor(4);
+    h_sphericity_qq->SetLineColor(1);
+    h_sphericity_cc->SetLineStyle(2);
+    h_sphericity_radreturn->SetLineColor(2);
+    h_sphericity_ww->SetLineColor(kOrange);
+    h_sphericity_zz->SetLineColor(6);
+    h_sphericity_qqH->SetLineColor(7);
+
+    if(normalised==true) {
+      h_sphericity_bb->DrawNormalized("histo");
+      h_sphericity_qq->DrawNormalized("histosame");
+      h_sphericity_cc->DrawNormalized("histosame");
+      h_sphericity_radreturn->DrawNormalized("histosame");
+      //   h_sphericity_ww->DrawNormalized("histosame");
+      //  h_sphericity_zz->DrawNormalized("histosame");
+      //  h_sphericity_qqH->DrawNormalized("histosame");
+    } else {
+      h_sphericity_bb->Draw("histo");
+      h_sphericity_qq->Draw("histosame");
+      h_sphericity_cc->Draw("histosame");
+      h_sphericity_radreturn->Draw("histosame");
+      //  h_sphericity_ww->Draw("histosame");
+      //   h_sphericity_zz->Draw("histosame");
+      //   h_sphericity_qqH->Draw("histosame");
+    }
+    Labels(i,pol);
+    leg1->Draw();
+    leg2->Draw();
+    
 
   }
 

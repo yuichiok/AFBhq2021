@@ -161,6 +161,11 @@ void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float
   TH1F * h_thrust_qq = new TH1F("h_thrust_qq","h_thrust_qq",4000,0,1);
   TH1F * h_thrust_cc = new TH1F("h_thrust_cc","h_thrust_cc",4000,0,1);
 
+  TH1F * h_sphericity_bb = new TH1F("h_sphericity_bb","h_sphericity_bb",4000,0,1);
+  TH1F * h_sphericity_radreturn = new TH1F("h_sphericity_radreturn","h_sphericity_radreturn",4000,0,1);
+  TH1F * h_sphericity_qq = new TH1F("h_sphericity_qq","h_sphericity_qq",4000,0,1);
+  TH1F * h_sphericity_cc = new TH1F("h_sphericity_cc","h_sphericity_cc",4000,0,1);
+
   TH1F * h_acol_bb = new TH1F("h_acol_bb","h_acol_bb",201,0,2.01);
   TH1F * h_acol_radreturn = new TH1F("h_acol_radreturn","h_acol_radreturn",201,0,2.01);
   TH1F * h_acol_qq = new TH1F("h_acol_qq","h_acol_qq",201,0,2.01);
@@ -278,6 +283,7 @@ void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float
       h_y23_bb->Fill(d23/pow(reco_bbmass,2));
       h_d23_bb->Fill(d23);
       h_thrust_bb->Fill(principle_thrust_value);
+      h_sphericity_bb->Fill(sphericity);
       h_acol_bb->Fill(reco_acol_v);
 
       h_mj1_mj2_bb->Fill(reco_b1mass+reco_b2mass);
@@ -317,6 +323,7 @@ void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float
       h_y23_radreturn->Fill(d23/pow(reco_bbmass,2));
       h_d23_radreturn->Fill(d23);
       h_thrust_radreturn->Fill(principle_thrust_value);
+      h_sphericity_radreturn->Fill(sphericity);
       h_acol_radreturn->Fill(reco_acol_v);
 
       h_mj1_mj2_radreturn->Fill(reco_b1mass+reco_b2mass);
@@ -345,6 +352,7 @@ void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float
       h_d23_bb->Fill(d23);
       h_mj1_mj2_bb->Fill(reco_b1mass+reco_b2mass);
       h_thrust_bb->Fill(principle_thrust_value);
+      h_sphericity_bb->Fill(sphericity);
       h_acol_bb->Fill(reco_acol_v);
 
       h_K_bb->Fill(Kv);
@@ -369,6 +377,7 @@ void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float
       h_d23_cc->Fill(d23);
       h_mj1_mj2_cc->Fill(reco_b1mass+reco_b2mass);
       h_thrust_cc->Fill(principle_thrust_value);
+      h_sphericity_cc->Fill(sphericity);
       h_acol_cc->Fill(reco_acol_v);
 
 
@@ -394,6 +403,7 @@ void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float
       h_d23_qq->Fill(d23);
       h_mj1_mj2_qq->Fill(reco_b1mass+reco_b2mass);
       h_thrust_qq->Fill(principle_thrust_value);
+      h_sphericity_qq->Fill(sphericity);
       h_acol_qq->Fill(reco_acol_v);
 
       h_K_qq->Fill(Kv);
@@ -459,6 +469,11 @@ void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float
   h_thrust_qq->Write();
   h_thrust_cc->Write();
   h_thrust_radreturn->Write();
+
+  h_sphericity_bb->Write();
+  h_sphericity_qq->Write();
+  h_sphericity_cc->Write();
+  h_sphericity_radreturn->Write();
 
   h_acol_bb->Write();
   h_acol_qq->Write();
