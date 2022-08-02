@@ -483,16 +483,16 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float
 
   //Ntotal_nocuts
   TH1F * h_Ntotal_nocuts = new TH1F("h_Ntotal_nocuts","h_Ntotal_nocuts",20,0,1);
-  
-  TH2F * h_acol_vs_K = new TH2F("h_acol_vs_K","h_acol_vs_K",105,5.5,110.5,99,0.005,0.995);
 
+  TH2F * h_acol_vs_K = new TH2F("h_acol_vs_K","h_acol_vs_K",105,5.5,110.5,99,0.005,0.995);
+  
   TH1F * h_AFBb_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBb[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBb_K35_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBb_K35[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBb_acol30_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBb_acol30[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
-  
+
   TH1F * h_AFBc_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBc[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
   TH1F * h_AFBc_K35_com[150];// = new TH1F("h_AFB","h_AFB",40,-1,1);
