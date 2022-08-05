@@ -474,7 +474,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
 }
 
 
-void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float Kvcut=35, float acol_cut=0.35)
+void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float Kvcut=35, float acol_cut=0.3)
 {
 
   TString filename=TString::Format("AFBEnergyDep_%s_250GeV.root",process.Data());

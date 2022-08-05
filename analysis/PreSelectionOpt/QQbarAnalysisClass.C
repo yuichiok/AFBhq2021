@@ -3,7 +3,7 @@
 #include "TPad.h"
 
 
-void QQbarAnalysisClass::JetTag(int n_entries=-1, int selection_type=0, float Kvcut=2500, float acol_cut=0.35)
+void QQbarAnalysisClass::JetTag(int n_entries=-1, int selection_type=0, float Kvcut=2500, float acol_cut=0.3)
 {
   
   TFile *MyFile = new TFile(TString::Format("jettag_%s_250GeV.root",process.Data()),"RECREATE");
@@ -74,7 +74,7 @@ void QQbarAnalysisClass::JetTag(int n_entries=-1, int selection_type=0, float Kv
 
 }
 
-void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float Kvcut=2500, int bkg=0, float acol_cut=0.35)
+void QQbarAnalysisClass::Selection(int n_entries=-1, int selection_type=0, float Kvcut=2500, int bkg=0, float acol_cut=0.3)
 {
   
   TFile *MyFile = new TFile(TString::Format("selection_%s_250GeV.root",process.Data()),"RECREATE");
