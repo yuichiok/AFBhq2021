@@ -43,7 +43,10 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   TH2F* electron_dEdx_pid = new TH2F("electron_dEdx_pid","electron_dEdx_pid",nbinnum_p,bins_p,nbinnumy,binsy);
   TH2F* muon_dEdx_pid = new TH2F("muon_dEdx_pid","muon_dEdx_pid",nbinnum_p,bins_p,nbinnumy,binsy);
 
-  TH1F* n_sectracks = new TH1F("n_sectracks","n_sectracks",25,0.5,25.5);
+  TH1F* n_sectracks = new TH1F("n_sectracks","n_sectracks",25,-0.5,24.5);
+  TH1F* n_secvtx = new TH1F("n_secvtx","n_secvtx",25,-0.5,24.5);
+  TH1F* n_sectracks_vtx = new TH1F("n_sectracks_vtx","n_sectracks_vtx",25,-0.5,24.5);
+
   TH1F* n_kaon_vtx = new TH1F("n_kaon_vtx","n_kaon_vtx",15,-0.5,14.5);
   TH1F* p_kaon = new TH1F("p_kaon","p_kaon",125,-0.5,124.5);
   TH1F* p_proton = new TH1F("p_proton","p_proton",125,-0.5,124.5);
@@ -206,6 +209,10 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   else nentries= fChain->GetEntriesFast();
   std::cout<<nentries<<std::endl;
   Long64_t nbytes = 0, nb = 0;
+
+  int njetstotal=0;
+  int nvtxtotal=0;
+
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
@@ -228,17 +235,24 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
     bool quarkid=false;
     if(pdg>3 &&  fabs(mc_quark_pdg[0])==pdg) quarkid=true;
     if(pdg==3 && fabs(mc_quark_pdg[0])<4) quarkid=true;
-    if( quarkid && gamma_e<35 && acol<0.35) {
+    if(pdg==0 && fabs(mc_quark_pdg[0])<6) quarkid=true;
+
+    if( quarkid && gamma_e<35 && acol<0.30) {
       for(int ijet=0; ijet<2; ijet++){
+	njetstotal++;
 	int nkaonjet=0;
 	double nt=0;
 	//	if(jet_btag[ijet]>0.8) {
 	int nkaonvtx=0;
-	int ntracksvtx=0;
+	int nsectracksjet=0;
+	int nvtx=0;
+	if(ijet==0) n_secvtx->Fill(jet_nvtx_j1);
+	if(ijet==1) n_secvtx->Fill(jet_nvtx_j2);
 
 	float leading_k=-1;
         float leading_pion=-1;
         float leading_p=-1;
+	int nsectracksvtx[20]={0};
 	
 	for(int ipfo=0; ipfo<pfo_n; ipfo++) {
 
@@ -247,9 +261,10 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	  if(momentum < momentum_min) continue;
 	  if(secondary==true &&  pfo_vtx[ipfo]<1) continue;
 	  // if(secondary==false &&  pfo_vtx[ipfo]>0) continue;
-	  if(ignoreoverlay==false && pfo_isoverlay[ipfo]==1) continue;
-	  
-	  ntracksvtx++;
+	  if(ignoreoverlay==true && pfo_isoverlay[ipfo]==1) continue;
+
+	  nsectracksvtx[pfo_vtx[ipfo]]++;
+	  nsectracksjet++;
 
 	  float costheta;
 	  std::vector<float> p_track;
@@ -474,13 +489,21 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	  }
 	}
 	n_kaon_vtx->Fill(nkaonvtx);
-	n_sectracks->Fill(ntracksvtx);
-
+	n_sectracks->Fill(nsectracksjet);
+ 	for(int isec=0; isec<20; isec++) {
+	  if(nsectracksvtx[isec]>0) {
+	    n_sectracks_vtx->Fill(nsectracksvtx[isec]);
+	    nvtxtotal++;
+	  }
+	}
 	//	}//btag
       }//ijet
     }//bb
   }//for
 
+  n_sectracks->Scale(1./njetstotal);
+  n_sectracks_vtx->Scale(1./nvtxtotal);
+  n_secvtx->Scale(1./njetstotal);
   SetQQbarStyle();
   gStyle->SetOptFit(0);
   gStyle->SetOptStat(0);
@@ -492,98 +515,98 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   gStyle->SetMarkerSize(0.2);
   gStyle->SetPadLeftMargin(0.2);
 
-  TCanvas* c_dEdx_truth_0 = new TCanvas("c_dEdx","c_dEdx",800,800);
-  c_dEdx_truth_0->cd(1);
-  gPad->SetLogx();
-  pion_dEdx_truth->GetXaxis()->SetTitle("p [GeV]");
-  pion_dEdx_truth->GetYaxis()->SetTitle("#frac{dE}{dx} [MeV]");
-  pion_dEdx_truth->GetYaxis()->SetTitleOffset(1.7);
+  // TCanvas* c_dEdx_truth_0 = new TCanvas("c_dEdx","c_dEdx",800,800);
+  // c_dEdx_truth_0->cd(1);
+  // gPad->SetLogx();
+  // pion_dEdx_truth->GetXaxis()->SetTitle("p [GeV]");
+  // pion_dEdx_truth->GetYaxis()->SetTitle("#frac{dE}{dx} [MeV]");
+  // pion_dEdx_truth->GetYaxis()->SetTitleOffset(1.7);
   
-  pion_dEdx_truth->SetMarkerColor(4);
-  pion_dEdx_truth->SetMarkerStyle(1);
-  pion_dEdx_truth->SetLineColor(4);
-  pion_dEdx_truth->SetTitle("");
-  pion_dEdx_truth->SetContour(5);
-  pion_dEdx_truth->Draw("p");
+  // pion_dEdx_truth->SetMarkerColor(4);
+  // pion_dEdx_truth->SetMarkerStyle(1);
+  // pion_dEdx_truth->SetLineColor(4);
+  // pion_dEdx_truth->SetTitle("");
+  // pion_dEdx_truth->SetContour(5);
+  // pion_dEdx_truth->Draw("p");
 
-  proton_dEdx_truth->SetMarkerColor(kGreen+1);
-  proton_dEdx_truth->SetMarkerStyle(1);
-  proton_dEdx_truth->SetLineColor(kGreen+1);
-  proton_dEdx_truth->SetContour(5);
-  proton_dEdx_truth->Draw("psame");
+  // proton_dEdx_truth->SetMarkerColor(kGreen+1);
+  // proton_dEdx_truth->SetMarkerStyle(1);
+  // proton_dEdx_truth->SetLineColor(kGreen+1);
+  // proton_dEdx_truth->SetContour(5);
+  // proton_dEdx_truth->Draw("psame");
 
-  kaon_dEdx_truth->SetMarkerColor(2);
-  kaon_dEdx_truth->SetMarkerStyle(1);
-  kaon_dEdx_truth->SetLineColor(2);
-  kaon_dEdx_truth->SetContour(5);
-  kaon_dEdx_truth->Draw("psame");
+  // kaon_dEdx_truth->SetMarkerColor(2);
+  // kaon_dEdx_truth->SetMarkerStyle(1);
+  // kaon_dEdx_truth->SetLineColor(2);
+  // kaon_dEdx_truth->SetContour(5);
+  // kaon_dEdx_truth->Draw("psame");
 
    
-  electron_dEdx_truth->SetMarkerColor(kBlack);
-  electron_dEdx_truth->SetMarkerStyle(1);
-  electron_dEdx_truth->SetLineColor(kBlack);
-  electron_dEdx_truth->SetContour(5);
-  electron_dEdx_truth->Draw("psame");
+  // electron_dEdx_truth->SetMarkerColor(kBlack);
+  // electron_dEdx_truth->SetMarkerStyle(1);
+  // electron_dEdx_truth->SetLineColor(kBlack);
+  // electron_dEdx_truth->SetContour(5);
+  // electron_dEdx_truth->Draw("psame");
 
-  muon_dEdx_truth->SetMarkerColor(kGray);
-  muon_dEdx_truth->SetMarkerStyle(1);
-  muon_dEdx_truth->SetLineColor(kGray);
-  muon_dEdx_truth->SetContour(5);
-  muon_dEdx_truth->Draw("psame");
+  // muon_dEdx_truth->SetMarkerColor(kGray);
+  // muon_dEdx_truth->SetMarkerStyle(1);
+  // muon_dEdx_truth->SetLineColor(kGray);
+  // muon_dEdx_truth->SetContour(5);
+  // muon_dEdx_truth->Draw("psame");
 
-  TCanvas* c_dEdx_pid_0 = new TCanvas("c_dEdx_pid","c_dEdx_pid",800,800);
-  c_dEdx_pid_0->cd(1);
-  gPad->SetLogx();
-  pion_dEdx_pid->GetXaxis()->SetTitle("p [GeV]");
-  pion_dEdx_pid->GetYaxis()->SetTitle("#frac{dE}{dx} [MeV]");
-  pion_dEdx_pid->GetYaxis()->SetTitleOffset(1.7);
+  // TCanvas* c_dEdx_pid_0 = new TCanvas("c_dEdx_pid","c_dEdx_pid",800,800);
+  // c_dEdx_pid_0->cd(1);
+  // gPad->SetLogx();
+  // pion_dEdx_pid->GetXaxis()->SetTitle("p [GeV]");
+  // pion_dEdx_pid->GetYaxis()->SetTitle("#frac{dE}{dx} [MeV]");
+  // pion_dEdx_pid->GetYaxis()->SetTitleOffset(1.7);
   
-  pion_dEdx_pid->SetMarkerColor(4);
-  pion_dEdx_pid->SetMarkerStyle(1);
-  pion_dEdx_pid->SetLineColor(4);
-  pion_dEdx_pid->SetTitle("");
-  pion_dEdx_pid->SetContour(5);
-  pion_dEdx_pid->Draw("p");
+  // pion_dEdx_pid->SetMarkerColor(4);
+  // pion_dEdx_pid->SetMarkerStyle(1);
+  // pion_dEdx_pid->SetLineColor(4);
+  // pion_dEdx_pid->SetTitle("");
+  // pion_dEdx_pid->SetContour(5);
+  // pion_dEdx_pid->Draw("p");
 
-  proton_dEdx_pid->SetMarkerColor(kGreen+1);
-  proton_dEdx_pid->SetMarkerStyle(1);
-  proton_dEdx_pid->SetLineColor(kGreen+1);
-  proton_dEdx_pid->SetContour(5);
-  proton_dEdx_pid->Draw("psame");
+  // proton_dEdx_pid->SetMarkerColor(kGreen+1);
+  // proton_dEdx_pid->SetMarkerStyle(1);
+  // proton_dEdx_pid->SetLineColor(kGreen+1);
+  // proton_dEdx_pid->SetContour(5);
+  // proton_dEdx_pid->Draw("psame");
 
-  kaon_dEdx_pid->SetMarkerColor(2);
-  kaon_dEdx_pid->SetMarkerStyle(1);
-  kaon_dEdx_pid->SetLineColor(2);
-  kaon_dEdx_pid->SetContour(5);
-  kaon_dEdx_pid->Draw("psame");
+  // kaon_dEdx_pid->SetMarkerColor(2);
+  // kaon_dEdx_pid->SetMarkerStyle(1);
+  // kaon_dEdx_pid->SetLineColor(2);
+  // kaon_dEdx_pid->SetContour(5);
+  // kaon_dEdx_pid->Draw("psame");
 
    
-  electron_dEdx_pid->SetMarkerColor(kBlack);
-  electron_dEdx_pid->SetMarkerStyle(1);
-  electron_dEdx_pid->SetLineColor(kBlack);
-  electron_dEdx_pid->SetContour(5);
-  electron_dEdx_pid->Draw("psame");
+  // electron_dEdx_pid->SetMarkerColor(kBlack);
+  // electron_dEdx_pid->SetMarkerStyle(1);
+  // electron_dEdx_pid->SetLineColor(kBlack);
+  // electron_dEdx_pid->SetContour(5);
+  // electron_dEdx_pid->Draw("psame");
 
-  muon_dEdx_pid->SetMarkerColor(kGray);
-  muon_dEdx_pid->SetMarkerStyle(1);
-  muon_dEdx_pid->SetLineColor(kGray);
-  muon_dEdx_pid->SetContour(5);
-  muon_dEdx_pid->Draw("psame");
+  // muon_dEdx_pid->SetMarkerColor(kGray);
+  // muon_dEdx_pid->SetMarkerStyle(1);
+  // muon_dEdx_pid->SetLineColor(kGray);
+  // muon_dEdx_pid->SetContour(5);
+  // muon_dEdx_pid->Draw("psame");
 
   
 
-  QQBARLabel(0.25,0.85,"",1);
+  // QQBARLabel(0.25,0.85,"",1);
   
-  TLegend *leg1 = new TLegend(0.7,0.8,0.8,0.9);
-  leg1->AddEntry(pion_dEdx_pid,"PID-dEdx #pi","lp");
-  leg1->AddEntry(kaon_dEdx_pid,"PID-dEdx K","lp");
-  leg1->AddEntry(proton_dEdx_pid,"PID-dEdx p","lp");
-  leg1->AddEntry(muon_dEdx_pid,"PID-dEdx #mu","lp");
-  leg1->AddEntry(electron_dEdx_pid,"PID-dEdx e","lp");
-  leg1->SetFillColor(0);
-  leg1->SetLineColor(0);
-  leg1->SetShadowColor(0);
-  leg1->Draw();
+  // TLegend *leg1 = new TLegend(0.7,0.8,0.8,0.9);
+  // leg1->AddEntry(pion_dEdx_pid,"PID-dEdx #pi","lp");
+  // leg1->AddEntry(kaon_dEdx_pid,"PID-dEdx K","lp");
+  // leg1->AddEntry(proton_dEdx_pid,"PID-dEdx p","lp");
+  // leg1->AddEntry(muon_dEdx_pid,"PID-dEdx #mu","lp");
+  // leg1->AddEntry(electron_dEdx_pid,"PID-dEdx e","lp");
+  // leg1->SetFillColor(0);
+  // leg1->SetLineColor(0);
+  // leg1->SetShadowColor(0);
+  // leg1->Draw();
   
  
 
@@ -594,10 +617,12 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
     if(pdg==4) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_cquark.root",fname.Data(),process.Data());
     if(pdg==5) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_bquark.root",fname.Data(),process.Data());
     if(pdg==3) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_udsquark.root",fname.Data(),process.Data());
+    if(pdg==0) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_udscbquark.root",fname.Data(),process.Data());
   } else {
     if(pdg==4) fname = TString::Format("output/output_250_%s_%s_cquark.root",fname.Data(),process.Data());
     if(pdg==5) fname = TString::Format("output/output_250_%s_%s_bquark.root",fname.Data(),process.Data());
     if(pdg==3) fname = TString::Format("output/output_250_%s_%s_udsquark.root",fname.Data(),process.Data());
+    if(pdg==0) fname = TString::Format("output/output_250_%s_%s_udscbquark.root",fname.Data(),process.Data());
   }
   
   TFile *MyFile = new TFile(fname,"RECREATE");
@@ -612,8 +637,10 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   proton_dEdx_truth->Write();
   electron_dEdx_truth->Write();
   muon_dEdx_truth->Write();
-  c_dEdx_truth_0->Write();
+  // c_dEdx_truth_0->Write();
   n_sectracks->Write();
+  n_sectracks_vtx->Write();
+  n_secvtx->Write();
 
   pion_dEdx_cos->SetName("pion_cos");
   kaon_dEdx_cos->SetName("kaon_cos");
@@ -636,7 +663,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   proton_dEdx_pid->Write();
   electron_dEdx_pid->Write();
   muon_dEdx_pid->Write();
-  c_dEdx_pid_0->Write();
+  //c_dEdx_pid_0->Write();
   
   n_kaon_vtx->Write();
   p_kaon->Write();
