@@ -36,7 +36,7 @@ void Labels(TString pol){
     if(pol=="eR")
       QQBARLabel2(0.3,0.965, "e_{R}^{-}e_{L}^{+} #rightarrow c#bar{c} mc-2020",kGray+2);
     else 
-      QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow q#bar{q}",kGray+2);
+      QQBARLabel2(0.15,0.965, "e^{-}e^{+} #rightarrow q#bar{q} (q=udscb, same size samples)",kGray+2);
 
   //QQBARLabel2(0.2,0.22, "Secondary Tracks in c-jets",kGray+4);
 
@@ -80,7 +80,7 @@ void Plots() {
 
   int n=0;
   for(int i=0;i<40; i++) {
-    x[i]=i*0.025;
+    x[n]=i*0.025;
     float ntotal[3];
     float nb[3];
     float nc[3];
@@ -92,13 +92,13 @@ void Plots() {
       for(int ipol=0; ipol<2; ipol++){
 	ntotal[iflav]=btag[0][ipol]->GetBinContent(quark+1);
 	
-	nb[iflav]=btag[i][ipol]->GetBinContent(quark+1);
-	nc[iflav]=ctag[i][ipol]->GetBinContent(quark+1);
+	nb[iflav]=btag[n][ipol]->GetBinContent(quark+1);
+	nc[iflav]=ctag[n][ipol]->GetBinContent(quark+1);
 
-	eff_b[ipol][iflav][i]=100.*nb[iflav]/ntotal[iflav];
-	eff_c[ipol][iflav][i]=100.*nc[iflav]/ntotal[iflav];
-	eff2_b[ipol][iflav][i]=100.-100.*nb[iflav]/ntotal[iflav];
-	eff2_c[ipol][iflav][i]=100.-100.*nc[iflav]/ntotal[iflav];
+	eff_b[ipol][iflav][n]=100.*nb[iflav]/ntotal[iflav];
+	eff_c[ipol][iflav][n]=100.*nc[iflav]/ntotal[iflav];
+	eff2_b[ipol][iflav][n]=100.-100.*nb[iflav]/ntotal[iflav];
+	eff2_c[ipol][iflav][n]=100.-100.*nc[iflav]/ntotal[iflav];
       }
     }
     n++;
@@ -114,12 +114,12 @@ void Plots() {
 
   TCanvas* c_eff_b = new TCanvas("c_eff_b","c_eff_b",800,800);
   c_eff_b->cd(1);
-  gPad->SetLogy();
+  // gPad->SetLogy();
   efficiency_b_b_eL->GetXaxis()->SetTitle("btag_{cut}");
   efficiency_b_b_eL->GetYaxis()->SetTitle("[%]");
   efficiency_b_b_eL->GetYaxis()->SetTitleOffset(1.25);
   efficiency_b_b_eL->GetXaxis()->SetTitleOffset(1.);
-  efficiency_b_b_eL->GetYaxis()->SetRangeUser(5,101);
+  efficiency_b_b_eL->GetYaxis()->SetRangeUser(0,101);
   efficiency_b_b_eL->GetXaxis()->SetRangeUser(0,1);
 
   efficiency_b_b_eL->SetLineColor(4);
@@ -156,15 +156,17 @@ void Plots() {
   btag[1][1]->SetLineStyle(1);
   btag[1][2]->SetLineColor(1);
   btag[1][2]->SetLineStyle(2);
+  btag[1][2]->SetLineWidth(2);
+  btag[1][1]->SetLineWidth(2);
 
   Labels("");
   
-  TLegend *leg_b = new TLegend(0.6,0.25,0.8,0.45);
+  TLegend *leg_b = new TLegend(0.6,0.25,0.7,0.45);
   leg_b->SetTextSize(0.035);
   leg_b->SetTextFont(42);
   leg_b->AddEntry(efficiency_b_b_eL,"#varepsilon_{b}","l");
-  leg_b->AddEntry(efficiency_c_b_eL,"1-#varepsilon_{c}","l");
-  leg_b->AddEntry(efficiency_uds_b_eL,"1-#varepsilon_{uds}","l");
+  leg_b->AddEntry(efficiency_c_b_eL,"1-#tilde{#varepsilon}_{c}","l");
+  leg_b->AddEntry(efficiency_uds_b_eL,"1-#tilde{#varepsilon}_{uds}","l");
   leg_b->AddEntry(btag[1][1],"e_{L}^{-}e_{R}^{+}","l");
   leg_b->AddEntry(btag[1][2],"e_{R}^{-}e_{L}^{+}","l");
   leg_b->SetFillColor(0);
@@ -185,13 +187,13 @@ void Plots() {
 
   TCanvas* c_eff_c = new TCanvas("c_eff_c","c_eff_c",800,800);
   c_eff_c->cd(1);
-  gPad->SetLogy();
+  //gPad->SetLogy();
   // c_eff_c->SetGrid();
   efficiency_c_c_eL->GetXaxis()->SetTitle("ctag_{cut}");
   efficiency_c_c_eL->GetYaxis()->SetTitle("[%]");
   efficiency_c_c_eL->GetYaxis()->SetTitleOffset(1.25);
   efficiency_c_c_eL->GetXaxis()->SetTitleOffset(1.);
-  efficiency_c_c_eL->GetYaxis()->SetRangeUser(5,101);
+  efficiency_c_c_eL->GetYaxis()->SetRangeUser(0,101);
   efficiency_c_c_eL->GetXaxis()->SetRangeUser(0,1);
 
   efficiency_c_c_eL->SetLineColor(4);
@@ -232,12 +234,12 @@ void Plots() {
   
   Labels("");
   
-  TLegend *leg_c = new TLegend(0.6,0.25,0.8,0.45);
+  TLegend *leg_c = new TLegend(0.6,0.25,0.7,0.45);
   leg_c->SetTextSize(0.035);
   leg_c->SetTextFont(42);
   leg_c->AddEntry(efficiency_c_c_eL,"#varepsilon_{c}","l");
-  leg_c->AddEntry(efficiency_b_c_eL,"1-#varepsilon_{b}","l");
-  leg_c->AddEntry(efficiency_uds_c_eL,"1-#varepsilon_{uds}","l");
+  leg_c->AddEntry(efficiency_b_c_eL,"1-#tilde{#varepsilon}_{b}","l");
+  leg_c->AddEntry(efficiency_uds_c_eL,"1-#tilde{#varepsilon}_{uds}","l");
   leg_c->AddEntry(btag[1][1],"e_{L}^{-}e_{R}^{+}","l");
   leg_c->AddEntry(btag[1][2],"e_{R}^{-}e_{L}^{+}","l");
   leg_c->SetFillColor(0);
