@@ -111,7 +111,11 @@ void QQbarAnalysisClass::AFB1(int n_entries=-1, int method=0, float Kvcut=35, fl
     costheta_thrust=fabs(GetCostheta(p_thrust));
     h_Ntotal_nocuts->Fill(costheta_thrust);
 
-    if(fabs(mc_quark_pdg[0])!=quark || gamma_e>Kvcut) continue;
+    TVector3 v1(mc_quark_ps_jet_px[0],mc_quark_ps_jet_py[0],mc_quark_ps_jet_pz[0]);
+    TVector3 v2(mc_quark_ps_jet_px[1],mc_quark_ps_jet_py[1],mc_quark_ps_jet_pz[1]);
+    float acol=GetSinacol(v1,v2);
+
+    if(fabs(mc_quark_pdg[0])!=quark || gamma_e>Kvcut || acol>0.3) continue;
     h_Nq->Fill(fabs(costheta_thrust));
 
     if ( jentry > 1000 && jentry % 1000 ==0 ) std::cout << "Progress: " << 100.*jentry/nentries <<" %"<<endl;
@@ -871,7 +875,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
     TVector3 v1(mc_quark_ps_jet_px[0],mc_quark_ps_jet_py[0],mc_quark_ps_jet_pz[0]);
     TVector3 v2(mc_quark_ps_jet_px[1],mc_quark_ps_jet_py[1],mc_quark_ps_jet_pz[1]);
     float acol=GetSinacol(v1,v2);
-    if(fabs(mc_quark_pdg[0])!=quark || gamma_e>Kvcut  ||  acol>0.15) continue;
+    if(fabs(mc_quark_pdg[0])!=quark || gamma_e>Kvcut  ||  acol>0.3) continue;
 
     //reconsturcet thrust angle
     // float costheta_thrust;
