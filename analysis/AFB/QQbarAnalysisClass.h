@@ -46,6 +46,7 @@ public :
   virtual void AFB_energyDependence(int , int , float , float );
 
   virtual void AFBreconstruction(int , float , int, TString , int );
+  virtual void AFBreconstruction2(int , float , int, TString , int ,int );
   virtual float ChargeKJet(int, int ,float , bool, bool);
   virtual float ChargeVtxJet(int, int , float);
 

@@ -1092,6 +1092,196 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
 
 
 
+void QQbarAnalysisClass::AFBreconstruction2(int n_entries=-1, float Kvcut=35, int quark=4, TString polString="eL_pR", int method=0, int bkg=0)
+{
+
+
+  //polarisation scenarios
+  //pol=0 (eLpR), pol=1 (eRpL), pol=2 eLpRat80/30, pol=3 eRpLat80/30
+  int pol=0;
+  if(polString=="eL_pR") pol=0;
+  else  if(polString=="eR_pL") pol=1;
+  else {
+    cout<<" WRONG PARAMETER polString !! "<<polString<<endl;
+    return;
+  }
+
+  
+  float pcut=3.;
+  //optimal dedx cutone
+  //if(dedxcut==7) {
+  dedxcut_up=1.1;
+  dedxcut_down=-2.45;
+  //}
+
+  //methods 0=Kc, 1=KcCheatdEdx, 2=KcCheatdEdxTOF, 3=KcCheatTOF, 4=Vtx
+  TString method_string[4]={"","CheatdEdx","CheatdEdxTOF","CheatTOF"};
+
+   int nsyst=22;
+
+
+//variations for systematics
+    
+  //**************
+
+  //new file
+   TString filename=TString::Format("SigBkg_quark%i_%s_250GeV_cheatmethod_%i.root",quark,process.Data(),method);
+  
+  TFile *MyFile = new TFile(filename,"RECREATE");
+  MyFile->cd();
+
+  TH1F *h_AFBreco_cat0[4];
+  TH1F *h_AFBreco_cat1[4];
+  TH1F *h_AFBreco_cat2[4];
+
+  for(int j=0; j<4; j++) {
+    h_AFBreco_cat0[j] = new TH1F(TString::Format("h_AFBreco_cat0_%i",j),TString::Format("h_AFBreco_cat0_%i",j),20,0,1.0);
+    h_AFBreco_cat1[j] = new TH1F(TString::Format("h_AFBreco_cat1_%i",j),TString::Format("h_AFBreco_cat1_%i",j),20,0,1.0);
+    h_AFBreco_cat2[j] = new TH1F(TString::Format("h_AFBreco_cat2_%i",j),TString::Format("h_AFBreco_cat2_%i",j),20,0,1.0);
+  }
+
+  
+  Long64_t nentries;
+  if(n_entries>0) nentries= n_entries;
+  else nentries= fChain->GetEntriesFast();
+  //nentries=30000;
+
+  Long64_t nbytes = 0, nb = 0;
+  for (Long64_t jentry=0; jentry<nentries;jentry++) {
+    Long64_t ientry = LoadTree(jentry);
+    if (ientry < 0) break;
+    nb = fChain->GetEntry(jentry);   nbytes += nb;
+
+    //-------------------
+    //Kv parton
+    float gamma0_e= mc_ISR_E[0];
+    float gamma1_e= mc_ISR_E[1];
+    float gamma_e = gamma0_e+gamma1_e;
+
+    TVector3 v1(mc_quark_ps_jet_px[0],mc_quark_ps_jet_py[0],mc_quark_ps_jet_pz[0]);
+    TVector3 v2(mc_quark_ps_jet_px[1],mc_quark_ps_jet_py[1],mc_quark_ps_jet_pz[1]);
+    float acol=GetSinacol(v1,v2);
+
+    int iquark=-1;
+    if(bkg==0) {
+      if(fabs(mc_quark_pdg[0])==5 && gamma_e<Kvcut && acol<0.3) iquark=0;
+      if(fabs(mc_quark_pdg[0])==4 && gamma_e<Kvcut && acol<0.3) iquark=1;
+      if(fabs(mc_quark_pdg[0])<4 && gamma_e<Kvcut && acol<0.3) iquark=2;
+      if(gamma_e>Kvcut || acol>0.15) iquark=3;
+    } else {
+      iquark=0;
+    }
+
+    //reconsturcet thrust angle
+    // float costheta_thrust;
+    // std::vector<float> p_thrust;
+    // p_thrust.push_back(principle_thrust_axis[0]);
+    // p_thrust.push_back(principle_thrust_axis[1]);
+    // p_thrust.push_back(principle_thrust_axis[2]);
+    // costheta_thrust=fabs(GetCostheta(p_thrust));
+
+    //jet direction
+    std::vector<float> p;
+    p.push_back(jet_px[0]-jet_px[1]);
+    p.push_back(jet_py[0]-jet_py[1]);
+    p.push_back(jet_pz[0]-jet_pz[1]);
+    float costheta_jet=GetCostheta(p);
+    //-- jet direction using charged pfos
+    std::vector<float> p1;
+    std::vector<float> p2;
+    float px_pfos[2]={0};
+    float py_pfos[2]={0};
+    float pz_pfos[2]={0};
+    for(int ipfo=0; ipfo<pfo_n; ipfo++) {
+      if((pfo_match[ipfo]==0 || pfo_match[ipfo]==1) && pfo_charge[ipfo]!=0 && pfo_ntracks[ipfo]==1) {
+	px_pfos[pfo_match[ipfo]]+=pfo_px[ipfo];
+	py_pfos[pfo_match[ipfo]]+=pfo_py[ipfo];
+	pz_pfos[pfo_match[ipfo]]+=pfo_pz[ipfo];
+      }
+    }
+    p1.push_back(px_pfos[0]-px_pfos[1]);
+    p1.push_back(py_pfos[0]-py_pfos[1]);
+    p1.push_back(pz_pfos[0]-pz_pfos[1]);
+    float costheta=GetCostheta(p1);
+
+
+    if ( jentry > 1000 && jentry % 1000 ==0 ) std::cout << "Progress: " << 100.*jentry/nentries <<" %"<<endl;
+
+    //reco level distributions
+    //    float Kv=Kreco();
+    bool selection=PreSelection(6,Kvcut);
+    if(selection==false) continue;
+
+
+    //jet flavour
+    bool jettag[2]={false,false};
+    if(quark==4) {
+      if(jet_ctag[0]>ctag1) jettag[0]=true;
+      if(jet_ctag[1]>ctag2) jettag[1]=true;
+    } else if(quark==5) {
+      if(jet_btag[0]>btag1) jettag[0]=true;
+      if(jet_btag[1]>btag2) jettag[1]=true;
+    } else {
+      cout<<"ERROR, wrong argument for the quark quark-to-study"<<endl;
+      break;
+    }
+
+    if(jettag[0]==false || jettag[1]==false) continue;
+
+   
+    float charge[2][2]={0};
+    for(int ijet=0; ijet<2; ijet++) {
+      if(quark==5) {
+	// charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
+	// if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	// if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	// if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	// if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
+	if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,false);
+	if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,true);
+	if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,true);
+      }
+      if(quark==4) {
+	charge[ijet][1]=ChargeVtxJet(0,ijet,pcut);
+	// if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+	// if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+	// if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+	// if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+	if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+	if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,false);
+	if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,true);
+	if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//false,true);
+      }
+    }
+
+    //cat0
+    if(charge[0][0]!=0 && charge[1][0]!=0 && charge[0][0]*charge[1][0]<0) 
+      h_AFBreco_cat0[iquark]->Fill(fabs(costheta));
+    
+    if( charge[0][0]!=0 && charge[1][0]==0 && charge[0][0]*charge[1][1]<0 && charge[1][1]!=0) 
+      h_AFBreco_cat1[iquark]->Fill(fabs(costheta));
+    if( charge[0][0]==0 && charge[1][0]!=0 && charge[0][1]*charge[1][0]<0 && charge[0][1]!=0) 
+      h_AFBreco_cat1[iquark]->Fill(fabs(costheta));
+
+    if( charge[0][0]==0 && charge[1][0]==0 && charge[0][1]*charge[1][1]<0 && charge[0][1]!=0 && charge[1][1]!=0) 
+      h_AFBreco_cat2[iquark]->Fill(fabs(costheta));
+
+  }
+    
+
+  MyFile->cd();
+ 
+  for(int icat=0; icat<4; icat++) {
+    h_AFBreco_cat0[icat]->Write();
+    h_AFBreco_cat1[icat]->Write();
+    h_AFBreco_cat2[icat]->Write();
+  }
+
+}
+
+
 
 float QQbarAnalysisClass::ChargeVtxJet(int method, int ijet, float pcut=2.){//, int eff=0.88) {
   

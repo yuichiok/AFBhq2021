@@ -40,13 +40,17 @@ TH1F * ScaleHisto(TH1F *h, float luminosity, float lum_goal, float norm=1) {
 
   TH1F *hnew = (TH1F*)h->Clone("hnew");
   if(lum_goal<0) lum_goal=luminosity;
-  for(int i=0; i<hnew->GetNbinsX()+1; i++) {
-    float sigma=h->GetBinContent(i)*norm/luminosity;
-    float nprime=sigma*lum_goal;
-    hnew->SetBinError(i,sqrt(nprime));
-    hnew->SetBinContent(i,nprime);
-    //    cout<<luminosity<<" "<<lum_goal<<" "<<norm<<" "<<h->GetBinContent(i)<<" "<<hnew->GetBinContent(i)<<endl;
-
+  if(luminosity>0) {
+    for(int i=0; i<hnew->GetNbinsX()+1; i++) {
+      float sigma=h->GetBinContent(i)*norm/luminosity;
+      float nprime=sigma*lum_goal;
+      hnew->SetBinError(i,sqrt(nprime));
+      hnew->SetBinContent(i,nprime);
+      //    cout<<luminosity<<" "<<lum_goal<<" "<<norm<<" "<<h->GetBinContent(i)<<" "<<hnew->GetBinContent(i)<<endl;
+      
+    }
+  } else {
+    hnew->Scale(0.);
   }
 
   return hnew;
@@ -73,9 +77,11 @@ TH1F * PolHisto(TH1F *h1, TH1F* h2, int pol, float luminosity[], float lum_goal,
   b=global*(1+peff);
 
   for(int i=0; i<hnew->GetNbinsX()+1; i++) {
-    float sigma1=h1->GetBinContent(i)*norm/luminosity[0];
+    float sigma1=0;
+    if(luminosity[0]>0) sigma1=h1->GetBinContent(i)*norm/luminosity[0];
     float nprime1=a*sigma1*lum_goal;
-    float sigma2=h2->GetBinContent(i)*norm/luminosity[1];
+    float sigma2=0;
+    if(luminosity[1]>0) sigma2=h2->GetBinContent(i)*norm/luminosity[1];
     float nprime2=b*sigma2*lum_goal;
 
     if(lum_goal<1) {
@@ -86,9 +92,12 @@ TH1F * PolHisto(TH1F *h1, TH1F* h2, int pol, float luminosity[], float lum_goal,
     }
     double lum_max=TMath::Max(luminosity[0],luminosity[1]);
     if(lum_goal<1 && pol>1) {
-      sigma1=norm*h1->GetBinContent(i)*lum_max/luminosity[0];
+      sigma1=0;
+      if(luminosity[0]>0)
+	sigma1=norm*h1->GetBinContent(i)*lum_max/luminosity[0];
       nprime1=a*sigma1;
-      sigma2=norm*h2->GetBinContent(i)*lum_max/luminosity[1];
+      sigma2=0;
+      if(luminosity[1]>0) sigma2=norm*h2->GetBinContent(i)*lum_max/luminosity[1];
       nprime2=b*sigma2;
     }
     hnew->SetBinError(i,sqrt(nprime1+nprime2));
@@ -116,8 +125,11 @@ float MCLum(int iprocess, int pol, int iquark) {
 
 
   float luminosity[2];
-  luminosity[0]=hstats[0]->GetEntries()/cross_section[0][iprocess];
-  luminosity[1]=hstats[1]->GetEntries()/cross_section[1][iprocess];
+  if(hstats[0]->GetEntries()>0) luminosity[0]=hstats[0]->GetEntries()/cross_section[0][iprocess];
+  else luminosity[0]=0;
+
+  if(hstats[1]->GetEntries()>0) luminosity[1]=hstats[1]->GetEntries()/cross_section[1][iprocess];
+  else luminosity[1]=0;
 
   // cout<<luminosity[0]<<" "<<cross_section[0][iprocess]<<endl;
   return luminosity[pol];
@@ -145,8 +157,11 @@ TH1F* GetHistoMethod(int iprocess, TString histo, int pol, int imethod, float lu
   h[1]= (TH1F*)f2->Get(histo);
 
   float luminosity[2];
-  luminosity[0]=hstats[0]->GetEntries()/cross_section[0][iprocess];
-  luminosity[1]=hstats[1]->GetEntries()/cross_section[1][iprocess];
+  if(hstats[0]->GetEntries()>0) luminosity[0]=hstats[0]->GetEntries()/cross_section[0][iprocess];
+  else luminosity[0]=0;
+
+  if(hstats[1]->GetEntries()>0) luminosity[1]=hstats[1]->GetEntries()/cross_section[1][iprocess];
+  else luminosity[1]=0;
 
   
   if(pol==0 || pol==1) {
@@ -189,8 +204,10 @@ TH1F* GetHisto(int iprocess, TString histo, int pol, int iquark, float lum, floa
   h[1]= (TH1F*)f2->Get(histo);
 
   float luminosity[2];
-  luminosity[0]=hstats[0]->GetEntries()/cross_section[0][iprocess];
-  luminosity[1]=hstats[1]->GetEntries()/cross_section[1][iprocess];
+  if(hstats[0]->GetEntries()>0) luminosity[0]=hstats[0]->GetEntries()/cross_section[0][iprocess];
+  else luminosity[0]=0;
+  if(hstats[1]->GetEntries()>0) luminosity[1]=hstats[1]->GetEntries()/cross_section[1][iprocess];
+  else luminosity[1]=0;
 
   
   if(pol==0 || pol==1) {
