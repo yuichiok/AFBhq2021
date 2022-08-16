@@ -16,20 +16,23 @@ do
         name=$counter
     fi
 
-    for quark in 3 4 5
+    for quark in 3 4 5 0
     do
-	for cut_p in 0 2 3
+	for cut_p in 0 3
 	do
-	    for cut_theta in 0 0.8
+	    #0 2 3
+	    for cut_theta in 0
 	    do
+		#0 0.8	       
 		cat > ${local}/steer/dedx_${process}_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}.sh <<EOF
 source ${local}/../init_ilcsoft.sh 
 cd ${local}/
-root -l analysis.cc\(\"${file}\",\"${process}_${pol}_${name}\",true,${cut_p},${cut_theta},$quark\) > log/dedx_pdg4_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta} 
+root -l -q analysis.cc\(\"${file}\",\"${process}_${pol}_${name}\",true,${cut_p},${cut_theta},$quark\) > log/dedx_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta} 
+root -l -q analysis.cc\(\"${file}\",\"${process}_${pol}_${name}\",false,${cut_p},${cut_theta},$quark\) > log/dedx2_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}
 cd -
 EOF
 
-        cat > ${local}/steer/dedx_${process}_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}.sub <<EOF
+		cat > ${local}/steer/dedx_${process}_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}.sub <<EOF
 # Unix submit description file
 # kt_xNAMEfile.sub -- simple Marlin job
 executable              = ${local}/steer/dedx_${process}_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}.sh
@@ -40,8 +43,7 @@ should_transfer_files   = Yes
 when_to_transfer_output = ON_EXIT
 queue 1
 EOF
-
-	condor_submit ${local}/steer/dedx_${process}_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}.sub
+		condor_submit ${local}/steer/dedx_${process}_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}.sub
 	    done
 	done
     done

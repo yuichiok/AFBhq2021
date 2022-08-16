@@ -13,4 +13,10 @@ do
     source test_selection.sh 4f_WW_hadronic $pol
 done
 
+for pol in "eL_pR" "eR_pL"
+do
+    source test_selection.sh 2f_hadronic $pol
+done
+
+
 

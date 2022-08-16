@@ -18,7 +18,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   bins_cos[0]=0;
   for(int i=1;i<50;i++) bins_cos[i]=bins_cos[i-1]+1./50.;
   //13.33,16.667,20,30,40,50,60,70,80,90,100};
-  Int_t nbinnum_cos=sizeof(bins_p)/sizeof(Float_t) - 1;
+  Int_t nbinnum_cos=sizeof(bins_cos)/sizeof(Float_t) - 1;
 
   Float_t binsy[200];
   binsy[0]=0.1;
@@ -210,8 +210,8 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   std::cout<<nentries<<std::endl;
   Long64_t nbytes = 0, nb = 0;
 
-  int njetstotal=0;
-  int nvtxtotal=0;
+  float njetstotal=0;
+  float nvtxtotal=0;
 
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
     Long64_t ientry = LoadTree(jentry);
@@ -240,19 +240,19 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
     if( quarkid && gamma_e<35 && acol<0.30) {
       for(int ijet=0; ijet<2; ijet++){
 	njetstotal++;
-	int nkaonjet=0;
+	float nkaonjet=0;
 	double nt=0;
 	//	if(jet_btag[ijet]>0.8) {
-	int nkaonvtx=0;
-	int nsectracksjet=0;
-	int nvtx=0;
+	float nkaonvtx=0;
+	float nsectracksjet=0;
+	float nvtx=0;
 	if(ijet==0) n_secvtx->Fill(jet_nvtx_j1);
 	if(ijet==1) n_secvtx->Fill(jet_nvtx_j2);
 
 	float leading_k=-1;
         float leading_pion=-1;
         float leading_p=-1;
-	int nsectracksvtx[20]={0};
+	float nsectracksvtx[20]={0};
 	
 	for(int ipfo=0; ipfo<pfo_n; ipfo++) {
 
@@ -262,6 +262,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	  if(secondary==true &&  pfo_vtx[ipfo]<1) continue;
 	  // if(secondary==false &&  pfo_vtx[ipfo]>0) continue;
 	  if(ignoreoverlay==true && pfo_isoverlay[ipfo]==1) continue;
+	  if( pfo_ntracks[ipfo]!=1) continue;
 
 	  nsectracksvtx[pfo_vtx[ipfo]]++;
 	  nsectracksjet++;
@@ -501,9 +502,6 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
     }//bb
   }//for
 
-  n_sectracks->Scale(1./njetstotal);
-  n_sectracks_vtx->Scale(1./nvtxtotal);
-  n_secvtx->Scale(1./njetstotal);
   SetQQbarStyle();
   gStyle->SetOptFit(0);
   gStyle->SetOptStat(0);
