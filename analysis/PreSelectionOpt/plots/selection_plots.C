@@ -27,7 +27,7 @@
 
 void Labels(int i=0, TString pol="eL"){
 
-  QQBARLabel(0.86,0.952,"");
+  QQBARLabel(0.86,0.954,"");
   if(i==0) QQBARLabel2(0.04,0.07, "[No Cuts]",kOrange+3);
   if(i==1) QQBARLabel2(0.04,0.07, "photon veto_{0}",kOrange+3);
   if(i==2) QQBARLabel2(0.04,0.07, "photon veto cut",kOrange+3);
@@ -39,11 +39,11 @@ void Labels(int i=0, TString pol="eL"){
   }
   if(i==5) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} cuts",kOrange+3);
+    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} cuts",kOrange+3);
   }
   if(i==6) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} & y_{23} cuts",kOrange+3);
+    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} & y_{23} cuts",kOrange+3);
 
   }
 
@@ -54,8 +54,8 @@ void Labels(int i=0, TString pol="eL"){
 
 
 
-void selection_plots(int polarisation=0, bool normalised=true, TString output="B_S") {
-
+void selection_plots( bool normalised=true, TString output="efficiency") {
+  for(int polarisation=0; polarisation<2; polarisation ++) {
   cout<< "bb qq radreturn ww zz hz "<<endl;
 
   //Efficiency y23.
@@ -84,14 +84,15 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
   float ww_integral_0=0.;
   float qqH_integral_0=0.;
 
-  TString pol="eL_pR";
-  if(polarisation==1) pol="eR_pL";
+ 
+  TString pol="eR_pL";
+  if(polarisation==1) pol="eL_pR";
     
   cout<<output<<endl;
   float luminosity_0=1;
 
 
-  for(int i=0; i<1; i++) {
+  for(int i=0; i<7; i++) {
 
     //if(i==1) i=8;
 
@@ -199,7 +200,7 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     //**********************************************************
     // WW
     filename = folder+"4f_WW_hadronic_"+pol+"_250GeV.root";
-    cout<<filename<<endl;
+    //    cout<<filename<<endl;
     TFile *f2 = new TFile(filename);
     TH1F *h_luminosity_cross_ww = (TH1F*)f2->Get("h_costheta_nocuts");
     TH1F *h_mjj_ww = (TH1F*)f2->Get("h_mjj_bb");
@@ -372,7 +373,8 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     TGaxis::SetMaxDigits(3);
 
     TCanvas * canvas0 = new TCanvas("canvas_acol","canvas_acol",800,800);
-    canvas0->cd(1);  
+    canvas0->cd(1);
+    //    gPad->SetLogy();
     
     if(normalised==true) h_acol_radreturn->GetYaxis()->SetTitle("norm to 1");
     else h_acol_radreturn->GetYaxis()->SetTitle("Entries"); 
@@ -422,20 +424,42 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     leg1->SetLineWidth(0);
     leg1->SetLineColor(0);
     leg1->SetBorderSize(0);
-    leg1->Draw();
+    // leg1->Draw();
 
-    TLegend *leg2 = new TLegend(0.47,0.76,0.75,0.9);//(0.4,0.3,0.5,0.6);
+    float xmin=0.58, ymin=0.76, xmax=0.8, ymax=0.9;
+    if(i==2) { xmin=0.54; xmax=0.76;}
+    
+    TLegend *leg3 = new TLegend(xmin,0.48,xmax,0.6);//(0.4,0.3,0.5,0.6);
+    leg3->SetTextSize(0.035);
+    leg3->AddEntry(h_acol_bb,"#font[42]{b#bar{b}}","l");
+    leg3->AddEntry(h_acol_cc,"#font[42]{c#bar{c}}","l");
+    leg3->AddEntry(h_acol_qq,"#font[42]{q#bar{q} (q=uds)}","l");
+    leg3->SetFillStyle(0);
+    leg3->SetLineWidth(0);
+    leg3->SetLineColor(0);
+    leg3->SetBorderSize(0);
+    leg3->Draw();
+  
+    TLegend *leg2 = new TLegend(xmin,0.76,xmax,0.9);//(0.4,0.3,0.5,0.6);
     leg2->SetTextSize(0.035);
-    leg2->AddEntry(h_acol_radreturn,"#font[42]{#gammaZ#rightarrow #gammaq#bar{q} (q=udscb)}","l");
-    //  leg2->AddEntry(h_acol_qqH,"#font[42]{qqH}","l");
-    //  leg2->AddEntry(h_acol_zz,"#font[42]{ZZ}","l");
-    // leg2->AddEntry(h_acol_ww,"#font[42]{WW}","l");
+    //leg2->AddEntry(h_acol_radreturn,"#font[42]{#gammaZ#rightarrow #gammaq#bar{q} (q=udscb)}","l");
+    leg2->AddEntry(h_acol_radreturn,"#font[42]{Radiative Return}","l");
+    leg2->AddEntry(h_acol_qqH,"#font[42]{qqH}","l");
+    leg2->AddEntry(h_acol_zz,"#font[42]{ZZ}","l");
+    leg2->AddEntry(h_acol_ww,"#font[42]{WW}","l");
     leg2->SetFillStyle(0);
     leg2->SetLineWidth(0);
     leg2->SetLineColor(0);
     leg2->SetBorderSize(0);
     leg2->Draw();
     Labels(i,pol);
+
+    TArrow *arr0 = new TArrow(0.3,0,0.3,0.31,0.02,"<|>");
+    arr0->SetLineColor(kGray);
+    arr0->SetFillColor(kGray);
+    arr0->Draw();
+
+    if(i==2) canvas0->Print("plots_draft/acolinearity_cut.eps");
 
   
     TCanvas * canvas1 = new TCanvas("canvas_K","canvas_K",800,800);
@@ -484,16 +508,23 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     Labels(i,pol);
 
 
-    leg1->Draw();
+    leg3->Draw();
     leg2->Draw();
-  
+
+    TArrow *arr1 = new TArrow(35.,0,35.,0.126,0.02,"<|>");
+    arr1->SetLineColor(kGray);
+    arr1->SetFillColor(kGray);
+    arr1->Draw();
+
+    if(i==2) canvas1->Print("plots_draft/Kreco_cut.eps");
+
     TCanvas * canvas2 = new TCanvas("canvas_mjj","canvas_mjj",800,800);
     canvas2->cd(1);
     //  gPad->SetLogy();
-    if(normalised==true) h_mjj_radreturn->GetYaxis()->SetTitle("norm to 1");
-    else h_mjj_radreturn->GetYaxis()->SetTitle("Entries"); 
-    h_mjj_radreturn->GetXaxis()->SetTitle("m_{j_{1},j_{2}} [GeV]");
-    //h_mjj_radreturn->GetYaxis()->SetRangeUser(0,h_mjj_radreturn->GetMaximum()*2);
+    if(normalised==true) h_mjj_qq->GetYaxis()->SetTitle("norm to 1");
+    else h_mjj_qq->GetYaxis()->SetTitle("Entries"); 
+    h_mjj_qq->GetXaxis()->SetTitle("m_{j_{1},j_{2}} [GeV]");
+    //h_mjj_bb->GetYaxis()->SetRangeUser(0,h_mjj_bb->GetMaximum()*2);
     //  h_mjj_bb->GetYaxis()->SetRangeUser(0,h_mjj_bb->GetMaximum()*10);
     //  h_mjj_bb->GetXaxis()->SetRangeUser(0,0.11);
     h_mjj_bb->SetLineColor(4);
@@ -513,25 +544,33 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     h_mjj_qqH->SetLineWidth(2);
 
     if(normalised==true) {
-      h_mjj_radreturn->DrawNormalized("histo");
-      h_mjj_qq->DrawNormalized("histosame");
-      h_mjj_cc->DrawNormalized("histosame");
+      h_mjj_qq->DrawNormalized("histo");
       h_mjj_bb->DrawNormalized("histosame");
+      h_mjj_cc->DrawNormalized("histosame");
+      h_mjj_radreturn->DrawNormalized("histosame");
       h_mjj_ww->DrawNormalized("histosame");
       h_mjj_zz->DrawNormalized("histosame");
       h_mjj_qqH->DrawNormalized("histosame");
     } else {
-      h_mjj_radreturn->Draw("histo");
-      h_mjj_qq->Draw("histosame");
-      h_mjj_cc->Draw("histosame");
+      h_mjj_qq->Draw("histo");
       h_mjj_bb->Draw("histosame");
+      h_mjj_cc->Draw("histosame");
+      h_mjj_radreturn->Draw("histosame");
       h_mjj_ww->Draw("histosame");
       h_mjj_zz->Draw("histosame");
       h_mjj_qqH->Draw("histosame");
     }
     Labels(i,pol);
-    leg1->Draw();
+    leg3->Draw();
     leg2->Draw();
+
+    TArrow *arr2 = new TArrow(140.,h_mjj_bb->GetMinimum(),140,0.178,0.02,"<|>");
+    arr2->SetLineColor(kGray);
+    arr2->SetFillColor(kGray);
+    arr2->Draw();
+
+    if(i==4) canvas2->Print("plots_draft/mjj_cut.eps");
+
 
     TCanvas * canvas3 = new TCanvas("canvas_y23","canvas_y23",800,800);
     canvas3->cd(1);
@@ -541,7 +580,7 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     else h_y23_bb->GetYaxis()->SetTitle("Entries");
     h_y23_bb->GetXaxis()->SetTitle("y_{23}");
     //h_y23_bb->GetYaxis()->SetRangeUser(10,h_y23_bb->GetMaximum()*10);
-    h_y23_bb->GetXaxis()->SetRangeUser(0,0.1);
+    h_y23_bb->GetXaxis()->SetRangeUser(0,0.2);
    
     h_y23_bb->SetLineColor(4);
     h_y23_qq->SetLineColor(1);
@@ -580,7 +619,16 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     leg1->Draw();
     leg2->Draw();
 
-    TCanvas* canvas4 = new TCanvas("canvas_mj1_mj2","canvas_mj1_mj2",800,800);
+    
+    TArrow *arr3 = new TArrow(0.0125,h_y23_bb->GetMinimum(),0.0125,0.4,0.02,"<|>");
+    arr3->SetLineColor(kGray);
+    arr3->SetFillColor(kGray);
+    arr3->Draw();
+
+    if(i==5) canvas3->Print("plots_draft/y23_cut.eps");
+
+
+    /*  TCanvas* canvas4 = new TCanvas("canvas_mj1_mj2","canvas_mj1_mj2",800,800);
     canvas4->cd(1);
     //  gPad->SetLogy();
     if(normalised==true) h_mj1_mj2_bb->GetYaxis()->SetTitle("norm to 1");
@@ -692,7 +740,7 @@ void selection_plots(int polarisation=0, bool normalised=true, TString output="B
     leg1->Draw();
     leg2->Draw();
     
-
+    */
   }
-
+  }
 }

@@ -23,11 +23,11 @@
 #include "TSystemFile.h"
 #include "../../../style/Style.C"
 #include "../../../style/Labels.C"
-#include "cross_sections.h"
+#include "../../common/cross_sections.h"
 
 void Labels(int i=0, TString pol="eL"){
 
-  QQBARLabel(0.83,0.952,"");
+  QQBARLabel(0.8,0.954,"");
   if(i==0) QQBARLabel2(0.04,0.07, "[No Cuts]",kOrange+3);
   if(i==1) QQBARLabel2(0.04,0.07, "photon veto_{0}",kOrange+3);
   if(i==2) QQBARLabel2(0.04,0.07, "photon veto cut",kOrange+3);
@@ -90,7 +90,35 @@ void selection_plots2(int polarisation=0, bool normalised=true, TString output="
   h_npfos_bb->Add(h_npfos_cc);
   h_npfos_bb->Add(h_npfos_qq);
 
+  h_costheta_energy_bb->Add(h_costheta_energy_cc);
+  h_costheta_energy_bb->Add(h_costheta_energy_qq);
+
+
+
+  h_npfos_cc->Scale(0.);
+  for(int i=0; i<101; i++){
+    h_npfos_cc->SetBinContent(1,i+1,100000);
+    h_npfos_cc->SetBinContent(2,i+1,100000);
+    h_npfos_cc->SetBinContent(i+1,1,100000);
+    h_npfos_cc->SetBinContent(i+1,2,100000);
+  }
+
+  h_costheta_energy_cc->Scale(0.);
+  for(int i=0; i<151; i++){
+    h_costheta_energy_cc->SetBinContent(101,i+1,100000);
+    h_costheta_energy_cc->SetBinContent(100,i+1,100000);
+    h_costheta_energy_cc->SetBinContent(99,i+1,100000);
+    h_costheta_energy_cc->SetBinContent(98,i+1,100000);
+  }
+  for(int i=0; i<101; i++){
+    for(int j=112; j<151;j++) {
+      h_costheta_energy_cc->SetBinContent(i+1,j,100000);
+    }
+  }
   
+
+
+    
 
   SetQQbarStyle();
   gStyle->SetOptFit(0); 
@@ -115,6 +143,11 @@ void selection_plots2(int polarisation=0, bool normalised=true, TString output="
   h_npfos_bb->GetXaxis()->SetRangeUser(0,40);
   h_npfos_bb->GetYaxis()->SetRangeUser(0,40);
   h_npfos_bb->Draw("colz");
+  h_npfos_cc->SetFillColor(kRed);
+  h_npfos_cc->SetFillStyle(3005);
+  h_npfos_cc->SetLineColor(kRed);
+  h_npfos_cc->Draw("boxsame");
+  //  h_npfos_qq->Draw("boxsame");
   Labels(0,pol);
 
   canvas_N_1->Print("plots_draft/npfos_signal.eps");
@@ -129,34 +162,40 @@ void selection_plots2(int polarisation=0, bool normalised=true, TString output="
   h_npfos_radreturn->GetYaxis()->SetRangeUser(0,40);
   h_npfos_radreturn->GetZaxis()->SetRangeUser(100,h_npfos_radreturn->GetMaximum());
   h_npfos_radreturn->Draw("colz");
+  h_npfos_cc->Draw("boxsame");
+  // h_npfos_qq->Draw("boxsame");
   Labels(0,pol);
   canvas_N_2->Print("plots_draft/npfos_radreturn.eps");
 
   TCanvas * canvas_e_1 = new TCanvas("canvas_costheta_energy","canvas_costheta_energy",800,800);
   canvas_e_1->cd(1);
-  gPad->SetLogz();
+  //  gPad->SetLogz();
     
   h_costheta_energy_bb->SetTitle("Signal");
-  h_costheta_energy_bb->GetXaxis()->SetTitle("#sum E_{neutrals}");
-  h_costheta_energy_bb->GetYaxis()->SetTitle("|cos#theta_{#sum E_{neutrals}}|");
+  h_costheta_energy_bb->GetYaxis()->SetTitle("#sum E_{neutrals}");
+  h_costheta_energy_bb->GetXaxis()->SetTitle("|cos#left(#theta_{#sum E_{neutrals}}#right)|");
   h_costheta_energy_bb->GetXaxis()->SetTitleOffset(1.6);
 
   h_costheta_energy_bb->Draw("colz");
+  h_costheta_energy_cc->SetFillColor(kRed);
+  h_costheta_energy_cc->SetFillStyle(3005);
+  h_costheta_energy_cc->SetLineColor(kRed);
+  h_costheta_energy_cc->Draw("boxsame");
   Labels(0,pol);
   canvas_e_1->Print("plots_draft/energy_costheta_signal.eps");
 
   TCanvas * canvas_e_2 = new TCanvas("canvas_costheta_energy2","canvas_costheta_energy2",800,800);
   canvas_e_2->cd(1);
-  gPad->SetLogz();
+  //  gPad->SetLogz();
     
   h_costheta_energy_radreturn->SetTitle("Radiative Return");
-  h_costheta_energy_radreturn->GetXaxis()->SetTitle("#sum E_{neutrals}");
-  h_costheta_energy_radreturn->GetYaxis()->SetTitle("|cos#theta_{#sum E_{neutrals}}|");
+  h_costheta_energy_radreturn->GetYaxis()->SetTitle("#sum E_{neutrals}");
+  h_costheta_energy_radreturn->GetXaxis()->SetTitle("|cos#left(#theta_{#sum E_{neutrals}}#right)|");
   h_costheta_energy_radreturn->GetXaxis()->SetTitleOffset(1.6);
   h_costheta_energy_radreturn->Draw("colz");
+  h_costheta_energy_cc->Draw("boxsame");
   Labels(0,pol);
   canvas_e_2->Print("plots_draft/energy_costheta_radreturn.eps");
-
 
 
 }

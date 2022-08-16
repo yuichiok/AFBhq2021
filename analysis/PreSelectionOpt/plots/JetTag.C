@@ -28,7 +28,7 @@
 
 
 void Labels(TString pol){
-  QQBARLabel(0.86,0.952,"");
+  QQBARLabel(0.86,0.954,"");
   // QQBARLabel2(0.3,0.97, "e^{-}e^{+} #rightarrow q#bar{q}, q=udscb, 250 GeV, 250fb^{-1}",kGray+2);
   if(pol=="eL")
     QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow c#bar{c} mc-2020",kGray+2);

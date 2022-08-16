@@ -27,7 +27,7 @@
 
 void Labels(int i=0, TString pol="eL"){
 
-   QQBARLabel(0.86,0.952,"");
+  QQBARLabel(0.86,0.954,"");
   if(i==0) QQBARLabel2(0.04,0.07, "[No Cuts]",kOrange+3);
   if(i==1) QQBARLabel2(0.04,0.07, "photon veto_{0}",kOrange+3);
   if(i==2) QQBARLabel2(0.04,0.07, "photon veto cut",kOrange+3);
@@ -119,7 +119,7 @@ void effpreselection() {
   h_costheta_bb[1]->GetYaxis()->SetTitle("#varepsilon_{pres-X}");
   h_costheta_bb[1]->GetYaxis()->SetRangeUser(0,1.4);
   h_costheta_bb[1]->GetXaxis()->SetRangeUser(0,1.);
-  h_costheta_bb[1]->GetXaxis()->SetTitle("|cos#theta_{q}|");
+  h_costheta_bb[1]->GetXaxis()->SetTitle("|cos#theta|");
   h_costheta_bb[1]->GetYaxis()->SetTitleOffset(1.3);
 
   h_costheta_bb[1]->SetLineColor(4);
@@ -153,7 +153,7 @@ void effpreselection() {
   h_costheta_bb[1]->SetName("Eff Presel");
   h_costheta_bb[1]->SetTitle("Eff Presel");
   h_costheta_bb[1]->Write();
-  // canvas2->Print(TString::Format("plots/epsilonhad_cuts%i_%s.eps",step,pol.Data()));
+  canvas2->Print(TString::Format("plots_draft/epsilonhad_cuts%i_%s.eps",step,pol.Data()));
 
  
   }
