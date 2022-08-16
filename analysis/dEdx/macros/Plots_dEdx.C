@@ -240,7 +240,7 @@ void EffPurity_dedxdist() {
   // TGaxis::SetMaxDigits(2);
 
   
-  TString filename = "../results/histos_bquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_2GeV.root";
+  TString filename = "../results/histos_bquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
   TFile *f = new TFile(filename);
   TH1F*  p_kaon = (TH1F*)f->Get("p_kaon");
   TH1F*  kdEdxdist_kaon = (TH1F*)f->Get("kdEdx_dist_kaon");
@@ -270,7 +270,7 @@ void EffPurity_dedxdist() {
   TGraph* efficiency_purity = new TGraph(n,eff,pur);
 
   //----------
-  TString filename2 = "../results/histos_bquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_2GeV.root";
+  TString filename2 = "../results/histos_bquark_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
   TFile *f2 = new TFile(filename2);
   TH1F*  p_kaon2 = (TH1F*)f2->Get("p_kaon");
   TH1F*  kdEdxdist_kaon2 = (TH1F*)f2->Get("kdEdx_dist_kaon");
@@ -298,39 +298,7 @@ void EffPurity_dedxdist() {
   TGraph* efficiency2 = new TGraph(n2,x2,eff2);
   TGraph* purity2 = new TGraph(n2,x2,pur2);
   TGraph* efficiency_purity2 = new TGraph(n2,eff2,pur2);
-
-  TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
-  c_mom->cd(1);
-  c_mom->SetGrid();
-  efficiency->GetXaxis()->SetTitle("i");
-  efficiency->GetYaxis()->SetTitle("[%]");
-  efficiency->GetYaxis()->SetTitleOffset(1.25);
-  efficiency->GetXaxis()->SetTitleOffset(1.);
-  efficiency->GetYaxis()->SetRangeUser(0,100);
-
-  efficiency->SetLineColor(4);
-  efficiency->SetLineWidth(3);
-  efficiency->SetLineStyle(2);
-  efficiency->Draw("alp");
   
-  purity->SetLineColor(kGreen+1);
-  purity->SetLineWidth(1);
-  purity->SetLineStyle(1);
-  purity->Draw("lp");
-
-  
-  Labels("");
-  
-  TLegend *leg0 = new TLegend(0.2,0.2,0.5,0.4);
-  leg0->SetTextSize(0.035);
-  leg0->SetTextFont(42);
-  leg0->AddEntry(efficiency,"Efficiency","lp");
-  leg0->AddEntry(purity,"Purity","lp");
-  leg0->SetFillColor(0);
-  leg0->SetLineColor(0);
-  leg0->SetShadowColor(0);
-  leg0->Draw();
-
   TCanvas* c_mom3 = new TCanvas("c_mom3","c_mom3",800,800);
   c_mom3->cd(1);
   c_mom3->SetGrid();
@@ -1233,6 +1201,6 @@ void Plots_dEdx() {
   //EffPurity_default();
   //EffPurity_dedxdist4();
   //EffPurity_dedxdist2();
-  EffPurity_dedxdist5();
+  EffPurity_dedxdist();
   // dEdxdist(false);
 }
