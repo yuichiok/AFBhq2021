@@ -143,14 +143,14 @@ void weigths_tagging( int quark=4, int pol=0, float lum=-1) {
   TH1F* h_eff_quark_Rbdown5 = epsilon_tag(d_Rparton[1], d_Rparton[0]*(1-0.05), h_Fhisto[0] , h_Fhisto[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
   //mistagging efficiencies 5%
   TH1F* h_eff_quark_heavy_p5= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effheavy_p5[0] , h_Fhisto_effheavy_p5[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
-  TH1F* h_eff_quark_uds_p5= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effheavy_p5[0] , h_Fhisto_effheavy_p5[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
+  TH1F* h_eff_quark_uds_p5= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effuds_p5[0] , h_Fhisto_effuds_p5[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
   TH1F* h_eff_quark_heavy_m5= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effheavy_m5[0] , h_Fhisto_effheavy_m5[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
-  TH1F* h_eff_quark_uds_m5= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effheavy_m5[0] , h_Fhisto_effheavy_m5[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
+  TH1F* h_eff_quark_uds_m5= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effuds_m5[0] , h_Fhisto_effuds_m5[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
   //mistagging efficiencies 1%
   TH1F* h_eff_quark_heavy_p1= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effheavy_p1[0] , h_Fhisto_effheavy_p1[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
-  TH1F* h_eff_quark_uds_p1= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effheavy_p1[0] , h_Fhisto_effheavy_p1[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
-  TH1F* h_eff_quark_heavy_m1= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effheavy_m1[0] , h_Fhisto_effheavy_m1[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
-  TH1F* h_eff_quark_uds_m1= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effheavy_m1[0] , h_Fhisto_effheavy_m1[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
+  TH1F* h_eff_quark_uds_p1= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effuds_p1[0] , h_Fhisto_effuds_p1[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
+  TH1F* h_eff_quark_heavy_m1= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effheavy_m1[0] , h_Fhisto_effuds_m1[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
+  TH1F* h_eff_quark_uds_m1= epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_effuds_m1[0] , h_Fhisto_effuds_m1[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
 
   //
   MyFile->cd();

@@ -308,7 +308,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
       if(fabs(mc_quark_pdg[0])==5 && gamma_e<Kvcut && acol<0.3) iquark=0;
       if(fabs(mc_quark_pdg[0])==4 && gamma_e<Kvcut && acol<0.3) iquark=1;
       if(fabs(mc_quark_pdg[0])<4 && gamma_e<Kvcut && acol<0.3) iquark=2;
-      if(gamma_e>Kvcut || acol>0.15) iquark=3;
+      if(gamma_e>Kvcut || acol>0.3) iquark=3;
     } else {
       iquark=0;
     }
@@ -688,6 +688,8 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries=-1, int bkg=0, float
 void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int quark=4, TString polString="eL_pR", int method=0)
 {
 
+  //Ntotal_nocuts                                                                                                                    
+  TH1F * h_Ntotal_nocuts = new TH1F("h_Ntotal_nocuts","h_Ntotal_nocuts",20,0,1);
 
   //polarisation scenarios
   //pol=0 (eLpR), pol=1 (eRpL), pol=2 eLpRat80/30, pol=3 eRpLat80/30
@@ -866,6 +868,10 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
 
+
+
+    h_Ntotal_nocuts->Fill(0.5);
+
     //-------------------
     //Kv parton
     float gamma0_e= mc_ISR_E[0];
@@ -1022,7 +1028,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
       if(charge[0][0]!=0 && charge[1][0]!=0 )  indx_cat=0;
       else if( (charge[0][0]==0 ||  charge[1][0]==0) &&  (charge[0][0]!=0 ||  charge[1][0]!=0) ) {
 	indx_cat=1;
-	weighteff/=0.5;
+	weighteff*=0.5;
       }
       else if( charge[0][0]==0 && charge[1][0]==0 ) indx_cat=2;
       
@@ -1047,6 +1053,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
     
 
   MyFile->cd();
+  h_Ntotal_nocuts->Write();
   h_AFB->Write();
   h_AFB2->Write();
 
