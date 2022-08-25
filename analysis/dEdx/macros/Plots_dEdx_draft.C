@@ -75,7 +75,7 @@ void Labels(TString pol){
 	    QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow q#bar{q} (q=udscb)",kGray+2);
       }
     } else {
-      QQBARLabel(0.86,0.952,"");
+      QQBARLabel(0.86,0.954,"");
 
   }
 }
@@ -696,13 +696,13 @@ void Ntracks2() {
   n_sectracks_eL[0]->SetLineColor(kGreen+2);
   n_sectracks_eL[0]->SetLineWidth(3);
   n_sectracks_eL[0]->SetLineStyle(1);
-  n_sectracks_eL[0]->SetFillStyle(3001);
+  n_sectracks_eL[0]->SetFillStyle(3004);
   n_sectracks_eL[0]->SetFillColor(kGreen+2);
   n_sectracks_eL[0]->DrawNormalized("h");
 
   n_sectracks_eL[1]->SetLineColor(2);
   n_sectracks_eL[1]->SetLineWidth(3);
-  n_sectracks_eL[1]->SetFillStyle(3002);
+  n_sectracks_eL[1]->SetFillStyle(3005);
   n_sectracks_eL[1]->SetFillColor(2);
   n_sectracks_eL[1]->DrawNormalized("hsame");
  
@@ -971,7 +971,7 @@ void dEdxdistProjection(int quarkid=3) {
   g_pion->SetLineColor(4);
   g_pion->SetLineWidth(3);
   g_pion->SetLineStyle(1);
-  g_pion->SetFillStyle(3001);
+  g_pion->SetFillStyle(3004);
   g_pion->SetFillColor(4); 
   g_pion->Draw("a3");
 
@@ -983,7 +983,7 @@ void dEdxdistProjection(int quarkid=3) {
   g_kaon->SetLineColor(2);
   g_kaon->SetLineWidth(3);
   g_kaon->SetLineStyle(1);
-  g_kaon->SetFillStyle(3002);
+  g_kaon->SetFillStyle(3005);
   g_kaon->SetFillColor(2); 
   g_kaon->Draw("3");
 
@@ -1139,7 +1139,7 @@ void dEdxdistProjection2(int quarkid=3) {
   g_pion->SetLineColor(4);
   g_pion->SetLineWidth(3);
   g_pion->SetLineStyle(1);
-  g_pion->SetFillStyle(3001);
+  g_pion->SetFillStyle(3004);
   g_pion->SetFillColor(4); 
   g_pion->Draw("a3");
 
@@ -1151,7 +1151,7 @@ void dEdxdistProjection2(int quarkid=3) {
   g_kaon->SetLineColor(2);
   g_kaon->SetLineWidth(3);
   g_kaon->SetLineStyle(1);
-  g_kaon->SetFillStyle(3002);
+  g_kaon->SetFillStyle(3005);
   g_kaon->SetFillColor(2); 
   g_kaon->Draw("3");
 
@@ -1193,7 +1193,7 @@ void dEdxdistProjection2(int quarkid=3) {
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
   leg->AddEntry(test,"All secondary tracks","f");
-  leg->AddEntry(test2,"|#vec{p}_{trk}|>3 GeV","l");
+  leg->AddEntry(test2,"|#vec{p}_{trk}|>3 GeV","ple");
   leg->AddEntry(g_pion,"pions","l");
   leg->AddEntry(g_kaon,"kaons","l");
   leg->AddEntry(g_proton,"protons","l");
@@ -1655,21 +1655,21 @@ void EffPurity_dedxdist(int quarkid) {
 }
 
 void Plots_dEdx_draft() {
-  for(int i=3; i<6; i++) Mom(i);
+  /*for(int i=3; i<6; i++) Mom(i);
   for(int i=3; i<6; i++) Costheta(i);
   Ntracks();
-  Ntracks2();
+  Ntracks2();*/
 
   for(int i=4; i<6; i++)  dEdxdist(i);
-  for(int i=4; i<6; i++)  dEdxdistProjection(i);
-  for(int i=4; i<6; i++)  dEdxdistProjection2(i);
+  //for(int i=4; i<6; i++)  dEdxdistProjection(i);
+  //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 
-  NHits();
+  /* NHits();
   for(int i=4; i<6; i++) EffPurity_momentum(i);
   for(int i=4; i<6; i++) EffPurity_angle(i);
   for(int i=4; i<6; i++) EffPurity_dedxdist(i);
   dEdx(0);
-  dEdx2(0);
+  dEdx2(0);*/
 
  
 }
