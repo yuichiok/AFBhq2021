@@ -1174,7 +1174,7 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries=-1, float Kvcut=35, in
       if(fabs(mc_quark_pdg[0])==5 && gamma_e<Kvcut && acol<0.3) iquark=0;
       if(fabs(mc_quark_pdg[0])==4 && gamma_e<Kvcut && acol<0.3) iquark=1;
       if(fabs(mc_quark_pdg[0])<4 && gamma_e<Kvcut && acol<0.3) iquark=2;
-      if(gamma_e>Kvcut || acol>0.15) iquark=3;
+      if(gamma_e>Kvcut || acol>0.3) iquark=3;
     } else {
       iquark=0;
     }
