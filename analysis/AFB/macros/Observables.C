@@ -1229,7 +1229,7 @@ void Plots_R(int mode=0) {
     // AFBc_eR[n]=temp_AFBc_eR->Integral()/(temp_AFBc_eR->Integral()+temp_AFBc_eR->Integral()+temp_AFBq_eR->Integral());
 
     float ab=AFBb[n];
-    float ac=AFBq[n];
+    float ac=AFBc[n];
     float aq=AFBq[n];
     AFBb[n]=ab/(ab+ac+aq);
     AFBc[n]=ac/(ab+ac+aq);
@@ -1237,7 +1237,7 @@ void Plots_R(int mode=0) {
 
 
     ab=AFBb_eR[n];
-    ac=AFBq_eR[n];
+    ac=AFBc_eR[n];
     aq=AFBq_eR[n];
     AFBb_eR[n]=ab/(ab+ac+aq);
     AFBc_eR[n]=ac/(ab+ac+aq);
@@ -1299,7 +1299,7 @@ void Plots_R(int mode=0) {
     string2 = ", P_{e^{-}e^{+}}=(+0.8,-0.3)";
   }
   
-  TLegend *leg_b = new TLegend(0.2,0.4,0.5,0.6);
+  TLegend *leg_b = new TLegend(0.2,0.7,0.5,0.9);
   leg_b->SetTextSize(0.035);
   leg_b->SetTextFont(42);
   leg_b->AddEntry(gAFBb,TString::Format("%s#rightarrow b#bar{b}%s",pol_string1.Data(),string1.Data()),"l");
@@ -1428,7 +1428,7 @@ void Plots_R2(int mode=0) {
     // AFBc_eR[n]=temp_AFBc_eR->Integral()/(temp_AFBc_eR->Integral()+temp_AFBc_eR->Integral()+temp_AFBq_eR->Integral());
 
     float ab=AFBb[n];
-    float ac=AFBq[n];
+    float ac=AFBc[n];
     float aq=AFBq[n];
     AFBb[n]=ab/(ab+ac+aq);
     AFBc[n]=ac/(ab+ac+aq);
@@ -1436,7 +1436,7 @@ void Plots_R2(int mode=0) {
 
 
     ab=AFBb_eR[n];
-    ac=AFBq_eR[n];
+    ac=AFBc_eR[n];
     aq=AFBq_eR[n];
     AFBb_eR[n]=ab/(ab+ac+aq);
     AFBc_eR[n]=ac/(ab+ac+aq);
@@ -1498,7 +1498,7 @@ void Plots_R2(int mode=0) {
     string2 = ", P_{e^{-}e^{+}}=(+0.8,-0.3)";
   }
   
-  TLegend *leg_b = new TLegend(0.2,0.4,0.5,0.6);
+  TLegend *leg_b = new TLegend(0.2,0.7,0.5,0.9);
   leg_b->SetTextSize(0.035);
   leg_b->SetTextFont(42);
   leg_b->AddEntry(gAFBb,TString::Format("%s#rightarrow b#bar{b}%s",pol_string1.Data(),string1.Data()),"l");
@@ -1761,13 +1761,13 @@ void Plots2(TString pol="eR_pL") {
 void Observables() {
 
   //Plots_Cross();
-  for(int i=0; i<2; i++) {
-    Plots_AFB(i);
+  for(int i=0; i<1; i++) {
+    /*  Plots_AFB(i);
     Plots_AFB2(i);
     Plots_Cross0(i);
     Plots_Cross(i);
     Plots_Cross2(i);
-    Plots_CrossDiff(i);
+    Plots_CrossDiff(i);*/
     Plots_R(i);
     Plots_R2(i);
   }

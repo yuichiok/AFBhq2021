@@ -231,3 +231,56 @@ TH1F* GetHisto(int iprocess, TString histo, int pol, int iquark, float lum, floa
 
 }
 
+TH1F* GetHisto2(int iprocess, TString histo, int pol, int iquark, float lum, float norm=1, int cheatmethod=0) {
+
+  TString folder_="../results/AFB_PQ_";
+
+  TString filename = TString::Format("%spdg%i_%s_eL_pR_250GeV.root",folder_.Data(),iquark,process[iprocess].Data());
+  cout<<filename<<" "<<histo<<endl;
+  TFile *f = new TFile(filename);
+  TH1F *hstats[2];
+  hstats[0]=(TH1F*)f->Get("h_Ntotal_nocuts");
+
+  filename = TString::Format("%spdg%i_%s_eR_pL_250GeV.root",folder_.Data(),iquark,process[iprocess].Data());
+  TFile *f2 = new TFile(filename);
+  hstats[1]=(TH1F*)f2->Get("h_Ntotal_nocuts");
+
+  float luminosity[2];
+  if(hstats[0]->Integral()>0) luminosity[0]=hstats[0]->Integral()/cross_section[0][iprocess];
+  else luminosity[0]=0;
+  if(hstats[1]->Integral()>0) luminosity[1]=hstats[1]->Integral()/cross_section[1][iprocess];
+  else luminosity[1]=0;
+  
+ 
+  filename = TString::Format("%spdg%i_%s_eL_pR_250GeV_cheatmethod_%i.root",folder.Data(),iquark,process[iprocess].Data(),cheatmethod);
+  cout<<filename<<" "<<histo<<endl;
+  TFile *ff = new TFile(filename);
+  TH1F *h[2];
+  h[0]= (TH1F*)ff->Get(histo);
+
+  filename = TString::Format("%spdg%i_%s_eR_pL_250GeV_cheatmethod_%i.root",folder.Data(),iquark,process[iprocess].Data(),cheatmethod);
+  TFile *ff2 = new TFile(filename);
+  h[1]= (TH1F*)ff2->Get(histo);
+
+   
+  if(pol==0 || pol==1) {
+    //    cout<<"Scale pol:"<<pol<<endl;
+    h[pol]=ScaleHisto(h[pol],luminosity[pol],lum,norm);
+    //    h[pol]->Sumw2();
+    return h[pol];
+  }
+
+  if(pol>1) {
+    
+    TH1F* hpol=PolHisto(h[0],h[1],pol,luminosity,lum,norm);
+    //hpol->Sumw2();
+    //hpol->Rebin(40);
+    delete f;
+    return hpol;
+  }
+
+
+  return NULL;
+
+}
+

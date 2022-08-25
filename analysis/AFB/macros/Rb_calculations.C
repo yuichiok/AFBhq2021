@@ -188,6 +188,14 @@ void R_b( int pol=0, float lum=-1) {
   TH1F *h_Fhisto_effuds10[2];
   h_Fhisto_effuds10[0]=FHistoEffErr(pol, 1, 5, lum,0.,0.1);
   h_Fhisto_effuds10[1]=FHistoEffErr(pol, 2, 5, lum,0.,0.1);
+
+  TH1F *h_Fhisto_effc5[2];
+  h_Fhisto_effc5[0]=FHistoEffErr(pol, 1, 5, lum,0.05);
+  h_Fhisto_effc5[1]=FHistoEffErr(pol, 2, 5, lum,0.05);
+
+  TH1F *h_Fhisto_effuds5[2];
+  h_Fhisto_effuds5[0]=FHistoEffErr(pol, 1, 5, lum,0.,0.05);
+  h_Fhisto_effuds5[1]=FHistoEffErr(pol, 2, 5, lum,0.,0.05);
   
   //MC eff quark calculation
   TH1F *eff_MC;
@@ -204,6 +212,8 @@ void R_b( int pol=0, float lum=-1) {
   TH1F* h_eff_quark_Rcdown5 = epsilon_tag(d_Rparton[1], d_Rparton[0]*(1-0.05), h_Fhisto[0] , h_Fhisto[1] , h_mistag_c,h_mistag_uds, rho_MC);
   TH1F* h_eff_quark_ec10= epsilon_tag(d_Rparton[0], d_Rparton[1], h_Fhisto_effc10[0] , h_Fhisto_effc10[1] , h_mistag_c_truth,h_mistag_uds_truth, rho_MC,true);
   TH1F* h_eff_quark_euds10= epsilon_tag(d_Rparton[0], d_Rparton[1], h_Fhisto_effc10[0] , h_Fhisto_effc10[1] , h_mistag_c_truth,h_mistag_uds_truth, rho_MC,true);
+  TH1F* h_eff_quark_ec5= epsilon_tag(d_Rparton[0], d_Rparton[1], h_Fhisto_effc5[0] , h_Fhisto_effc5[1] , h_mistag_c_truth,h_mistag_uds_truth, rho_MC,true);
+  TH1F* h_eff_quark_euds5= epsilon_tag(d_Rparton[0], d_Rparton[1], h_Fhisto_effc5[0] , h_Fhisto_effc5[1] , h_mistag_c_truth,h_mistag_uds_truth, rho_MC,true);
 
   cout<<" C-quark, Lum:"<<lum<<"fb-1, pol="<<pol<<" ()=left, 1=right, 2=80/30 left, 3=80/30 right)"<<endl;
   //RParton
@@ -225,7 +235,14 @@ void R_b( int pol=0, float lum=-1) {
   TH1F *Rmeasured_effuds_10=DT_R(h_Fhisto_effuds10[0], h_Fhisto_effuds10[1], h_eff_quark_euds10, rho_MC, d_Rparton[1], h_mistag_c, h_mistag_uds);
   fit_Rq(Rmeasured_effuds_10," Reco, Delta_effuds=10% ");
 
- 
+  TH1F *Rmeasured_effc_5=DT_R(h_Fhisto_effc5[0], h_Fhisto_effc5[1], h_eff_quark_ec5, rho_MC, d_Rparton[1], h_mistag_c, h_mistag_uds);
+  fit_Rq(Rmeasured_effc_5," Reco, Delta_effc=5% ");
+
+  //uds-mistagg
+  TH1F *Rmeasured_effuds_5=DT_R(h_Fhisto_effuds5[0], h_Fhisto_effuds5[1], h_eff_quark_euds5, rho_MC, d_Rparton[1], h_mistag_c, h_mistag_uds);
+  fit_Rq(Rmeasured_effuds_5," Reco, Delta_effuds=5% ");
+
+  
   TH1F *Rmeasured_Rcup1=DT_R(h_Fhisto[0], h_Fhisto[1], h_eff_quark_Rcup1, rho_MC, d_Rparton[1], h_mistag_c, h_mistag_uds);
   TH1F *Rmeasured_Rcdown1=DT_R(h_Fhisto[0], h_Fhisto[1], h_eff_quark_Rcdown1, rho_MC, d_Rparton[1], h_mistag_c, h_mistag_uds);
   fit_Rq(Rmeasured_Rcup1,Rmeasured_Rcdown1," DeltaRc=1% ");
@@ -233,7 +250,7 @@ void R_b( int pol=0, float lum=-1) {
   TH1F *Rmeasured_Rcup5=DT_R(h_Fhisto[0], h_Fhisto[1], h_eff_quark_Rcup5, rho_MC, d_Rparton[1], h_mistag_c, h_mistag_uds);
   TH1F *Rmeasured_Rcdown5=DT_R(h_Fhisto[0], h_Fhisto[1], h_eff_quark_Rcdown5, rho_MC, d_Rparton[1], h_mistag_c, h_mistag_uds);
   fit_Rq(Rmeasured_Rcup5,Rmeasured_Rcdown5," DeltaRc=5% ");
- 
+  
   
 }
 
@@ -341,12 +358,16 @@ void R_bbkg( int pol=0, float lum=-1) {
 
   float k=0;
 
-  for(int i=0; i<5; i++) {
+  for(int i=0; i<2; i++) {
     float error_bkg=0.0;
     if(i==1) error_bkg=0.01;
     if(i==2) error_bkg=0.05;
     if(i==3) error_bkg=0.1;
     if(i==4) error_bkg=1;
+
+    //new
+    if(i==1) error_bkg=0.05;
+    if(i==2) error_bkg=1;
 
     //F fractions
     TH1F *h_Fhisto[2];
@@ -416,7 +437,7 @@ void Rb_calculations() {
   for(int pol=2; pol<3; pol++) {
     cout<<" Plots "<<endl;
     cout<<"  ------------------------------------------ "<<endl;
-    RPlots_b(pol,900);
+    //RPlots_b(pol,900);
     // cout<<"  ------------------------------------------ "<<endl;
     
     R_b(pol,900);
@@ -426,7 +447,7 @@ void Rb_calculations() {
     // cout<<" bkg "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
     R_bbkg(pol,900);
-    R_theory_vs_reco(pol,900);
+    //R_theory_vs_reco(pol,900);
     
   }
 }
