@@ -535,13 +535,13 @@ void Rc_calculations() {
     //PreSelection(pol,900);
     RPlots_c(pol,-1);
     // cout<<"  ------------------------------------------ "<<endl;
-    /*    R_c(pol,900);
+    R_c(pol,900);
     // cout<<" polarization "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
     R_cpol(pol,900);
     // cout<<" bkg "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
     R_cbkg(pol,900);
-    R_theory_vs_reco(pol,900);*/
+    R_theory_vs_reco(pol,900);
   }
 }

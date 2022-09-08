@@ -8,6 +8,9 @@
 *.slcio
 *.log
 *.txt
+*.eps
+*.pdf
+*.png
 
 # Prerequisites
 *.d

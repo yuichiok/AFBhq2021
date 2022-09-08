@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "Plots_dEdx2.C": "cpp",
+        "JetTag.C": "cpp",
+        "Rc_calculations.C": "cpp",
+        "AFB1.C": "cpp",
+        "cross_calc.C": "cpp",
+        "saveeff.C": "cpp",
+        "AFB2.C": "cpp",
+        "AFB3.C": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
+}

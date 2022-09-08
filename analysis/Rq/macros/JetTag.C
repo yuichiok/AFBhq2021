@@ -295,10 +295,10 @@ void MCuneffPlotPols(int sample=0, int iquark=5, float lum=-1) {
 
 
 void JetTag() {
-
+  
   int sample=4; //3= signal, no cuts in rad return; 4= signa+radreturncut, 0=zz, 1=hz, 2=ww
 
-  DTeffPlotPols(sample,5,900);
+  DTeffPlotPols(sample,4,900);
   // MCeffPlotPols(sample,5,900);
   //  MCuneffPlotPols(sample,5,900);
 

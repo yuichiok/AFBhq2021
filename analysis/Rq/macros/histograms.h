@@ -24,7 +24,7 @@
 #include "../../common/cross_sections.h"
 
 
-TString folder="../results/Rq_";
+TString folder="../results_ctag0875/Rq_";//"../results/Rq_";
 float p1error=0;
 float p2error=0;
 //pol=0 eLpR
