@@ -579,7 +579,7 @@ void Ntracks() {
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
   c_mom->cd(1);
   // c_mom->SetGrid();
-  n_sectracks_eL[0]->GetXaxis()->SetTitle("# secondary vertices");
+  n_sectracks_eL[0]->GetXaxis()->SetTitle("number of vtx per jet");
   //  n_sectracks_eL[0]->GetYaxis()->SetTitle("a.u.");
   n_sectracks_eL[0]->GetXaxis()->SetRangeUser(0,2.5);
 
@@ -670,14 +670,14 @@ void Ntracks2() {
     if(quarkid==4) squark="cquark";
     if(quarkid==5) squark="bquark";
     
-    TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_0GeV.root";
+    TString filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_eL_pR_0GeV.root";
     TFile *f = new TFile(filename);
     cout<<filename<<endl;
     n_sectracks_eL[quarkid-3] = (TH1F*)f->Get("n_sectracks");
     if(quarkid==3) test = (TH1F*)f->Get("kdEdx_dist_proton");
 
 
-    filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_0GeV.root";
+    filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_eR_pL_0GeV.root";
     TFile *f2 = new TFile(filename);
     n_sectracks_eR[quarkid-3] = (TH1F*)f2->Get("n_sectracks");
  
@@ -688,7 +688,7 @@ void Ntracks2() {
   c_mom->cd(1);
   // c_mom->SetGrid();
   gPad->SetLogy();
-  n_sectracks_eL[0]->GetXaxis()->SetTitle("# secondary tracks");
+  n_sectracks_eL[0]->GetXaxis()->SetTitle("number of vtx-tracks per jet");
   //n_sectracks_eL[0]->GetYaxis()->SetTitle("a.u.");
   n_sectracks_eL[0]->GetXaxis()->SetRangeUser(0,20);
   n_sectracks_eL[0]->GetYaxis()->SetRangeUser(1000,300000000);
@@ -1657,10 +1657,10 @@ void EffPurity_dedxdist(int quarkid) {
 void Plots_dEdx_draft() {
   /*for(int i=3; i<6; i++) Mom(i);
   for(int i=3; i<6; i++) Costheta(i);
-  Ntracks();
-  Ntracks2();*/
+  Ntracks();*/
+  Ntracks2();
 
-  for(int i=4; i<6; i++)  dEdxdist(i);
+  //  for(int i=4; i<6; i++)  dEdxdist(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 

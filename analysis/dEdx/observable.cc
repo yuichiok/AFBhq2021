@@ -65,6 +65,14 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   TH1F* costheta_electron = new TH1F("costheta_electron","costheta_electron",40,-1,1);
   TH1F* costheta_muon = new TH1F("costheta_muon","costheta_muon",40,-1,1);
   TH1F* costheta_others = new TH1F("costheta_others","costheta_others",40,-1,1);
+
+  TH1F* d0_novtx_kaon = new TH1F("d0_novtx_kaon","d0_novtx_kaon",40,-1,1);
+  TH1F* d0_novtx_proton = new TH1F("d0_novtx_proton","d0_novtx_proton",40,-1,1);
+  TH1F* d0_novtx_pion = new TH1F("d0_novtx_pion","d0_novtx_pion",40,-1,1);
+  TH1F* d0_novtx_electron = new TH1F("d0_novtx_electron","d0_novtx_electron",40,-1,1);
+  TH1F* d0_novtx_muon = new TH1F("d0_novtx_muon","d0_novtx_muon",40,-1,1);
+  TH1F* d0_novtx_others = new TH1F("d0_novtx_others","d0_novtx_others",40,-1,1);
+
   TH2F* p_costheta_kaon = new TH2F("p_costheta_kaon","p_costheta_kaon",125,-0.5,124.5,40,-1,1);
   TH2F* p_costheta_proton = new TH2F("p_costheta_proton","p_costheta_proton",125,-0.5,124.5,40,-1,1);
   TH2F* p_costheta_pion = new TH2F("p_costheta_pion","p_costheta_pion",125,-0.5,124.5,40,-1,1);
@@ -244,7 +252,8 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	double nt=0;
 	//	if(jet_btag[ijet]>0.8) {
 	float nkaonvtx=0;
-	float nsectracksjet=0;
+	float nsectracksjet0=0;
+	float nsectracksjet1=0;
 	float nvtx=0;
 	if(ijet==0) n_secvtx->Fill(jet_nvtx_j1);
 	if(ijet==1) n_secvtx->Fill(jet_nvtx_j2);
@@ -265,7 +274,8 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	  if( pfo_ntracks[ipfo]!=1) continue;
 
 	  nsectracksvtx[pfo_vtx[ipfo]]++;
-	  nsectracksjet++;
+	  if(pfo_match[ipfo]==0) nsectracksjet0++;
+          if(pfo_match[ipfo]==1) nsectracksjet1++;
 
 	  float costheta;
 	  std::vector<float> p_track;
@@ -490,7 +500,8 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	  }
 	}
 	n_kaon_vtx->Fill(nkaonvtx);
-	n_sectracks->Fill(nsectracksjet);
+	n_sectracks->Fill(nsectracksjet0);
+        n_sectracks->Fill(nsectracksjet1);
  	for(int isec=0; isec<20; isec++) {
 	  if(nsectracksvtx[isec]>0) {
 	    n_sectracks_vtx->Fill(nsectracksvtx[isec]);
