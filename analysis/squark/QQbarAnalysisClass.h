@@ -39,10 +39,11 @@ public :
   virtual void     Init(TTree *tree);
 
   //analysis
-  virtual void AFBreconstruction(int , float , int, TString);
+  virtual void AFBreconstruction(int , TString, int, float, float);
 
   virtual float ChargeKJetCheat(int ,float , float);
   virtual float ChargeKJet(int ,float , float);
+  virtual float ChargeKJetTight(int ,float , float);
 
 
 
