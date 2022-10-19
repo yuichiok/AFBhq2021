@@ -4,7 +4,7 @@
 #include "TApplication.h"
 
 
-int analysis(TString file, TString output, int tight=0){
+int analysis(TString file, TString output, int tight=0, int bkg=0){
 
   cout<< " "<<endl;
   cout<< file << endl;
@@ -13,7 +13,7 @@ int analysis(TString file, TString output, int tight=0){
   cout<<file<<endl;
   QQbarAnalysisClass ss3(file);
 
-  ss3.AFBreconstruction(-1,TString::Format("%s",output.Data()),tight); 
+  ss3.AFBreconstruction(-1,TString::Format("%s",output.Data()),tight,bkg); 
 
   //  ss3.dEdx(-1,output,false,ignoreoverlay);
   

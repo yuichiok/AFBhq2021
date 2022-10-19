@@ -3,7 +3,7 @@
 #include "TPad.h"
 
 
-void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL_pR", int tight=0, float Kvcut=35, float acolcut=0.3)
+void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL_pR", int tight=0, float Kvcut=35, float acolcut=0.3, int bkg=0)
 {
 
   //optimal dedx cut
@@ -89,7 +89,8 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
     TVector3 v1(mc_quark_ps_jet_px[0],mc_quark_ps_jet_py[0],mc_quark_ps_jet_pz[0]);
     TVector3 v2(mc_quark_ps_jet_px[1],mc_quark_ps_jet_py[1],mc_quark_ps_jet_pz[1]);
     float acol=GetSinacol(v1,v2);
-    if( gamma_e>Kvcut  ||  acol>acolcut) continue;
+    if( bkg==0 && (gamma_e>Kvcut  ||  acol>acolcut) )continue;
+    if( bkg==1 && gamma_e<Kvcut && acol<acolcut )continue;
 
     //jet direction
     std::vector<float> p;
@@ -144,7 +145,13 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
     // we require both jets to have one of such kaons and that both have opposite charges
     float ch0_cheat=ChargeKJetCheat(0,pcut,offsetcut);
     float ch1_cheat=ChargeKJetCheat(1,pcut,offsetcut);
-    if(ch0_cheat*ch1_cheat<0) {
+    float ch0_cheat_ti=ChargeKJetCheat(0,pcut*2.,offsetcut);
+    float ch1_cheat_ti=ChargeKJetCheat(1,pcut*2.,offsetcut);
+    if(ch0_cheat_ti!=0) ch0_cheat=ch0_cheat_ti;
+    if(ch1_cheat_ti!=0) ch1_cheat=ch1_cheat_ti;
+     if( (tight==2 && ch0_cheat_ti*ch1_cheat_ti<0 )
+    || (tight==1 && (ch0_cheat*ch1_cheat<0 && (ch0_cheat_ti!=0 || ch1_cheat_ti!=0) ))  
+    || (tight==0 && ch0_cheat*ch1_cheat<0 ) ){
       for(int q=1; q<6; q++) {
         if(fabs(mc_quark_pdg[0])==q) {
           h_N[q][8]->Fill(fabs(costheta));
