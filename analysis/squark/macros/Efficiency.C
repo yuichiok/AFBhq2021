@@ -80,7 +80,7 @@ void EffPlotsPresel(int isel=6, TString pol="eL_pR") {
 
   Labels(pol);
 
-  TLegend *leg2 = new TLegend(0.57,0.76,0.85,0.9);//(0.4,0.3,0.5,0.6);
+  TLegend *leg2 = new TLegend(0.57,0.7,0.85,0.9);//(0.4,0.3,0.5,0.6);
   leg2->SetTextSize(0.035);
   for(int q=1; q<6; q++) leg2->AddEntry(h_N_isel[q],TString::Format("%s, %s",quark_string[q].Data(),pol.Data()),"l");
   leg2->SetFillStyle(0);
@@ -89,8 +89,8 @@ void EffPlotsPresel(int isel=6, TString pol="eL_pR") {
   leg2->SetBorderSize(0);
   leg2->Draw();
 
+  c_eff_MC->Print(TString::Format("./c_eff_MC_sel%i_%s.eps",isel,pol.Data()));
 
-  //c_eff_MC->Print(TString::Format("summaryplots/UnEff_sample_%i_pdg_%i_twopols.pdf",sample,iquark));
 }
 
 void EffPlotsKID(int isel=6, TString pol="eL_pR") {
@@ -143,7 +143,7 @@ void EffPlotsKID(int isel=6, TString pol="eL_pR") {
 
     Labels(pol);
 
-    TLegend *leg2 = new TLegend(0.57,0.76,0.85,0.9,KID);//(0.4,0.3,0.5,0.6);
+    TLegend *leg2 = new TLegend(0.57,0.7,0.85,0.9,KID);//(0.4,0.3,0.5,0.6);
     leg2->SetTextSize(0.035);
     for(int q=1; q<6; q++) leg2->AddEntry(h_N_isel[q],TString::Format("%s, %s",quark_string[q].Data(),pol.Data()),"l");
     leg2->SetFillStyle(0);
@@ -153,7 +153,7 @@ void EffPlotsKID(int isel=6, TString pol="eL_pR") {
     leg2->Draw();
 
 
-  //c_eff_MC->Print(TString::Format("summaryplots/UnEff_sample_%i_pdg_%i_twopols.pdf",sample,iquark));
+  c_eff_MC->Print(TString::Format("./c_eff_MC_sel%i_%s_%s.eps",isel,KID.Data(),pol.Data()));
   }
 }
 
@@ -161,9 +161,14 @@ void EffPlotsKID(int isel=6, TString pol="eL_pR") {
 
 void Efficiency() {
 
-  int isel=9;
-  //EffPlotsPresel(isel);
-  EffPlotsKID(isel);
+  for(int isel=0; isel<10; isel++) {
+    EffPlotsPresel(isel,"eL_pR");
+    EffPlotsPresel(isel,"eR_pL");
+    if(isel>7) {
+      EffPlotsKID(isel,"eL_pR");
+      EffPlotsKID(isel,"eR_pL");
+    }
+  }
 
   //
   //MCeffPlotPols(sample,5,900);
