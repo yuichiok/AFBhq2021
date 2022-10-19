@@ -105,9 +105,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
     p_cheat.push_back(mc_quark_py[0]-mc_quark_py[1]);
     p_cheat.push_back(mc_quark_pz[0]-mc_quark_pz[1]);
     costheta_cheat=GetCostheta(p_cheat);
-    costheta_cheat=  (mc_quark_charge[0] < 0) ? -costheta_cheat: costheta_cheat;
-    if(fabs(mc_quark_pdg[0])==5 || fabs(mc_quark_pdg[0])==3 || fabs(mc_quark_pdg[0])==1) costheta_cheat*=-1;
-    costheta_cheat= costheta * costheta_cheat/fabs(costheta_cheat); //we are interested in the sign. 
+    costheta_cheat= fabs(costheta) * costheta_cheat/fabs(costheta_cheat); //we are interested in the sign. 
 
     //run the preselection steps, 0-6 are steps to remove radiative return and keep same fraction of udscb quarks
     for(int isel=0; isel<7; isel++) {
