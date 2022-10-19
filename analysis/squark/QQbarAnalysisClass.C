@@ -98,7 +98,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
     p.push_back(jet_pz[0]-jet_pz[1]);
     float costheta=GetCostheta(p);
     
-    //cheat angle
+    //cheat quark-charge
     float costheta_cheat=1;
     std::vector<float> p_cheat;
     p_cheat.push_back(mc_quark_px[0]-mc_quark_px[1]);
@@ -107,6 +107,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
     costheta_cheat=GetCostheta(p_cheat);
     costheta_cheat=  (mc_quark_charge[0] < 0) ? -costheta_cheat: costheta_cheat;
     if(fabs(mc_quark_pdg[0])==5 || fabs(mc_quark_pdg[0])==3 || fabs(mc_quark_pdg[0])==1) costheta_cheat*=-1;
+    costheta_cheat= costheta * costheta_cheat/fabs(costheta_cheat); //we are interested in the sign. 
 
     //run the preselection steps, 0-6 are steps to remove radiative return and keep same fraction of udscb quarks
     for(int isel=0; isel<7; isel++) {
@@ -118,7 +119,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
           if(fabs(mc_quark_pdg[0])==q) {
             h_N[q][isel]->Fill(fabs(costheta)); //we use the jet angle, using the mc 
             //angle is also ok but then we need to correct for the resolution effects 
-            //(mc angle vsjet angle) with an unfolding correction or a covariant matrix or similar
+            //(mc angle vs jet angle) with an unfolding correction or a covariant matrix or similar
             h_AFB_true[q][isel]->Fill(costheta_cheat); //we know the direction
             //we don't fill the reco, since we still have no info about the jet charge
           }
