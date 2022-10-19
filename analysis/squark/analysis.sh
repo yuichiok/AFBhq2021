@@ -21,8 +21,10 @@ source ${local}/../init_ilcsoft.sh
 cd ${local}/
 root -l -q analysis.cc\(\"${file}\",\"${process}_${pol}_${name}\",0\)
 root -l -q analysis.cc\(\"${file}\",\"${process}_${pol}_${name}\",1\)
+root -l -q analysis.cc\(\"${file}\",\"${process}_${pol}_${name}\",2\) 
 mv s_AFB_loose_${process}_${pol}_${name}_250GeV.root ${local}/output/.
 mv s_AFB_tight_${process}_${pol}_${name}_250GeV.root ${local}/output/.
+mv s_AFB_doubletight_${process}_${pol}_${name}_250GeV.root ${local}/output/.
 
 EOF
 
