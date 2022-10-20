@@ -2,6 +2,11 @@
 *~
 *#
 
+# log files
+log_*
+errors_*
+output_*
+
 #output files
 *.root
 *.lcio
