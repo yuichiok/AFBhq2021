@@ -14,6 +14,7 @@ int analysis(TString file, TString output, int tight=0, int bkg=0){
   QQbarAnalysisClass ss3(file);
 
   ss3.AFBreconstruction(-1,TString::Format("%s",output.Data()),tight,35,0.3,bkg); 
+  if(tight==0) ss3.KaonEfficiency(-1, TString::Format("%s",output.Data()),35,0.3,bkg);
 
   //  ss3.dEdx(-1,output,false,ignoreoverlay);
   

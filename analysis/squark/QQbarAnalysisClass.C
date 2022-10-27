@@ -286,25 +286,29 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
   //ofssets for kaon seleciton
   float offsetcut=1.0;
 
+
+  //Ntotal_nocuts                                                                                                                    
+  TH1F * h_Ntotal_nocuts = new TH1F("h_Ntotal_nocuts","h_Ntotal_nocuts",20,0,1);
+
   //initialize histograms
-  TH1F * h_N_K_MC[6];//this is used to calculate efficiencies
-  TH1F * h_N_track_K_correct[6][2];
-  TH1F * h_N_track_K_wrong[6][2];
-  TH1F * h_N_track_K_true[6];
+  TH2F * h_N_K_MC[6];//this is used to calculate efficiencies
+  TH2F * h_N_track_K_correct[6][2];
+  TH2F * h_N_track_K_wrong[6][2];
+  TH2F * h_N_track_K_true[6];
 
   for(int q=0; q<6; q++) {
-    h_N_K_MC[q]= new TH1F(TString::Format("h_N_K_MC_q%i",q),TString::Format("h_N_K_MC_q%i",q),50,0,125,40,-1,1);
-    h_N_track_K_true[q]= new TH1F(TString::Format("h_N_track_K_true_q%i",q),TString::Format("h_N_track_K_true_q%i",q),50,0,125,40,-1,1);
+    h_N_K_MC[q]= new TH2F(TString::Format("h_N_K_MC_q%i",q),TString::Format("h_N_K_MC_q%i",q),50,0,125,40,-1,1);
+    h_N_track_K_true[q]= new TH2F(TString::Format("h_N_track_K_true_q%i",q),TString::Format("h_N_track_K_true_q%i",q),50,0,125,40,-1,1);
     for(int i=0; i<2; i++) {
-      h_N_track_K_correct[q][i]= new TH1F(TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),50,0,125,40,-1,1);
-      h_N_track_K_wrong[q][i]= new TH1F(TString::Format("h_N_track_K_wrong_q%_sel%i",q,i),TString::Format("h_N_track_K_wrong_q%i_sel%i",q,i),50,0,125,40,-1,1);
+      h_N_track_K_correct[q][i]= new TH2F(TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),50,0,125,40,-1,1);
+      h_N_track_K_wrong[q][i]= new TH2F(TString::Format("h_N_track_K_wrong_q%i_sel%i",q,i),TString::Format("h_N_track_K_wrong_q%i_sel%i",q,i),50,0,125,40,-1,1);
     } 
     
   }
  
   //**************
   //new file
-  TString filename=TString::Format("s_K_eff_tight_%s_250GeV.root",process.Data());
+  TString filename=TString::Format("s_K_eff_%s_250GeV.root",process.Data());
 
   TFile *MyFile = new TFile(filename,"RECREATE");
   MyFile->cd();
@@ -371,7 +375,7 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
         //reconstructed tracks, but true PID
         for(int ijet=0; ijet<2; ijet++) {
           std::vector<int> i_pfo_truth=NPFOKJetCheat(ijet,offsetcut);
-          for(int i=0; i<i_pfo_truth(); i++) {
+          for(int i=0; i<i_pfo_truth.size(); i++) {
             float momentum = sqrt (pow(pfo_px[i_pfo_truth.at(i)],2) +pow(pfo_py[i_pfo_truth.at(i)],2) +pow(pfo_pz[i_pfo_truth.at(i)],2) );
             float costheta_temp;
             std::vector<float> p_track;
@@ -388,7 +392,7 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
         for(int ijet=0; ijet<2; ijet++) {
 	        //loose
           std::vector<int> i_pfo_loose=NPFOKJet(ijet,offsetcut,0);
-          for(int i=0; i<i_pfo_loose(); i++) {
+          for(int i=0; i<i_pfo_loose.size(); i++) {
             int ipfo=fabs(i_pfo_loose.at(i));
             if(ipfo==100000) ipfo=0;
 	          float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
@@ -404,7 +408,7 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
           i_pfo_loose.clear();
 
           std::vector<int> i_pfo_tight=NPFOKJet(ijet,offsetcut,1);
-          for(int i=0; i<i_pfo_tight(); i++) {
+          for(int i=0; i<i_pfo_tight.size(); i++) {
             int ipfo=fabs(i_pfo_tight.at(i));
             if(ipfo==100000) ipfo=0;
 	          float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
@@ -561,7 +565,7 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
     std::vector<int> i_mc_stable;
 
     for(int imc_stable=0; imc_stable<mc_stable_n; imc_stable++) {
-      if(fabs(n_mc_stable_pdg[imc_stable])!=321) continue;
+      if(fabs(mc_stable_pdg[imc_stable])!=321) continue;
       i_mc_stable.push_back(imc_stable);
     }
 
