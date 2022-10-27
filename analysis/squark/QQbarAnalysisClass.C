@@ -276,7 +276,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
 }
 
 
-void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR", int tight=0, float Kvcut=35, float acolcut=0.3, int bkg=0)
+void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR", float Kvcut=35, float acolcut=0.3, int bkg=0)
 {
 
   //optimal dedx cut
@@ -304,10 +304,7 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
  
   //**************
   //new file
-  TString filename;
-  if(tight==1) filename=TString::Format("s_AFB_tight_%s_250GeV.root",process.Data());
-  if(tight==2) filename=TString::Format("s_AFB_doubletight_%s_250GeV.root",process.Data());
-  if(tight==0) filename=TString::Format("s_AFB_loose_%s_250GeV.root",process.Data());
+  TString filename=TString::Format("s_K_eff_tight_%s_250GeV.root",process.Data());
 
   TFile *MyFile = new TFile(filename,"RECREATE");
   MyFile->cd();
@@ -430,26 +427,18 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
 
     
 
-    MyFile->cd();
-    h_Ntotal_nocuts->Write();
-    for (int isel=0; isel<10; isel++) {
-      for(int q=1; q<6; q++) {
-	h_N[q][isel]->Write();
-	h_AFB_true[q][isel]->Write();
-	h_AFB_reco[q][isel]->Write();
-      }
+  MyFile->cd();
+  h_Ntotal_nocuts->Write();
+  for(int q=0; q<6; q++) {
+    for (int isel=0; isel<2; isel++) {
+      h_N_track_K_correct[q][isel]->Write();
+ 	    h_N_track_K_correct[q][isel]->Write();
     }
-
-    // for(int q=1; q<6; q++) {
-    //   h_ntracks[q]->Write();
-    //   h_npfos[q]->Write();
-    //   h_noffsets[q]->Write();
-    //   h_kaon_candidates[q]->Write();
-    //   h_mom_charged[q]->Write();
-    //   h_jetmass[q]->Write();
-    // }
-
+    h_N_track_K_true[q]->Write();
+    h_N_K_MC[q]->Write();
   }
+
+}
 
 
   float QQbarAnalysisClass::ChargeKJetCheat(int ijet, float pcut=10., float offset_cut=1){

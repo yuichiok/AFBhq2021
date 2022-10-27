@@ -40,6 +40,8 @@ public :
 
   //analysis
   virtual void AFBreconstruction(int , TString, int, float, float, int);
+  virtual void KaonEfficiency(int , TString, float, float, int);
+
 
   virtual float ChargeKJetCheat(int ,float , float);
   virtual float ChargeKJet(int ,float , float);
