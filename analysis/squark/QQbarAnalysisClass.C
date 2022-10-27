@@ -337,8 +337,8 @@ float QQbarAnalysisClass::ChargeKJet(int ijet, float pcut=10., float offset_cut=
     if(dedx_dist <dedxcut_down || dedx_dist > dedxcut_up) continue;
     
     //select the kaon-pfo with highest momentum
-    if(momentum>momentum_kaon_max && fabs(dedx_dist)<kaonness_diff) {
-      kaonness_diff=fabs(dedx_dist);
+    if(momentum>momentum_kaon_max ) {
+      //kaonness_diff=fabs(dedx_dist);
       momentum_kaon_max=momentum;
       n_pfo_selected=ipfo;
     }
@@ -380,8 +380,8 @@ float QQbarAnalysisClass::ChargeKJetTight(int ijet, float pcut=10., float offset
     if(dedx_dist <dedxcut_down/2. || dedx_dist > 0) continue;
     
     //select the kaon-pfo with highest momentum
-    if(momentum>momentum_kaon_max && fabs(dedx_dist)<kaonness_diff) {
-      kaonness_diff=fabs(dedx_dist);
+    if(momentum>momentum_kaon_max ) {
+      //kaonness_diff=fabs(dedx_dist);
       momentum_kaon_max=momentum;
       n_pfo_selected=ipfo;
     }

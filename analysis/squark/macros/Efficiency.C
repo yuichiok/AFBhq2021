@@ -89,7 +89,7 @@ void EffPlotsPresel(int isel=6, TString pol="eL_pR") {
   leg2->SetBorderSize(0);
   leg2->Draw();
 
-  c_eff_MC->Print(TString::Format("./c_eff_MC_sel%i_%s.pdf",isel,pol.Data()));
+  c_eff_MC->Print(TString::Format("./c_eff_MC_sel%i_%s.png",isel,pol.Data()));
 
 }
 
@@ -153,7 +153,7 @@ void EffPlotsKID(int isel=6, TString pol="eL_pR") {
     leg2->Draw();
 
 
-  c_eff_MC->Print(TString::Format("./c_eff_MC_sel%i_%s_%s.pdf",isel,KID.Data(),pol.Data()));
+  c_eff_MC->Print(TString::Format("./c_eff_MC_sel%i_%s_%s.png",isel,KID.Data(),pol.Data()));
   }
 }
 

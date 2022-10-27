@@ -127,7 +127,7 @@ void ContaminationPlots(int isel=6, TString pol="eL_pR") {
     leg_true->SetBorderSize(0);
     leg_true->Draw();
 
-    c_eff_MC_true->Print(TString::Format("c_cont_true_MC_sel%i_%s_%s.pdf",isel,KID.Data(),pol.Data()));
+    c_eff_MC_true->Print(TString::Format("c_cont_true_MC_sel%i_%s_%s.png",isel,KID.Data(),pol.Data()));
 //--------------------------------
     THStack *bkg_reco = new THStack("bkg_reco","");
     for(int i=1; i<7; i++) {
@@ -167,8 +167,8 @@ void ContaminationPlots(int isel=6, TString pol="eL_pR") {
     leg_reco->Draw();
 
 
-  //c_eff_MC->Print(TString::Format("summaryplots/UnEff_sample_%i_pdg_%i_twopols.pdf",sample,iquark));
-    c_eff_MC_reco->Print(TString::Format("c_cont_reco_MC_sel%i_%s_%s.pdf",isel,KID.Data(),pol.Data()));
+  //c_eff_MC->Print(TString::Format("summaryplots/UnEff_sample_%i_pdg_%i_twopols.png",sample,iquark));
+    c_eff_MC_reco->Print(TString::Format("c_cont_reco_MC_sel%i_%s_%s.png",isel,KID.Data(),pol.Data()));
 
   }
 }

@@ -111,7 +111,7 @@ void MigrationsPlots(int isel=6, TString pol="eL_pR") {
     leg2->Draw();
 
 
-  c_migrations_MC->Print(TString::Format("c_migrations_MC_sel%i_%s_%s.pdf",isel,KID.Data(),pol.Data()));
+  c_migrations_MC->Print(TString::Format("c_migrations_MC_sel%i_%s_%s.png",isel,KID.Data(),pol.Data()));
   }
 }
 
