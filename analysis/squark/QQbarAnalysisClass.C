@@ -297,11 +297,11 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
   TH2F * h_N_track_K_true[6];
 
   for(int q=0; q<6; q++) {
-    h_N_K_MC[q]= new TH2F(TString::Format("h_N_K_MC_q%i",q),TString::Format("h_N_K_MC_q%i",q),50,0,125,40,-1,1);
-    h_N_track_K_true[q]= new TH2F(TString::Format("h_N_track_K_true_q%i",q),TString::Format("h_N_track_K_true_q%i",q),50,0,125,40,-1,1);
+    h_N_K_MC[q]= new TH2F(TString::Format("h_N_K_MC_q%i",q),TString::Format("h_N_K_MC_q%i",q),40,-1,1,50,0,125);
+    h_N_track_K_true[q]= new TH2F(TString::Format("h_N_track_K_true_q%i",q),TString::Format("h_N_track_K_true_q%i",q),40,-1,1,50,0,125);
     for(int i=0; i<2; i++) {
-      h_N_track_K_correct[q][i]= new TH2F(TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),50,0,125,40,-1,1);
-      h_N_track_K_wrong[q][i]= new TH2F(TString::Format("h_N_track_K_wrong_q%i_sel%i",q,i),TString::Format("h_N_track_K_wrong_q%i_sel%i",q,i),50,0,125,40,-1,1);
+      h_N_track_K_correct[q][i]= new TH2F(TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),40,-1,1,50,0,125);
+      h_N_track_K_wrong[q][i]= new TH2F(TString::Format("h_N_track_K_wrong_q%i_sel%i",q,i),TString::Format("h_N_track_K_wrong_q%i_sel%i",q,i),40,-1,1,50,0,125);
     } 
     
   }
@@ -368,7 +368,7 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
           p_track.push_back(mc_stable_py[i_mc.at(i)]);
           p_track.push_back(mc_stable_pz[i_mc.at(i)]);
           costheta_temp=GetCostheta(p_track);
-          h_N_K_MC[q]->Fill(momentum,costheta_temp);
+          h_N_K_MC[q]->Fill(costheta_temp,momentum);
         }
         i_mc.clear();
         
@@ -383,7 +383,7 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
             p_track.push_back(pfo_py[i_pfo_truth.at(i)]);
             p_track.push_back(pfo_pz[i_pfo_truth.at(i)]);
             costheta_temp=GetCostheta(p_track);
-            h_N_track_K_true[q]->Fill(momentum,costheta_temp);
+            h_N_track_K_true[q]->Fill(costheta_temp,momentum);
           }
           i_pfo_truth.clear();
         }
@@ -402,8 +402,8 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
 	          p_track.push_back(pfo_py[ipfo]);
 	          p_track.push_back(pfo_pz[ipfo]);
 	          costheta_temp=GetCostheta(p_track);
-	          if(i_pfo_loose.at(i)>0 || i_pfo_loose.at(i)==100000) h_N_track_K_correct[q][0]->Fill(momentum,costheta_temp);
-	          if(i_pfo_loose.at(i)<0 || i_pfo_loose.at(i)==-100000) h_N_track_K_wrong[q][0]->Fill(momentum,costheta_temp);
+	          if(i_pfo_loose.at(i)>0 || i_pfo_loose.at(i)==100000) h_N_track_K_correct[q][0]->Fill(costheta_temp,momentum);
+	          if(i_pfo_loose.at(i)<0 || i_pfo_loose.at(i)==-100000) h_N_track_K_wrong[q][0]->Fill(costheta_temp,momentum);
 	        }
           i_pfo_loose.clear();
 
@@ -418,8 +418,8 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
 	          p_track.push_back(pfo_py[ipfo]);
 	          p_track.push_back(pfo_pz[ipfo]);
 	          costheta_temp=GetCostheta(p_track);
-	          if(i_pfo_tight.at(i)>0 || i_pfo_tight.at(i)==100000) h_N_track_K_correct[q][1]->Fill(momentum,costheta_temp);
-	          if(i_pfo_tight.at(i)<0 || i_pfo_tight.at(i)==-100000) h_N_track_K_wrong[q][1]->Fill(momentum,costheta_temp);
+	          if(i_pfo_tight.at(i)>0 || i_pfo_tight.at(i)==100000) h_N_track_K_correct[q][1]->Fill(costheta_temp,momentum);
+	          if(i_pfo_tight.at(i)<0 || i_pfo_tight.at(i)==-100000) h_N_track_K_wrong[q][1]->Fill(costheta_temp,momentum);
 	        }
           i_pfo_tight.clear();
         }
