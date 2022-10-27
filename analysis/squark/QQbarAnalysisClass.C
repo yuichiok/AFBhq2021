@@ -131,10 +131,10 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
     //selection 7: both jets with no secondary vtx --> this cleans most of the b's but still not the c's
     if(jet_nvtx_j1==0 && jet_nvtx_j2==0) {
       for(int q=1; q<6; q++) {
-          if(fabs(mc_quark_pdg[0])==q) {
-            h_N[q][7]->Fill(fabs(costheta));
-            h_AFB_true[q][7]->Fill(costheta_cheat);
-          }
+	if(fabs(mc_quark_pdg[0])==q) {
+	  h_N[q][7]->Fill(fabs(costheta));
+	  h_AFB_true[q][7]->Fill(costheta_cheat);
+	}
       }
     } else continue;
     
@@ -149,9 +149,9 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
     float ch1_cheat_ti=ChargeKJetCheat(1,pcut*2.,offsetcut);
     if(ch0_cheat_ti!=0) ch0_cheat=ch0_cheat_ti;
     if(ch1_cheat_ti!=0) ch1_cheat=ch1_cheat_ti;
-     if( (tight==2 && ch0_cheat_ti*ch1_cheat_ti<0 )
-    || (tight==1 && (ch0_cheat*ch1_cheat<0 && (ch0_cheat_ti!=0 || ch1_cheat_ti!=0) ))  
-    || (tight==0 && ch0_cheat*ch1_cheat<0 ) ){
+    if( (tight==2 && ch0_cheat_ti*ch1_cheat_ti<0 )
+	|| (tight==1 && (ch0_cheat*ch1_cheat<0 && (ch0_cheat_ti!=0 || ch1_cheat_ti!=0) ))  
+	|| (tight==0 && ch0_cheat*ch1_cheat<0 ) ){
       for(int q=1; q<6; q++) {
         if(fabs(mc_quark_pdg[0])==q) {
           h_N[q][8]->Fill(fabs(costheta));
@@ -173,8 +173,8 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
     if(ch0_ti!=0) ch0=ch0_ti;
     if(ch1_ti!=0) ch1=ch1_ti;
     if( (tight==2 && ch0_ti*ch1_ti<0 )
-    || (tight==1 && (ch0*ch1<0 && (ch0_ti!=0 || ch1_ti!=0) ))  
-    || (tight==0 && ch0*ch1<0 ) ){
+	|| (tight==1 && (ch0*ch1<0 && (ch0_ti!=0 || ch1_ti!=0) ))  
+	|| (tight==0 && ch0*ch1<0 ) ){
       for(int q=1; q<6; q++) {
         if(fabs(mc_quark_pdg[0])==q) {
           h_N[q][9]->Fill(fabs(costheta));
@@ -276,119 +276,365 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
 }
 
 
-float QQbarAnalysisClass::ChargeKJetCheat(int ijet, float pcut=10., float offset_cut=1){
+void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR", int tight=0, float Kvcut=35, float acolcut=0.3, int bkg=0)
+{
 
-  float charge=0;
-  float momentum_kaon_max=-1;
-  int n_pfo_selected=-1;
+  //optimal dedx cut
+  dedxcut_up=1.0;
+  dedxcut_down=-1.5;
+  
+  //ofssets for kaon seleciton
+  float offsetcut=1.0;
 
-  for(int ipfo=0; ipfo<pfo_n; ipfo++) {
-    if(pfo_match[ipfo]!=ijet) continue;
-    if(pfo_vtx[ipfo]!=0) continue;//we only want tracks from the primary vtx, not displaced tracks
-    if(pfo_ntracks[ipfo]!=1) continue;
-    float offset=sqrt(pfo_d0[ipfo]*pfo_d0[ipfo]+pfo_z0[ipfo]*pfo_z0[ipfo]);
-    if(offset>offset_cut) continue;
-    float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
-    if(momentum<pcut) continue;
-    if(fabs(pfo_pdgcheat[ipfo])!=321) continue;
+  //initialize histograms
+  TH1F * h_N_K_MC[6];//this is used to calculate efficiencies
+  TH1F * h_N_track_K_correct[6][2];
+  TH1F * h_N_track_K_wrong[6][2];
+  TH1F * h_N_track_K_true[6];
+
+  for(int q=0; q<6; q++) {
+    h_N_K_MC[q]= new TH1F(TString::Format("h_N_K_MC_q%i",q),TString::Format("h_N_K_MC_q%i",q),50,0,125,40,-1,1);
+    h_N_track_K_true[q]= new TH1F(TString::Format("h_N_track_K_true_q%i",q),TString::Format("h_N_track_K_true_q%i",q),50,0,125,40,-1,1);
+    for(int i=0; i<2; i++) {
+      h_N_track_K_correct[q][i]= new TH1F(TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),TString::Format("h_N_track_K_correct_q%i_sel%i",q,i),50,0,125,40,-1,1);
+      h_N_track_K_wrong[q][i]= new TH1F(TString::Format("h_N_track_K_wrong_q%_sel%i",q,i),TString::Format("h_N_track_K_wrong_q%i_sel%i",q,i),50,0,125,40,-1,1);
+    } 
     
-    //select the kaon-pfo with highest momentum
-    if(momentum>momentum_kaon_max) {
-      momentum_kaon_max=momentum;
-      n_pfo_selected=ipfo;
-    }
   }
-  if(n_pfo_selected!=-1) charge=pfo_charge[n_pfo_selected];
-  //take care with the sign... should be inverted depending of the flavour?
-  return charge;
-}
+ 
+  //**************
+  //new file
+  TString filename;
+  if(tight==1) filename=TString::Format("s_AFB_tight_%s_250GeV.root",process.Data());
+  if(tight==2) filename=TString::Format("s_AFB_doubletight_%s_250GeV.root",process.Data());
+  if(tight==0) filename=TString::Format("s_AFB_loose_%s_250GeV.root",process.Data());
 
-float QQbarAnalysisClass::ChargeKJet(int ijet, float pcut=10., float offset_cut=1){
+  TFile *MyFile = new TFile(filename,"RECREATE");
+  MyFile->cd();
 
-  float charge=0;
-  float momentum_kaon_max=-1;
-  float kaonness_diff=10000;
+  Long64_t nentries;
+  if(n_entries>0) nentries= n_entries;
+  else nentries= fChain->GetEntriesFast();
+  //nentries=30000;
 
-  int n_pfo_selected=-1;
+  Long64_t nbytes = 0, nb = 0;
+  for (Long64_t jentry=0; jentry<nentries;jentry++) {
+    Long64_t ientry = LoadTree(jentry);
+    if (ientry < 0) break;
+    nb = fChain->GetEntry(jentry);   nbytes += nb;
 
-  for(int ipfo=0; ipfo<pfo_n; ipfo++) {
-    if(pfo_match[ipfo]!=ijet) continue;
-    if(pfo_vtx[ipfo]!=0) continue;//we only want tracks from the primary vtx, not displaced tracks
-    if(pfo_ntracks[ipfo]!=1) continue;
-    float offset=sqrt(pfo_d0[ipfo]*pfo_d0[ipfo]+pfo_z0[ipfo]*pfo_z0[ipfo]);
-    if(offset>offset_cut) continue;
-    float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
-    if(momentum<pcut) continue;
+    if ( jentry > 1000 && jentry % 10000 ==0 ) std::cout << "Progress: " << 100.*jentry/nentries <<" %"<<endl;
 
-    float costheta;
-    std::vector<float> p_track;
-    p_track.push_back(pfo_px[ipfo]);
-    p_track.push_back(pfo_py[ipfo]);
-    p_track.push_back(pfo_pz[ipfo]);
-    costheta=GetCostheta(p_track);
 
-    //kaon selection
-    bool nhits_bool=false;
-    if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
-    if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
-    if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
-    if(  nhits_bool!=true) continue;
-    float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
-    if(dedx_dist <dedxcut_down || dedx_dist > dedxcut_up) continue;
+    h_Ntotal_nocuts->Fill(0.5);//this is simply to count the total number of events in the sample.
+    //using the cross section of simulated sample, we can calculate the luminosity of the sample
+    //cross section is stroed in common/cross_sections.h
+
+
+    //Definition of signal (i.e. ee-->qqbar without radiative return)
+    //-------------------
+    //Kv parton
+    float gamma0_e= mc_ISR_E[0];
+    float gamma1_e= mc_ISR_E[1];
+    float gamma_e = gamma0_e+gamma1_e;
+
+    TVector3 v1(mc_quark_ps_jet_px[0],mc_quark_ps_jet_py[0],mc_quark_ps_jet_pz[0]);
+    TVector3 v2(mc_quark_ps_jet_px[1],mc_quark_ps_jet_py[1],mc_quark_ps_jet_pz[1]);
+    float acol=GetSinacol(v1,v2);
+    if( bkg==0 && (gamma_e>Kvcut  ||  acol>acolcut) )continue;
+    if( bkg==1 && gamma_e<Kvcut && acol<acolcut )continue;
+
+    //jet direction
+    std::vector<float> p;
+    p.push_back(jet_px[0]-jet_px[1]);
+    p.push_back(jet_py[0]-jet_py[1]);
+    p.push_back(jet_pz[0]-jet_pz[1]);
+    float costheta=GetCostheta(p);
     
-    //select the kaon-pfo with highest momentum
-    if(momentum>momentum_kaon_max ) {
-      //kaonness_diff=fabs(dedx_dist);
-      momentum_kaon_max=momentum;
-      n_pfo_selected=ipfo;
-    }
+    bool selection=PreSelection(6,Kvcut);
+    if(selection==false) continue;
+
+    for(int q=0; q<6; q++) {
+      if(fabs(mc_quark_pdg[0])==q || q==0) {
+
+        //MC stable
+        std::vector<int> i_mc=NMCK();
+        for(int i=0; i<i_mc.size(); i++) {
+          float momentum = sqrt (pow(mc_stable_px[i],2) +pow(mc_stable_py[i],2) +pow(mc_stable_pz[i],2) );
+          float costheta_temp;
+          std::vector<float> p_track;
+          p_track.push_back(mc_stable_px[i_mc.at(i)]);
+          p_track.push_back(mc_stable_py[i_mc.at(i)]);
+          p_track.push_back(mc_stable_pz[i_mc.at(i)]);
+          costheta_temp=GetCostheta(p_track);
+          h_N_K_MC[q]->Fill(momentum,costheta_temp);
+        }
+        i_mc.clear();
+        
+        //reconstructed tracks, but true PID
+        for(int ijet=0; ijet<2; ijet++) {
+          std::vector<int> i_pfo_truth=NPFOKJetCheat(ijet,offsetcut);
+          for(int i=0; i<i_pfo_truth(); i++) {
+            float momentum = sqrt (pow(pfo_px[i_pfo_truth.at(i)],2) +pow(pfo_py[i_pfo_truth.at(i)],2) +pow(pfo_pz[i_pfo_truth.at(i)],2) );
+            float costheta_temp;
+            std::vector<float> p_track;
+            p_track.push_back(pfo_px[i_pfo_truth.at(i)]);
+            p_track.push_back(pfo_py[i_pfo_truth.at(i)]);
+            p_track.push_back(pfo_pz[i_pfo_truth.at(i)]);
+            costheta_temp=GetCostheta(p_track);
+            h_N_track_K_true[q]->Fill(momentum,costheta_temp);
+          }
+          i_pfo_truth.clear();
+        }
+
+        //reconstructed tracks, real PID, wrong and correct tracks
+        for(int ijet=0; ijet<2; ijet++) {
+	        //loose
+          std::vector<int> i_pfo_loose=NPFOKJet(ijet,offsetcut,0);
+          for(int i=0; i<i_pfo_loose(); i++) {
+            int ipfo=fabs(i_pfo_loose.at(i));
+            if(ipfo==100000) ipfo=0;
+	          float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
+	          float costheta_temp;
+	          std::vector<float> p_track;
+	          p_track.push_back(pfo_px[ipfo]);
+	          p_track.push_back(pfo_py[ipfo]);
+	          p_track.push_back(pfo_pz[ipfo]);
+	          costheta_temp=GetCostheta(p_track);
+	          if(i_pfo_loose.at(i)>0 || i_pfo_loose.at(i)==100000) h_N_track_K_correct[q][0]->Fill(momentum,costheta_temp);
+	          if(i_pfo_loose.at(i)<0 || i_pfo_loose.at(i)==-100000) h_N_track_K_wrong[q][0]->Fill(momentum,costheta_temp);
+	        }
+          i_pfo_loose.clear();
+
+          std::vector<int> i_pfo_tight=NPFOKJet(ijet,offsetcut,1);
+          for(int i=0; i<i_pfo_tight(); i++) {
+            int ipfo=fabs(i_pfo_tight.at(i));
+            if(ipfo==100000) ipfo=0;
+	          float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
+	          float costheta_temp;
+	          std::vector<float> p_track;
+	          p_track.push_back(pfo_px[ipfo]);
+	          p_track.push_back(pfo_py[ipfo]);
+	          p_track.push_back(pfo_pz[ipfo]);
+	          costheta_temp=GetCostheta(p_track);
+	          if(i_pfo_tight.at(i)>0 || i_pfo_tight.at(i)==100000) h_N_track_K_correct[q][1]->Fill(momentum,costheta_temp);
+	          if(i_pfo_tight.at(i)<0 || i_pfo_tight.at(i)==-100000) h_N_track_K_wrong[q][1]->Fill(momentum,costheta_temp);
+	        }
+          i_pfo_tight.clear();
+        }
+
+      }//q=quark
+    }//loop q
   }
-  if(n_pfo_selected!=-1) charge=pfo_charge[n_pfo_selected];
-  return charge;
-}
 
-float QQbarAnalysisClass::ChargeKJetTight(int ijet, float pcut=10., float offset_cut=1){
 
-  float charge=0;
-  float momentum_kaon_max=-1;
-  int n_pfo_selected=-1;
-  float kaonness_diff=10000;
-
-  for(int ipfo=0; ipfo<pfo_n; ipfo++) {
-    if(pfo_match[ipfo]!=ijet) continue;
-    if(pfo_vtx[ipfo]!=0) continue;//we only want tracks from the primary vtx, not displaced tracks
-    if(pfo_ntracks[ipfo]!=1) continue;
-    float offset=sqrt(pfo_d0[ipfo]*pfo_d0[ipfo]+pfo_z0[ipfo]*pfo_z0[ipfo]);
-    if(offset>offset_cut) continue;
-    float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
-    if(momentum<pcut*2) continue;
-
-    float costheta;
-    std::vector<float> p_track;
-    p_track.push_back(pfo_px[ipfo]);
-    p_track.push_back(pfo_py[ipfo]);
-    p_track.push_back(pfo_pz[ipfo]);
-    costheta=GetCostheta(p_track);
-
-    //kaon selection
-    bool nhits_bool=false;
-    if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
-    if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
-    if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
-    if(  nhits_bool!=true) continue;
-    float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
-    if(dedx_dist <dedxcut_down/2. || dedx_dist > 0) continue;
     
-    //select the kaon-pfo with highest momentum
-    if(momentum>momentum_kaon_max ) {
-      //kaonness_diff=fabs(dedx_dist);
-      momentum_kaon_max=momentum;
-      n_pfo_selected=ipfo;
+
+    MyFile->cd();
+    h_Ntotal_nocuts->Write();
+    for (int isel=0; isel<10; isel++) {
+      for(int q=1; q<6; q++) {
+	h_N[q][isel]->Write();
+	h_AFB_true[q][isel]->Write();
+	h_AFB_reco[q][isel]->Write();
+      }
     }
+
+    // for(int q=1; q<6; q++) {
+    //   h_ntracks[q]->Write();
+    //   h_npfos[q]->Write();
+    //   h_noffsets[q]->Write();
+    //   h_kaon_candidates[q]->Write();
+    //   h_mom_charged[q]->Write();
+    //   h_jetmass[q]->Write();
+    // }
+
   }
-  if(n_pfo_selected!=-1) charge=pfo_charge[n_pfo_selected];
-  return charge;
-}
+
+
+  float QQbarAnalysisClass::ChargeKJetCheat(int ijet, float pcut=10., float offset_cut=1){
+
+    float charge=0;
+    float momentum_kaon_max=-1;
+    int n_pfo_selected=-1;
+
+    for(int ipfo=0; ipfo<pfo_n; ipfo++) {
+      if(pfo_match[ipfo]!=ijet) continue;
+      if(pfo_vtx[ipfo]!=0) continue;//we only want tracks from the primary vtx, not displaced tracks
+      if(pfo_ntracks[ipfo]!=1) continue;
+      float offset=sqrt(pfo_d0[ipfo]*pfo_d0[ipfo]+pfo_z0[ipfo]*pfo_z0[ipfo]);
+      if(offset>offset_cut) continue;
+      float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
+      if(momentum<pcut) continue;
+      if(fabs(pfo_pdgcheat[ipfo])!=321) continue;
+    
+      //select the kaon-pfo with highest momentum
+      if(momentum>momentum_kaon_max) {
+	momentum_kaon_max=momentum;
+	n_pfo_selected=ipfo;
+      }
+    }
+    if(n_pfo_selected!=-1) charge=pfo_charge[n_pfo_selected];
+    //take care with the sign... should be inverted depending of the flavour?
+    return charge;
+  }
+
+  float QQbarAnalysisClass::ChargeKJet(int ijet, float pcut=10., float offset_cut=1){
+
+    float charge=0;
+    float momentum_kaon_max=-1;
+    float kaonness_diff=10000;
+
+    int n_pfo_selected=-1;
+
+    for(int ipfo=0; ipfo<pfo_n; ipfo++) {
+      if(pfo_match[ipfo]!=ijet) continue;
+      if(pfo_vtx[ipfo]!=0) continue;//we only want tracks from the primary vtx, not displaced tracks
+      if(pfo_ntracks[ipfo]!=1) continue;
+      float offset=sqrt(pfo_d0[ipfo]*pfo_d0[ipfo]+pfo_z0[ipfo]*pfo_z0[ipfo]);
+      if(offset>offset_cut) continue;
+      float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
+      if(momentum<pcut) continue;
+
+      float costheta;
+      std::vector<float> p_track;
+      p_track.push_back(pfo_px[ipfo]);
+      p_track.push_back(pfo_py[ipfo]);
+      p_track.push_back(pfo_pz[ipfo]);
+      costheta=GetCostheta(p_track);
+
+      //kaon selection
+      bool nhits_bool=false;
+      if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
+      if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
+      if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
+      if(  nhits_bool!=true) continue;
+      float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
+      if(dedx_dist <dedxcut_down || dedx_dist > dedxcut_up) continue;
+    
+      //select the kaon-pfo with highest momentum
+      if(momentum>momentum_kaon_max ) {
+	//kaonness_diff=fabs(dedx_dist);
+	momentum_kaon_max=momentum;
+	n_pfo_selected=ipfo;
+      }
+    }
+    if(n_pfo_selected!=-1) charge=pfo_charge[n_pfo_selected];
+    return charge;
+  }
+
+  float QQbarAnalysisClass::ChargeKJetTight(int ijet, float pcut=10., float offset_cut=1){
+
+    float charge=0;
+    float momentum_kaon_max=-1;
+    int n_pfo_selected=-1;
+    float kaonness_diff=10000;
+
+    for(int ipfo=0; ipfo<pfo_n; ipfo++) {
+      if(pfo_match[ipfo]!=ijet) continue;
+      if(pfo_vtx[ipfo]!=0) continue;//we only want tracks from the primary vtx, not displaced tracks
+      if(pfo_ntracks[ipfo]!=1) continue;
+      float offset=sqrt(pfo_d0[ipfo]*pfo_d0[ipfo]+pfo_z0[ipfo]*pfo_z0[ipfo]);
+      if(offset>offset_cut) continue;
+      float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
+      if(momentum<pcut*2) continue;
+
+      float costheta;
+      std::vector<float> p_track;
+      p_track.push_back(pfo_px[ipfo]);
+      p_track.push_back(pfo_py[ipfo]);
+      p_track.push_back(pfo_pz[ipfo]);
+      costheta=GetCostheta(p_track);
+
+      //kaon selection
+      bool nhits_bool=false;
+      if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
+      if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
+      if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
+      if(  nhits_bool!=true) continue;
+      float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
+      if(dedx_dist <dedxcut_down/2. || dedx_dist > 0) continue;
+    
+      //select the kaon-pfo with highest momentum
+      if(momentum>momentum_kaon_max ) {
+	//kaonness_diff=fabs(dedx_dist);
+	momentum_kaon_max=momentum;
+	n_pfo_selected=ipfo;
+      }
+    }
+    if(n_pfo_selected!=-1) charge=pfo_charge[n_pfo_selected];
+    return charge;
+  }
+
+
+  std::vector<int> QQbarAnalysisClass::NMCK(){
+
+    std::vector<int> i_mc_stable;
+
+    for(int imc_stable=0; imc_stable<mc_stable_n; imc_stable++) {
+      if(fabs(n_mc_stable_pdg[imc_stable])!=321) continue;
+      i_mc_stable.push_back(imc_stable);
+    }
+
+    return i_mc_stable;
+  }
+
+  std::vector<int> QQbarAnalysisClass::NPFOKJetCheat(int ijet, float offset_cut=1){
+
+    std::vector<int> i_pfo;
+
+    for(int ipfo=0; ipfo<pfo_n; ipfo++) {
+      if(pfo_match[ipfo]!=ijet) continue;
+      if(pfo_vtx[ipfo]!=0) continue;//we only want tracks from the primary vtx, not displaced tracks
+      if(pfo_ntracks[ipfo]!=1) continue;
+      float offset=sqrt(pfo_d0[ipfo]*pfo_d0[ipfo]+pfo_z0[ipfo]*pfo_z0[ipfo]);
+      if(offset>offset_cut) continue;
+      if(fabs(pfo_pdgcheat[ipfo])!=321) continue;
+      i_pfo.push_back(ipfo);
+    }
+
+    return i_pfo;
+  }
+
+  std::vector<int> QQbarAnalysisClass::NPFOKJet(int ijet, float offset_cut=1, int tight=0){
+
+    std::vector<int> i_pfo;
+
+    for(int ipfo=0; ipfo<pfo_n; ipfo++) {
+      if(pfo_match[ipfo]!=ijet) continue;
+      if(pfo_vtx[ipfo]!=0) continue;//we only want tracks from the primary vtx, not displaced tracks
+      if(pfo_ntracks[ipfo]!=1) continue;
+      float offset=sqrt(pfo_d0[ipfo]*pfo_d0[ipfo]+pfo_z0[ipfo]*pfo_z0[ipfo]);
+      if(offset>offset_cut) continue;
+
+      float costheta;
+      std::vector<float> p_track;
+      p_track.push_back(pfo_px[ipfo]);
+      p_track.push_back(pfo_py[ipfo]);
+      p_track.push_back(pfo_pz[ipfo]);
+      costheta=GetCostheta(p_track);
+
+      //kaon selection
+      bool nhits_bool=false;
+      if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
+      if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
+      if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
+      if(  nhits_bool!=true) continue;
+      float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
+      if(tight==0 && (dedx_dist <dedxcut_down || dedx_dist > dedxcut_up) )continue;
+      if(tight==1 && (dedx_dist <dedxcut_down/2. || dedx_dist > 0) )continue;
+    
+      if(ipfo>0) {
+        if(fabs(pfo_pdgcheat[ipfo])==321)i_pfo.push_back(ipfo);
+        else i_pfo.push_back(-ipfo);
+      } else {
+        if(fabs(pfo_pdgcheat[ipfo])==321)i_pfo.push_back(100000);
+        else i_pfo.push_back(-100000);
+      }
+    }
+
+    return i_pfo;
+  }
 
 
 

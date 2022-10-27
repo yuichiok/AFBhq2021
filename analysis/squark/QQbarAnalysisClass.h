@@ -44,13 +44,14 @@ public :
   virtual float ChargeKJetCheat(int ,float , float);
   virtual float ChargeKJet(int ,float , float);
   virtual float ChargeKJetTight(int ,float , float);
-
-
+  virtual std::vector<int> NMCK();
+  virtual std::vector<int> NPFOKJetCheat(int , float );
+  virtual std::vector<int> NPFOKJet(int , float , int);
 
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
 
-  int dedxcut=1;
+  int dedxcut=7;
   float dedxcut_up=0.75;
   float dedxcut_down=-2.25;
 
