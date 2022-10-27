@@ -47,8 +47,8 @@ public :
   virtual float ChargeKJet(int ,float , float);
   virtual float ChargeKJetTight(int ,float , float);
   virtual std::vector<int> NMCK();
-  virtual std::vector<int> NPFOKJetCheat(int , float );
-  virtual std::vector<int> NPFOKJet(int , float , int);
+  virtual std::vector<int> NPFOKCheat( float );
+  virtual std::vector<int> NPFOK( float , int);
 
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
