@@ -1,0 +1,37 @@
+# A. Irles, 28/10/2022
+# raw studies for s-quark analysis
+
+Main code is in QQbarAnalysisClass.C
+  --> virtual void AFBreconstruction(int , TString, int, float, float, int);
+  function that reconstructs the AFB angular distribution for different quarks in the initial state
+  and for different preselection steps.
+  It provides histograms to calculate the total selection efficiency and the migrations.
+  Different levels of cheatiness and "reconness".
+  Also different levels of K-Id (loose or tight)
+
+
+  --> virtual void KaonEfficiency(int , TString, float, float, int);
+  function that creats histograms to measure the kaon ID performance (purity and efficiency)
+  It includes also some histograms using mc_stable but these variables are not correctly filled by the processor.
+
+Running:
+
+assuming ht-condor batch system and assuming that you have all your ntuples in one folder 
+--> source launch.sh
+        --> that runs analysis.sh (need to change the folder parameter)
+            --> that runs the analysis.cc
+
+when it finish: 
+    --> source hadd.sh --> to merge all files together.
+
+
+
+Analysis of the results
+cd macros
+#AFB stuff
+root -l -q Efficiency.C --> to create selection efficiency plots
+root -l -q Migrations.C --> to create AFB plots with only signal (with cheated and reco sign of the charge)
+root -l -q Contamination.C --> to create AFB plots at reco level including backgrounds. Cheating or not in the determination of the charge.
+
+#Kaon ID stuff
+root -l -q Efficiency_Kaon.C --> to create 2D plots of purity and efficiency of Kaon ID using the TPC info.

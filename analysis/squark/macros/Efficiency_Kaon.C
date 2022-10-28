@@ -90,7 +90,7 @@ void EffPlotsKID(TString pol="eL_pR", int tight=0, int purity=0) {
       h_N_correct[q]->GetXaxis()->SetRangeUser(-1,1);
       h_N_correct[q]->GetYaxis()->SetRangeUser(0,100);
       h_N_correct[q]->GetZaxis()->SetRangeUser(0,1.);
-      h_N_correct[q]->Draw("colzcont");
+      h_N_correct[q]->Draw("colz");
     }
     if(purity==1) {
       h_N_wrong[q]->SetTitle("Purity: 1-wrongID/correctID - flav:"+quark_string[q]);
@@ -101,7 +101,7 @@ void EffPlotsKID(TString pol="eL_pR", int tight=0, int purity=0) {
       h_N_wrong[q]->GetXaxis()->SetRangeUser(-1,1);
       h_N_wrong[q]->GetYaxis()->SetRangeUser(0,100);
       h_N_wrong[q]->GetZaxis()->SetRangeUser(0,1.);
-      h_N_wrong[q]->Draw("colz,cont0");
+      h_N_wrong[q]->Draw("colz");
     }
   
     if(purity==0) c_eff_MC->Print(TString::Format("./rootfiles/c_K_eff_q%i_tight%i_%s.root",q,tight,pol.Data()));
@@ -155,7 +155,7 @@ void EffPlotsTracking(TString pol="eL_pR") {
     h_N_true[q]->GetXaxis()->SetRangeUser(-1,1);
     h_N_true[q]->GetYaxis()->SetRangeUser(0,100);
     h_N_true[q]->GetZaxis()->SetRangeUser(0,3.);
-    h_N_true[q]->Draw("colzcont");
+    h_N_true[q]->Draw("colz");
     
     c_eff_MC->Print(TString::Format("rootfiles/c_K_track_eff_q%i%s.root",q,pol.Data()));
   }
@@ -205,7 +205,7 @@ void PlotsTracks(TString pol="eL_pR") {
     h_N_true[q]->GetXaxis()->SetRangeUser(-1,1);
     h_N_true[q]->GetYaxis()->SetRangeUser(0,100);
     //h_N_true[q]->GetZaxis()->SetRangeUser(0,3.);
-    h_N_true[q]->Draw("colzcont");
+    h_N_true[q]->Draw("colz");
     
     c_eff_MC->Print(TString::Format("rootfiles/c_K_Ntrack_q%i%s.root",q,pol.Data()));
   }
@@ -218,6 +218,6 @@ void Efficiency_Kaon() {
   EffPlotsKID("eL_pR", 1, 1);
   EffPlotsKID("eL_pR", 1, 0);
   PlotsTracks("eL_pR");
-  EffPlotsTracking("eL_pR");
+  //EffPlotsTracking("eL_pR"); //this is meaningless since all mc_stable info are wrong
 
 }
