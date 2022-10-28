@@ -673,13 +673,13 @@ void Ntracks2() {
     TString filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_eL_pR_0GeV.root";
     TFile *f = new TFile(filename);
     cout<<filename<<endl;
-    n_sectracks_eL[quarkid-3] = (TH1F*)f->Get("n_sectracks");
+    n_sectracks_eL[quarkid-3] = (TH1F*)f->Get("n_sectracks_vtx");
     if(quarkid==3) test = (TH1F*)f->Get("kdEdx_dist_proton");
 
 
     filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_eR_pL_0GeV.root";
     TFile *f2 = new TFile(filename);
-    n_sectracks_eR[quarkid-3] = (TH1F*)f2->Get("n_sectracks");
+    n_sectracks_eR[quarkid-3] = (TH1F*)f2->Get("n_sectracks_vtx");
  
     if(quarkid==3) test2 = (TH1F*)f2->Get("kdEdx_dist_proton");
   }
@@ -688,10 +688,10 @@ void Ntracks2() {
   c_mom->cd(1);
   // c_mom->SetGrid();
   gPad->SetLogy();
-  n_sectracks_eL[0]->GetXaxis()->SetTitle("number of vtx-tracks per jet");
+  n_sectracks_eL[0]->GetXaxis()->SetTitle("# of tracks per vtx");
   //n_sectracks_eL[0]->GetYaxis()->SetTitle("a.u.");
   n_sectracks_eL[0]->GetXaxis()->SetRangeUser(0,20);
-  n_sectracks_eL[0]->GetYaxis()->SetRangeUser(1000,300000000);
+  n_sectracks_eL[0]->GetYaxis()->SetRangeUser(1000,3000000);
 
   n_sectracks_eL[0]->SetLineColor(kGreen+2);
   n_sectracks_eL[0]->SetLineWidth(3);
