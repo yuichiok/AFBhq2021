@@ -336,9 +336,9 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
     float pz_pfos[2]={0};
     for(int ipfo=0; ipfo<pfo_n; ipfo++) {
       if((pfo_match[ipfo]==0 || pfo_match[ipfo]==1) && pfo_charge[ipfo]!=0 && pfo_ntracks[ipfo]==1) {
-	px_pfos[pfo_match[ipfo]]+=pfo_px[ipfo];
-	py_pfos[pfo_match[ipfo]]+=pfo_py[ipfo];
-	pz_pfos[pfo_match[ipfo]]+=pfo_pz[ipfo];
+	      px_pfos[pfo_match[ipfo]]+=pfo_px[ipfo];
+	      py_pfos[pfo_match[ipfo]]+=pfo_py[ipfo];
+	      pz_pfos[pfo_match[ipfo]]+=pfo_pz[ipfo];
       }
     }
     p1.push_back(px_pfos[0]-px_pfos[1]);
@@ -366,8 +366,7 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
     h_Ntotal_nocuts2[iquark]->Fill(fabs(costheta));
 
     // costheta=fabs(costheta)*costheta/fabs(costheta);
-
-      //reco level distributions
+    //reco level distributions
     float Kv=Kreco();
     bool selection=PreSelection(6,Kvcut);
     if(selection==false) continue;
@@ -413,10 +412,10 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
       //Efficiencies
       h_N0[iquark][i]->Fill(fabs(costheta));
       for(int ijet=0; ijet<2; ijet++) {
-	if(charge[ijet][i]!=0) {
-	  h_Charge[iquark][i]->Fill(charge[ijet][i]);
-	  h_N1[iquark][i]->Fill(fabs(costheta));
-	}
+	      if(charge[ijet][i]!=0) {
+	        h_Charge[iquark][i]->Fill(charge[ijet][i]);
+	        h_N1[iquark][i]->Fill(fabs(costheta));
+	      }
       }
       if(charge[0][i]!=0 && charge[1][i]!=0) h_N2[iquark][i]->Fill(fabs(costheta));
 
@@ -424,27 +423,27 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries=-1, int bkg=0,
 
       //purities
       if(quark==5) {
-	if(i==4) {
-	  if(charge[0][i]*charge[1][i]<0) h_Nacc[iquark][i]->Fill(fabs(costheta)*costheta_temp/fabs(costheta_temp));
-	  if(charge[0][i]*charge[1][i]>0) {
-	    h_Nrej[iquark][i]->Fill(costheta);
-	    h_Nrej[iquark][i]->Fill(-costheta);
-	  }
-	} else {
-	  if(charge[0][4]==0 && charge[1][4]==0) {
-	    if(charge[0][i]*charge[1][i]<0) h_Nacc[iquark][i]->Fill(fabs(costheta)*costheta_temp/fabs(costheta_temp));
-	    if(charge[0][i]*charge[1][i]>0) {
-	      h_Nrej[iquark][i]->Fill(costheta);
-	      h_Nrej[iquark][i]->Fill(-costheta);
-	    }
-	  }
-	}
+	      if(i==4) {
+  	      if(charge[0][i]*charge[1][i]<0) h_Nacc[iquark][i]->Fill(fabs(costheta)*costheta_temp/fabs(costheta_temp));
+          if(charge[0][i]*charge[1][i]>0) {
+	          h_Nrej[iquark][i]->Fill(costheta);
+	          h_Nrej[iquark][i]->Fill(-costheta);
+	        }
+	      } else {
+	        if(charge[0][4]==0 && charge[1][4]==0) {
+	          if(charge[0][i]*charge[1][i]<0) h_Nacc[iquark][i]->Fill(fabs(costheta)*costheta_temp/fabs(costheta_temp));
+	          if(charge[0][i]*charge[1][i]>0) {
+	            h_Nrej[iquark][i]->Fill(costheta);
+	            h_Nrej[iquark][i]->Fill(-costheta);
+	          }
+	        }
+	      }
       } else {//quark
-	if(charge[0][i]*charge[1][i]<0) h_Nacc[iquark][i]->Fill(fabs(costheta)*costheta_temp/fabs(costheta_temp));
-	if(charge[0][i]*charge[1][i]>0) {
-	  h_Nrej[iquark][i]->Fill(costheta);
-	  h_Nrej[iquark][i]->Fill(-costheta);
-	}
+	      if(charge[0][i]*charge[1][i]<0) h_Nacc[iquark][i]->Fill(fabs(costheta)*costheta_temp/fabs(costheta_temp));
+	      if(charge[0][i]*charge[1][i]>0) {
+	        h_Nrej[iquark][i]->Fill(costheta);
+	        h_Nrej[iquark][i]->Fill(-costheta);
+	      }
       }
 
     }
@@ -715,7 +714,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
    int nsyst=22;
 
 
-//variations for systematics
+  //variations for systematics
 
   
   TString syst_variations1[100];
@@ -905,9 +904,9 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
     float pz_pfos[2]={0};
     for(int ipfo=0; ipfo<pfo_n; ipfo++) {
       if((pfo_match[ipfo]==0 || pfo_match[ipfo]==1) && pfo_charge[ipfo]!=0 && pfo_ntracks[ipfo]==1) {
-	px_pfos[pfo_match[ipfo]]+=pfo_px[ipfo];
-	py_pfos[pfo_match[ipfo]]+=pfo_py[ipfo];
-	pz_pfos[pfo_match[ipfo]]+=pfo_pz[ipfo];
+	      px_pfos[pfo_match[ipfo]]+=pfo_px[ipfo];
+      	py_pfos[pfo_match[ipfo]]+=pfo_py[ipfo];
+	      pz_pfos[pfo_match[ipfo]]+=pfo_pz[ipfo];
       }
     }
     p1.push_back(px_pfos[0]-px_pfos[1]);
@@ -957,27 +956,27 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
     float charge[2][2]={0};
     for(int ijet=0; ijet<2; ijet++) {
       if(quark==5) {
-	// charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
-	// if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
-	if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,false);
-	if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,true);
-	if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,true);
+	      // charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
+	      // if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	      // if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	      // if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	      // if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	      charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
+	      if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+	      if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,false);
+	      if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,true);
+	      if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,true);
       }
       if(quark==4) {
-	charge[ijet][1]=ChargeVtxJet(0,ijet,pcut);
-	// if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,false);
-	if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,true);
-	if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//false,true);
+	      charge[ijet][1]=ChargeVtxJet(0,ijet,pcut);
+	      // if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+	      // if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+	      // if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+	      // if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+        if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+        if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,false);
+        if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,true);
+        if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//false,true);
       }
     }
 
@@ -998,17 +997,17 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
       //assuming one method with priority
       for(int ijet=0; ijet<2; ijet++) {
 	
-	if(charge[ijet][0]!=0) {
-	  jet_charge[ijet] = charge[ijet][0]/fabs(charge[ijet][0]);
-	  prob_charge[ijet]=purity_0[isyst]->GetBinContent(abs_value_costheta_bin+1);
-	  eff_charge[ijet]=eff_charge_0[isyst]->GetBinContent(abs_value_costheta_bin+1);
-	}
-	if(charge[ijet][1]!=0 && charge[ijet][0]==0) {
-	  jet_charge[ijet] = charge[ijet][1]/fabs(charge[ijet][1]);
-	  prob_charge[ijet]=purity_1[isyst]->GetBinContent(abs_value_costheta_bin+1);
-	  // cout<<jentry<<"  k --"<<prob_charge[ijet]<<endl;
-	  eff_charge[ijet]=(1.-eff_charge_0[isyst]->GetBinContent(abs_value_costheta_bin+1))*eff_charge_1[isyst]->GetBinContent(abs_value_costheta_bin+1);
-	} 
+        if(charge[ijet][0]!=0) {
+          jet_charge[ijet] = charge[ijet][0]/fabs(charge[ijet][0]);
+          prob_charge[ijet]=purity_0[isyst]->GetBinContent(abs_value_costheta_bin+1);
+          eff_charge[ijet]=eff_charge_0[isyst]->GetBinContent(abs_value_costheta_bin+1);
+        }
+        if(charge[ijet][1]!=0 && charge[ijet][0]==0) {
+          jet_charge[ijet] = charge[ijet][1]/fabs(charge[ijet][1]);
+          prob_charge[ijet]=purity_1[isyst]->GetBinContent(abs_value_costheta_bin+1);
+          // cout<<jentry<<"  k --"<<prob_charge[ijet]<<endl;
+          eff_charge[ijet]=(1.-eff_charge_0[isyst]->GetBinContent(abs_value_costheta_bin+1))*eff_charge_1[isyst]->GetBinContent(abs_value_costheta_bin+1);
+        } 
 	
       }
       if(jet_charge[0]*jet_charge[1]==0  || jet_charge[0]*jet_charge[1]>0 ) continue;
@@ -1027,14 +1026,14 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
 
       if(charge[0][0]!=0 && charge[1][0]!=0 )  indx_cat=0;
       else if( (charge[0][0]==0 ||  charge[1][0]==0) &&  (charge[0][0]!=0 ||  charge[1][0]!=0) ) {
-	indx_cat=1;
-	weighteff*=0.5;
+        indx_cat=1;
+        weighteff*=0.5;
       }
       else if( charge[0][0]==0 && charge[1][0]==0 ) indx_cat=2;
       
       if(indx_cat<0) {
-	cout<<"ERROR: cat="<<indx_cat<<" charge-jet0:"<<charge[0][0]<<" "<<charge[0][1]<<" | charge-jet1:"<<charge[1][0]<<" "<<charge[1][1]<<endl;
-	continue;
+        cout<<"ERROR: cat="<<indx_cat<<" charge-jet0:"<<charge[0][0]<<" "<<charge[0][1]<<" | charge-jet1:"<<charge[1][0]<<" "<<charge[1][1]<<endl;
+        continue;
       }
       if(isyst==0)  h_AFBcheat->Fill(costheta_cheat);
       h_AFBreco[indx_cat][isyst]->Fill(costheta_reco);
@@ -1071,16 +1070,16 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
       float e=func->GetParameter(4);
       
       for(int j=0; j<40; j++) {
-	int abs_value_costheta_bin = int(fabs(h_AFBreco_pqcorrected[icat][isyst]->GetBinCenter(j+1)*100./5));
-	float eff_pres_=eff_preselection[isyst]->GetBinContent(abs_value_costheta_bin+1);
-	if(isyst==(nsyst-1))  {
-	  float x=eff_preselection[isyst]->GetBinCenter(abs_value_costheta_bin+1);
-	  eff_pres_=a+x*b+x*x*c+x*x*x*d+x*x*x*x*e;
-	}
-	if(eff_pres_>0) 	{
-	  h_AFBreco_pqcorrected_efftotalcorrected[icat][isyst]->SetBinContent(j+1, h_AFBreco_pqcorrected_effcorrected[icat][isyst]->GetBinContent(j+1)/eff_pres_);
-	  h_AFBreco_chargecheat_efftotalcorrected[icat][isyst]->SetBinContent(j+1, h_AFBreco_chargecheat_effcorrected[icat][isyst]->GetBinContent(j+1)/eff_pres_);
-	}
+        int abs_value_costheta_bin = int(fabs(h_AFBreco_pqcorrected[icat][isyst]->GetBinCenter(j+1)*100./5));
+        float eff_pres_=eff_preselection[isyst]->GetBinContent(abs_value_costheta_bin+1);
+        if(isyst==(nsyst-1))  {
+          float x=eff_preselection[isyst]->GetBinCenter(abs_value_costheta_bin+1);
+          eff_pres_=a+x*b+x*x*c+x*x*x*d+x*x*x*x*e;
+        }
+        if(eff_pres_>0) 	{
+          h_AFBreco_pqcorrected_efftotalcorrected[icat][isyst]->SetBinContent(j+1, h_AFBreco_pqcorrected_effcorrected[icat][isyst]->GetBinContent(j+1)/eff_pres_);
+          h_AFBreco_chargecheat_efftotalcorrected[icat][isyst]->SetBinContent(j+1, h_AFBreco_chargecheat_effcorrected[icat][isyst]->GetBinContent(j+1)/eff_pres_);
+        }
 	
       }
     
@@ -1101,7 +1100,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
 
 void QQbarAnalysisClass::AFBreconstruction2(int n_entries=-1, float Kvcut=35, int quark=4, TString polString="eL_pR", int method=0, int bkg=0)
 {
-
+  //simplistic function to produce suitable distributions for plotting the S/B
 
   //polarisation scenarios
   //pol=0 (eLpR), pol=1 (eRpL), pol=2 eLpRat80/30, pol=3 eRpLat80/30
@@ -1124,10 +1123,10 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries=-1, float Kvcut=35, in
   //methods 0=Kc, 1=KcCheatdEdx, 2=KcCheatdEdxTOF, 3=KcCheatTOF, 4=Vtx
   TString method_string[4]={"","CheatdEdx","CheatdEdxTOF","CheatTOF"};
 
-   int nsyst=22;
+  int nsyst=22;
 
 
-//variations for systematics
+  //variations for systematics
     
   //**************
 
@@ -1201,9 +1200,9 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries=-1, float Kvcut=35, in
     float pz_pfos[2]={0};
     for(int ipfo=0; ipfo<pfo_n; ipfo++) {
       if((pfo_match[ipfo]==0 || pfo_match[ipfo]==1) && pfo_charge[ipfo]!=0 && pfo_ntracks[ipfo]==1) {
-	px_pfos[pfo_match[ipfo]]+=pfo_px[ipfo];
-	py_pfos[pfo_match[ipfo]]+=pfo_py[ipfo];
-	pz_pfos[pfo_match[ipfo]]+=pfo_pz[ipfo];
+        px_pfos[pfo_match[ipfo]]+=pfo_px[ipfo];
+        py_pfos[pfo_match[ipfo]]+=pfo_py[ipfo];
+        pz_pfos[pfo_match[ipfo]]+=pfo_pz[ipfo];
       }
     }
     p1.push_back(px_pfos[0]-px_pfos[1]);
@@ -1239,27 +1238,27 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries=-1, float Kvcut=35, in
     float charge[2][2]={0};
     for(int ijet=0; ijet<2; ijet++) {
       if(quark==5) {
-	// charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
-	// if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
-	if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
-	if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,false);
-	if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,true);
-	if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,true);
+        // charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
+        // if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+        // if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+        // if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+        // if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+        charge[ijet][0]=-ChargeVtxJet(0,ijet,pcut);
+        if(method==0) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,false);
+        if(method==1) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,false);
+        if(method==2) charge[ijet][1]=ChargeKJet(0,ijet,pcut,true,true);
+        if(method==3) charge[ijet][1]=ChargeKJet(0,ijet,pcut,false,true);
       }
       if(quark==4) {
-	charge[ijet][1]=ChargeVtxJet(0,ijet,pcut);
-	// if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	// if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
-	if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,false);
-	if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,true);
-	if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//false,true);
+        charge[ijet][1]=ChargeVtxJet(0,ijet,pcut);
+        // if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+        // if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+        // if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+        // if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+        if(method==0) charge[ijet][0]=ChargeKJet(0,ijet,pcut,false,false);
+        if(method==1) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,false);
+        if(method==2) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//true,true);
+        if(method==3) charge[ijet][0]=ChargeKJet(0,ijet,pcut,true,false);//false,true);
       }
     }
 
