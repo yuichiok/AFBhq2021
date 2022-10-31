@@ -137,7 +137,7 @@ void Plots() {
   efficiency_uds_b_eL->SetLineStyle(1);
   efficiency_uds_b_eL->Draw("lp");
 
-  efficiency_b_b_eR->SetLineColor(4);
+  /*efficiency_b_b_eR->SetLineColor(4);
   efficiency_b_b_eR->SetLineWidth(3);
   efficiency_b_b_eR->SetLineStyle(2);
   efficiency_b_b_eR->Draw("lp");
@@ -150,7 +150,7 @@ void Plots() {
   efficiency_uds_b_eR->SetLineColor(2);
   efficiency_uds_b_eR->SetLineWidth(3);
   efficiency_uds_b_eR->SetLineStyle(2);
-  efficiency_uds_b_eR->Draw("lp");
+  efficiency_uds_b_eR->Draw("lp");*/
   
   btag[1][1]->SetLineColor(1);
   btag[1][1]->SetLineStyle(1);
@@ -167,8 +167,8 @@ void Plots() {
   leg_b->AddEntry(efficiency_b_b_eL,"#varepsilon_{b}","l");
   leg_b->AddEntry(efficiency_c_b_eL,"1-#tilde{#varepsilon}_{c}","l");
   leg_b->AddEntry(efficiency_uds_b_eL,"1-#tilde{#varepsilon}_{uds}","l");
-  leg_b->AddEntry(btag[1][1],"e_{L}^{-}e_{R}^{+}","l");
-  leg_b->AddEntry(btag[1][2],"e_{R}^{-}e_{L}^{+}","l");
+  //leg_b->AddEntry(btag[1][1],"e_{L}^{-}e_{R}^{+}","l");
+  //leg_b->AddEntry(btag[1][2],"e_{R}^{-}e_{L}^{+}","l");
   leg_b->SetFillColor(0);
   leg_b->SetLineColor(0);
   leg_b->SetShadowColor(0);
@@ -211,7 +211,7 @@ void Plots() {
   efficiency_uds_c_eL->SetLineStyle(1);
   efficiency_uds_c_eL->Draw("l");
 
-  efficiency_c_c_eR->SetLineColor(4);
+  /*efficiency_c_c_eR->SetLineColor(4);
   efficiency_c_c_eR->SetLineWidth(3);
   efficiency_c_c_eR->SetLineStyle(2);
   efficiency_c_c_eR->Draw("l");
@@ -224,7 +224,7 @@ void Plots() {
   efficiency_uds_c_eR->SetLineColor(2);
   efficiency_uds_c_eR->SetLineWidth(3);
   efficiency_uds_c_eR->SetLineStyle(2);
-  efficiency_uds_c_eR->Draw("l");
+  efficiency_uds_c_eR->Draw("l");*/
    
   ctag[1][1]->SetLineColor(1);
   ctag[1][1]->SetLineStyle(1);
@@ -240,8 +240,8 @@ void Plots() {
   leg_c->AddEntry(efficiency_c_c_eL,"#varepsilon_{c}","l");
   leg_c->AddEntry(efficiency_b_c_eL,"1-#tilde{#varepsilon}_{b}","l");
   leg_c->AddEntry(efficiency_uds_c_eL,"1-#tilde{#varepsilon}_{uds}","l");
-  leg_c->AddEntry(btag[1][1],"e_{L}^{-}e_{R}^{+}","l");
-  leg_c->AddEntry(btag[1][2],"e_{R}^{-}e_{L}^{+}","l");
+  //leg_c->AddEntry(btag[1][1],"e_{L}^{-}e_{R}^{+}","l");
+  //leg_c->AddEntry(btag[1][2],"e_{R}^{-}e_{L}^{+}","l");
   leg_c->SetFillColor(0);
   leg_c->SetLineColor(0);
   leg_c->SetShadowColor(0);

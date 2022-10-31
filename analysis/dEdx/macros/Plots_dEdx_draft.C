@@ -965,6 +965,7 @@ void dEdxdistProjection(int quarkid=3) {
   c_mom->cd(1);
   g_pion->GetXaxis()->SetTitle("|#vec{p}_{trk}| [GeV]");
   g_pion->GetYaxis()->SetTitle("#mu_{#chi^{2}_{dE/dx-K}} #pm #sigma_{#chi^{2}_{dE/dx-K}}");
+  g_pion->GetYaxis()->SetTitleOffset(1.2);
   g_pion->GetYaxis()->SetRangeUser(-10,20);
   g_pion->GetXaxis()->SetRangeUser(0,80);
 
@@ -1019,7 +1020,7 @@ void dEdxdistProjection(int quarkid=3) {
  
   if(quarkid==3)   QQBARLabel2(0.5,0.9,"Secondary Tracks in q-jets (q=uds)",kGray+4);
   if(quarkid==4)   QQBARLabel2(0.5,0.9,"Secondary Tracks in c-jets",kGray+4);
-  if(quarkid==5)   QQBARLabel2(0.5,0.9,"Secondary Tracks in b-jets",kGray+4);
+  if(quarkid==5)   QQBARLabel2(0.5,0.9,"Secondary Tracks in b/c-jets",kGray+4);
   
   TLegend *leg = new TLegend(0.18,0.6,0.46,0.85);
   leg->SetTextSize(0.03);
@@ -1133,6 +1134,7 @@ void dEdxdistProjection2(int quarkid=3) {
   c_mom->cd(1);
   g_pion->GetXaxis()->SetTitle("cos(#theta_{trk})");
   g_pion->GetYaxis()->SetTitle("#mu_{#chi^{2}_{dE/dx-K}} #pm #sigma_{#chi^{2}_{dE/dx-K}}");
+  g_pion->GetYaxis()->SetTitleOffset(1.2);
   g_pion->GetYaxis()->SetRangeUser(-10,20);
   g_pion->GetXaxis()->SetRangeUser(0,1);
 
@@ -1187,7 +1189,7 @@ void dEdxdistProjection2(int quarkid=3) {
  
   if(quarkid==3)   QQBARLabel2(0.5,0.9,"Secondary Tracks in q-jets (q=uds)",kGray+4);
   if(quarkid==4)   QQBARLabel2(0.5,0.9,"Secondary Tracks in c-jets",kGray+4);
-  if(quarkid==5)   QQBARLabel2(0.5,0.9,"Secondary Tracks in b-jets",kGray+4);
+  if(quarkid==5)   QQBARLabel2(0.5,0.9,"Secondary Tracks in b/c-jets",kGray+4);
   
   TLegend *leg = new TLegend(0.18,0.6,0.46,0.85);
   leg->SetTextSize(0.03);
@@ -1658,11 +1660,11 @@ void Plots_dEdx_draft() {
   /*for(int i=3; i<6; i++) Mom(i);
   for(int i=3; i<6; i++) Costheta(i);
   Ntracks();*/
-  Ntracks2();
+  //Ntracks2();
 
   //  for(int i=4; i<6; i++)  dEdxdist(i);
-  //for(int i=4; i<6; i++)  dEdxdistProjection(i);
-  //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
+  for(int i=4; i<6; i++)  dEdxdistProjection(i);
+  for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 
   /* NHits();
   for(int i=4; i<6; i++) EffPurity_momentum(i);
