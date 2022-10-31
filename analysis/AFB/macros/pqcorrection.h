@@ -6,7 +6,7 @@
 std::vector<float> CalculateP(TH1F* h_accepted, TH1F *h_rejected)
 {
 
-  for(int i=1; i<40/2+1; i++) {
+  /*for(int i=1; i<40/2+1; i++) {
     float accepted = h_accepted->GetBinContent(40+1-i);
     float rejected = h_rejected->GetBinContent(40+1-i);
     accepted += h_accepted->GetBinContent(i);
@@ -15,37 +15,39 @@ std::vector<float> CalculateP(TH1F* h_accepted, TH1F *h_rejected)
     float c= rejected/ (2* (accepted+rejected));
     float p= (0.5/a) * (-b + sqrt( b*b-4*a*c));
     float p2= (0.5/a) * (-b - sqrt( b*b-4*a*c));
-  }
+  }*/
 
   std::vector<float> result_error;
   std::vector<float> result;
 
   for(int i=1; i<40/2+1; i++) {
+    //calculate p/q values by varying accepted and rejected within stat unc.
     std::vector<float> result_j;
     for(int i1=-1; i1<2; i1+=2) {
       for(int i2=-1; i2<2; i2+=2) {
-	for(int i3=-1; i3<2; i3+=2) {
-	  float accepted = h_accepted->GetBinContent(40+1-i)+i1*sqrt(h_accepted->GetBinContent(40+1-i));
-	  float rejected = h_rejected->GetBinContent(40+1-i)+i2*sqrt(h_rejected->GetBinContent(40+1-i));
-	  accepted += h_accepted->GetBinContent(i)+i3*sqrt(h_accepted->GetBinContent(i));
+	      for(int i3=-1; i3<2; i3+=2) {
+	        float accepted = h_accepted->GetBinContent(40+1-i)+i1*sqrt(h_accepted->GetBinContent(40+1-i));
+	        float rejected = h_rejected->GetBinContent(40+1-i)+i2*sqrt(h_rejected->GetBinContent(40+1-i));
+	        accepted += h_accepted->GetBinContent(i)+i3*sqrt(h_accepted->GetBinContent(i));
 	  
-	  float a=1;
-	  float b=-1;
-	  float c= rejected/ (2* (accepted+rejected));
-	  float p= (0.5/a) * (-b + sqrt( b*b-4*a*c));
-	  float p2= (0.5/a) * (-b - sqrt( b*b-4*a*c));
-	  if(p>0.99) p=0;
-	  if(p2>0.99) p2=0;
-	  if(p>0 || p2>0 ) result_j.push_back(max(p,p2));
-	}
+	        float a=1;
+	        float b=-1;
+	        float c= rejected/ (2* (accepted+rejected));
+          float p= (0.5/a) * (-b + sqrt( b*b-4*a*c));
+          float p2= (0.5/a) * (-b - sqrt( b*b-4*a*c));
+          if(p>0.99) p=0;
+          if(p2>0.99) p2=0;
+          if(p>0 || p2>0 ) result_j.push_back(max(p,p2));
+        }
       }
     }
+    //from these variations we calculate the average and std (which will be the stat uncertainty on p)
     float average=0;
     float n=0;
     for(unsigned j=0; j<result_j.size(); j++) {
       if(result_j.at(j)>0) {
-	average+=result_j.at(j);
-	n++;
+	      average+=result_j.at(j);
+	      n++;
       }
     }
     average/=n;
@@ -54,9 +56,9 @@ std::vector<float> CalculateP(TH1F* h_accepted, TH1F *h_rejected)
       result.push_back(average);
       float std_dev=0;
       for(unsigned j=0; j<result_j.size(); j++) {
-	if(result_j.at(j)>0) {
-	  std_dev+=pow(result_j.at(j)-average,2);
-	}
+	      if(result_j.at(j)>0) {
+	        std_dev+=pow(result_j.at(j)-average,2);
+  	    }
       }
       std_dev=sqrt(std_dev/(n-1));
       result_error.push_back(std_dev);
@@ -73,7 +75,7 @@ std::vector<float> CalculateP(TH1F* h_accepted, TH1F *h_rejected)
       result.push_back(0);
   }
 
-
+  // result is a vector with N (from 0 to N-1) values of p and 40 values of p_error (from N to 2N-1)
   return result;
    
 }
@@ -127,11 +129,11 @@ TH1F* CorrectHistoDoubleTag(TH1F* histo, std::vector<float> p_vect) {
     float n=0;
     for(int i1=-1; i1<2; i1+=1) {
       for(int i2=-1; i2<2; i2+=1) {
-	float nm_reco_error = histo->GetBinContent(i)+i1*histo->GetBinError(i);
-	float np_reco_error= histo->GetBinContent(40+1-i)+i2*histo->GetBinError(40+1-i);
-	av_i+= (np_reco_error*q*q-nm_reco_error*p*p)*weight ;
-	av_41i+= -(np_reco_error*p*p-nm_reco_error*q*q)*weight ;
-	n++;
+        float nm_reco_error = histo->GetBinContent(i)+i1*histo->GetBinError(i);
+        float np_reco_error= histo->GetBinContent(40+1-i)+i2*histo->GetBinError(40+1-i);
+        av_i+= (np_reco_error*q*q-nm_reco_error*p*p)*weight ;
+        av_41i+= -(np_reco_error*p*p-nm_reco_error*q*q)*weight ;
+        n++;
       }
     }
     av_i/=n;
@@ -144,11 +146,11 @@ TH1F* CorrectHistoDoubleTag(TH1F* histo, std::vector<float> p_vect) {
     n=0;
     for(int i1=-1; i1<2; i1+=1) {
       for(int i2=-1; i2<2; i2+=1) {
-	float nm_reco_error = histo->GetBinContent(i)+i1*histo->GetBinError(i);
-	float np_reco_error= histo->GetBinContent(40+1-i)+i2*histo->GetBinError(40+1-i);
-	error_i+=pow( (np_reco_error*q*q-nm_reco_error*p*p)*weight -av_i ,2);
-	error_41i+=pow( -(np_reco_error*p*p-nm_reco_error*q*q)*weight  - av_41i, 2);
-	n++;
+        float nm_reco_error = histo->GetBinContent(i)+i1*histo->GetBinError(i);
+        float np_reco_error= histo->GetBinContent(40+1-i)+i2*histo->GetBinError(40+1-i);
+        error_i+=pow( (np_reco_error*q*q-nm_reco_error*p*p)*weight -av_i ,2);
+        error_41i+=pow( -(np_reco_error*p*p-nm_reco_error*q*q)*weight  - av_41i, 2);
+        n++;
       }
     }
     error_i=sqrt(error_i/(n-1.));
