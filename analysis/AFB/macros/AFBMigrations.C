@@ -104,7 +104,7 @@ void Migrations(int pol=2,int quark=5, int syst=0) {
   reco_0->Draw("pesame");
 
 
-  Labels(pol,quark,900);
+  Labels(pol,quark,900,960);
 
   TLegend *leg = new TLegend(0.18,0.70,0.7,0.85,"","blNDC");
   leg->SetTextFont(42);

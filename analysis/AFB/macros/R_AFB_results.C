@@ -146,7 +146,7 @@ void Plots_R_AFB() {
 
   double ey2[4]={0,0,0,0};
   double ex2[4]={0,0,0,0};//0.5,0.5,0.5,0.5};
-  TGraphErrors * g_noTPC = new TGraphErrors(4,x2,y2,ex2,ey2);
+  TGraphAsymmErrors * g_noTPC = new TGraphAsymmErrors(4,x2,y2,ex2,ex2,y2,ey2);
 
 
   c_eL->Fill(0.5, sqrt( pow(r_stat[0],2)+pow(r_syst[0],2)));
@@ -190,46 +190,48 @@ void Plots_R_AFB() {
 
   q_eL->SetLineWidth(0);
   q_eL->SetLineStyle(0);
-  q_eL->SetFillColor(kBlack);
+  q_eL->SetFillColor(kRed+1);
   q_eL->Draw("");
   q_eR->SetLineWidth(0);
   q_eR->SetLineStyle(0);
-  q_eR->SetFillColor(kBlack);
-  q_eR->SetFillStyle(3003);
+  q_eR->SetFillColor(kBlue-4);
+  //  q_eR->SetFillStyle(3003);
 
+  g_noTPC->SetMarkerStyle(29);
+  g_noTPC->SetMarkerColor(kGreen+1);
+  g_noTPC->SetLineWidth(1);
+  g_noTPC->SetLineColor(kGreen+1);
+  g_noTPC->SetMarkerSize(1.4);
+  g_noTPC->Draw("pe");
   
   c_eL->SetLineWidth(0);
   c_eL->SetLineStyle(0);
-  c_eL->SetFillColor(kGreen+2);
+  c_eL->SetFillColor(kRed+1);
   c_eL->Draw("histosame");
 
   c_eR->SetLineWidth(0);
   c_eR->SetLineStyle(0);
-  c_eR->SetFillColor(kGreen+2);
-  c_eR->SetFillStyle(3003);
+  c_eR->SetFillColor(kBlue-4);
+  //  c_eR->SetFillStyle(3003);
   c_eR->Draw("histosame");
 
   b_eL->SetLineWidth(0);
   b_eL->SetLineStyle(0);
-  b_eL->SetFillColor(kBlue+1);
+  b_eL->SetFillColor(kRed+1);
   b_eL->Draw("histosame");
 
   b_eR->SetLineWidth(0);
   b_eR->SetLineStyle(0);
-  b_eR->SetFillColor(kBlue+1);
-  b_eR->SetFillStyle(3003);
+  b_eR->SetFillColor(kBlue-4);
+  //b_eR->SetFillStyle(3003);
   b_eR->Draw("histosame");
 
-  gstat->SetMarkerStyle(4);
-  gstat->SetMarkerColor(kGray+1);
-  gstat->SetLineColor(kGray+1);
+  gstat->SetMarkerStyle(21);
+  gstat->SetMarkerColor(kBlack);
+  gstat->SetLineColor(kBlack);
   gstat->Draw("pe");
 
-  g_noTPC->SetMarkerStyle(30);
-  g_noTPC->SetMarkerColor(kRed);
-  g_noTPC->SetLineColor(kRed);
-  g_noTPC->SetMarkerSize(1.4);
-  g_noTPC->Draw("p");
+  
   // AFBcorrected->Divide(AFBparton2);
   // AFBcorrected->Draw("ep");
   // Labels(-1,-1,900);
@@ -251,7 +253,7 @@ void Plots_R_AFB() {
   leg_b2->SetTextSize(0.035);
   leg_b2->SetTextFont(42);
   leg_b2->AddEntry(gstat,"Only stat. unc.","pl");
-  leg_b2->AddEntry(g_noTPC,"w/o TPC kaon ID","p");
+  leg_b2->AddEntry(g_noTPC,"w/o TPC kaon ID","pe");
   leg_b2->SetFillColor(0);
   leg_b2->SetLineColor(0);
   leg_b2->SetShadowColor(0);
@@ -355,12 +357,12 @@ void Plots_R_AFB() {
   
 //   c_eL[0]->SetLineWidth(0);
 //   c_eL[0]->SetLineStyle(0);
-//   c_eL[0]->SetFillColor(kBlue+1);
+//   c_eL[0]->SetFillColor(kBlue-4);
 //   c_eL[0]->Draw("histosame");
 
 //   c_eR[0]->SetLineWidth(0);
 //   c_eR[0]->SetLineStyle(0);
-//   c_eR[0]->SetFillColor(kBlue+1);
+//   c_eR[0]->SetFillColor(kBlue-4);
 //   c_eR[0]->SetFillStyle(3003);
 //   c_eR[0]->Draw("histosame");
 
