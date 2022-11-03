@@ -222,7 +222,7 @@ void HelicityAmplitudes() {
 
   TH1F * htest0 = new TH1F("htest0","htest0",13,0.,13.);
   TH1F * htest1 = new TH1F("htest1","htest1",13,0.,13.);
-  htest1->SetFillStyle(3001);
+  htest1->SetFillStyle(3005);
   htest1->SetFillColor(kGray+1);
   htest1->SetLineWidth(0);
   htest1->SetLineColor(kGray+1);
@@ -305,14 +305,14 @@ void HelicityAmplitudes() {
   h_c_notpc->SetLineWidth(0);
   h_c_notpc->SetLineStyle(1);
   h_c_notpc->SetLineColor(kGreen-2);
-  h_c_notpc->SetFillStyle(3001);
+  h_c_notpc->SetFillStyle(3005);
   h_c_notpc->SetFillColor(kGreen-2);
   h_c_notpc->Draw("histosame");
 
   h_b_notpc->SetLineWidth(0);
   h_b_notpc->SetLineStyle(1);
   h_b_notpc->SetLineColor(kMagenta+2);
-  h_b_notpc->SetFillStyle(3001);
+  h_b_notpc->SetFillStyle(3005);
   h_b_notpc->SetFillColor(kMagenta+2);
   h_b_notpc->Draw("histosame");
 
@@ -358,7 +358,7 @@ void HelicityAmplitudes() {
   leg->SetShadowColor(0);
   leg->Draw();
 
-  c1->Print("HelicityAmplitude_Unc.eps");
+  c1->Print("plots_draft_final/HelicityAmplitude_Unc.eps");
 
 }
     
