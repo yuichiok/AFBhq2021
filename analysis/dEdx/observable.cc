@@ -247,52 +247,54 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 
     if( quarkid && gamma_e<35 && acol<0.30) {
       for(int ijet=0; ijet<2; ijet++){
-	njetstotal++;
-	float nkaonjet=0;
-	double nt=0;
-	//	if(jet_btag[ijet]>0.8) {
-	float nkaonvtx=0;
-	float nsectracksjet0=0;
-	float nsectracksjet1=0;
-	float nvtx=0;
-	if(ijet==0) n_secvtx->Fill(jet_nvtx_j1);
-	if(ijet==1) n_secvtx->Fill(jet_nvtx_j2);
+    njetstotal++;
+    float nkaonjet=0;
+    double nt=0;
+    //	if(jet_btag[ijet]>0.8) {
+    float nkaonvtx=0;
+    float nsectracksjet0=0;
+    float nsectracksjet1=0;
+    float nvtx=0;
+    if(ijet==0) n_secvtx->Fill(jet_nvtx_j1);
+    if(ijet==1) n_secvtx->Fill(jet_nvtx_j2);
 
-	float leading_k=-1;
-        float leading_pion=-1;
-        float leading_p=-1;
-	float nsectracksvtx[20]={0};
+    float leading_k=-1;
+    float leading_pion=-1;
+    float leading_p=-1;
+    float nsectracksvtx[20]={0};
 	
-	for(int ipfo=0; ipfo<pfo_n; ipfo++) {
+	  for(int ipfo=0; ipfo<pfo_n; ipfo++) {
 
-	  float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
-	    
-	  if(momentum < momentum_min) continue;
-	  if(secondary==true &&  pfo_vtx[ipfo]<1) continue;
-	  // if(secondary==false &&  pfo_vtx[ipfo]>0) continue;
-	  if(ignoreoverlay==true && pfo_isoverlay[ipfo]==1) continue;
-	  if( pfo_ntracks[ipfo]!=1) continue;
+      float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
+        
+      if(momentum < momentum_min) continue;
+      if(secondary==true &&  pfo_vtx[ipfo]<1) continue;
+      // if(secondary==false &&  pfo_vtx[ipfo]>0) continue;
+      if(ignoreoverlay==true && pfo_isoverlay[ipfo]==1) continue;
+      if( pfo_ntracks[ipfo]!=1) continue;
 
-	  nsectracksvtx[pfo_vtx[ipfo]]++;
-	  if(pfo_match[ipfo]==0) nsectracksjet0++;
-          if(pfo_match[ipfo]==1) nsectracksjet1++;
+      nsectracksvtx[pfo_vtx[ipfo]]++;
+      if(pfo_match[ipfo]==0) nsectracksjet0++;
+      if(pfo_match[ipfo]==1) nsectracksjet1++;
 
-	  float costheta;
-	  std::vector<float> p_track;
-	  p_track.push_back(pfo_px[ipfo]);
-	  p_track.push_back(pfo_py[ipfo]);
-	  p_track.push_back(pfo_pz[ipfo]);
-	  costheta=GetCostheta(p_track);
+      float costheta;
+      std::vector<float> p_track;
+      p_track.push_back(pfo_px[ipfo]);
+      p_track.push_back(pfo_py[ipfo]);
+      p_track.push_back(pfo_pz[ipfo]);
+      costheta=GetCostheta(p_track);
 
-	  if(fabs(costheta)>costheta_max && costheta_max>0) continue;
-	  float dedx=pfo_dedx[ipfo];
+      if(fabs(costheta)>costheta_max && costheta_max>0) continue;
+      float dedx=pfo_dedx[ipfo];
 
-	  bool nhits_bool=false;
-	  if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
-	  if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
-	  if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
+      bool nhits_bool=false;
+      if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
+      if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
+      if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
 
-	  if( pfo_ntracks[ipfo]==1 && nhits_bool==true) {
+      if(pfo_piddedx_k_dedxdist[ipfo]==0) continue;
+      float dedx_k_dist_gauss=sqrt(fabs(pfo_piddedx_k_dedxdist[ipfo]))*pfo_piddedx_k_dedxdist[ipfo]/fabs(pfo_piddedx_k_dedxdist[ipfo]);
+      if( pfo_ntracks[ipfo]==1 && nhits_bool==true) {      
 	      
 	    if( fabs(pfo_pdgcheat[ipfo])==321 ){
 	      nkaonjet++;
@@ -301,214 +303,214 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 	      if(momentum>leading_k)leading_k=momentum;
 	      costheta_kaon->Fill(costheta);
 	      p_costheta_kaon->Fill(momentum,costheta);
-	      kdEdx_dist_kaon->Fill(pfo_piddedx_k_dedxdist[ipfo]);
-	      p_kdEdx_dist_kaon->Fill(momentum,pfo_piddedx_k_dedxdist[ipfo]);
-	      costheta_kdEdx_dist_kaon->Fill(fabs(costheta),pfo_piddedx_k_dedxdist[ipfo]);
+	      kdEdx_dist_kaon->Fill(dedx_k_dist_gauss);
+	      p_kdEdx_dist_kaon->Fill(momentum,dedx_k_dist_gauss);
+	      costheta_kdEdx_dist_kaon->Fill(fabs(costheta),dedx_k_dist_gauss);
 
 	      n_costheta_kaon->Fill(costheta,pfo_tpc_hits[ipfo]);
 
 	      if(fabs(pfo_pid[ipfo])==321) {
-		p_kaon_method1->Fill(momentum);
-		costheta_kaon_method1->Fill(costheta);
-		p_costheta_kaon_method1->Fill(momentum,costheta);
-		likelihood_kaon_method1->Fill(pfo_pid_likelihood[ipfo]);
-		k_prob_kaon_method1->Fill(pfo_pid_kprob[ipfo]);
-		pi_prob_kaon_method1->Fill(pfo_pid_piprob[ipfo]);
-		k_pi_prob_kaon_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
+          p_kaon_method1->Fill(momentum);
+          costheta_kaon_method1->Fill(costheta);
+          p_costheta_kaon_method1->Fill(momentum,costheta);
+          likelihood_kaon_method1->Fill(pfo_pid_likelihood[ipfo]);
+          k_prob_kaon_method1->Fill(pfo_pid_kprob[ipfo]);
+          pi_prob_kaon_method1->Fill(pfo_pid_piprob[ipfo]);
+          k_pi_prob_kaon_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
 	      }
 
 	      if(fabs(pfo_piddedx[ipfo])==321) {
-		p_kaon_method2->Fill(momentum);
-		costheta_kaon_method2->Fill(costheta);
-		p_costheta_kaon_method2->Fill(momentum,costheta);
-		likelihood_kaon_method2->Fill(pfo_piddedx_likelihood[ipfo]);
-		k_prob_kaon_method2->Fill(pfo_piddedx_kprob[ipfo]);
-		pi_prob_kaon_method2->Fill(pfo_piddedx_piprob[ipfo]);
-		k_pi_prob_kaon_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
+          p_kaon_method2->Fill(momentum);
+          costheta_kaon_method2->Fill(costheta);
+          p_costheta_kaon_method2->Fill(momentum,costheta);
+          likelihood_kaon_method2->Fill(pfo_piddedx_likelihood[ipfo]);
+          k_prob_kaon_method2->Fill(pfo_piddedx_kprob[ipfo]);
+          pi_prob_kaon_method2->Fill(pfo_piddedx_piprob[ipfo]);
+          k_pi_prob_kaon_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
 	      }
 
 	    } else {
 	      if( fabs(pfo_pdgcheat[ipfo])==211 ) {
-		p_pion->Fill(momentum);
-		if(momentum>leading_pion)leading_pion=momentum;
-		costheta_pion->Fill(costheta);
-		p_costheta_pion->Fill(momentum,costheta);
-		kdEdx_dist_pion->Fill(pfo_piddedx_k_dedxdist[ipfo]);
-		p_kdEdx_dist_pion->Fill(momentum,pfo_piddedx_k_dedxdist[ipfo]);
-		costheta_kdEdx_dist_pion->Fill(fabs(costheta),pfo_piddedx_k_dedxdist[ipfo]);
+          p_pion->Fill(momentum);
+          if(momentum>leading_pion)leading_pion=momentum;
+          costheta_pion->Fill(costheta);
+          p_costheta_pion->Fill(momentum,costheta);
+          kdEdx_dist_pion->Fill(dedx_k_dist_gauss);
+          p_kdEdx_dist_pion->Fill(momentum,dedx_k_dist_gauss);
+          costheta_kdEdx_dist_pion->Fill(fabs(costheta),dedx_k_dist_gauss);
 
-		if(fabs(pfo_pid[ipfo])==321) {
-		  p_pion_method1->Fill(momentum);
-		  costheta_pion_method1->Fill(costheta);
-		  p_costheta_pion_method1->Fill(momentum,costheta);
-		  likelihood_pion_method1->Fill(pfo_pid_likelihood[ipfo]);
-		  k_prob_pion_method1->Fill(pfo_pid_kprob[ipfo]);
-		  pi_prob_pion_method1->Fill(pfo_pid_piprob[ipfo]);
-		  k_pi_prob_pion_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
-		}
+          if(fabs(pfo_pid[ipfo])==321) {
+            p_pion_method1->Fill(momentum);
+            costheta_pion_method1->Fill(costheta);
+            p_costheta_pion_method1->Fill(momentum,costheta);
+            likelihood_pion_method1->Fill(pfo_pid_likelihood[ipfo]);
+            k_prob_pion_method1->Fill(pfo_pid_kprob[ipfo]);
+            pi_prob_pion_method1->Fill(pfo_pid_piprob[ipfo]);
+            k_pi_prob_pion_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
+          }
 		  
-		if(fabs(pfo_piddedx[ipfo])==321) {
-		  p_pion_method2->Fill(momentum);
-		  costheta_pion_method2->Fill(costheta);
-		  p_costheta_pion_method2->Fill(momentum,costheta);
-		  likelihood_pion_method2->Fill(pfo_piddedx_likelihood[ipfo]);
-		  k_prob_pion_method2->Fill(pfo_piddedx_kprob[ipfo]);
-		  pi_prob_pion_method2->Fill(pfo_piddedx_piprob[ipfo]);
-		  k_pi_prob_pion_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
-		}
+          if(fabs(pfo_piddedx[ipfo])==321) {
+            p_pion_method2->Fill(momentum);
+            costheta_pion_method2->Fill(costheta);
+            p_costheta_pion_method2->Fill(momentum,costheta);
+            likelihood_pion_method2->Fill(pfo_piddedx_likelihood[ipfo]);
+            k_prob_pion_method2->Fill(pfo_piddedx_kprob[ipfo]);
+            pi_prob_pion_method2->Fill(pfo_piddedx_piprob[ipfo]);
+            k_pi_prob_pion_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
+          }
 
 	      } else {
-		if( fabs(pfo_pdgcheat[ipfo])==2212 ) {
-		  p_proton->Fill(momentum);
-		  if(momentum>leading_p)leading_p=momentum;
-		  costheta_proton->Fill(costheta);
-		  p_costheta_proton->Fill(momentum,costheta);
-		  kdEdx_dist_proton->Fill(pfo_piddedx_k_dedxdist[ipfo]);
-		  p_kdEdx_dist_proton->Fill(momentum,pfo_piddedx_k_dedxdist[ipfo]);
-		  costheta_kdEdx_dist_proton->Fill(fabs(costheta),pfo_piddedx_k_dedxdist[ipfo]);
+          if( fabs(pfo_pdgcheat[ipfo])==2212 ) {
+            p_proton->Fill(momentum);
+            if(momentum>leading_p)leading_p=momentum;
+            costheta_proton->Fill(costheta);
+            p_costheta_proton->Fill(momentum,costheta);
+            kdEdx_dist_proton->Fill(dedx_k_dist_gauss);
+            p_kdEdx_dist_proton->Fill(momentum,dedx_k_dist_gauss);
+            costheta_kdEdx_dist_proton->Fill(fabs(costheta),dedx_k_dist_gauss);
 
-		  if(fabs(pfo_pid[ipfo])==321) {
-		    p_proton_method1->Fill(momentum);
-		    costheta_proton_method1->Fill(costheta);
-		    p_costheta_proton_method1->Fill(momentum,costheta);
-		    likelihood_proton_method1->Fill(pfo_pid_likelihood[ipfo]);
-		    k_prob_proton_method1->Fill(pfo_pid_kprob[ipfo]);
-		    pi_prob_proton_method1->Fill(pfo_pid_piprob[ipfo]);
-		    k_pi_prob_proton_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
-		  }
+            if(fabs(pfo_pid[ipfo])==321) {
+              p_proton_method1->Fill(momentum);
+              costheta_proton_method1->Fill(costheta);
+              p_costheta_proton_method1->Fill(momentum,costheta);
+              likelihood_proton_method1->Fill(pfo_pid_likelihood[ipfo]);
+              k_prob_proton_method1->Fill(pfo_pid_kprob[ipfo]);
+              pi_prob_proton_method1->Fill(pfo_pid_piprob[ipfo]);
+              k_pi_prob_proton_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
+            }
 		  
-		  if(fabs(pfo_piddedx[ipfo])==321) {
-		    p_proton_method2->Fill(momentum);
-		    costheta_proton_method2->Fill(costheta);
-		    p_costheta_proton_method2->Fill(momentum,costheta);
-		    likelihood_proton_method2->Fill(pfo_piddedx_likelihood[ipfo]);
-		    k_prob_proton_method2->Fill(pfo_piddedx_kprob[ipfo]);
-		    pi_prob_proton_method2->Fill(pfo_piddedx_piprob[ipfo]);
-		    k_pi_prob_proton_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
-		  }
-		} else {
-		  if( fabs(pfo_pdgcheat[ipfo])==11 ) {
-		    p_electron->Fill(momentum);
-		    costheta_electron->Fill(costheta);
-		    p_costheta_electron->Fill(momentum,costheta);
-		    kdEdx_dist_electron->Fill(pfo_piddedx_k_dedxdist[ipfo]);
-		    p_kdEdx_dist_electron->Fill(momentum,pfo_piddedx_k_dedxdist[ipfo]);
-		    costheta_kdEdx_dist_electron->Fill(fabs(costheta),pfo_piddedx_k_dedxdist[ipfo]);
+            if(fabs(pfo_piddedx[ipfo])==321) {
+              p_proton_method2->Fill(momentum);
+              costheta_proton_method2->Fill(costheta);
+              p_costheta_proton_method2->Fill(momentum,costheta);
+              likelihood_proton_method2->Fill(pfo_piddedx_likelihood[ipfo]);
+              k_prob_proton_method2->Fill(pfo_piddedx_kprob[ipfo]);
+              pi_prob_proton_method2->Fill(pfo_piddedx_piprob[ipfo]);
+              k_pi_prob_proton_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
+            }
+          } else {
+            if( fabs(pfo_pdgcheat[ipfo])==11 ) {
+              p_electron->Fill(momentum);
+              costheta_electron->Fill(costheta);
+              p_costheta_electron->Fill(momentum,costheta);
+              kdEdx_dist_electron->Fill(dedx_k_dist_gauss);
+              p_kdEdx_dist_electron->Fill(momentum,dedx_k_dist_gauss);
+              costheta_kdEdx_dist_electron->Fill(fabs(costheta),dedx_k_dist_gauss);
 
-		    if(fabs(pfo_pid[ipfo])==321) {
-		      p_electron_method1->Fill(momentum);
-		      costheta_electron_method1->Fill(costheta);
-		      p_costheta_electron_method1->Fill(momentum,costheta);
-		      likelihood_electron_method1->Fill(pfo_pid_likelihood[ipfo]);
-		      k_prob_electron_method1->Fill(pfo_pid_kprob[ipfo]);
-		      pi_prob_electron_method1->Fill(pfo_pid_piprob[ipfo]);
-		      k_pi_prob_electron_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
-		    }
-		  
-		    if(fabs(pfo_piddedx[ipfo])==321) {
-		      p_electron_method2->Fill(momentum);
-		      costheta_electron_method2->Fill(costheta);
-		      p_costheta_electron_method2->Fill(momentum,costheta);
-		      likelihood_electron_method2->Fill(pfo_piddedx_likelihood[ipfo]);
-		      k_prob_electron_method2->Fill(pfo_piddedx_kprob[ipfo]);
-		      pi_prob_electron_method2->Fill(pfo_piddedx_piprob[ipfo]);
-		      k_pi_prob_electron_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
-		    }
-		  } else {
-		    if( fabs(pfo_pdgcheat[ipfo])==13 ) {
-		      p_muon->Fill(momentum);
-		      costheta_muon->Fill(costheta);
-		      p_costheta_muon->Fill(momentum,costheta);
-		      kdEdx_dist_muon->Fill(pfo_piddedx_k_dedxdist[ipfo]);
-		      p_kdEdx_dist_muon->Fill(momentum,pfo_piddedx_k_dedxdist[ipfo]);
-		      costheta_kdEdx_dist_muon->Fill(fabs(costheta),pfo_piddedx_k_dedxdist[ipfo]);
+              if(fabs(pfo_pid[ipfo])==321) {
+                p_electron_method1->Fill(momentum);
+                costheta_electron_method1->Fill(costheta);
+                p_costheta_electron_method1->Fill(momentum,costheta);
+                likelihood_electron_method1->Fill(pfo_pid_likelihood[ipfo]);
+                k_prob_electron_method1->Fill(pfo_pid_kprob[ipfo]);
+                pi_prob_electron_method1->Fill(pfo_pid_piprob[ipfo]);
+                k_pi_prob_electron_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
+              }
+            
+              if(fabs(pfo_piddedx[ipfo])==321) {
+                p_electron_method2->Fill(momentum);
+                costheta_electron_method2->Fill(costheta);
+                p_costheta_electron_method2->Fill(momentum,costheta);
+                likelihood_electron_method2->Fill(pfo_piddedx_likelihood[ipfo]);
+                k_prob_electron_method2->Fill(pfo_piddedx_kprob[ipfo]);
+                pi_prob_electron_method2->Fill(pfo_piddedx_piprob[ipfo]);
+                k_pi_prob_electron_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
+              }
+            } else {
+              if( fabs(pfo_pdgcheat[ipfo])==13 ) {
+                p_muon->Fill(momentum);
+                costheta_muon->Fill(costheta);
+                p_costheta_muon->Fill(momentum,costheta);
+                kdEdx_dist_muon->Fill(dedx_k_dist_gauss);
+                p_kdEdx_dist_muon->Fill(momentum,dedx_k_dist_gauss);
+                costheta_kdEdx_dist_muon->Fill(fabs(costheta),dedx_k_dist_gauss);
 
-		      if(fabs(pfo_pid[ipfo])==321) {
-			p_muon_method1->Fill(momentum);
-			costheta_muon_method1->Fill(costheta);
-			p_costheta_muon_method1->Fill(momentum,costheta);
-			likelihood_muon_method1->Fill(pfo_pid_likelihood[ipfo]);
-			k_prob_muon_method1->Fill(pfo_pid_kprob[ipfo]);
-			pi_prob_muon_method1->Fill(pfo_pid_piprob[ipfo]);
-			k_pi_prob_muon_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
-		      }
-		  
-		      if(fabs(pfo_piddedx[ipfo])==321) {
-			p_muon_method2->Fill(momentum);
-			costheta_muon_method2->Fill(costheta);
-			p_costheta_muon_method2->Fill(momentum,costheta);
-			likelihood_muon_method2->Fill(pfo_piddedx_likelihood[ipfo]);
-			k_prob_muon_method2->Fill(pfo_piddedx_kprob[ipfo]);
-			pi_prob_muon_method2->Fill(pfo_piddedx_piprob[ipfo]);
-			k_pi_prob_muon_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
-		      }
+                if(fabs(pfo_pid[ipfo])==321) {
+                  p_muon_method1->Fill(momentum);
+                  costheta_muon_method1->Fill(costheta);
+                  p_costheta_muon_method1->Fill(momentum,costheta);
+                  likelihood_muon_method1->Fill(pfo_pid_likelihood[ipfo]);
+                  k_prob_muon_method1->Fill(pfo_pid_kprob[ipfo]);
+                  pi_prob_muon_method1->Fill(pfo_pid_piprob[ipfo]);
+                  k_pi_prob_muon_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
+                }
+          
+                if(fabs(pfo_piddedx[ipfo])==321) {
+                  p_muon_method2->Fill(momentum);
+                  costheta_muon_method2->Fill(costheta);
+                  p_costheta_muon_method2->Fill(momentum,costheta);
+                  likelihood_muon_method2->Fill(pfo_piddedx_likelihood[ipfo]);
+                  k_prob_muon_method2->Fill(pfo_piddedx_kprob[ipfo]);
+                  pi_prob_muon_method2->Fill(pfo_piddedx_piprob[ipfo]);
+                  k_pi_prob_muon_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
+                }
 
-		    } else {
-		      p_others->Fill(momentum);
-		      costheta_others->Fill(costheta);
-		      p_costheta_others->Fill(momentum,costheta);
-		      kdEdx_dist_others->Fill(pfo_piddedx_k_dedxdist[ipfo]);
-		      p_kdEdx_dist_others->Fill(momentum,pfo_piddedx_k_dedxdist[ipfo]);
-		      costheta_kdEdx_dist_others->Fill(fabs(costheta),pfo_piddedx_k_dedxdist[ipfo]);
+              } else {
+                p_others->Fill(momentum);
+                costheta_others->Fill(costheta);
+                p_costheta_others->Fill(momentum,costheta);
+                kdEdx_dist_others->Fill(dedx_k_dist_gauss);
+                p_kdEdx_dist_others->Fill(momentum,dedx_k_dist_gauss);
+                costheta_kdEdx_dist_others->Fill(fabs(costheta),dedx_k_dist_gauss);
 
-		      if(fabs(pfo_pid[ipfo])==321) {
-			p_others_method1->Fill(momentum);
-			costheta_others_method1->Fill(costheta);
-			p_costheta_others_method1->Fill(momentum,costheta);
-			likelihood_others_method1->Fill(pfo_pid_likelihood[ipfo]);
-			k_prob_others_method1->Fill(pfo_pid_kprob[ipfo]);
-			pi_prob_others_method1->Fill(pfo_pid_piprob[ipfo]);
-			k_pi_prob_others_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
+                if(fabs(pfo_pid[ipfo])==321) {
+                  p_others_method1->Fill(momentum);
+                  costheta_others_method1->Fill(costheta);
+                  p_costheta_others_method1->Fill(momentum,costheta);
+                  likelihood_others_method1->Fill(pfo_pid_likelihood[ipfo]);
+                  k_prob_others_method1->Fill(pfo_pid_kprob[ipfo]);
+                  pi_prob_others_method1->Fill(pfo_pid_piprob[ipfo]);
+                  k_pi_prob_others_method1->Fill(pfo_pid_kprob[ipfo],pfo_pid_piprob[ipfo]);
+                } 
+          
+                if(fabs(pfo_piddedx[ipfo])==321) {
+                  p_others_method2->Fill(momentum);
+                  costheta_others_method2->Fill(costheta);
+                  p_costheta_others_method2->Fill(momentum,costheta);
+                  likelihood_others_method2->Fill(pfo_piddedx_likelihood[ipfo]);
+                  k_prob_others_method2->Fill(pfo_piddedx_kprob[ipfo]);
+                  pi_prob_others_method2->Fill(pfo_piddedx_piprob[ipfo]);
+                  k_pi_prob_others_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
+                }
+              }
+		        }
 		      }
-		  
-		      if(fabs(pfo_piddedx[ipfo])==321) {
-			p_others_method2->Fill(momentum);
-			costheta_others_method2->Fill(costheta);
-			p_costheta_others_method2->Fill(momentum,costheta);
-			likelihood_others_method2->Fill(pfo_piddedx_likelihood[ipfo]);
-			k_prob_others_method2->Fill(pfo_piddedx_kprob[ipfo]);
-			pi_prob_others_method2->Fill(pfo_piddedx_piprob[ipfo]);
-			k_pi_prob_others_method2->Fill(pfo_piddedx_kprob[ipfo],pfo_pid_piprob[ipfo]);
-		      }
-		    }
-		  }
-		}
-	      }
-	    }
+        }
+      }
 	      
-	    //for(int ijet=0; ijet<2; ijet++) {
-	    if(dedx>0) {
-	      if(fabs(pfo_pdgcheat[ipfo])==211) pion_dEdx_truth->Fill(momentum,dedx);
-	      if(fabs(pfo_pdgcheat[ipfo])==321) kaon_dEdx_truth->Fill(momentum,dedx);
-	      if(fabs(pfo_pdgcheat[ipfo])==2212) proton_dEdx_truth->Fill(momentum,dedx);
-	      if(fabs(pfo_pdgcheat[ipfo])==11) electron_dEdx_truth->Fill(momentum,dedx);
-	      if(fabs(pfo_pdgcheat[ipfo])==13) muon_dEdx_truth->Fill(momentum,dedx);
-		
-	      if(fabs(pfo_pdgcheat[ipfo])==211) pion_dEdx_cos->Fill(fabs(costheta),dedx);
-	      if(fabs(pfo_pdgcheat[ipfo])==321) kaon_dEdx_cos->Fill(fabs(costheta),dedx);
-	      if(fabs(pfo_pdgcheat[ipfo])==2212) proton_dEdx_cos->Fill(fabs(costheta),dedx);
-	      if(fabs(pfo_pdgcheat[ipfo])==11) electron_dEdx_cos->Fill(fabs(costheta),dedx);
-	      if(fabs(pfo_pdgcheat[ipfo])==13) muon_dEdx_cos->Fill(fabs(costheta),dedx);
-		
-		
-	      if(fabs(pfo_piddedx[ipfo])==211) pion_dEdx_pid->Fill(momentum,dedx);
-	      if(fabs(pfo_piddedx[ipfo])==321) kaon_dEdx_pid->Fill(momentum,dedx);
-	      if(fabs(pfo_piddedx[ipfo])==2212) proton_dEdx_pid->Fill(momentum,dedx);
-	      if(fabs(pfo_piddedx[ipfo])==11) electron_dEdx_pid->Fill(momentum,dedx);
-	      if(fabs(pfo_piddedx[ipfo])==13) muon_dEdx_pid->Fill(momentum,dedx);
-	    }
-	  }
+      //for(int ijet=0; ijet<2; ijet++) {
+      if(dedx>0) {
+        if(fabs(pfo_pdgcheat[ipfo])==211) pion_dEdx_truth->Fill(momentum,dedx);
+        if(fabs(pfo_pdgcheat[ipfo])==321) kaon_dEdx_truth->Fill(momentum,dedx);
+        if(fabs(pfo_pdgcheat[ipfo])==2212) proton_dEdx_truth->Fill(momentum,dedx);
+        if(fabs(pfo_pdgcheat[ipfo])==11) electron_dEdx_truth->Fill(momentum,dedx);
+        if(fabs(pfo_pdgcheat[ipfo])==13) muon_dEdx_truth->Fill(momentum,dedx);
+
+        if(fabs(pfo_pdgcheat[ipfo])==211) pion_dEdx_cos->Fill(fabs(costheta),dedx);
+        if(fabs(pfo_pdgcheat[ipfo])==321) kaon_dEdx_cos->Fill(fabs(costheta),dedx);
+        if(fabs(pfo_pdgcheat[ipfo])==2212) proton_dEdx_cos->Fill(fabs(costheta),dedx);
+        if(fabs(pfo_pdgcheat[ipfo])==11) electron_dEdx_cos->Fill(fabs(costheta),dedx);
+        if(fabs(pfo_pdgcheat[ipfo])==13) muon_dEdx_cos->Fill(fabs(costheta),dedx);
+
+
+        if(fabs(pfo_piddedx[ipfo])==211) pion_dEdx_pid->Fill(momentum,dedx);
+        if(fabs(pfo_piddedx[ipfo])==321) kaon_dEdx_pid->Fill(momentum,dedx);
+        if(fabs(pfo_piddedx[ipfo])==2212) proton_dEdx_pid->Fill(momentum,dedx);
+        if(fabs(pfo_piddedx[ipfo])==11) electron_dEdx_pid->Fill(momentum,dedx);
+        if(fabs(pfo_piddedx[ipfo])==13) muon_dEdx_pid->Fill(momentum,dedx);
+      }
+    }
 	}
 	n_kaon_vtx->Fill(nkaonvtx);
 	n_sectracks->Fill(nsectracksjet0);
-        n_sectracks->Fill(nsectracksjet1);
+  n_sectracks->Fill(nsectracksjet1);
  	for(int isec=0; isec<20; isec++) {
 	  if(nsectracksvtx[isec]>0) {
 	    n_sectracks_vtx->Fill(nsectracksvtx[isec]);
 	    nvtxtotal++;
 	  }
 	}
-	//	}//btag
+  //	}//btag
       }//ijet
     }//bb
   }//for

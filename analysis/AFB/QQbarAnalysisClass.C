@@ -1016,7 +1016,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, float Kvcut=35, int
       double p2=prob_charge[1];
       double q1=1-p1;
       double q2=1-p2;
-      double weightpq=(p1*p1+q1*q2)/(pow(p1*p2,2)-pow(q1*q2,2));
+      double weightpq=(p1*p2+q1*q2)/(pow(p1*p2,2)-pow(q1*q2,2));
       double weighteff=1./(eff_tag*eff_tag*eff_charge[0]*eff_charge[1]*(p1*p2+q1*q2));
       float costheta_reco=  (jet_charge[0] < 0) ? -costheta: costheta;
       float prob_plus=p1*p2*weightpq;// 1./ ( q1*q2-p1*p1*p2*p2/(q1*q1));
@@ -1470,18 +1470,18 @@ float QQbarAnalysisClass::ChargeKJetMethod2(int ijet, float pcut=2., bool cheat=
 
     if(nhits_bool==true && cheat==true && fabs(pfo_pdgcheat[ipfo])==321 && momentum>pcut) {
       if(momentum>mom_max_cheat) {
-	ipfo_max_cheat=ipfo;
-	mom_max_cheat=momentum;
+	      ipfo_max_cheat=ipfo;
+	      mom_max_cheat=momentum;
       }
     }
 
     if(  nhits_bool==true) {
       float dedx_dist=pfo_piddedx_k_dedxdist[ipfo];
       if(dedx_dist >dedxcut_down && dedx_dist < dedxcut_up) {
-	if(momentum>mom_max) {
-	  ipfo_max=ipfo;
-	  mom_max=momentum;
-	}
+	      if(momentum>mom_max) {
+	        ipfo_max=ipfo;
+	        mom_max=momentum;
+	      }
       }
     }
   }

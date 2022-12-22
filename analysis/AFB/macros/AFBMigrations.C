@@ -64,7 +64,7 @@ void Migrations(int pol=2,int quark=5, int syst=0) {
   reco_0->Add(reco_2);
 
   TH1F *corrected_0 = GetHisto2(4,TString::Format("h_AFBreco_pqcorrectedreco_cat0_syst%i",syst),pol,quark,900,1,0);
-  TH1F *corrected_1 = GetHisto2(4,TString::Format("h_AFBreco_chargecheatreco_cat1_syst%i",syst),pol,quark,900,1,0);
+  TH1F *corrected_1 = GetHisto2(4,TString::Format("h_AFBreco_pqcorrectedreco_cat1_syst%i",syst),pol,quark,900,1,0);
   TH1F *corrected_2 = GetHisto2(4,TString::Format("h_AFBreco_pqcorrectedreco_cat2_syst%i",syst),pol,quark,900,1,0);
   corrected_0->Add(corrected_1);
   corrected_0->Add(corrected_2);
@@ -78,7 +78,7 @@ void Migrations(int pol=2,int quark=5, int syst=0) {
   chargecheatreco_0->Add(chargecheatreco_2);
 
 
-    TCanvas* c_f1_MC = new TCanvas(TString::Format("c_f1_MC_%i_%i",quark,pol),TString::Format("c_f1_MC_%i",quark),800,800);
+  TCanvas* c_f1_MC = new TCanvas(TString::Format("c_f1_MC_%i_%i",quark,pol),TString::Format("c_f1_MC_%i",quark),800,800);
   c_f1_MC->cd(1);
 
   chargecheatreco_0->GetXaxis()->SetTitle("cos #theta");
