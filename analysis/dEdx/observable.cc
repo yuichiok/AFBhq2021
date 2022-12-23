@@ -189,28 +189,28 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   TH2F* k_pi_prob_others_method2 = new TH2F("k_pi_prob_others_method2","k_pi_prob_others_method2",100,0,1,100,0,1);
 
   //
-  TH1F* kdEdx_dist_kaon = new TH1F("kdEdx_dist_kaon","kdEdx_dist_kaon",40,-10,10);
-  TH1F* kdEdx_dist_proton = new TH1F("kdEdx_dist_proton","kdEdx_dist_proton",40,-10,10);
-  TH1F* kdEdx_dist_pion = new TH1F("kdEdx_dist_pion","kdEdx_dist_pion",40,-10,10);
-  TH1F* kdEdx_dist_electron = new TH1F("kdEdx_dist_electron","kdEdx_dist_electron",40,-10,10);
-  TH1F* kdEdx_dist_muon = new TH1F("kdEdx_dist_muon","kdEdx_dist_muon",40,-10,10);
-  TH1F* kdEdx_dist_others = new TH1F("kdEdx_dist_others","kdEdx_dist_others",40,-10,10);
+  TH1F* kdEdx_dist_kaon = new TH1F("kdEdx_dist_kaon","kdEdx_dist_kaon",400,-10,10);
+  TH1F* kdEdx_dist_proton = new TH1F("kdEdx_dist_proton","kdEdx_dist_proton",400,-10,10);
+  TH1F* kdEdx_dist_pion = new TH1F("kdEdx_dist_pion","kdEdx_dist_pion",400,-10,10);
+  TH1F* kdEdx_dist_electron = new TH1F("kdEdx_dist_electron","kdEdx_dist_electron",400,-10,10);
+  TH1F* kdEdx_dist_muon = new TH1F("kdEdx_dist_muon","kdEdx_dist_muon",400,-10,10);
+  TH1F* kdEdx_dist_others = new TH1F("kdEdx_dist_others","kdEdx_dist_others",400,-10,10);
 
   //
-  TH2F* p_kdEdx_dist_kaon = new TH2F("p_kdEdx_dist_kaon","p_kdEdx_dist_kaon",100,0.5,100.5,40,-10,10);
-  TH2F* p_kdEdx_dist_proton = new TH2F("p_kdEdx_dist_proton","p_kdEdx_dist_proton",100,0.5,100.5,40,-10,10);
-  TH2F* p_kdEdx_dist_pion = new TH2F("p_kdEdx_dist_pion","p_kdEdx_dist_pion",100,0.5,100.5,40,-10,10);
-  TH2F* p_kdEdx_dist_electron = new TH2F("p_kdEdx_dist_electron","p_kdEdx_dist_electron",100,0.5,100.5,40,-10,10);
-  TH2F* p_kdEdx_dist_muon = new TH2F("p_kdEdx_dist_muon","p_kdEdx_dist_muon",100,0.5,100.5,40,-10,10);
-  TH2F* p_kdEdx_dist_others = new TH2F("p_kdEdx_dist_others","p_kdEdx_dist_others",100,0.5,100.5,40,-10,10);
+  TH2F* p_kdEdx_dist_kaon = new TH2F("p_kdEdx_dist_kaon","p_kdEdx_dist_kaon",100,0.5,100.5,400,-10,10);
+  TH2F* p_kdEdx_dist_proton = new TH2F("p_kdEdx_dist_proton","p_kdEdx_dist_proton",100,0.5,100.5,400,-10,10);
+  TH2F* p_kdEdx_dist_pion = new TH2F("p_kdEdx_dist_pion","p_kdEdx_dist_pion",100,0.5,100.5,400,-10,10);
+  TH2F* p_kdEdx_dist_electron = new TH2F("p_kdEdx_dist_electron","p_kdEdx_dist_electron",100,0.5,100.5,400,-10,10);
+  TH2F* p_kdEdx_dist_muon = new TH2F("p_kdEdx_dist_muon","p_kdEdx_dist_muon",100,0.5,100.5,400,-10,10);
+  TH2F* p_kdEdx_dist_others = new TH2F("p_kdEdx_dist_others","p_kdEdx_dist_others",100,0.5,100.5,400,-10,10);
 
   //
-  TH2F* costheta_kdEdx_dist_kaon = new TH2F("costheta_kdEdx_dist_kaon","costheta_kdEdx_dist_kaon",20,0,1,40,-10,10);
-  TH2F* costheta_kdEdx_dist_proton = new TH2F("costheta_kdEdx_dist_proton","costheta_kdEdx_dist_proton",20,0,1,40,-10,10);
-  TH2F* costheta_kdEdx_dist_pion = new TH2F("costheta_kdEdx_dist_pion","costheta_kdEdx_dist_pion",20,0,1,40,-10,10);
-  TH2F* costheta_kdEdx_dist_electron = new TH2F("costheta_kdEdx_dist_electron","costheta_kdEdx_dist_electron",20,0,1,40,-10,10);
-  TH2F* costheta_kdEdx_dist_muon = new TH2F("costheta_kdEdx_dist_muon","costheta_kdEdx_dist_muon",20,0,1,40,-10,10);
-  TH2F* costheta_kdEdx_dist_others = new TH2F("costheta_kdEdx_dist_others","costheta_kdEdx_dist_others",20,0,1,40,-10,10);
+  TH2F* costheta_kdEdx_dist_kaon = new TH2F("costheta_kdEdx_dist_kaon","costheta_kdEdx_dist_kaon",20,0,1,400,-10,10);
+  TH2F* costheta_kdEdx_dist_proton = new TH2F("costheta_kdEdx_dist_proton","costheta_kdEdx_dist_proton",20,0,1,400,-10,10);
+  TH2F* costheta_kdEdx_dist_pion = new TH2F("costheta_kdEdx_dist_pion","costheta_kdEdx_dist_pion",20,0,1,400,-10,10);
+  TH2F* costheta_kdEdx_dist_electron = new TH2F("costheta_kdEdx_dist_electron","costheta_kdEdx_dist_electron",20,0,1,400,-10,10);
+  TH2F* costheta_kdEdx_dist_muon = new TH2F("costheta_kdEdx_dist_muon","costheta_kdEdx_dist_muon",20,0,1,400,-10,10);
+  TH2F* costheta_kdEdx_dist_others = new TH2F("costheta_kdEdx_dist_others","costheta_kdEdx_dist_others",20,0,1,400,-10,10);
 
   Long64_t nentries;
   if(n_entries>0) nentries= n_entries;
@@ -293,7 +293,8 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
       if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
 
       if(pfo_piddedx_k_dedxdist[ipfo]==0) continue;
-      float dedx_k_dist_gauss=sqrt(fabs(pfo_piddedx_k_dedxdist[ipfo]))*pfo_piddedx_k_dedxdist[ipfo]/fabs(pfo_piddedx_k_dedxdist[ipfo]);
+      float dedx_k_dist_gauss=pfo_piddedx_k_dedxdist[ipfo];
+      //TMath::Sqrt(TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]))*pfo_piddedx_k_dedxdist[ipfo]/TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]);
       if( pfo_ntracks[ipfo]==1 && nhits_bool==true) {      
 	      
 	    if( fabs(pfo_pdgcheat[ipfo])==321 ){
