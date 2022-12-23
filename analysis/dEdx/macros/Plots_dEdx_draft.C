@@ -807,7 +807,7 @@ void dEdxdist(int quarkid=3) {
   
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
   c_mom->cd(1);
-  kdEdx_dist_pion2->GetXaxis()->SetTitle("signed #chi^{2}_{dE/dx-K}");
+  kdEdx_dist_pion2->GetXaxis()->SetTitle("#Delta_{dE/dx-K}");
   //  kdEdx_dist_pion2->GetXaxis()->SetTitle("signed [(dE/dx-dE/dx_{fit-kaon})/#Delta_{dE/dx}]^{2}");
   kdEdx_dist_pion2->GetYaxis()->SetTitle("a.u.");
   //kdEdx_dist_pion->GetYaxis()->SetTitleOffset(1.25);
@@ -964,7 +964,7 @@ void dEdxdistProjection(int quarkid=3) {
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
   c_mom->cd(1);
   g_pion->GetXaxis()->SetTitle("|#vec{p}_{trk}| [GeV]");
-  g_pion->GetYaxis()->SetTitle("#mu_{#chi^{2}_{dE/dx-K}} #pm #sigma_{#chi^{2}_{dE/dx-K}}");
+  g_pion->GetYaxis()->SetTitle("#mu_{#Delta_{dE/dx-K}} #pm #sigma_{#Delta_{dE/dx-K}}");
   g_pion->GetYaxis()->SetTitleOffset(1.2);
   g_pion->GetYaxis()->SetRangeUser(-10,20);
   g_pion->GetXaxis()->SetRangeUser(0,80);
@@ -1133,7 +1133,7 @@ void dEdxdistProjection2(int quarkid=3) {
   TCanvas* c_mom = new TCanvas("c_mom2","c_mom2",800,800);
   c_mom->cd(1);
   g_pion->GetXaxis()->SetTitle("cos(#theta_{trk})");
-  g_pion->GetYaxis()->SetTitle("#mu_{#chi^{2}_{dE/dx-K}} #pm #sigma_{#chi^{2}_{dE/dx-K}}");
+  g_pion->GetYaxis()->SetTitle("#mu_{#Delta_{dE/dx-K}} #pm #sigma_{#Delta_{dE/dx-K}}");
   g_pion->GetYaxis()->SetTitleOffset(1.2);
   g_pion->GetYaxis()->SetRangeUser(-10,20);
   g_pion->GetXaxis()->SetRangeUser(0,1);
@@ -1662,7 +1662,7 @@ void Plots_dEdx_draft() {
   Ntracks();*/
   //Ntracks2();
 
-  //  for(int i=4; i<6; i++)  dEdxdist(i);
+  for(int i=4; i<6; i++)  dEdxdist(i);
   for(int i=4; i<6; i++)  dEdxdistProjection(i);
   for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 
