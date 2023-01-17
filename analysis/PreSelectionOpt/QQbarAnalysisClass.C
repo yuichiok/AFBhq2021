@@ -265,7 +265,7 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
     float Kv = Kreco();
     float reco_acol_v = AcolValue();
     // parte importante
-    bool selection = PreSelection(selection_typeÇ);
+    bool selection = PreSelection(selection_type);
     if (selection == false)
       continue;
 

@@ -224,7 +224,7 @@ bool PreSelection(int type=0,float Kvcut=25, float acolcut=0.3) {
    cut_[5]=( cut_[4] && d23>0.5 && d23/pow(bbmass,2)<y23cut );
    
    cut_[5]=(cut_[5] && jet_btag[0]>btag1 && jet_btag[1]>btag2);
-   cut_[6]=(cut_[5]] && jet_ctag[0]>ctag1 && jet_ctag[1]>ctag2);
+   cut_[6]=(cut_[5] && jet_ctag[0]>ctag1 && jet_ctag[1]>ctag2);
    return cut_[type];
 
 
