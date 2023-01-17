@@ -172,8 +172,8 @@ void selection_plots2(int polarisation=0, bool normalised=true, TString output="
   //  gPad->SetLogz();
     
   h_costheta_energy_bb->SetTitle("Signal");
-  h_costheta_energy_bb->GetYaxis()->SetTitle("#sum E_{neutrals}");
-  h_costheta_energy_bb->GetXaxis()->SetTitle("|cos#left(#theta_{#sum E_{neutrals}}#right)|");
+  h_costheta_energy_bb->GetYaxis()->SetTitle("E_{#gamma_{clus}}");
+  h_costheta_energy_bb->GetXaxis()->SetTitle("|cos#left(#theta_{#gamma_{clus}}#right)|");
   h_costheta_energy_bb->GetXaxis()->SetTitleOffset(1.6);
 
   h_costheta_energy_bb->Draw("colz");
@@ -189,8 +189,8 @@ void selection_plots2(int polarisation=0, bool normalised=true, TString output="
   //  gPad->SetLogz();
     
   h_costheta_energy_radreturn->SetTitle("Radiative Return");
-  h_costheta_energy_radreturn->GetYaxis()->SetTitle("#sum E_{neutrals}");
-  h_costheta_energy_radreturn->GetXaxis()->SetTitle("|cos#left(#theta_{#sum E_{neutrals}}#right)|");
+  h_costheta_energy_radreturn->GetYaxis()->SetTitle("E_{#gamma_{clus}}");
+  h_costheta_energy_radreturn->GetXaxis()->SetTitle("|cos#left(#theta_{#gamma_{clus}}#right)|");
   h_costheta_energy_radreturn->GetXaxis()->SetTitleOffset(1.6);
   h_costheta_energy_radreturn->Draw("colz");
   h_costheta_energy_cc->Draw("boxsame");

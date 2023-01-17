@@ -50,7 +50,7 @@ TH1F *average (TH1F* h1, TH1F* h2, TH1F* h3, TString title="") {
       eynew/=sumw;*/
 
        ynew=(y1+y2+y3)/3.;
-	 eynew=sqrt(pow(w1,2)+pow(w2,2)+pow(w3,2));
+	    eynew=sqrt(pow(w1,2)+pow(w2,2)+pow(w3,2));
 
     }
     result->SetBinContent(i+1,ynew);
@@ -204,7 +204,7 @@ void Plots_AFB(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
 
   //TH1F* eff_eL=Efficiency(AFB_chargecheatreco_effcorr_0_eL,AFB_chargecheatreco_effcorr_1_eL,AFB_chargecheatreco_effcorr_2_eL,AFBparton_eL);
 
-pol="eR_pL";
+  pol="eR_pL";
   filename = TString::Format("../results/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
   f = new TFile(filename);
   hstats[1]=(TH1F*)f->Get("h_Ntotal_nocuts");
@@ -224,9 +224,9 @@ pol="eR_pL";
   TH1F* AFB_chargecheatreco_effcorr_eR=average(AFB_chargecheatreco_effcorr_0_eR,AFB_chargecheatreco_effcorr_1_eR,AFB_chargecheatreco_effcorr_2_eR);
 
   //**********************Pol Histos
-  TH1F * AFBparton=PolHisto(AFBparton_eL,AFBparton_eR,ipol,luminosity,100.*lum,1);
-  TH1F * AFBparton2=PolHisto(AFBparton2_eL,AFBparton2_eR,ipol,luminosity,100.*lum,1);
-  TH1F * AFBcheat=PolHisto(AFB_chargecheatreco_effcorr_eL,AFB_chargecheatreco_effcorr_eR,ipol,luminosity,100.*lum,1);
+  TH1F * AFBparton=PolHisto(AFBparton_eL,AFBparton_eR,ipol,luminosity,lum,1);
+  TH1F * AFBparton2=PolHisto(AFBparton2_eL,AFBparton2_eR,ipol,luminosity,lum,1);
+  TH1F * AFBcheat=PolHisto(AFB_chargecheatreco_effcorr_eL,AFB_chargecheatreco_effcorr_eR,ipol,luminosity,lum,1);
   TH1F * AFBcorrected=PolHisto(AFB_pqcorrectedreco_effcorr_eL,AFB_pqcorrectedreco_effcorr_eR,ipol,luminosity,lum,1);
   TH1F* eff=Efficiency(AFBcheat,AFBparton,AFBparton2);
   AFBcorrected->Divide(eff);
@@ -256,7 +256,7 @@ pol="eR_pL";
   AFBcorrected->SetLineStyle(1);
   AFBcorrected->SetMarkerColor(2);
   AFBcorrected->SetMarkerStyle(20);
-  AFBcorrected->Draw("pesame");
+  AFBcorrected->Draw("esame");
   
   func_corrected->SetLineColor(2);
   func_corrected->SetLineWidth(2);
@@ -285,7 +285,16 @@ pol="eR_pL";
   
   float ratio=100.*(1-(1-Afb_corrected/Afb)/2.);
   float eratio=100.*sqrt(pow(dAfb_corrected,2))/Afb;
-  QQBARLabel2(0.55,0.27, TString::Format("#frac{AFB^{fit}_{reco}}{AFB^{fit}_{LO}}=%.1f#pm %.1f (stat.)",ratio,eratio)+"%",kGray+2);
+  QQBARLabel2(0.55,0.32, TString::Format("#frac{AFB^{fit}_{reco}}{AFB^{fit}_{LO}}=%.1f#pm %.1f (stat.)",ratio,eratio)+"%",kGray+2);
+
+  float plus2 = AFBcorrected->Integral(21,41);
+  cout<<plus2<<endl;
+  float minus2 = AFBcorrected->Integral(1,20);
+  cout<<minus2<<endl;
+  float plus2_e = sqrt(plus2);
+  float minus2_e = sqrt(minus2);
+  float Afb2=Afb_v(plus2,minus2);
+  float dAfb2=dAfb_v(plus2,minus2, plus2_e, minus2_e);
 
   float plus_corrected2 = func_corrected->Integral(0,0.9);
   float minus_corrected2 = func_corrected->Integral(-0.9,0);
@@ -294,9 +303,9 @@ pol="eR_pL";
   float Afb_corrected2=Afb_v(plus_corrected2,minus_corrected2);
   float dAfb_corrected2=dAfb_v(plus_corrected2,minus_corrected2, plus_e_corrected2, minus_e_corrected2);
 
-  float ratio2=100.*(1-(1-Afb_corrected/Afb_corrected2)/2.);
-  float eratio2=100.*sqrt(pow(dAfb_corrected2,2))/Afb_corrected;
-  //QQBARLabel2(0.55,0.21, TString::Format("#frac{AFB^{sum}_{reco}}{AFB^{fit}_{reco}}=%.1f#pm %.1f (stat.)",ratio2,eratio2)+"%",kGray+2);
+  float ratio2=100.*(1-(1-Afb_corrected2/Afb2)/2.);
+  float eratio2=100.*sqrt(pow(dAfb_corrected2,2))/Afb2;
+  QQBARLabel2(0.55,0.22, TString::Format("#frac{AFB^{fid.}_{reco}}{AFB^{fid.}_{LO}}=%.1f#pm %.1f (stat.)",ratio2,eratio2)+"%",kGray+2);
 
   // TString pol_string1 = "e_{L}^{-}e_{R}^{+}";
   // TString pol_string2 = "e_{R}^{-}e_{L}^{+}";
@@ -343,7 +352,7 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   TH1F *hstats[2];
 
   TString pol="eL_pR";
-  TString filename = TString::Format("../results/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
+  TString filename = TString::Format("../results_20221223/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
   TFile *f = new TFile(filename);
   hstats[0]=(TH1F*)f->Get("h_Ntotal_nocuts");
   if(hstats[0]->Integral()>0) luminosity[0]=hstats[0]->Integral()/cross_section[0][iprocess];
@@ -364,7 +373,7 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   //TH1F* eff_eL=Efficiency(AFB_chargecheatreco_effcorr_0_eL,AFB_chargecheatreco_effcorr_1_eL,AFB_chargecheatreco_effcorr_2_eL,AFBparton_eL);
 
   pol="eR_pL";
-  filename = TString::Format("../results/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
+  filename = TString::Format("../results_20221223/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
   f = new TFile(filename);
   hstats[1]=(TH1F*)f->Get("h_Ntotal_nocuts");
   if(hstats[1]->Integral()>0) luminosity[1]=hstats[1]->Integral()/cross_section[1][iprocess];
@@ -408,7 +417,7 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
 
   }
 
-  for(int syst=0; syst<23; syst++)  std::cout<<setprecision(7)<<"PDG: "<<quark<<" polarisation:"<<ipol<<" Syst:"<<syst<<"  --> AFB:"<<Afb_corrected[syst]<<" Rel_Error:"<<100.*dAfb_corrected[syst]/Afb_corrected[syst]<<"%"<<endl;
+  for(int syst=0; syst<1; syst++)  std::cout<<setprecision(7)<<"PDG: "<<quark<<" polarisation:"<<ipol<<" Syst:"<<syst<<"  --> AFB:"<<Afb_corrected[syst]<<" Rel_Error:"<<100.*dAfb_corrected[syst]/Afb_corrected[syst]<<"%"<<endl;
 
 }
 
@@ -482,13 +491,13 @@ pol="eR_pL";
 
 
   void AFBFit() {
-    //  Plots_AFB(4,2,900);
-    //Plots_AFB(4,3,900);
-    //Plots_AFB(5,2,900);
-    //Plots_AFB(5,3,900);
+    Plots_AFB(4,2,900);
+    Plots_AFB(4,3,900);
+    Plots_AFB(5,2,900);
+    Plots_AFB(5,3,900);
 
-    AFBSyst(4,3,900);
-    //AFBPol(4,2,900);
+    //AFBSyst(5,3,900,3);
+    //AFBPol(5,2,900,1);
 
   }
     

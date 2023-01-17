@@ -42,7 +42,7 @@
 
 void Migrations(int pol=2,int quark=5, int syst=0) {
 
-  folder="../results/AFBreco_";
+  folder="../results_20221223/AFBreco_";
 
   
   SetQQbarStyle();

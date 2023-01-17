@@ -489,7 +489,7 @@ void Plots_CrossDiff(int mode=0) {
   test2->SetLineWidth(2);
   test2->SetLineStyle(2);
 
-  Labels(", sin(#Psi_{acol})<0.3 & E_{#gamma}<35 GeV");
+  Labels(", sin(#Psi_{acol})<0.3 ");
 
 
   TString pol_string1 = "e_{L}^{-}e_{R}^{+}";
@@ -1761,15 +1761,15 @@ void Plots2(TString pol="eR_pL") {
 void Observables() {
 
   //Plots_Cross();
-  for(int i=0; i<1; i++) {
-    /*  Plots_AFB(i);
+  for(int i=0; i<2; i++) {
+    /* Plots_AFB(i);
     Plots_AFB2(i);
     Plots_Cross0(i);
     Plots_Cross(i);
-    Plots_Cross2(i);
-    Plots_CrossDiff(i);*/
-    Plots_R(i);
-    Plots_R2(i);
+    Plots_Cross2(i);*/
+    Plots_CrossDiff(i);
+    //Plots_R(i);
+    //Plots_R2(i);
   }
 
   //Plots_R();

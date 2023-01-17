@@ -35,15 +35,17 @@ void Labels(int i=0, TString pol="eL"){
 
   if(i==4) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} cuts",kOrange+3);
+    //QQBARLabel2(0.04,0.03, "& K_{reco} cuts",kOrange+3);
   }
   if(i==5) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} cuts",kOrange+3);
+    //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} cuts",kOrange+3);
+    QQBARLabel2(0.04,0.03, "& m_{j1j1} cuts",kOrange+3);
   }
   if(i==6) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} & y_{23} cuts",kOrange+3);
+    //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} & y_{23} cuts",kOrange+3);
+    QQBARLabel2(0.04,0.03, "& m_{j1j1} & y_{23} cuts",kOrange+3);
 
   }
 
@@ -67,7 +69,7 @@ void effpreselection() {
   TH1F *h_costheta_zz[2]; 
   TH1F *h_costheta_hz[2]; */
 
-  TString pol="eL_pR";
+  TString pol="eR_pL";
 
   float luminosity_0=1;
   for(int i=0; i<2; i++) {

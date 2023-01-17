@@ -35,15 +35,17 @@ void Labels(int i=0, TString pol="eL"){
 
   if(i==4) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} cuts",kOrange+3);
+    //QQBARLabel2(0.04,0.03, "& K_{reco} cuts",kOrange+3);
   }
   if(i==5) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} cuts",kOrange+3);
+    //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} cuts",kOrange+3);
+    QQBARLabel2(0.04,0.03, "& m_{jj} cuts",kOrange+3);
   }
   if(i==6) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} & y_{23} cuts",kOrange+3);
+    //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} & y_{23} cuts",kOrange+3);
+    QQBARLabel2(0.04,0.03, "& m_{jj} & y_{23} cuts",kOrange+3);
 
   }
 
@@ -92,7 +94,7 @@ void selection_plots( bool normalised=true, TString output="efficiency") {
   float luminosity_0=1;
 
 
-  for(int i=0; i<7; i++) {
+  for(int i=0; i<4; i++) {
 
     //if(i==1) i=8;
 
