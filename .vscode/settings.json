@@ -83,7 +83,8 @@
         "R_AFB_results.C": "cpp",
         "HelicityAmplitudes copy.C": "cpp",
         "AFBFit.C": "cpp",
-        "AFB.C": "cpp"
+        "AFB.C": "cpp",
+        "Observables.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
