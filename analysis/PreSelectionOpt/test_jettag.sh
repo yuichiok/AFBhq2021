@@ -18,13 +18,13 @@ do
         name=$counter
     fi
 
-    for cuts in 6
+    for cuts in 5
     do
 
 	cat > ${local}/steer/jettag_${process}_${pol}_${name}_cuts${cuts}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
-root -l ${local}/test_jettag.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${cuts},35\) > ${local}/output/log_jettag_${process}_${pol}_${name}_cuts${cuts}
-mv *cuts${cuts}_${process}_${pol}_file_${name}_250GeV.root ${local}/output/.
+root -l ${local}/test_jettag.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${cuts}\) > ${local}/output/log_jettag_${process}_${pol}_${name}_cuts${cuts}
+mv *cuts${cuts}_${process}_${pol}_file_${name}.root ${local}/output/.
 EOF
 	
 	cat > ${local}/steer/jettag_${process}_${pol}_${name}_cuts${cuts}.sub <<EOF
@@ -39,7 +39,7 @@ when_to_transfer_output = ON_EXIT
 queue 1
 EOF
 	
-	if [ -f ${local}/output/jettag_cuts${cuts}_${process}_${pol}_file_${name}_250GeV.root ];
+	if [ -f ${local}/output/jettag_cuts${cuts}_${process}_${pol}_file_${name}.root ];
         then
             echo "Skip ${process}_${pol}_${name}_cuts${cuts}"
         else	

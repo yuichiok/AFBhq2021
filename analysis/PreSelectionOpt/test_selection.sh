@@ -29,8 +29,8 @@ do
 
 	cat > ${local}/steer/sel_${process}_${pol}_${name}_cuts${cuts}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
-root -l ${local}/test_selection.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${cuts},35,$bkg\) > ${local}/output/log_sel_${process}_${pol}_${name}_cuts${cuts}
-mv *cuts${cuts}_${process}_${pol}_file_${name}_250GeV.root ${local}/output/.
+root -l ${local}/test_selection.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${cuts},$bkg\) > ${local}/output/log_sel_${process}_${pol}_${name}_cuts${cuts}
+mv *cuts${cuts}_${process}_${pol}_file_${name}.root ${local}/output/.
 EOF
 	
 	cat > ${local}/steer/sel_${process}_${pol}_${name}_cuts${cuts}.sub <<EOF
@@ -44,7 +44,7 @@ should_transfer_files   = Yes
 when_to_transfer_output = ON_EXIT
 queue 1
 EOF
-	if [ -f ${local}/output/selection_cuts${cuts}_${process}_${pol}_file_${name}_250GeV.root ];
+	if [ -f ${local}/output/selection_cuts${cuts}_${process}_${pol}_file_${name}.root ];
         then
             echo "Skip ${process}_${pol}_${name}_cuts${cuts}"
         else	
