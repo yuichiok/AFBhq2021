@@ -154,14 +154,14 @@ void PFOphotonQuantities() {
       npfo_photon[pfo_match[ipfo]]++;
 
       if(pfo_match[ipfo]==0) {
-	px_0+=pfo_px[ipfo];
-	py_0+=pfo_py[ipfo];
-	pz_0+=pfo_pz[ipfo];
+        px_0+=pfo_px[ipfo];
+        py_0+=pfo_py[ipfo];
+        pz_0+=pfo_pz[ipfo];
       }
       if(pfo_match[ipfo]==1) {
-	px_1+=pfo_px[ipfo];
-	py_1+=pfo_py[ipfo];
-	pz_1+=pfo_pz[ipfo];
+        px_1+=pfo_px[ipfo];
+        py_1+=pfo_py[ipfo];
+        pz_1+=pfo_pz[ipfo];
       }
 
       photonjet_E[pfo_match[ipfo]] += pfo_E[ipfo];
@@ -190,24 +190,24 @@ bool PreSelection(int type=0,float Kvcut=25, float acolcut=0.3) {
   double bbmass= sqrt(pow(jet_E[0]+jet_E[1],2)-pow(jet_px[0]+jet_px[1],2)-pow(jet_py[0]+jet_py[1],2)-pow(jet_pz[0]+jet_pz[1],2));
 
   // KRECO CALCULATION
-   float Kv=Kreco();
-   float acol_value=AcolValue();
+  //float Kv=Kreco();
+  float acol_value=AcolValue();
 
   //----------------------------------------------------------
   // IDENTIFICATION OF PFO's associated to photons, charged pfos, neutral pgos
   //Radiative return cuts, photon INSIDE the detector //NUEVO ADRIAN 2021 04 21
   //---------------------
-   PFOphotonQuantities();
-   float photonjet_e_max=0;
-   float photonjet_cos_max=-2;
-   if(photonjet_E[0]>photonjet_E[1]) {
-     photonjet_e_max=photonjet_E[0];
-     photonjet_cos_max=photonjet_costheta[0];
-   } else {
-     photonjet_e_max=photonjet_E[1];
-     photonjet_cos_max=photonjet_costheta[1];
-   }
-      
+  PFOphotonQuantities();
+  float photonjet_e_max=0;
+  float photonjet_cos_max=-2;
+  if(photonjet_E[0]>photonjet_E[1]) {
+    photonjet_e_max=photonjet_E[0];
+    photonjet_cos_max=photonjet_costheta[0];
+  } else {
+    photonjet_e_max=photonjet_E[1];
+    photonjet_cos_max=photonjet_costheta[1];
+  }
+    
   //----------------------------------------------------------
    bool cut_[10]={false};
    cut_[0]=true;
@@ -219,12 +219,12 @@ bool PreSelection(int type=0,float Kvcut=25, float acolcut=0.3) {
    cut_[1]=( npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut);
    cut_[2]=( cut_[1] &&  fabs(photonjet_cos_max)<costheta_isr && photonjet_e_max<energy_isr_cut ) ;
    cut_[3]=( cut_[2] && acol_value<acolcut );
-   cut_[4]=( cut_[3] && Kv < Kvcut);
-   cut_[5]=( cut_[4] && bbmass>bbmasscut ) ;
-   cut_[6]=( cut_[5] && d23>0.5 && d23/pow(bbmass,2)<y23cut );
+   //cut_[4]=( cut_[3] ); //do not apply the Kreco cut
+   cut_[4]=( cut_[3] && bbmass>bbmasscut ) ;
+   cut_[5]=( cut_[4] && d23>0.5 && d23/pow(bbmass,2)<y23cut );
    
-   cut_[7]=(cut_[6] && jet_btag[0]>btag1 && jet_btag[1]>btag2);
-   cut_[8]=(cut_[6] && jet_ctag[0]>ctag1 && jet_ctag[1]>ctag2);
+   cut_[5]=(cut_[5] && jet_btag[0]>btag1 && jet_btag[1]>btag2);
+   cut_[6]=(cut_[5]] && jet_ctag[0]>ctag1 && jet_ctag[1]>ctag2);
    return cut_[type];
 
 

@@ -35,14 +35,10 @@ void Labels(int i=0, TString pol="eL"){
 
   if(i==4) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    //QQBARLabel2(0.04,0.03, "& K_{reco} cuts",kOrange+3);
-  }
-  if(i==5) {
-    QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
     //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} cuts",kOrange+3);
     QQBARLabel2(0.04,0.03, "& m_{j1j1} cuts",kOrange+3);
   }
-  if(i==6) {
+  if(i==5) {
     QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
     //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} & y_{23} cuts",kOrange+3);
     QQBARLabel2(0.04,0.03, "& m_{j1j1} & y_{23} cuts",kOrange+3);
@@ -59,7 +55,7 @@ void effpreselection() {
 
   cout<< "bb qq radreturn ww zz hz "<<endl;
 
-  for(int step=6; step<7; step++) {
+  for(int step=5; step<6; step++) {
     
   TH1F *h_costheta_bb[2]; 
   TH1F *h_costheta_cc[2]; 
@@ -78,10 +74,10 @@ void effpreselection() {
     if(i==0) cuts=0;
     if(i==1) cuts=step;
     
-    TString folder=TString::Format("../results/selection_cuts%i_",cuts);
+    TString folder=TString::Format("../results_250GeV_2023/selection_cuts%i_",cuts);
     
     //----------------------------------
-    TString filename = folder+"2f_hadronic_sample_"+pol+"_250GeV.root";//folder+"bbbar_"+kt+sel+"250GeV_"+pol+".root";
+    TString filename = folder+"2f_hadronic_sample_"+pol+".root";//folder+"bbbar_"+kt+sel+"250GeV_"+pol+".root";
     //  if(i==0) filename = folder+"bbbar_radret_genkt_R100_Kgamma35_250GeV_"+pol+".root";
     cout<<" Z-->qq file: "<<filename<<endl;
     TFile *f = new TFile(filename);
@@ -155,7 +151,7 @@ void effpreselection() {
   h_costheta_bb[1]->SetName("Eff Presel");
   h_costheta_bb[1]->SetTitle("Eff Presel");
   h_costheta_bb[1]->Write();
-  canvas2->Print(TString::Format("plots_draft/epsilonhad_cuts%i_%s.eps",step,pol.Data()));
+  canvas2->Print(TString::Format("plots_draft_2023/epsilonhad_cuts%i_%s.eps",step,pol.Data()));
 
  
   }

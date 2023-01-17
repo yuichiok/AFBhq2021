@@ -32,7 +32,7 @@ float p2error=0;
 //pol=2 eLpR 80/30
 //pol=3 eRpL 80/30
 
-TString process[5]={"4f_ZZ_hadronic","qqH","4f_WW_hadronic","2f_hadronic_sample","2f_hadronic"};
+TString process[6]={"2f_hadronic_sample","2f_hadronic""4f_ZZ_hadronic","qqH","4f_WW_hadronic","6fttbar"};
 
 bool debug=false;
 

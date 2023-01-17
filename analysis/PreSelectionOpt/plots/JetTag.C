@@ -52,7 +52,7 @@ void Plots()
   gStyle->SetMarkerSize(0.2);
   // TGaxis::SetMaxDigits(2);
 
-  TString filename = "../results/jettag_cuts6_2f_hadronic_sample_eL_pR_250GeV.root";
+  TString filename = "../results_250GeV_2023/jettag_cuts6_2f_hadronic_sample_eL_pR.root";
   TFile *f = new TFile(filename);
   TH1F *btag[40][2];
   TH1F *ctag[40][2];
@@ -62,7 +62,7 @@ void Plots()
     ctag[i][0] = (TH1F *)f->Get(TString::Format("h_jet_ctag_%i", i));
   }
 
-  filename = "../results/jettag_cuts6_2f_hadronic_sample_eR_pL_250GeV.root";
+  filename = "../results_250GeV_2023/jettag_cuts6_2f_hadronic_sample_eR_pL.root";
   TFile *f2 = new TFile(filename);
 
   for (int i = 0; i < 40; i++)
@@ -192,7 +192,7 @@ void Plots()
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
-  c_eff_b->Print("plots_draft/btagging_performance.eps");
+  c_eff_b->Print("plots_draft_2023/btagging_performance.eps");
 
   ///---------------------------------------------
   TGraph *efficiency_c_c_eL = new TGraph(n, x, eff_c[0][1]);
@@ -272,7 +272,7 @@ void Plots()
   leg_c->SetLineColor(0);
   leg_c->SetShadowColor(0);
   leg_c->Draw();
-  c_eff_c->Print("plots_draft/ctagging_performance.eps");
+  c_eff_c->Print("plots_draft_2023/ctagging_performance.eps");
 }
 
 void JetTag()

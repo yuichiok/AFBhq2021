@@ -84,7 +84,8 @@
         "HelicityAmplitudes copy.C": "cpp",
         "AFBFit.C": "cpp",
         "AFB.C": "cpp",
-        "Observables.C": "cpp"
+        "Observables.C": "cpp",
+        "effpreselection.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
