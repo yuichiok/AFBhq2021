@@ -181,7 +181,7 @@ void PFOphotonQuantities() {
 }
 
 
-bool PreSelection(int type=0,float Kvcut=25, float acolcut=0.3) {
+bool PreSelection(int type=0, float acolcut=0.3) {
   
   if(jet_E[0]<0.5 || jet_E[1]<0.5) return false;
 

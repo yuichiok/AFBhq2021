@@ -38,8 +38,8 @@ void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, floa
     float gamma1_e = mc_ISR_E[1];
     float gamma_e = gamma0_e + gamma1_e;
 
-    TVector3 v1(mc_quark_ps_jet_px[0], mc_quark_ps_jet_py[0], mc_quark_ps_jet_pz[0]);
-    TVector3 v2(mc_quark_ps_jet_px[1], mc_quark_ps_jet_py[1], mc_quark_ps_jet_pz[1]);
+    TVector3 v1(mc_quark_px[0], mc_quark_py[0], mc_quark_pz[0]);
+    TVector3 v2(mc_quark_px[1], mc_quark_py[1], mc_quark_pz[1]);
     float acol = GetSinacol(v1, v2);
 
     if (jentry > 100000 && jentry % 100000 == 0)
@@ -61,13 +61,13 @@ void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, floa
         if (jet_btag[ijet] > tag)
         {
           if (fabs(mc_quark_pdg[0]) < 4)
-            h_jet_btag[j]->Fill(0);
+          h_jet_btag[j]->Fill(0);
           h_jet_btag[j]->Fill(fabs(mc_quark_pdg[0]));
         }
         if (jet_ctag[ijet] > tag)
         {
           if (fabs(mc_quark_pdg[0]) < 4)
-            h_jet_ctag[j]->Fill(0);
+          h_jet_ctag[j]->Fill(0);
           h_jet_ctag[j]->Fill(fabs(mc_quark_pdg[0]));
         }
       } // for tag
@@ -206,8 +206,8 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
     float gamma1_e = mc_ISR_E[1];
     float gamma_e = gamma0_e + gamma1_e;
 
-    TVector3 v1(mc_quark_ps_jet_px[0], mc_quark_ps_jet_py[0], mc_quark_ps_jet_pz[0]);
-    TVector3 v2(mc_quark_ps_jet_px[1], mc_quark_ps_jet_py[1], mc_quark_ps_jet_pz[1]);
+    TVector3 v1(mc_quark_px[0], mc_quark_py[0], mc_quark_pz[0]);
+    TVector3 v2(mc_quark_px[1], mc_quark_py[1], mc_quark_pz[1]);
     float acol = GetSinacol(v1, v2);
     acol_vs_ISR->Fill(gamma_e, acol);
 
