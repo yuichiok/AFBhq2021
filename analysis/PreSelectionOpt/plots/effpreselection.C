@@ -24,6 +24,7 @@
 #include "../../../style/Style.C"
 #include "../../../style/Labels.C"
 
+TString energy="250GeV";
 
 void Labels(int i=0, TString pol="eL"){
 
@@ -55,7 +56,7 @@ void effpreselection() {
 
   cout<< "bb qq radreturn ww zz hz "<<endl;
 
-  for(int step=5; step<6; step++) {
+  for(int step=4; step<5; step++) {
     
   TH1F *h_costheta_bb[2]; 
   TH1F *h_costheta_cc[2]; 
@@ -74,7 +75,7 @@ void effpreselection() {
     if(i==0) cuts=0;
     if(i==1) cuts=step;
     
-    TString folder=TString::Format("../results_250GeV_2023/selection_cuts%i_",cuts);
+    TString folder=TString::Format("../results_"+energy+"_2023/selection_cuts%i_",cuts);
     
     //----------------------------------
     TString filename = folder+"2f_hadronic_sample_"+pol+".root";//folder+"bbbar_"+kt+sel+"250GeV_"+pol+".root";
@@ -151,7 +152,7 @@ void effpreselection() {
   h_costheta_bb[1]->SetName("Eff Presel");
   h_costheta_bb[1]->SetTitle("Eff Presel");
   h_costheta_bb[1]->Write();
-  canvas2->Print(TString::Format("plots_draft_2023/epsilonhad_cuts%i_%s.eps",step,pol.Data()));
+  canvas2->Print(TString::Format("plots_"+energy+" _2023/epsilonhad_cuts%i_%s.eps",step,pol.Data()));
 
  
   }

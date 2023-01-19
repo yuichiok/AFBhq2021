@@ -25,6 +25,8 @@
 #include "../../../style/Labels.C"
 #include "../../common/cross_sections.h"
 
+TString energy="250GeV";
+
 void Labels(int i = 0, TString pol = "eL")
 {
 
@@ -69,7 +71,7 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
 
   //**********************************************************
   // /*ZZ
-  TString folder = TString::Format("../results_250GeV_2023/selection_cuts%i_", cuts);
+  TString folder = TString::Format("../results_"+energy+" _2023/selection_cuts%i_", cuts);
 
   TString filename = folder + "2f_hadronic_sample_" + pol + ".root";
 
@@ -149,7 +151,7 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
   //  h_npfos_qq->Draw("boxsame");
   Labels(0, pol);
 
-  canvas_N_1->Print("plots_draft_2023/npfos_signal.eps");
+  canvas_N_1->Print("plots_"+energy+" _2023/npfos_signal.eps");
 
   TCanvas *canvas_N_2 = new TCanvas("canvas_npfos2", "canvas_npfos2", 800, 800);
   canvas_N_2->cd(1);
@@ -164,7 +166,7 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
   h_npfos_cc->Draw("boxsame");
   // h_npfos_qq->Draw("boxsame");
   Labels(0, pol);
-  canvas_N_2->Print("plots_draft_2023/npfos_radreturn.eps");
+  canvas_N_2->Print("plots_"+energy+" _2023/npfos_radreturn.eps");
 
   TCanvas *canvas_e_1 = new TCanvas("canvas_costheta_energy", "canvas_costheta_energy", 800, 800);
   canvas_e_1->cd(1);
@@ -181,7 +183,7 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
   h_costheta_energy_cc->SetLineColor(kRed);
   h_costheta_energy_cc->Draw("boxsame");
   Labels(0, pol);
-  canvas_e_1->Print("plots_draft_2023/energy_costheta_signal.eps");
+  canvas_e_1->Print("plots_"+energy+" _2023/energy_costheta_signal.eps");
 
   TCanvas *canvas_e_2 = new TCanvas("canvas_costheta_energy2", "canvas_costheta_energy2", 800, 800);
   canvas_e_2->cd(1);
@@ -194,5 +196,5 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
   h_costheta_energy_radreturn->Draw("colz");
   h_costheta_energy_cc->Draw("boxsame");
   Labels(0, pol);
-  canvas_e_2->Print("plots_draft_2023/energy_costheta_radreturn.eps");
+  canvas_e_2->Print("plots_"+energy+" _2023/energy_costheta_radreturn.eps");
 }
