@@ -32,7 +32,7 @@ float p2error=0;
 //pol=2 eLpR 80/30
 //pol=3 eRpL 80/30
 
-TString process[6]={"2f_hadronic_sample","2f_hadronic""4f_ZZ_hadronic","qqH","4f_WW_hadronic","6fttbar"};
+TString process[6]={"2f_hadronic_sample","2f_hadronic","4f_ZZ_hadronic","qqH","4f_WW_hadronic","6fttbar"};
 
 bool debug=false;
 
@@ -105,12 +105,12 @@ TH1F * PolHisto(TH1F *h1, TH1F* h2, int pol, float luminosity[], float lum_goal,
 
 float MCLum(int iprocess, int pol, int iquark) {
 
-  TString filename = TString::Format("%spdg%i_%s_eL_pR_250GeV.root",folder.Data(),iquark,process[iprocess].Data());
+  TString filename = TString::Format("%spdg%i_%s_eL_pR.root",folder.Data(),iquark,process[iprocess].Data());
   TFile *f = new TFile(filename);
   TH1F *hstats[2];
   hstats[0]=(TH1F*)f->Get("h_Ntotal_nocuts");
 
-  filename = TString::Format("%spdg%i_%s_eR_pL_250GeV.root",folder.Data(),iquark,process[iprocess].Data());
+  filename = TString::Format("%spdg%i_%s_eR_pL.root",folder.Data(),iquark,process[iprocess].Data());
   TFile *f2 = new TFile(filename);
   hstats[1]=(TH1F*)f2->Get("h_Ntotal_nocuts");
 
@@ -131,8 +131,8 @@ float MCLum(int iprocess, int pol, int iquark) {
 TH1F* GetHistoMethod(int iprocess, TString histo, int pol, int imethod, float lum, float norm=1, int quark=4) {
   if(debug)  cout<<quark<<endl;
   int dedxcut=7;
-  TString filename = TString::Format("%sc%i_method%i_%s_eL_pR_250GeV.root",folder.Data(),dedxcut,imethod,process[iprocess].Data());
-  if(quark==5) filename=TString::Format("%sb%i_method%i_%s_eL_pR_250GeV.root",folder.Data(),dedxcut,imethod,process[iprocess].Data());
+  TString filename = TString::Format("%sc%i_method%i_%s_eL_pR.root",folder.Data(),dedxcut,imethod,process[iprocess].Data());
+  if(quark==5) filename=TString::Format("%sb%i_method%i_%s_eL_pR.root",folder.Data(),dedxcut,imethod,process[iprocess].Data());
   if(debug)  cout<<quark<<" "<<filename<<endl;
   TFile *f = new TFile(filename);
   TH1F *hstats[2];
@@ -140,8 +140,8 @@ TH1F* GetHistoMethod(int iprocess, TString histo, int pol, int imethod, float lu
   TH1F *h[2];
   h[0]= (TH1F*)f->Get(histo);
 
-  filename = TString::Format("%sc%i_method%i_%s_eR_pL_250GeV.root",folder.Data(),dedxcut,imethod,process[iprocess].Data());
-  if(quark==5) filename=TString::Format("%sb%i_method%i_%s_eR_pL_250GeV.root",folder.Data(),dedxcut,imethod,process[iprocess].Data());
+  filename = TString::Format("%sc%i_method%i_%s_eR_pL.root",folder.Data(),dedxcut,imethod,process[iprocess].Data());
+  if(quark==5) filename=TString::Format("%sb%i_method%i_%s_eR_pL.root",folder.Data(),dedxcut,imethod,process[iprocess].Data());
 
   TFile *f2 = new TFile(filename);
   hstats[1]=(TH1F*)f2->Get("h_Ntotal_nocuts");
@@ -183,8 +183,8 @@ TH1F* GetHistoMethod(int iprocess, TString histo, int pol, int imethod, float lu
 TH1F* GetHisto(int iprocess, TString histo, int pol, int iquark, float lum, float norm=1) {
 
     
-  TString filename = TString::Format("%spdg%i_%s_eL_pR_250GeV.root",folder.Data(),iquark,process[iprocess].Data());
-  // if(PQ!="") filename= TString::Format("%s%s_pdg%i_%s_eL_pR_250GeV.root",folder.Data(),PQ.Data(),iquark,process[iprocess].Data());
+  TString filename = TString::Format("%spdg%i_%s_eL_pR.root",folder.Data(),iquark,process[iprocess].Data());
+  // if(PQ!="") filename= TString::Format("%s%s_pdg%i_%s_eL_pR.root",folder.Data(),PQ.Data(),iquark,process[iprocess].Data());
   if(debug) cout<<filename<<" "<<histo<<endl;
   TFile *f = new TFile(filename,"READ");
   TH1F *hstats[2];
@@ -193,8 +193,8 @@ TH1F* GetHisto(int iprocess, TString histo, int pol, int iquark, float lum, floa
   h[0]= (TH1F*)f->Get(histo);
   //  delete f;
 
-  filename = TString::Format("%spdg%i_%s_eR_pL_250GeV.root",folder.Data(),iquark,process[iprocess].Data());
-  // if(PQ!="") filename= TString::Format("%s%s_pdg%i_%s_eR_pL_250GeV.root",folder.Data(),PQ.Data(),iquark,process[iprocess].Data());
+  filename = TString::Format("%spdg%i_%s_eR_pL.root",folder.Data(),iquark,process[iprocess].Data());
+  // if(PQ!="") filename= TString::Format("%s%s_pdg%i_%s_eR_pL.root",folder.Data(),PQ.Data(),iquark,process[iprocess].Data());
   TFile *f2 = new TFile(filename,"READ");
   hstats[1]=(TH1F*)f2->Get("h_Ntotal_nocuts");
   h[1]= (TH1F*)f2->Get(histo);
@@ -232,6 +232,63 @@ TH1F* GetHisto(int iprocess, TString histo, int pol, int iquark, float lum, floa
   return NULL;
 
 }
+
+
+TH1F* GetHisto2(int iprocess, TString histo, int pol, int iquark, float lum, float norm=1, int cheatmethod=0) {
+
+  TString folder_="../results_250GeV/AFB_PQ_";
+
+  TString filename = TString::Format("%spdg%i_%s_eL_pR.root",folder_.Data(),iquark,process[iprocess].Data());
+  cout<<filename<<" "<<histo<<endl;
+  TFile *f = new TFile(filename);
+  TH1F *hstats[2];
+  hstats[0]=(TH1F*)f->Get("h_Ntotal_nocuts");
+
+  filename = TString::Format("%spdg%i_%s_eR_pL.root",folder_.Data(),iquark,process[iprocess].Data());
+  TFile *f2 = new TFile(filename);
+  hstats[1]=(TH1F*)f2->Get("h_Ntotal_nocuts");
+
+  float luminosity[2];
+  if(hstats[0]->Integral()>0) luminosity[0]=hstats[0]->Integral()/cross_section[0][iprocess];
+  else luminosity[0]=0;
+  if(hstats[1]->Integral()>0) luminosity[1]=hstats[1]->Integral()/cross_section[1][iprocess];
+  else luminosity[1]=0;
+
+  cout<<"Lum0="<<luminosity[0]<<" Lum1="<<luminosity[1]<<endl;
+  
+ 
+  filename = TString::Format("%spdg%i_%s_eL_pR_cheatmethod_%i.root",folder.Data(),iquark,process[iprocess].Data(),cheatmethod);
+  cout<<filename<<" "<<histo<<endl;
+  TFile *ff = new TFile(filename);
+  TH1F *h[2];
+  h[0]= (TH1F*)ff->Get(histo);
+
+  filename = TString::Format("%spdg%i_%s_eR_pL_cheatmethod_%i.root",folder.Data(),iquark,process[iprocess].Data(),cheatmethod);
+  TFile *ff2 = new TFile(filename);
+  h[1]= (TH1F*)ff2->Get(histo);
+
+   
+  if(pol==0 || pol==1) {
+    //    cout<<"Scale pol:"<<pol<<endl;
+    h[pol]=ScaleHisto(h[pol],luminosity[pol],lum,norm);
+    //    h[pol]->Sumw2();
+    return h[pol];
+  }
+
+  if(pol>1) {
+    
+    TH1F* hpol=PolHisto(h[0],h[1],pol,luminosity,lum,norm);
+    //hpol->Sumw2();
+    //hpol->Rebin(40);
+    delete f;
+    return hpol;
+  }
+
+
+  return NULL;
+
+}
+
 
 TH1F* MCuneff(int sample=0, int pol=0, int iquark=5, int iquark2=4, float lum=900){
 
