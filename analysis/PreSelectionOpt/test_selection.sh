@@ -24,7 +24,7 @@ do
         name=$counter
     fi
 
-    for cuts in 0 1 2 3 4 5 6
+    for cuts in 0 1 2 3 4 5
     do
 
 	cat > ${local}/steer/sel_${process}_${pol}_${name}_cuts${cuts}.sh <<EOF
