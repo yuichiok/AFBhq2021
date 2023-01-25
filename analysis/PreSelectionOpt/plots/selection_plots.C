@@ -25,6 +25,8 @@
 #include "../../../style/Labels.C"
 #include "../../common/cross_sections.h"
 
+TString energy="250GeV";
+
 void Labels(int i = 0, TString pol = "eL")
 {
 
@@ -97,7 +99,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
     cout << output << endl;
     float luminosity_0 = 1;
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 6; i++)
     {
 
       // if(i==1) i=8;
@@ -106,7 +108,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
 
       //**********************************************************
       // /*ZZ
-      TString folder = TString::Format("../results_250GeV_2023/selection_cuts%i_", cuts);
+      TString folder = TString::Format("../results_"+energy+" _2023/selection_cuts%i_", cuts);
 
       TString filename = folder + "2f_hadronic_sample_" + pol + ".root";
 
@@ -472,7 +474,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       arr0->Draw();
 
       if (i == 2)
-        canvas0->Print("plots_draft_2023/acolinearity_cut.eps");
+        canvas0->Print("plots_"+energy+" _2023/acolinearity_cut.eps");
 
       TCanvas *canvas1 = new TCanvas("canvas_K", "canvas_K", 800, 800);
       canvas1->cd(1);
@@ -531,7 +533,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       arr1->Draw();
 
       if (i == 2)
-        canvas1->Print("plots_draft_2023/Kreco_cut.eps");
+        canvas1->Print("plots_"+energy+" _2023/Kreco_cut.eps");
 
       TCanvas *canvas2 = new TCanvas("canvas_mjj", "canvas_mjj", 800, 800);
       canvas2->cd(1);
@@ -590,7 +592,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       arr2->Draw();
 
       if (i == 4)
-        canvas2->Print("plots_draft_2023/mjj_cut.eps");
+        canvas2->Print("plots_"+energy+" _2023/mjj_cut.eps");
 
       TCanvas *canvas3 = new TCanvas("canvas_y23", "canvas_y23", 800, 800);
       canvas3->cd(1);
@@ -650,7 +652,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       arr3->Draw();
 
       if (i == 5)
-        canvas3->Print("plots_draft_2023/y23_cut.eps");
+        canvas3->Print("plots_"+energy+" _2023/y23_cut.eps");
     }
   }
 }
