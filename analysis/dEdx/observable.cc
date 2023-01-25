@@ -230,12 +230,12 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
 
 
     double gamma_e=mc_ISR_E[0]+mc_ISR_E[1];
-    TVector3 v1(mc_quark_ps_jet_px[0],mc_quark_ps_jet_py[0],mc_quark_ps_jet_pz[0]);
-    TVector3 v2(mc_quark_ps_jet_px[1],mc_quark_ps_jet_py[1],mc_quark_ps_jet_pz[1]);
+    TVector3 v1(mc_quark_px[0],mc_quark_py[0],mc_quark_pz[0]);
+    TVector3 v2(mc_quark_px[1],mc_quark_py[1],mc_quark_pz[1]);
     float acol=GetSinacol(v1,v2);
 
     bool selection=false;
-    selection = PreSelection(6,35);
+    selection = PreSelection(5);
 
     if(selection==false) continue;
 
@@ -245,7 +245,7 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
     if(pdg==3 && fabs(mc_quark_pdg[0])<4) quarkid=true;
     if(pdg==0 && fabs(mc_quark_pdg[0])<6) quarkid=true;
 
-    if( quarkid && gamma_e<35 && acol<0.30) {
+    if( quarkid && acol<0.30) {
       for(int ijet=0; ijet<2; ijet++){
     njetstotal++;
     float nkaonjet=0;
