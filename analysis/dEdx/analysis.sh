@@ -16,19 +16,19 @@ do
         name=$counter
     fi
 
-    for quark in 3 4 5 0
+    for quark in 5
     do
-	for cut_p in 0 3
+	for cut_p in 0
 	do
 	    #0 2 3
-	    for cut_theta in 0
+	    for cut_theta in 0 
 	    do
 		#0 0.8	       
 		cat > ${local}/steer/dedx_${process}_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}.sh <<EOF
 source ${local}/../init_ilcsoft.sh 
 cd ${local}/
 root -l -q analysis.cc\(\"${file}\",\"${process}_${pol}_${name}\",true,${cut_p},${cut_theta},$quark\) > log/dedx_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta} 
-root -l -q analysis.cc\(\"${file}\",\"${process}_${pol}_${name}\",false,${cut_p},${cut_theta},$quark\) > log/dedx2_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}
+#root -l -q analysis.cc\(\"${file}\",\"${process}_${pol}_${name}\",false,${cut_p},${cut_theta},$quark\) > log/dedx2_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}
 cd -
 EOF
 
