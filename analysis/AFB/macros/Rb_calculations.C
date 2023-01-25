@@ -1,5 +1,6 @@
 #include "Rq.C"
 
+TString energy="250GeV";
 
 void RPlots_b( int pol=0, float lum=-1) {
 
@@ -34,9 +35,9 @@ void RPlots_b( int pol=0, float lum=-1) {
       
   //MC eff quark calculation
   TH1F *eff_MC;
-  eff_MC=DTeff_cheat(4,pol,5,-1).first;
+  eff_MC=DTeff_cheat(1,pol,5,-1).first;
   TH1F *rho_MC;
-  rho_MC=DTeff_cheat(4,pol,5,-1).second;
+  rho_MC=DTeff_cheat(1,pol,5,-1).second;
   
   //double tag eff quark estimation
   TH1F* h_eff_quark = epsilon_tag(d_Rparton[0], d_Rparton[1], h_Fhisto[0] , h_Fhisto[1] , h_mistag_c,h_mistag_uds, rho_MC,true);
@@ -199,9 +200,9 @@ void R_b( int pol=0, float lum=-1) {
   
   //MC eff quark calculation
   TH1F *eff_MC;
-  eff_MC=DTeff_cheat(4,pol,5,-1).first;
+  eff_MC=DTeff_cheat(1,pol,5,-1).first;
   TH1F *rho_MC;
-  rho_MC=DTeff_cheat(4,pol,5,-1).second;
+  rho_MC=DTeff_cheat(1,pol,5,-1).second;
   
   //double tag eff quark estimation
   TH1F* h_eff_quark_onlystats = epsilon_tag(d_Rparton[0], d_Rparton[1], h_Fhisto[0] , h_Fhisto[1] , h_mistag_c_truth,h_mistag_uds, rho_MC,true);
@@ -307,9 +308,9 @@ void R_bpol( int pol=0, float lum=-1) {
 
       //MC eff quark calculation
       TH1F *eff_MC;
-      eff_MC=DTeff_cheat(4,pol,5,-1).first;
+      eff_MC=DTeff_cheat(1,pol,5,-1).first;
       TH1F *rho_MC;
-      rho_MC=DTeff_cheat(4,pol,5,-1).second;
+      rho_MC=DTeff_cheat(1,pol,5,-1).second;
       
       //double tag eff quark estimation
       TH1F* h_eff_quark = epsilon_tag(d_Rparton[0], d_Rparton[1], h_Fhisto[0] , h_Fhisto[1] , h_mistag_c,h_mistag_uds, rho_MC);
@@ -380,9 +381,9 @@ void R_bbkg( int pol=0, float lum=-1) {
     
     //MC eff quark calculation
     TH1F *eff_MC;
-    eff_MC=DTeff_cheat(4,pol,5,-1).first;
+    eff_MC=DTeff_cheat(1,pol,5,-1).first;
     TH1F *rho_MC;
-    rho_MC=DTeff_cheat(4,pol,5,-1).second;
+    rho_MC=DTeff_cheat(1,pol,5,-1).second;
   
     //double tag eff quark estimation
     TH1F* h_eff_quark = epsilon_tag(d_Rparton[0], d_Rparton[1], h_Fhisto[0] , h_Fhisto[1] , h_mistag_c,h_mistag_uds, rho_MC,true);
@@ -432,7 +433,7 @@ void R_theory_vs_reco( int pol=0, float lum=-1) {
 
 void Rb_calculations() {
 
-  folder="../results/AFB_PQ_";
+  folder="../results_"+energy+"/AFB_PQ_";
 
   for(int pol=2; pol<3; pol++) {
     cout<<" Plots "<<endl;

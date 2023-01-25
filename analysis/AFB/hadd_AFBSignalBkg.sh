@@ -6,7 +6,7 @@ do
 	do
 	    for method in 0 1 2 3
 	    do
-		hadd -f -j 4 results/SigBkg_pdg${quark}_${sample}_${pol}_250GeV_cheatmethod_${method}.root output/SigBkg_quark${quark}_${sample}_${pol}_*250GeV_cheatmethod_${method}.root
+		hadd -f -j 4 results_250GeV/SigBkg_pdg${quark}_${sample}_${pol}_cheatmethod_${method}.root output/SigBkg_quark${quark}_${sample}_${pol}_*cheatmethod_${method}.root
 	    done
 	done
     done

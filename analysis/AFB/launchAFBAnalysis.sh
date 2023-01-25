@@ -13,7 +13,8 @@
 #source hadd_AFB_PQ.sh
 #cd macros
 #source Weights_c.sh
-#mv *root ../weights/.
+#mv *root ../weights_250GeV/.
 #cd ..
+source test_AFBEnergy.sh
 source launchAFBReco.sh
 

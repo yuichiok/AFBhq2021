@@ -3,7 +3,7 @@
 #include "QQbarAnalysisClass.C"
 #include "TApplication.h"
 
-int AFBEnergyDep( TString file="", TString process="2f_hadronic", TString pol="eL", int file_n=0, float Kv=35, float acol_cut=0.35){
+int AFBEnergyDep( TString file="", TString process="2f_hadronic", TString pol="eL", int file_n=0, float acol_cut=0.3){
 
   cout<< file << endl;
   QQbarAnalysisClass ss3(file);
@@ -11,7 +11,7 @@ int AFBEnergyDep( TString file="", TString process="2f_hadronic", TString pol="e
   else if(file_n<100) ss3.process=process+"_"+pol+TString::Format("_file_0%i",file_n);
   else ss3.process=process+"_"+pol+TString::Format("_file_%i",file_n);
 
-  ss3.AFB_energyDependence(-1,Kv,acol_cut);
+  ss3.AFB_energyDependence(-1,acol_cut);
   gSystem->Exit(0);
   
   return 0;

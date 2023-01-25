@@ -21,7 +21,7 @@
 #include "TStyle.h"
 #include "TMath.h"
 #include "TSystemFile.h"
-#include "histograms.h"
+#include "../../common/histograms.h"
 #include "utils.h"
 
 
@@ -39,6 +39,7 @@
 
   }*/
 
+TString energy="250GeV";
 
 void EffCat(int quark=5, int syst=0) {
 
@@ -57,9 +58,9 @@ void EffCat(int quark=5, int syst=0) {
 
   //*************
   int pol=0;
-  folder="../results/AFBreco_";
+  folder="../results_"+energy+"/AFBreco_";
 
-  TString filename = TString::Format("../weights/eff_weights_pdg%i_pol%i.root",quark,pol);
+  TString filename = TString::Format("../weights_"+energy+"/eff_weights_pdg%i_pol%i.root",quark,pol);
   TFile *f = new TFile(filename);
   TH1F*  eff_q = (TH1F*)f->Get("eff_pres");
   TH1F * eff40_q = new TH1F("eff40_q","eff40_q",40,-1,1);
@@ -70,13 +71,13 @@ void EffCat(int quark=5, int syst=0) {
     eff40_q->SetBinError(i+1,eff_q->GetBinError(i+1-20));
   }
   
-  TH1F *AFB = GetHisto2(4,"h_AFB",pol,quark,900,1,0);
+  TH1F *AFB = GetHisto2(1,"h_AFB",pol,quark,900,1,0);
 
-  TH1F *chargecheatreco_0 = GetHisto2(4,TString::Format("h_AFBreco_chargecheatreco_cat0_syst%i",syst),pol,quark,900,1,0);
-  TH1F *chargecheatreco_1 = GetHisto2(4,TString::Format("h_AFBreco_chargecheatreco_cat1_syst%i",syst),pol,quark,900,1,0);
-  TH1F *chargecheatreco_2 = GetHisto2(4,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,900,1,0);
+  TH1F *chargecheatreco_0 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat0_syst%i",syst),pol,quark,900,1,0);
+  TH1F *chargecheatreco_1 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat1_syst%i",syst),pol,quark,900,1,0);
+  TH1F *chargecheatreco_2 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,900,1,0);
 
-  TH1F *chargecheatreco_3 = GetHisto2(4,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,900,1,0);
+  TH1F *chargecheatreco_3 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,900,1,0);
   
   chargecheatreco_3->Add(chargecheatreco_0);
   chargecheatreco_3->Add(chargecheatreco_1);
@@ -101,9 +102,9 @@ void EffCat(int quark=5, int syst=0) {
 
   //***********
   pol=1;
-  folder="../results/AFBreco_";
+  folder="../results_"+energy+"/AFBreco_";
 
-  filename = TString::Format("../weights/eff_weights_pdg%i_pol%i.root",quark,pol);
+  filename = TString::Format("../weights_"+energy+"/eff_weights_pdg%i_pol%i.root",quark,pol);
   f = new TFile(filename);
   TH1F*  eff_q_eR = (TH1F*)f->Get("eff_pres");
   TH1F * eff40_q_eR = new TH1F("eff40_q_eR","eff40_q_eR",40,-1,1);
@@ -114,13 +115,13 @@ void EffCat(int quark=5, int syst=0) {
     eff40_q_eR->SetBinError(i+1,eff_q_eR->GetBinError(i+1-20));
   }
 
-  TH1F *AFB_eR = GetHisto2(4,"h_AFB",pol,quark,900,1,0);
+  TH1F *AFB_eR = GetHisto2(1,"h_AFB",pol,quark,900,1,0);
 
-  TH1F *chargecheatreco_0_eR = GetHisto2(4,TString::Format("h_AFBreco_chargecheatreco_cat0_syst%i",syst),pol,quark,900,1,0);
-  TH1F *chargecheatreco_1_eR = GetHisto2(4,TString::Format("h_AFBreco_chargecheatreco_cat1_syst%i",syst),pol,quark,900,1,0);
-  TH1F *chargecheatreco_2_eR = GetHisto2(4,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,900,1,0);
+  TH1F *chargecheatreco_0_eR = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat0_syst%i",syst),pol,quark,900,1,0);
+  TH1F *chargecheatreco_1_eR = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat1_syst%i",syst),pol,quark,900,1,0);
+  TH1F *chargecheatreco_2_eR = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,900,1,0);
 
-  TH1F *chargecheatreco_3_eR = GetHisto2(4,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,900,1,0);
+  TH1F *chargecheatreco_3_eR = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,900,1,0);
   
   chargecheatreco_3_eR->Add(chargecheatreco_0_eR);
   chargecheatreco_3_eR->Add(chargecheatreco_1_eR);
@@ -225,7 +226,7 @@ void EffCat(int quark=5, int syst=0) {
   leg2->SetBorderSize(0);
   leg2->Draw();
 
-  c_f1_MC->Print(TString::Format("plots_draft_AFB/EffCat_pdg_%i.eps",quark));
+  c_f1_MC->Print(TString::Format("plots_"+energy+"_AFB/EffCat_pdg_%i.eps",quark));
     
     
 }

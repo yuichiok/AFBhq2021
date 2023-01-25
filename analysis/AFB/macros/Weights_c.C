@@ -1,5 +1,7 @@
 #include "Rq.C"
 
+TString energy="250GeV";
+
 void pq_weigths_tagging( int quark=4, int pol=0, float lum=-1) {
 
   TFile *MyFile = new TFile(TString::Format("pq_pdg%i_pol%i.root",quark,pol),"RECREATE");
@@ -83,21 +85,29 @@ void weigths_tagging( int quark=4, int pol=0, float lum=-1) {
     quark_parton0=4;
     quark_parton1=5;
   }
+  cout<<"1"<<endl;
   d_Rparton[0]=RParton_value(pol, quark_parton0, -1);
   d_Rparton[1]=RParton_value(pol, quark_parton1, -1);
   d_Rparton[2]=RParton_value(pol, 3, -1);
 
+  cout<<"2"<<endl;
   //F fractions
   TH1F *h_Fhisto[2];
   h_Fhisto[0]=FHisto(pol, 1, quark, lum);
   h_Fhisto[1]=FHisto(pol, 2, quark, lum);
   
+  cout<<"3"<<endl;
   //MC mistagging efficiencies
   TH1F *h_mistag_b= epsilon_mistag(pol, quark, quark_parton0,-1);
+  cout<<"3.1"<<endl;
   TH1F *h_mistag_b_truth= epsilon_mistag_truth(pol, quark, quark_parton0,-1);
+  cout<<"3.2"<<endl;
   TH1F *h_mistag_uds= epsilon_mistag(pol, quark, 3,-1);
+  cout<<"3.3"<<endl;
   TH1F *h_mistag_uds_truth= epsilon_mistag_truth(pol, quark, 3,-1);
+  cout<<"3.4"<<endl;
 
+  cout<<"4"<<endl;
   //varying the mistagging efficiencies up and down by relative 5% unc
   TH1F *h_Fhisto_effheavy_p5[2];
   h_Fhisto_effheavy_p5[0]=FHistoEffErr(pol, 1, quark, lum,0.05);
@@ -125,11 +135,12 @@ void weigths_tagging( int quark=4, int pol=0, float lum=-1) {
   h_Fhisto_effuds_m1[0]=FHistoEffErr(pol, 1, quark, lum,0.,-0.01);
   h_Fhisto_effuds_m1[1]=FHistoEffErr(pol, 2, quark, lum,0.,-0.01);
   
+  cout<<"5"<<endl;
   //MC eff quark calculation
   TH1F *eff_MC;
-  eff_MC=DTeff_cheat(4,pol,quark,-1).first;
+  eff_MC=DTeff_cheat(1,pol,quark,-1).first;
   TH1F *rho_MC;
-  rho_MC=DTeff_cheat(4,pol,quark,-1).second;
+  rho_MC=DTeff_cheat(1,pol,quark,-1).second;
   
   //double tag eff quark estimation
   //default tagging efficiency
@@ -279,7 +290,7 @@ void weigths_charge( int quark=4, int pol=0, float lum=-1, int lastit=4) {
 
 void Weights_c(int pol=2, int quark=4, int type=2, int otherparam=5) {
 
-  folder="../results/AFB_PQ_";
+  folder="../results_"+energy+"/AFB_PQ_";
 
   cout<<"  ------------------------------------------ "<<endl;
   if(type==1) pq_weigths_tagging(quark,pol,900);

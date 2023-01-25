@@ -24,7 +24,7 @@
 #include "../../../style/Style.C"
 #include "../../../style/Labels.C"
 
-
+TString energy="250GeV";
 
 
 void Labels(int quark){
@@ -56,20 +56,20 @@ void EffCharge(int quark=5) {
 
   
     //**********************
-  TString filename2 = TString::Format("../weights/pq_pdg%i_pol2.root",quark);
+  TString filename2 = TString::Format("../weights_"+energy+"/pq_pdg%i_pol2.root",quark);
   TFile *f2 = new TFile(filename2);
   TH1F*  purity_vtx = (TH1F*)f2->Get("purity_Vtx");
   TH1F*  purity_kc = (TH1F*)f2->Get("purity_Kc");
   
-  TString filename = TString::Format("../weights/eff_weights_pdg%i_pol2.root",quark);
+  TString filename = TString::Format("../weights_"+energy+"/eff_weights_pdg%i_pol2.root",quark);
   TFile *f = new TFile(filename);
   TH1F*  eff_q = (TH1F*)f->Get("eff_tagging");
 
-  filename = TString::Format("../weights/eff_weights_pdg%i_pol3.root",quark);
+  filename = TString::Format("../weights_"+energy+"/eff_weights_pdg%i_pol3.root",quark);
   TFile *ff = new TFile(filename);
   TH1F*  eff_q2 = (TH1F*)ff->Get("eff_tagging");
 
-  TString filename1 = TString::Format("../weights/chargeeff_weights_pdg%i_pol2.root",quark);
+  TString filename1 = TString::Format("../weights_"+energy+"/chargeeff_weights_pdg%i_pol2.root",quark);
   TFile *f1 = new TFile(filename1);
   TH1F*  eff_vtx = (TH1F*)f1->Get("eff_charge_Vtx");
   eff_vtx->Multiply(eff_q);
@@ -84,7 +84,7 @@ void EffCharge(int quark=5) {
   eff_vtx->Scale(100);
   eff_kc->Scale(100);
 
-  filename1 = TString::Format("../weights/chargeeff_weights_pdg%i_pol2.root",quark);
+  filename1 = TString::Format("../weights_"+energy+"/chargeeff_weights_pdg%i_pol3.root",quark);
   TFile *ff1 = new TFile(filename1);
   TH1F*  eff_vtx2 = (TH1F*)ff1->Get("eff_charge_Vtx");
   eff_vtx2->Multiply(eff_q2);

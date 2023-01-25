@@ -3,7 +3,7 @@
 #include "QQbarAnalysisClass.C"
 #include "TApplication.h"
 
-int AFBSignalBkg( TString file="", TString process="2f_hadronic", TString pol="eL", int file_n=0, float Kv=35, int quark=4, int method=0, int bkg=0){
+int AFBSignalBkg( TString file="", TString process="2f_hadronic", TString pol="eL", int file_n=0, int quark=4, int method=0, int bkg=0){
 
   cout<< file << endl;
   QQbarAnalysisClass ss3(file);
@@ -12,7 +12,7 @@ int AFBSignalBkg( TString file="", TString process="2f_hadronic", TString pol="e
   else ss3.process=process+"_"+pol+TString::Format("_file_%i",file_n);
 
   ss3.dedxcut=7;
-  ss3.AFBreconstruction2(-1,Kv,quark,pol,method,bkg);
+  ss3.AFBreconstruction2(-1,quark,pol,method,bkg);
   gSystem->Exit(0);
   
   return 0;

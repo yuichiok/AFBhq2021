@@ -39,16 +39,16 @@ public :
   virtual void     Init(TTree *tree);
 
   //analysis
-  virtual void AFBc1(int , int, float, float);
-  virtual void AFBb1(int , int, float, float);
-  virtual void AFB1(int , int, float, float, int);
-  virtual void AFB_histos_for_PQ_analysis(int , int , float , int );
-  virtual void AFB_energyDependence(int , int , float , float );
+  virtual void AFBc1(int , int,  float);
+  virtual void AFBb1(int , int,  float);
+  virtual void AFB1(int , int,  float, int);
+  virtual void AFB_histos_for_PQ_analysis(int , int , int );
+  virtual void AFB_energyDependence(int , int , float );
 
-  virtual void AFBreconstruction(int , float , int, TString , int );
-  virtual void AFBreconstruction2(int , float , int, TString , int ,int );
-  virtual float ChargeKJet(int, int ,float , bool, bool);
-  virtual float ChargeVtxJet(int, int , float);
+  virtual void AFBreconstruction(int , int, TString , int );
+  virtual void AFBreconstruction2(int , int, TString , int ,int );
+  virtual float ChargeKJet(int, int , float, bool, bool);
+  virtual float ChargeVtxJet(int, int, float );
 
   virtual float ChargeKJetMethod0(int ,float , bool, bool);
   virtual float ChargeKJetMethod1(int ,float , bool, bool);

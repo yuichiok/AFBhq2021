@@ -26,6 +26,7 @@
 
 
 
+TString energy="250GeV";
 
 
 void PurityChargePlots(int quark=5) {
@@ -42,22 +43,22 @@ void PurityChargePlots(int quark=5) {
   gStyle->SetMarkerSize(0.2);
   // TGaxis::SetMaxDigits(2);
 
-  TString filename = TString::Format("../weights/eff_weights_pdg%i_pol2.root",quark);
+  TString filename = TString::Format("../weights_"+energy+"/eff_weights_pdg%i_pol2.root",quark);
   TFile *f = new TFile(filename);
   TH1F*  eff_q = (TH1F*)f->Get("eff_tagging");
 
-  filename = TString::Format("../weights/eff_weights_pdg%i_pol3.root",quark);
+  filename = TString::Format("../weights_"+energy+"/eff_weights_pdg%i_pol3.root",quark);
   TFile *ff = new TFile(filename);
   TH1F*  eff_q2 = (TH1F*)ff->Get("eff_tagging");
     
      //**********************
-  TString filename3 = TString::Format("../weights/pq_pdg%i_pol3.root",quark);
+  TString filename3 = TString::Format("../weights_"+energy+"/pq_pdg%i_pol3.root",quark);
   TFile *f3 = new TFile(filename3);
   TH1F*  purity_vtx_2 = (TH1F*)f3->Get("purity_Vtx");
   TH1F*  purity_kc_2 = (TH1F*)f3->Get("purity_Kc");
 
   //**********************
-  TString filename2 = TString::Format("../weights/pq_pdg%i_pol2.root",quark);
+  TString filename2 = TString::Format("../weights_"+energy+"/pq_pdg%i_pol2.root",quark);
   TFile *f2 = new TFile(filename2);
   TH1F*  purity_vtx = (TH1F*)f2->Get("purity_Vtx");
   TH1F*  purity_kc = (TH1F*)f2->Get("purity_Kc");
@@ -122,7 +123,7 @@ void PurityChargePlots(int quark=5) {
   leg_purity->SetShadowColor(0);
   leg_purity->Draw();
 
-  c_purity_b->Print(TString::Format("plots_draft_AFB/purity_pdg_%i.eps",quark));
+  c_purity_b->Print(TString::Format("plots_"+energy+"_AFB/purity_pdg_%i.eps",quark));
 
 
 }

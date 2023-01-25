@@ -29,6 +29,7 @@
 //pol=2 eLpR 80/30
 //pol=3 eRpL 80/30
 
+TString energy="250GeV";
 
 
 void DTeffPlotPols(int sample=0, int iquark=5, float lum=-1) {
@@ -292,9 +293,9 @@ void MCuneffPlotPols(int sample=0, int iquark=5, float lum=-1) {
 
 
 void JetTag() {
-  folder="../results/AFB_PQ_";
+  folder="../results_"+energy+"/AFB_PQ_";
 
-  int sample=4; //3= signal, no cuts in rad return; 4= signa+radreturncut, 0=zz, 1=hz, 2=ww
+  int sample=1; //1= signal, no cuts in rad return; 0= signa+radreturncut, 2=zz, 3=hz, 4=ww
 
   DTeffPlotPols(sample,5,900);
   //

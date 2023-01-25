@@ -24,6 +24,7 @@
 #include "fit.C"
 
 
+TString energy="250GeV";
 
 
 void Labels(TString extra=""){
@@ -58,11 +59,11 @@ void Plots_AFB(int mode=1) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results/AFBenergyDep_2f_hadronic_sample_"+pol2+"_250GeV.root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   double AFBb[145]={0};
@@ -187,7 +188,7 @@ void Plots_AFB(int mode=1) {
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
-  c_AFBb->Print(TString::Format("plots_draft/AFB_kcut_mode%i.eps",mode));
+  c_AFBb->Print(TString::Format("plots_"+energy+"/AFB_kcut_mode%i.eps",mode));
 
 }
 
@@ -214,11 +215,11 @@ void Plots_AFB2(int mode=1) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results/AFBenergyDep_2f_hadronic_sample_"+pol2+"_250GeV.root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   double AFBb[145]={0};
@@ -343,7 +344,7 @@ void Plots_AFB2(int mode=1) {
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
-  c_AFBb->Print(TString::Format("plots_draft/AFB_acolcut_mode%i.eps",mode));
+  c_AFBb->Print(TString::Format("plots_"+energy+"/AFB_acolcut_mode%i.eps",mode));
 
 }
 
@@ -365,11 +366,11 @@ void Plots_CrossDiff(int mode=0) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results/AFBenergyDep_2f_hadronic_sample_"+pol2+"_250GeV.root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   TGraph* gAFBb;
@@ -518,7 +519,7 @@ void Plots_CrossDiff(int mode=0) {
   leg_b->Draw();
 
     
-  c_AFBb->Print(TString::Format("plots_draft/DiffCrossSection_acolcut_kcut_mode%i.eps",mode));
+  c_AFBb->Print(TString::Format("plots_"+energy+"/DiffCrossSection_acolcut_kcut_mode%i.eps",mode));
 
 }
 
@@ -539,11 +540,11 @@ void Plots_Cross0(int mode=0) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results/AFBenergyDep_2f_hadronic_sample_"+pol2+"_250GeV.root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   double AFBb[145]={0};
@@ -716,7 +717,7 @@ void Plots_Cross0(int mode=0) {
   leg_b->Draw();
 
     
-  c_AFBb->Print(TString::Format("plots_draft/IncCrossSection_kcut_noacol_mode%i.eps",mode));
+  c_AFBb->Print(TString::Format("plots_"+energy+"/IncCrossSection_kcut_noacol_mode%i.eps",mode));
 
 }
 
@@ -738,11 +739,11 @@ void Plots_Cross(int mode=0) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results/AFBenergyDep_2f_hadronic_sample_"+pol2+"_250GeV.root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   double AFBb[145]={0};
@@ -915,7 +916,7 @@ void Plots_Cross(int mode=0) {
   leg_b->Draw();
 
     
-  c_AFBb->Print(TString::Format("plots_draft/IncCrossSection_kcut_mode%i.eps",mode));
+  c_AFBb->Print(TString::Format("plots_"+energy+"/IncCrossSection_kcut_mode%i.eps",mode));
 
 }
 
@@ -937,11 +938,11 @@ void Plots_Cross2(int mode=0) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results/AFBenergyDep_2f_hadronic_sample_"+pol2+"_250GeV.root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   double AFBb[145]={0};
@@ -1114,7 +1115,7 @@ void Plots_Cross2(int mode=0) {
   leg_b->Draw();
 
     
-  c_AFBb->Print(TString::Format("plots_draft/IncCrossSection_acolcut_mode%i.eps",mode));
+  c_AFBb->Print(TString::Format("plots_"+energy+"/IncCrossSection_acolcut_mode%i.eps",mode));
 
 }
 
@@ -1136,11 +1137,11 @@ void Plots_R(int mode=0) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results/AFBenergyDep_2f_hadronic_sample_"+pol2+"_250GeV.root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   double AFBb[145]={0};
@@ -1312,7 +1313,7 @@ void Plots_R(int mode=0) {
   leg_b->Draw();
 
 
-  c_AFBb->Print(TString::Format("plots_draft/R_kcut_mode%i.eps",mode));
+  c_AFBb->Print(TString::Format("plots_"+energy+"/R_kcut_mode%i.eps",mode));
 
 }
 
@@ -1335,11 +1336,11 @@ void Plots_R2(int mode=0) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results/AFBenergyDep_2f_hadronic_sample_"+pol2+"_250GeV.root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   double AFBb[145]={0};
@@ -1512,7 +1513,7 @@ void Plots_R2(int mode=0) {
 
 
 
-  c_AFBb->Print(TString::Format("plots_draft/R_acolcut_mode%i.eps",mode));
+  c_AFBb->Print(TString::Format("plots_"+energy+"/R_acolcut_mode%i.eps",mode));
 
 }
 
@@ -1534,7 +1535,7 @@ void Plots1(TString pol="eR_pL") {
   // TGaxis::SetMaxDigits(2);
 
   
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   double AFBb[145]={0};
@@ -1633,7 +1634,7 @@ void Plots1(TString pol="eR_pL") {
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
-  //c_eff_b->Print("plots_draft/btagging_performance.eps");
+  //c_eff_b->Print("plots_"+energy+"/btagging_performance.eps");
 
 }
 
@@ -1654,7 +1655,7 @@ void Plots2(TString pol="eR_pL") {
   // TGaxis::SetMaxDigits(2);
 
   
-  TString filename = "../results/AFBenergyDep_2f_hadronic_sample_"+pol+"_250GeV.root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
   TFile *f = new TFile(filename);
 
   double AFBb[145]={0};
@@ -1753,7 +1754,7 @@ void Plots2(TString pol="eR_pL") {
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
-  //c_eff_b->Print("plots_draft/btagging_performance.eps");
+  //c_eff_b->Print("plots_"+energy+"/btagging_performance.eps");
 
 }
 */
@@ -1762,14 +1763,14 @@ void Observables() {
 
   //Plots_Cross();
   for(int i=0; i<2; i++) {
-    /* Plots_AFB(i);
+    Plots_AFB(i);
     Plots_AFB2(i);
     Plots_Cross0(i);
     Plots_Cross(i);
-    Plots_Cross2(i);*/
+    Plots_Cross2(i);
     Plots_CrossDiff(i);
-    //Plots_R(i);
-    //Plots_R2(i);
+    Plots_R(i);
+    Plots_R2(i);
   }
 
   //Plots_R();

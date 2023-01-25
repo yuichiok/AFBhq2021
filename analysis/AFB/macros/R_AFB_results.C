@@ -259,7 +259,7 @@ void Plots_R_AFB() {
   leg_b2->SetShadowColor(0);
   leg_b2->Draw();
 
-  c_R_AFB->Print("plots_draft_final/Observables_Unc.eps");
+  c_R_AFB->Print("plots_"+energy+"_final/Observables_Unc.eps");
 
   
 }
@@ -417,7 +417,7 @@ void Plots_R_AFB() {
 //   leg_b->SetShadowColor(0);
 //   leg_b->Draw();
 
-//   //  c_AFBb->Print(TString::Format("plots_draft_AFB/Fit_pdg_%i_pol_%i.eps",quark,ipol));
+//   //  c_AFBb->Print(TString::Format("plots_"+energy+"_AFB/Fit_pdg_%i_pol_%i.eps",quark,ipol));
 
   
 // }

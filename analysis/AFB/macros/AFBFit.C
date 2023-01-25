@@ -23,7 +23,7 @@
 #include "TSystemFile.h"
 #include "fit.C"
 
-
+TString energy="250GeV";
   
 TH1F *average (TH1F* h1, TH1F* h2, TH1F* h3, TString title="") {
 
@@ -184,7 +184,7 @@ void Plots_AFB(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   TH1F *hstats[2];
 
   TString pol="eL_pR";
-  TString filename = TString::Format("../results/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
+  TString filename = TString::Format("../results_"+energy+"/AFBreco_pdg%i_2f_hadronic_%s_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
   TFile *f = new TFile(filename);
   hstats[0]=(TH1F*)f->Get("h_Ntotal_nocuts");
   if(hstats[0]->Integral()>0) luminosity[0]=hstats[0]->Integral()/cross_section[0][iprocess];
@@ -205,7 +205,7 @@ void Plots_AFB(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   //TH1F* eff_eL=Efficiency(AFB_chargecheatreco_effcorr_0_eL,AFB_chargecheatreco_effcorr_1_eL,AFB_chargecheatreco_effcorr_2_eL,AFBparton_eL);
 
   pol="eR_pL";
-  filename = TString::Format("../results/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
+  filename = TString::Format("../results_"+energy+"/AFBreco_pdg%i_2f_hadronic_%s_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
   f = new TFile(filename);
   hstats[1]=(TH1F*)f->Get("h_Ntotal_nocuts");
   if(hstats[1]->Integral()>0) luminosity[1]=hstats[1]->Integral()/cross_section[1][iprocess];
@@ -332,7 +332,7 @@ void Plots_AFB(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
-  c_AFBb->Print(TString::Format("plots_draft_AFB/Fit_pdg_%i_pol_%i.eps",quark,ipol));
+  c_AFBb->Print(TString::Format("plots_"+energy+"_AFB/Fit_pdg_%i_pol_%i.eps",quark,ipol));
 
   
   
@@ -352,7 +352,7 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   TH1F *hstats[2];
 
   TString pol="eL_pR";
-  TString filename = TString::Format("../results_20221223/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
+  TString filename = TString::Format("../results_"+energy+"/AFBreco_pdg%i_2f_hadronic_%s_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
   TFile *f = new TFile(filename);
   hstats[0]=(TH1F*)f->Get("h_Ntotal_nocuts");
   if(hstats[0]->Integral()>0) luminosity[0]=hstats[0]->Integral()/cross_section[0][iprocess];
@@ -373,7 +373,7 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   //TH1F* eff_eL=Efficiency(AFB_chargecheatreco_effcorr_0_eL,AFB_chargecheatreco_effcorr_1_eL,AFB_chargecheatreco_effcorr_2_eL,AFBparton_eL);
 
   pol="eR_pL";
-  filename = TString::Format("../results_20221223/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
+  filename = TString::Format("../results_"+energy+"/AFBreco_pdg%i_2f_hadronic_%s_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
   f = new TFile(filename);
   hstats[1]=(TH1F*)f->Get("h_Ntotal_nocuts");
   if(hstats[1]->Integral()>0) luminosity[1]=hstats[1]->Integral()/cross_section[1][iprocess];
@@ -451,7 +451,7 @@ void AFBPol(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   TH1F *hstats[2];
 
   TString pol="eL_pR";
-  TString filename = TString::Format("../results/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
+  TString filename = TString::Format("../results_"+energy+"/AFBreco_pdg%i_2f_hadronic_%s_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
   TFile *f = new TFile(filename);
   hstats[0]=(TH1F*)f->Get("h_Ntotal_nocuts");
   if(hstats[0]->Integral()>0) luminosity[0]=hstats[0]->Integral()/cross_section[0][iprocess];
@@ -461,7 +461,7 @@ void AFBPol(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   //TH1F* eff_eL=Efficiency(AFB_chargecheatreco_effcorr_0_eL,AFB_chargecheatreco_effcorr_1_eL,AFB_chargecheatreco_effcorr_2_eL,AFBparton_eL);
 
 pol="eR_pL";
-  filename = TString::Format("../results/AFBreco_pdg%i_2f_hadronic_%s_250GeV_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
+  filename = TString::Format("../results_"+energy+"/AFBreco_pdg%i_2f_hadronic_%s_cheatmethod_%i.root",quark,pol.Data(),cheatmethod);
   f = new TFile(filename);
   hstats[1]=(TH1F*)f->Get("h_Ntotal_nocuts");
   if(hstats[1]->Integral()>0) luminosity[1]=hstats[1]->Integral()/cross_section[1][iprocess];
@@ -491,9 +491,9 @@ pol="eR_pL";
 
 
   void AFBFit() {
-    Plots_AFB(4,2,900);
-    Plots_AFB(4,3,900);
-    Plots_AFB(5,2,900);
+    //Plots_AFB(4,2,900);
+    //Plots_AFB(4,3,900);
+    //Plots_AFB(5,2,900);
     Plots_AFB(5,3,900);
 
     //AFBSyst(5,3,900,3);

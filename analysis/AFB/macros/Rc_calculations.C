@@ -1,5 +1,6 @@
 #include "Rq.C"
 
+TString energy="250GeV";
 
 void RPartonPlots( int pol=0, float lum=-1) {
 
@@ -71,14 +72,14 @@ void PreSelection( int pol=0, float lum=-1) {
   TGaxis::SetMaxDigits(3);
   
   TH1F* h0[3];
-  h0[0]=GetHisto(4,TString::Format("h_Ntotal_nocuts_%i",0),pol,4,lum,1);
-  h0[1]=GetHisto(4,TString::Format("h_Ntotal_nocuts_%i",1),pol,4,lum,1);
-  h0[2]=GetHisto(4,TString::Format("h_Ntotal_nocuts_%i",2),pol,4,lum,1);
+  h0[0]=GetHisto(1,TString::Format("h_Ntotal_nocuts_%i",0),pol,4,lum,1);
+  h0[1]=GetHisto(1,TString::Format("h_Ntotal_nocuts_%i",1),pol,4,lum,1);
+  h0[2]=GetHisto(1,TString::Format("h_Ntotal_nocuts_%i",2),pol,4,lum,1);
   
   TH1F* h1[3];
-  h1[0]=GetHisto(4,"h_N0_0",pol,4,lum,1);
-  h1[1]=GetHisto(4,"h_N0_1",pol,4,lum,1);
-  h1[2]=GetHisto(4,"h_N0_2",pol,4,lum,1);
+  h1[0]=GetHisto(1,"h_N0_0",pol,4,lum,1);
+  h1[1]=GetHisto(1,"h_N0_1",pol,4,lum,1);
+  h1[2]=GetHisto(1,"h_N0_2",pol,4,lum,1);
   
   for(int i=0; i<3; i++) h1[i]->Divide(h0[i]);
 
@@ -150,9 +151,9 @@ void RPlots_c( int pol=0, float lum=-1) {
       
   //MC eff quark calculation
   TH1F *eff_MC;
-  eff_MC=DTeff_cheat(4,pol,4,-1).first;
+  eff_MC=DTeff_cheat(1,pol,4,-1).first;
   TH1F *rho_MC;
-  rho_MC=DTeff_cheat(4,pol,4,-1).second;
+  rho_MC=DTeff_cheat(1,pol,4,-1).second;
   
   //double tag eff quark estimation
   TH1F* h_eff_quark = epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto[0] , h_Fhisto[1] , h_mistag_b,h_mistag_uds, rho_MC,true);
@@ -312,9 +313,9 @@ void RPlots2_c( float lum=-1) {
     
     //MC eff quark calculation
     eff_MC;
-    eff_MC[pol-2]=DTeff_cheat(4,pol,4,-1).first;
+    eff_MC[pol-2]=DTeff_cheat(1,pol,4,-1).first;
     rho_MC;
-    rho_MC[pol-2]=DTeff_cheat(4,pol,4,-1).second;
+    rho_MC[pol-2]=DTeff_cheat(1,pol,4,-1).second;
     
     //double tag eff quark estimation
     h_eff_quark[pol-2] = epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto[0] , h_Fhisto[1] , h_mistag_b[pol-2],h_mistag_uds[pol-2], rho_MC[pol-2],true);
@@ -366,7 +367,7 @@ void RPlots2_c( float lum=-1) {
   leg0->SetShadowColor(0);
   leg0->Draw();
 
-  c_rho_MC->Print(TString::Format("plots_draft_R/rho_pdg_%i.eps",4));
+  c_rho_MC->Print(TString::Format("plots_"+energy+"_R/rho_pdg_%i.eps",4));
 
   TCanvas* c_eff_MC = new TCanvas("c_eff_MC","c_eff_MC",800,800);
   c_eff_MC->cd(1);
@@ -398,7 +399,7 @@ void RPlots2_c( float lum=-1) {
   leg1->SetShadowColor(0);
   leg1->Draw();
 
-  c_eff_MC->Print(TString::Format("plots_draft_R/eff_DT_pdg_%i.eps",4));
+  c_eff_MC->Print(TString::Format("plots_"+energy+"_R/eff_DT_pdg_%i.eps",4));
 
 
   TCanvas* c_misseff_MC = new TCanvas("c_misseff_MC","c_misseff_MC",800,800);
@@ -447,7 +448,7 @@ void RPlots2_c( float lum=-1) {
   leg2->SetShadowColor(0);
   leg2->Draw();
 
-  c_misseff_MC->Print(TString::Format("plots_draft_R/misseff_DT_pdg_%i.eps",4));
+  c_misseff_MC->Print(TString::Format("plots_"+energy+"_R/misseff_DT_pdg_%i.eps",4));
 
   TCanvas* c_R_MC = new TCanvas("c_R_MC","c_R_MC",800,800);
   c_R_MC->cd(1);
@@ -490,7 +491,7 @@ void RPlots2_c( float lum=-1) {
   leg3->SetShadowColor(0);
   leg3->Draw();
 
-  c_R_MC->Print(TString::Format("plots_draft_R/R_DT_pdg_%i.eps",4));
+  c_R_MC->Print(TString::Format("plots_"+energy+"_R/R_DT_pdg_%i.eps",4));
   
   
 }
@@ -544,9 +545,9 @@ void RPlots2_b( float lum=-1) {
     
   //MC eff quark calculation
     eff_MC;
-    eff_MC[pol-2]=DTeff_cheat(4,pol,5,-1).first;
+    eff_MC[pol-2]=DTeff_cheat(1,pol,5,-1).first;
     rho_MC;
-    rho_MC[pol-2]=DTeff_cheat(4,pol,5,-1).second;
+    rho_MC[pol-2]=DTeff_cheat(1,pol,5,-1).second;
     
     //double tag eff quark estimation
     h_eff_quark[pol-2] = epsilon_tag(d_Rparton[0], d_Rparton[1], h_Fhisto[0] , h_Fhisto[1] , h_mistag_b[pol-2],h_mistag_uds[pol-2], rho_MC[pol-2],true);
@@ -599,7 +600,7 @@ void RPlots2_b( float lum=-1) {
   leg0->SetShadowColor(0);
   leg0->Draw();
 
-  b_rho_MC->Print(TString::Format("plots_draft_R/rho_pdg_%i.eps",5));
+  b_rho_MC->Print(TString::Format("plots_"+energy+"_R/rho_pdg_%i.eps",5));
 
   TCanvas* b_eff_MC = new TCanvas("b_eff_MC","b_eff_MC",800,800);
   b_eff_MC->cd(1);
@@ -630,7 +631,7 @@ void RPlots2_b( float lum=-1) {
   leg1->SetShadowColor(0);
   leg1->Draw();
 
-  b_eff_MC->Print(TString::Format("plots_draft_R/eff_DT_pdg_%i.eps",5));
+  b_eff_MC->Print(TString::Format("plots_"+energy+"_R/eff_DT_pdg_%i.eps",5));
 
 
   TCanvas* b_misseff_MC = new TCanvas("b_misseff_MC","b_misseff_MC",800,800);
@@ -680,7 +681,7 @@ void RPlots2_b( float lum=-1) {
   leg2->SetShadowColor(0);
   leg2->Draw();
 
-  b_misseff_MC->Print(TString::Format("plots_draft_R/misseff_DT_pdg_%i.eps",5));
+  b_misseff_MC->Print(TString::Format("plots_"+energy+"_R/misseff_DT_pdg_%i.eps",5));
 
   TCanvas* b_R_MC = new TCanvas("b_R_MC","b_R_MC",800,800);
   b_R_MC->cd(1);
@@ -723,7 +724,7 @@ void RPlots2_b( float lum=-1) {
   leg3->SetShadowColor(0);
   leg3->Draw();
 
-  b_R_MC->Print(TString::Format("plots_draft_R/R_DT_pdg_%i.eps",5));
+  b_R_MC->Print(TString::Format("plots_"+energy+"_R/R_DT_pdg_%i.eps",5));
   
   
 }
@@ -780,9 +781,9 @@ void R_c( int pol=0, float lum=-1) {
   
   //MC eff quark calculation
   TH1F *eff_MC;
-  eff_MC=DTeff_cheat(4,pol,4,-1).first;
+  eff_MC=DTeff_cheat(1,pol,4,-1).first;
   TH1F *rho_MC;
-  rho_MC=DTeff_cheat(4,pol,4,-1).second;
+  rho_MC=DTeff_cheat(1,pol,4,-1).second;
   
   //double tag eff quark estimation
   TH1F* h_eff_quark_onlystats = epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto[0] , h_Fhisto[1] , h_mistag_b_truth,h_mistag_uds, rho_MC,true);
@@ -890,9 +891,9 @@ void R_cpol( int pol=0, float lum=-1) {
 
       //MC eff quark calculation
       TH1F *eff_MC;
-      eff_MC=DTeff_cheat(4,pol,4,-1).first;
+      eff_MC=DTeff_cheat(1,pol,4,-1).first;
       TH1F *rho_MC;
-      rho_MC=DTeff_cheat(4,pol,4,-1).second;
+      rho_MC=DTeff_cheat(1,pol,4,-1).second;
       
       //double tag eff quark estimation
       TH1F* h_eff_quark = epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto[0] , h_Fhisto[1] , h_mistag_b,h_mistag_uds, rho_MC);
@@ -962,9 +963,9 @@ void R_cbkg( int pol=0, float lum=-1) {
     
     //MC eff quark calculation
     TH1F *eff_MC;
-    eff_MC=DTeff_cheat(4,pol,4,-1).first;
+    eff_MC=DTeff_cheat(1,pol,4,-1).first;
     TH1F *rho_MC;
-    rho_MC=DTeff_cheat(4,pol,4,-1).second;
+    rho_MC=DTeff_cheat(1,pol,4,-1).second;
     
     //double tag eff quark estimation
     TH1F* h_eff_quark = epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto[0] , h_Fhisto[1] , h_mistag_b,h_mistag_uds, rho_MC,true);
@@ -1014,7 +1015,7 @@ void R_theory_vs_reco( int pol=0, float lum=-1) {
 
 void Rc_calculations() {
 
-  folder="../results/AFB_PQ_";
+  folder="../results_"+energy+"/AFB_PQ_";
   //RPlots2_c(900);
   //RPlots2_b(900);
 

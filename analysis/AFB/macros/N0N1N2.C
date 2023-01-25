@@ -22,13 +22,14 @@
 #include "TMath.h"
 #include "TSystemFile.h"
 #include "utils.h"
-#include "histograms.h"
+#include "../../common/histograms.h"
 
 //pol=0 eLpR
 //pol=1 eRpL
 //pol=2 eLpR 80/30
 //pol=3 eRpL 80/30
 
+TString energy="250GeV";
 
 std::vector<TH1F*> Histograms(int histo=0, int pol=0, int iquark=5,  float lum=900){
 
@@ -45,19 +46,19 @@ std::vector<TH1F*> Histograms(int histo=0, int pol=0, int iquark=5,  float lum=9
   if(iquark==4) ipdgquark2=0;
 
   //ZZ
-  h0[0]=GetHisto(0,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
+  h0[0]=GetHisto(2,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
   //hz
-  h0[1]=GetHisto(1,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
+  h0[1]=GetHisto(3,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
   //ww
-  h0[2]=GetHisto(2,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
+  h0[2]=GetHisto(4,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
   //rad return
-  h0[3]=GetHisto(3,TString::Format("h_N%i_3",histo),pol,iquark,lum,1);
+  h0[3]=GetHisto(0,TString::Format("h_N%i_3",histo),pol,iquark,lum,1);
   //bkg-uds
-  h0[4]=GetHisto(4,TString::Format("h_N%i_%i",histo,2),pol,iquark,lum,1);
+  h0[4]=GetHisto(1,TString::Format("h_N%i_%i",histo,2),pol,iquark,lum,1);
   //bkg-heavyquark
-  h0[5]=GetHisto(4,TString::Format("h_N%i_%i",histo,ipdgquark2),pol,iquark,lum,1);
+  h0[5]=GetHisto(1,TString::Format("h_N%i_%i",histo,ipdgquark2),pol,iquark,lum,1);
   //signal
-  h0[6]=GetHisto(4,TString::Format("h_N%i_%i",histo,ipdgquark),pol,iquark,lum,1);
+  h0[6]=GetHisto(1,TString::Format("h_N%i_%i",histo,ipdgquark),pol,iquark,lum,1);
 
   /* h0[0]->Add(h0[1]);
   h0[0]->Add(h0[2]);
@@ -181,7 +182,7 @@ void NPlots(int iquark=5, float lum=-1, int pol=0) {
     leg->SetBorderSize(1);
     leg->Draw();
 
-    c_f1_MC->Print(TString::Format("plots_draft_R/N%i_pdg_%i_pol_%i.eps",ihisto,iquark,pol));
+    c_f1_MC->Print(TString::Format("plots_"+energy+"_R/N%i_pdg_%i_pol_%i.eps",ihisto,iquark,pol));
   }
   
 }
@@ -190,7 +191,7 @@ void NPlots(int iquark=5, float lum=-1, int pol=0) {
 
 void N0N1N2() {
 
-  folder="../results/AFB_PQ_";
+  folder="../results_"+energy+"/AFB_PQ_";
 
   
   /*  NPlots(4,900,0);
