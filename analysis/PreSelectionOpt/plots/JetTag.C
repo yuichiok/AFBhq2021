@@ -24,7 +24,7 @@
 #include "../../../style/Style.C"
 #include "../../../style/Labels.C"
 
-TString energy="250GeV";
+TString energy="500GeV";
 void Labels(TString pol)
 {
   QQBARLabel(0.86, 0.954, "");
@@ -53,7 +53,7 @@ void Plots()
   gStyle->SetMarkerSize(0.2);
   // TGaxis::SetMaxDigits(2);
 
-  TString filename = "../results_"+energy+" _2023/jettag_cuts5_2f_hadronic_eL_pR.root";
+  TString filename = "../results_"+energy+"/jettag_cuts5_2f_hadronic_eL_pR.root";
   TFile *f = new TFile(filename);
   TH1F *btag[40][2];
   TH1F *ctag[40][2];
@@ -63,7 +63,7 @@ void Plots()
     ctag[i][0] = (TH1F *)f->Get(TString::Format("h_jet_ctag_%i", i));
   }
 
-  filename = "../results_"+energy+" _2023/jettag_cuts5_2f_hadronic_eR_pL.root";
+  filename = "../results_"+energy+"/jettag_cuts5_2f_hadronic_eR_pL.root";
   TFile *f2 = new TFile(filename);
 
   for (int i = 0; i < 40; i++)
@@ -193,7 +193,7 @@ void Plots()
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
-  c_eff_b->Print("plots_"+energy+" _2023/btagging_performance.eps");
+  c_eff_b->Print("plots_"+energy+"/btagging_performance.eps");
 
   ///---------------------------------------------
   TGraph *efficiency_c_c_eL = new TGraph(n, x, eff_c[0][1]);
@@ -273,7 +273,7 @@ void Plots()
   leg_c->SetLineColor(0);
   leg_c->SetShadowColor(0);
   leg_c->Draw();
-  c_eff_c->Print("plots_"+energy+" _2023/ctagging_performance.eps");
+  c_eff_c->Print("plots_"+energy+"/ctagging_performance.eps");
 }
 
 void JetTag()
