@@ -1,16 +1,18 @@
 #include "variables_dedx.h"
 
 //  bbmass:  
-double bbmasscut=140;
+double bbmasscut=200;
 //  npfos:  
 double NPFOS_cut=1.;
 // n charged_npfos:
 double CNPFOS_cut=1.0;
 // LOS LIMITES DEL CORTE en h_e_costheta_gamma:cuts in energy and angle of detected photons
-double costheta_isr=0.97;
-double energy_isr_cut=115;
+//250GeV double costheta_isr=0.97;
+//250GeV double energy_isr_cut=115;
+double costheta_isr=0.94;
+double energy_isr_cut=220;
 // cuts in y23
-double y23cut=0.0125;
+double y23cut=0.007;
 // ----------------------------------
 
 

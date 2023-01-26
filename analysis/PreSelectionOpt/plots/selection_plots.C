@@ -25,7 +25,7 @@
 #include "../../../style/Labels.C"
 #include "../../common/cross_sections.h"
 
-TString energy="250GeV";
+TString energy = "500GeV";
 
 void Labels(int i = 0, TString pol = "eL")
 {
@@ -59,11 +59,11 @@ void Labels(int i = 0, TString pol = "eL")
     QQBARLabel2(0.3, 0.97, "e_{R}^{-}e_{L}^{+} #rightarrow q#bar{q}, (q=udscb)", kGray + 2);
 }
 
-void selection_plots(bool normalised = true, TString output = "efficiency")
+void selection_plots(bool normalised = false, TString output = "B_S")
 {
   for (int polarisation = 0; polarisation < 2; polarisation++)
   {
-    cout << "bb qq radreturn ww zz hz 6fttbar " << endl;
+    cout << "bb cc qq radreturn ww zz hz 6fttbar " << endl;
 
     // Efficiency y23.
     float bb_integral[100];
@@ -73,6 +73,8 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
     float zz_integral[100];
     float ww_integral[100];
     float qqH_integral[100];
+    float ttbar_integral[100];
+
     for (int i = 0; i < 100; i++)
     {
       bb_integral[i] = 0;
@@ -82,6 +84,8 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       zz_integral[i] = 0;
       ww_integral[i] = 0;
       qqH_integral[i] = 0;
+      ttbar_integral[i] = 0;
+
     }
 
     float bb_integral_0 = 0.;
@@ -91,6 +95,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
     float zz_integral_0 = 0.;
     float ww_integral_0 = 0.;
     float qqH_integral_0 = 0.;
+    float ttbar_integral_0 = 0.;
 
     TString pol = "eR_pL";
     if (polarisation == 1)
@@ -108,7 +113,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
 
       //**********************************************************
       // /*ZZ
-      TString folder = TString::Format("../results_"+energy+" _2023/selection_cuts%i_", cuts);
+      TString folder = TString::Format("../results_" + energy + "/selection_cuts%i_", cuts);
 
       TString filename = folder + "2f_hadronic_sample_" + pol + ".root";
 
@@ -291,7 +296,37 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_costheta_zz->Scale(luminosity / luminosity_zz);
       h_K_zz->Scale(luminosity / luminosity_zz);
 
-      // Efficiency
+      //**********************************************************
+      // 6f_ttbar
+      filename = folder + "6f_ttbar_" + pol + ".root";
+      //    cout<<filename<<endl;
+      TFile *fttbar = new TFile(filename);
+      TH1F *h_luminosity_cross_ttbar = (TH1F *)fttbar->Get("h_costheta_nocuts");
+      TH1F *h_mjj_ttbar = (TH1F *)fttbar->Get("h_mjj_bb");
+      TH1F *h_mj1_mj2_ttbar = (TH1F *)fttbar->Get("h_mj1_mj2_bb");
+      TH1F *h_thrust_ttbar = (TH1F *)fttbar->Get("h_thrust_bb");
+      TH1F *h_sphericity_ttbar = (TH1F *)fttbar->Get("h_sphericity_bb");
+      TH1F *h_y23_ttbar = (TH1F *)fttbar->Get("h_y23_bb");
+      TH1F *h_d23_ttbar = (TH1F *)fttbar->Get("h_d23_bb");
+      TH1F *h_acol_ttbar = (TH1F *)fttbar->Get("h_acol_bb");
+      TH1F *h_costheta_ttbar = (TH1F *)fttbar->Get("h_costheta_bb");
+      TH1F *h_K_ttbar = (TH1F *)fttbar->Get("h_K_bb");
+
+      ttbar_integral_0 = h_mjj_ttbar->GetEntries();
+      float luminosity_ttbar = h_luminosity_cross_ttbar->GetEntries() / cross_section[polarisation][5];
+
+      h_mjj_ttbar->Scale(luminosity / luminosity_ttbar);
+      h_mj1_mj2_ttbar->Scale(luminosity / luminosity_ttbar);
+      h_thrust_ttbar->Scale(luminosity / luminosity_ttbar);
+      h_sphericity_ttbar->Scale(luminosity / luminosity_ttbar);
+      h_y23_ttbar->Scale(luminosity / luminosity_ttbar);
+      h_d23_ttbar->Scale(luminosity / luminosity_ttbar);
+      h_acol_ttbar->Scale(luminosity / luminosity_ttbar);
+      h_costheta_ttbar->Scale(luminosity / luminosity_ttbar);
+      h_K_ttbar->Scale(luminosity / luminosity_ttbar);
+
+      //******************************************
+      // Efficiency all bkgs
       bb_integral[i + 1] = h_mjj_bb->Integral();
       qq_integral[i + 1] = h_mjj_qq->Integral();
       cc_integral[i + 1] = h_mjj_cc->Integral();
@@ -299,6 +334,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       zz_integral[i + 1] = h_mjj_zz->Integral();
       qqH_integral[i + 1] = h_mjj_qqH->Integral();
       ww_integral[i + 1] = h_mjj_ww->Integral();
+      ttbar_integral[i + 1] = h_mjj_ttbar->Integral();
 
       if (i == 0)
       {
@@ -309,15 +345,17 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         zz_integral[i] = h_mjj_zz->Integral();
         qqH_integral[i] = h_mjj_qqH->Integral();
         ww_integral[i] = h_mjj_ww->Integral();
+        ttbar_integral[i] = h_mjj_ttbar->Integral();
       }
 
-      h_y23_bb->Rebin(10);
-      h_y23_cc->Rebin(10);
-      h_y23_qq->Rebin(10);
-      h_y23_radreturn->Rebin(10);
-      h_y23_zz->Rebin(10);
-      h_y23_qqH->Rebin(10);
-      h_y23_ww->Rebin(10);
+      h_y23_bb->Rebin(20);
+      h_y23_cc->Rebin(20);
+      h_y23_qq->Rebin(20);
+      h_y23_radreturn->Rebin(20);
+      h_y23_zz->Rebin(20);
+      h_y23_qqH->Rebin(20);
+      h_y23_ww->Rebin(20);
+      h_y23_ttbar->Rebin(20);
 
       h_d23_bb->Rebin(100);
       h_d23_cc->Rebin(100);
@@ -326,6 +364,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_d23_zz->Rebin(100);
       h_d23_qqH->Rebin(100);
       h_d23_ww->Rebin(100);
+      h_d23_ttbar->Rebin(100);
 
       h_K_bb->Rebin(10);
       h_K_cc->Rebin(10);
@@ -334,6 +373,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_K_zz->Rebin(10);
       h_K_qqH->Rebin(10);
       h_K_ww->Rebin(10);
+      h_K_ttbar->Rebin(10);
 
       h_sphericity_bb->Rebin(10);
       h_sphericity_cc->Rebin(10);
@@ -342,6 +382,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_sphericity_zz->Rebin(10);
       h_sphericity_qqH->Rebin(10);
       h_sphericity_ww->Rebin(10);
+      h_sphericity_ttbar->Rebin(10);
 
       TString cut_string = ""; // Nocuts";
       /*  if(cuts==1) cut_string="$K_{reco}<35\\,GeV$";
@@ -358,15 +399,15 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       // cout<<std::setprecision(3)<< cut_string<<" & "<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & "<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & "<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & "<<100.*radreturn_integral[i+1]/radreturn_integral[0]<<"\\% & "<< 100.*qqH_integral[i+1]/qqH_integral[0]<<"\\% & "<< 100.*zz_integral[i+1]/zz_integral[0]<<"\\% & "<< 100.*ww_integral[i+1]/ww_integral[0]<<" \\\\"<<endl;
 
       if (i == 0)
-        cout << std::setprecision(3) << " Cross-Section " << bb_integral_0 / luminosity << " " << cc_integral_0 / luminosity << " " << qq_integral_0 / luminosity << " " << radreturn_integral_0 / luminosity << " " << ww_integral_0 / luminosity_ww << " " << zz_integral_0 / luminosity_zz << " " << qqH_integral_0 / luminosity_qqH << " " << endl;
+        cout << std::setprecision(3) << " Cross-Section " << bb_integral_0 / luminosity << " " << cc_integral_0 / luminosity << " " << qq_integral_0 / luminosity << " " << radreturn_integral_0 / luminosity << " " << ww_integral_0 / luminosity_ww << " " << zz_integral_0 / luminosity_zz << " " << qqH_integral_0 / luminosity_qqH << " " << ttbar_integral_0 / luminosity_ttbar << " " << endl;
 
       if (output == "efficiency")
-        cout << std::setprecision(3) << i << " " << 100. * bb_integral[i + 1] / bb_integral[0] << " " << 100. * cc_integral[i + 1] / cc_integral[0] << " " << 100. * qq_integral[i + 1] / qq_integral[0] << " " << 100. * radreturn_integral[i + 1] / radreturn_integral[0] << " " << 100. * ww_integral[i + 1] / ww_integral[0] << " " << 100. * zz_integral[i + 1] / zz_integral[0] << " " << 100. * qqH_integral[i + 1] / qqH_integral[0] << " " << endl;
+        cout << std::setprecision(3) << i << " " << 100. * bb_integral[i + 1] / bb_integral[0] << " " << 100. * cc_integral[i + 1] / cc_integral[0] << " " << 100. * qq_integral[i + 1] / qq_integral[0] << " " << 100. * radreturn_integral[i + 1] / radreturn_integral[0] << " " << 100. * ww_integral[i + 1] / ww_integral[0] << " " << 100. * zz_integral[i + 1] / zz_integral[0] << " " << 100. * qqH_integral[i + 1] / qqH_integral[0] << " " << 100. * ttbar_integral[i + 1] / ttbar_integral[0] << " " <<endl;
 
       //    cout<<std::setprecision(3)<< cut_string<<" & bb:"<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & cc:"<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & qq:"<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & rad:"<<100.*radreturn_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & WW:"<<100.*ww_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% &  ZZ:"<<100.*zz_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & qqH:"<<100.*qqH_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & \\\\"<<endl;
 
       if (output == "B_S")
-        cout << std::setprecision(3) << cut_string << " " << 100. * bb_integral[i + 1] / bb_integral[0] << " " << 100. * cc_integral[i + 1] / cc_integral[0] << " " << 100. * qq_integral[i + 1] / qq_integral[0] << " " << 100. * radreturn_integral[i + 1] / (bb_integral[i + 1] + qq_integral[i + 1] + cc_integral[i + 1]) << " " << 100. * ww_integral[i + 1] / (bb_integral[i + 1] + qq_integral[i + 1] + cc_integral[i + 1]) << " " << 100. * zz_integral[i + 1] / (bb_integral[i + 1] + qq_integral[i + 1] + cc_integral[i + 1]) << " " << 100. * qqH_integral[i + 1] / (bb_integral[i + 1] + qq_integral[i + 1] + cc_integral[i + 1]) << " " << endl;
+        cout << std::setprecision(3) << cut_string << " " << 100. * bb_integral[i + 1] / bb_integral[0] << " " << 100. * cc_integral[i + 1] / cc_integral[0] << " " << 100. * qq_integral[i + 1] / qq_integral[0] << " " << 100. * radreturn_integral[i + 1] / (bb_integral[i + 1] + qq_integral[i + 1] + cc_integral[i + 1]) << " " << 100. * ww_integral[i + 1] / (bb_integral[i + 1] + qq_integral[i + 1] + cc_integral[i + 1]) << " " << 100. * zz_integral[i + 1] / (bb_integral[i + 1] + qq_integral[i + 1] + cc_integral[i + 1]) << " " << 100. * qqH_integral[i + 1] / (bb_integral[i + 1] + qq_integral[i + 1] + cc_integral[i + 1]) << " " << 100. * ttbar_integral[i + 1] / (bb_integral[i + 1] + qq_integral[i + 1] + cc_integral[i + 1]) << " " << endl;
 
       SetQQbarStyle();
       // gStyle->SetOptFit(0);
@@ -385,7 +426,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       if (normalised == true)
         h_acol_radreturn->GetYaxis()->SetTitle("norm to 1");
       else
-        h_acol_radreturn->GetYaxis()->SetTitle("Entries");
+      h_acol_radreturn->GetYaxis()->SetTitle("Entries");
       h_acol_radreturn->GetXaxis()->SetTitle("sin(#Psi_{acol})");
       h_acol_radreturn->GetXaxis()->SetRangeUser(0, 1);
       h_acol_bb->SetLineColor(4);
@@ -395,6 +436,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_acol_ww->SetLineColor(kOrange);
       h_acol_zz->SetLineColor(6);
       h_acol_qqH->SetLineColor(7);
+      h_acol_ttbar->SetLineColor(kGreen+1);
 
       h_acol_bb->SetLineWidth(2);
       h_acol_cc->SetLineWidth(2);
@@ -403,6 +445,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_acol_ww->SetLineWidth(2);
       h_acol_zz->SetLineWidth(2);
       h_acol_qqH->SetLineWidth(2);
+      h_acol_ttbar->SetLineWidth(2);
 
       if (normalised == true)
       {
@@ -413,6 +456,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         h_acol_ww->DrawNormalized("histosame");
         h_acol_zz->DrawNormalized("histosame");
         h_acol_qqH->DrawNormalized("histosame");
+        h_acol_ttbar->DrawNormalized("histosame");
       }
       else
       {
@@ -423,6 +467,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         h_acol_ww->Draw("histosame");
         h_acol_zz->Draw("histosame");
         h_acol_qqH->Draw("histosame");
+        h_acol_ttbar->Draw("histosame");
       }
 
       TLegend *leg1 = new TLegend(0.2, 0.78, 0.4, 0.9); //(0.4,0.3,0.5,0.6);
@@ -454,13 +499,14 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       leg3->SetBorderSize(0);
       leg3->Draw();
 
-      TLegend *leg2 = new TLegend(xmin, 0.76, xmax, 0.9); //(0.4,0.3,0.5,0.6);
+      TLegend *leg2 = new TLegend(xmin, 0.72, xmax, 0.9); //(0.4,0.3,0.5,0.6);
       leg2->SetTextSize(0.035);
       // leg2->AddEntry(h_acol_radreturn,"#font[42]{#gammaZ#rightarrow #gammaq#bar{q} (q=udscb)}","l");
       leg2->AddEntry(h_acol_radreturn, "#font[42]{Radiative Return}", "l");
       leg2->AddEntry(h_acol_qqH, "#font[42]{qqH}", "l");
       leg2->AddEntry(h_acol_zz, "#font[42]{ZZ}", "l");
       leg2->AddEntry(h_acol_ww, "#font[42]{WW}", "l");
+      leg2->AddEntry(h_acol_ttbar, "#font[42]{t#bar{t}}", "l");
       leg2->SetFillStyle(0);
       leg2->SetLineWidth(0);
       leg2->SetLineColor(0);
@@ -474,53 +520,57 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       arr0->Draw();
 
       if (i == 2)
-        canvas0->Print("plots_"+energy+" _2023/acolinearity_cut.eps");
+        canvas0->Print("plots_" + energy + "/acolinearity_cut.eps");
 
-      TCanvas *canvas1 = new TCanvas("canvas_K", "canvas_K", 800, 800);
+      TCanvas *canvas1 = new TCanvas("canvas_T", "canvas_T", 800, 800);
       canvas1->cd(1);
 
       if (normalised == true)
-        h_K_radreturn->GetYaxis()->SetTitle("norm to 1");
+        h_thrust_radreturn->GetYaxis()->SetTitle("norm to 1");
       else
-        h_K_radreturn->GetYaxis()->SetTitle("Entries");
-      h_K_radreturn->GetXaxis()->SetTitle("K_{reco} [GeV]");
-      // h_K_bb->GetYaxis()->SetRangeUser(10,h_K_bb->GetMaximum()*2);
-      h_K_radreturn->GetXaxis()->SetRangeUser(0, 125);
-      h_K_bb->SetLineColor(4);
-      h_K_qq->SetLineColor(1);
-      h_K_cc->SetLineStyle(2);
-      h_K_radreturn->SetLineColor(2);
-      h_K_ww->SetLineColor(kOrange);
-      h_K_zz->SetLineColor(6);
-      h_K_qqH->SetLineColor(7);
+        h_thrust_radreturn->GetYaxis()->SetTitle("Entries");
+      h_thrust_radreturn->GetXaxis()->SetTitle("thrust_{reco} [GeV]");
+      // h_thrust_bb->GetYaxis()->SetRangeUser(10,h_thrust_bb->GetMaximum()*2);
+      h_thrust_radreturn->GetXaxis()->SetRangeUser(0, 125);
+      h_thrust_bb->SetLineColor(4);
+      h_thrust_qq->SetLineColor(1);
+      h_thrust_cc->SetLineStyle(2);
+      h_thrust_radreturn->SetLineColor(2);
+      h_thrust_ww->SetLineColor(kOrange);
+      h_thrust_zz->SetLineColor(6);
+      h_thrust_qqH->SetLineColor(7);
+      h_thrust_ttbar->SetLineColor(kGreen+1);
 
-      h_K_bb->SetLineWidth(2);
-      h_K_cc->SetLineWidth(2);
-      h_K_qq->SetLineWidth(2);
-      h_K_radreturn->SetLineWidth(2);
-      h_K_ww->SetLineWidth(2);
-      h_K_zz->SetLineWidth(2);
-      h_K_qqH->SetLineWidth(2);
+      h_thrust_bb->SetLineWidth(2);
+      h_thrust_cc->SetLineWidth(2);
+      h_thrust_qq->SetLineWidth(2);
+      h_thrust_radreturn->SetLineWidth(2);
+      h_thrust_ww->SetLineWidth(2);
+      h_thrust_zz->SetLineWidth(2);
+      h_thrust_qqH->SetLineWidth(2);
+      h_thrust_ttbar->SetLineWidth(2);
 
       if (normalised == true)
       {
-        h_K_radreturn->DrawNormalized("histo");
-        h_K_qq->DrawNormalized("histosame");
-        h_K_cc->DrawNormalized("histosame");
-        h_K_bb->DrawNormalized("histosame");
-        h_K_ww->DrawNormalized("histosame");
-        h_K_zz->DrawNormalized("histosame");
-        h_K_qqH->DrawNormalized("histosame");
+        h_thrust_radreturn->DrawNormalized("histo");
+        h_thrust_qq->DrawNormalized("histosame");
+        h_thrust_cc->DrawNormalized("histosame");
+        h_thrust_bb->DrawNormalized("histosame");
+        h_thrust_ww->DrawNormalized("histosame");
+        h_thrust_zz->DrawNormalized("histosame");
+        h_thrust_qqH->DrawNormalized("histosame");
+        h_thrust_ttbar->DrawNormalized("histosame");
       }
       else
       {
-        h_K_radreturn->Draw("histo");
-        h_K_qq->Draw("histosame");
-        h_K_cc->Draw("histosame");
-        h_K_bb->Draw("histosame");
-        h_K_ww->Draw("histosame");
-        h_K_zz->Draw("histosame");
-        h_K_qqH->Draw("histosame");
+        h_thrust_radreturn->Draw("histo");
+        h_thrust_qq->Draw("histosame");
+        h_thrust_cc->Draw("histosame");
+        h_thrust_bb->Draw("histosame");
+        h_thrust_ww->Draw("histosame");
+        h_thrust_zz->Draw("histosame");
+        h_thrust_qqH->Draw("histosame");
+        h_thrust_ttbar->Draw("histosame");
       }
       Labels(i, pol);
 
@@ -532,8 +582,8 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       arr1->SetFillColor(kGray);
       arr1->Draw();
 
-      if (i == 2)
-        canvas1->Print("plots_"+energy+" _2023/Kreco_cut.eps");
+      //if (i == 2)
+      //  canvas1->Print("plots_" + energy + "/Kreco_cut.eps");
 
       TCanvas *canvas2 = new TCanvas("canvas_mjj", "canvas_mjj", 800, 800);
       canvas2->cd(1);
@@ -553,6 +603,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_mjj_ww->SetLineColor(kOrange);
       h_mjj_zz->SetLineColor(6);
       h_mjj_qqH->SetLineColor(7);
+      h_mjj_ttbar->SetLineColor(kGreen+1);
 
       h_mjj_bb->SetLineWidth(2);
       h_mjj_cc->SetLineWidth(2);
@@ -561,6 +612,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_mjj_ww->SetLineWidth(2);
       h_mjj_zz->SetLineWidth(2);
       h_mjj_qqH->SetLineWidth(2);
+      h_mjj_ttbar->SetLineWidth(2);
 
       if (normalised == true)
       {
@@ -571,6 +623,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         h_mjj_ww->DrawNormalized("histosame");
         h_mjj_zz->DrawNormalized("histosame");
         h_mjj_qqH->DrawNormalized("histosame");
+        h_mjj_ttbar->DrawNormalized("histosame");
       }
       else
       {
@@ -581,6 +634,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         h_mjj_ww->Draw("histosame");
         h_mjj_zz->Draw("histosame");
         h_mjj_qqH->Draw("histosame");
+        h_mjj_ttbar->Draw("histosame");
       }
       Labels(i, pol);
       leg3->Draw();
@@ -591,8 +645,8 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       arr2->SetFillColor(kGray);
       arr2->Draw();
 
-      if (i == 4)
-        canvas2->Print("plots_"+energy+" _2023/mjj_cut.eps");
+      if (i == 3)
+        canvas2->Print("plots_" + energy + "/mjj_cut.eps");
 
       TCanvas *canvas3 = new TCanvas("canvas_y23", "canvas_y23", 800, 800);
       canvas3->cd(1);
@@ -613,6 +667,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_y23_ww->SetLineColor(kOrange);
       h_y23_zz->SetLineColor(6);
       h_y23_qqH->SetLineColor(7);
+      h_y23_ttbar->SetLineColor(kGreen+1);
 
       h_y23_bb->SetLineWidth(2);
       h_y23_cc->SetLineWidth(2);
@@ -621,6 +676,8 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_y23_ww->SetLineWidth(2);
       h_y23_zz->SetLineWidth(2);
       h_y23_qqH->SetLineWidth(2);
+      h_y23_ttbar->SetLineWidth(2);
+
 
       if (normalised == true)
       {
@@ -631,6 +688,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         h_y23_ww->DrawNormalized("histosame");
         h_y23_zz->DrawNormalized("histosame");
         h_y23_qqH->DrawNormalized("histosame");
+        h_y23_ttbar->DrawNormalized("histosame");
       }
       else
       {
@@ -641,6 +699,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         h_y23_ww->Draw("histosame");
         h_y23_zz->Draw("histosame");
         h_y23_qqH->Draw("histosame");
+        h_y23_ttbar->Draw("histosame");
       }
       Labels(i, pol);
       leg1->Draw();
@@ -651,8 +710,8 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       arr3->SetFillColor(kGray);
       arr3->Draw();
 
-      if (i == 5)
-        canvas3->Print("plots_"+energy+" _2023/y23_cut.eps");
+      if (i == 4)
+        canvas3->Print("plots_" + energy + "/y23_cut.eps");
     }
   }
 }

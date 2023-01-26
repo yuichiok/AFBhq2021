@@ -1,13 +1,18 @@
 
 process=$1
 pol=$2
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2020/"${process}"_"${pol}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2021/"${process}"_"${pol}"/"
 local=$PWD
 counter=0
 
 bkg=1
 
 if [ "$process" = "2f_hadronic_sample" ];
+then 
+    bkg=0
+fi
+
+if [ "$process" = "2f_hadronic" ];
 then 
     bkg=0
 fi
@@ -29,7 +34,7 @@ do
 
 	cat > ${local}/steer/sel_${process}_${pol}_${name}_cuts${cuts}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
-root -l ${local}/test_selection.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${cuts},$bkg\) > ${local}/output/log_sel_${process}_${pol}_${name}_cuts${cuts}
+root -l -q ${local}/test_selection.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${cuts},$bkg\) > ${local}/output/log_sel_${process}_${pol}_${name}_cuts${cuts}
 mv *cuts${cuts}_${process}_${pol}_file_${name}.root ${local}/output/.
 EOF
 	

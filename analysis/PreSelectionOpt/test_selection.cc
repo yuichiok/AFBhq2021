@@ -7,7 +7,7 @@ int test_selection( TString file="", TString process="2f_hadronic", TString pol=
 
   TString s_type=TString::Format("cuts%i_",type);
   cout<< " "<<endl;
-  cout<< file << endl;
+  cout<< file << endl;  
   QQbarAnalysisClass ss3(file);
   if(file_n<10) ss3.process=s_type+process+"_"+pol+TString::Format("_file_00%i",file_n);
   else if(file_n<100) ss3.process=s_type+process+"_"+pol+TString::Format("_file_0%i",file_n);

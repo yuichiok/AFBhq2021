@@ -113,51 +113,51 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
   TH1F *h_mjj_cc = new TH1F("h_mjj_cc", "h_mjj_cc", 100, 0, 500);
 
   // K
-  TH1F *h_K = new TH1F("h_K", "h_K", 2000, 0, 200);
-  TH1F *h_K_bb = new TH1F("h_K_bb", "h_K_bb", 2000, 0, 200);
-  TH1F *h_K_radreturn = new TH1F("h_K_radreturn", "h_K_radreturn", 2000, 0, 200);
-  TH1F *h_K_qq = new TH1F("h_K_qq", "h_K_qq", 2000, 0, 200);
-  TH1F *h_K_cc = new TH1F("h_K_cc", "h_K_cc", 2000, 0, 200);
+  TH1F *h_K = new TH1F("h_K", "h_K", 2500, 0, 500);
+  TH1F *h_K_bb = new TH1F("h_K_bb", "h_K_bb", 2000, 0, 500);
+  TH1F *h_K_radreturn = new TH1F("h_K_radreturn", "h_K_radreturn", 2000, 0, 500);
+  TH1F *h_K_qq = new TH1F("h_K_qq", "h_K_qq", 2000, 0, 500);
+  TH1F *h_K_cc = new TH1F("h_K_cc", "h_K_cc", 2000, 0, 500);
 
-  TH2F *acol_vs_ISR = new TH2F("acol_vs_ISR", "acol_vs_ISR", 200, -0.5, 199.5, 200, 0, 2);
+  TH2F *acol_vs_ISR = new TH2F("acol_vs_ISR", "acol_vs_ISR", 500, -0.5, 499.5, 200, 0, 2);
 
-  TH1F *h_K_parton_bb = new TH1F("h_K_parton_bb", "h_K_parton_bb", 2000, 0, 200);
-  TH1F *h_K_parton_radreturn = new TH1F("h_K_parton_radreturn", "h_K_parton_radreturn", 2000, 0, 200);
-  TH1F *h_K_parton_qq = new TH1F("h_K_parton_qq", "h_K_parton_qq", 2000, 0, 200);
-  TH1F *h_K_parton_cc = new TH1F("h_K_parton_cc", "h_K_parton_cc", 2000, 0, 200);
+  TH1F *h_K_parton_bb = new TH1F("h_K_parton_bb", "h_K_parton_bb", 2500, 0, 500);
+  TH1F *h_K_parton_radreturn = new TH1F("h_K_parton_radreturn", "h_K_parton_radreturn", 2500, 0, 500);
+  TH1F *h_K_parton_qq = new TH1F("h_K_parton_qq", "h_K_parton_qq", 2500, 0, 500);
+  TH1F *h_K_parton_cc = new TH1F("h_K_parton_cc", "h_K_parton_cc", 2500, 0, 500);
 
-  TH2F *h_K_parton_K_bb = new TH2F("h_K_parton_K_bb", "h_K_parton_K_bb", 200, 0, 200, 200, 0, 200);
-  TH2F *h_K_parton_K_radreturn = new TH2F("h_K_parton_K_radreturn", "h_K_parton_K_radreturn", 200, 0, 200, 200, 0, 200);
-  TH2F *h_K_parton_K_qq = new TH2F("h_K_parton_K_qq", "h_K_parton_K_qq", 200, 0, 200, 200, 0, 200);
-  TH2F *h_K_parton_K_cc = new TH2F("h_K_parton_K_cc", "h_K_parton_K_cc", 200, 0, 200, 200, 0, 200);
+  TH2F *h_K_parton_K_bb = new TH2F("h_K_parton_K_bb", "h_K_parton_K_bb", 500, 0, 500,500, 0, 500);
+  TH2F *h_K_parton_K_radreturn = new TH2F("h_K_parton_K_radreturn", "h_K_parton_K_radreturn", 500, 0, 500,500, 0, 500);
+  TH2F *h_K_parton_K_qq = new TH2F("h_K_parton_K_qq", "h_K_parton_K_qq", 500, 0, 500,500, 0, 500);
+  TH2F *h_K_parton_K_cc = new TH2F("h_K_parton_K_cc", "h_K_parton_K_cc", 500, 0, 500,500, 0, 500);
 
   // NPFOs
   //------------------------
-  TH2F *h_photon_npfos_qq = new TH2F("h_photon_npfos_qq", "h_photon_npfos_qq", 51, 0.5, 51.5, 51, 0.5, 51.5);
-  TH2F *h_photon_npfos_cc = new TH2F("h_photon_npfos_cc", "h_photon_npfos_cc", 51, 0.5, 51.5, 51, 0.5, 51.5);
-  TH2F *h_photon_npfos_bb = new TH2F("h_photon_npfos_bb", "h_photon_npfos_bb", 51, 0.5, 51.5, 51, 0.5, 51.5);
-  TH2F *h_photon_npfos_radreturn = new TH2F("h_photon_npfos_radreturn", "h_photon_npfos_radreturn", 51, 0.5, 51.5, 51, 0.5, 51.5);
+  TH2F *h_photon_npfos_qq = new TH2F("h_photon_npfos_qq", "h_photon_npfos_qq", 201, 0.5, 201.5, 201, 0.5, 201.5);
+  TH2F *h_photon_npfos_cc = new TH2F("h_photon_npfos_cc", "h_photon_npfos_cc", 201, 0.5, 201.5, 201, 0.5, 201.5);
+  TH2F *h_photon_npfos_bb = new TH2F("h_photon_npfos_bb", "h_photon_npfos_bb", 201, 0.5, 201.5, 201, 0.5, 201.5);
+  TH2F *h_photon_npfos_radreturn = new TH2F("h_photon_npfos_radreturn", "h_photon_npfos_radreturn", 201, 0.5, 201.5, 201, 0.5, 201.5);
 
-  TH2F *h_charge_npfos_qq = new TH2F("h_charge_npfos_qq", "h_charge_npfos_qq", 51, 0.5, 51.5, 51, 0.5, 51.5);
-  TH2F *h_charge_npfos_cc = new TH2F("h_charge_npfos_cc", "h_charge_npfos_cc", 51, 0.5, 51.5, 51, 0.5, 51.5);
-  TH2F *h_charge_npfos_bb = new TH2F("h_charge_npfos_bb", "h_charge_npfos_bb", 51, 0.5, 51.5, 51, 0.5, 51.5);
-  TH2F *h_charge_npfos_radreturn = new TH2F("h_charge_npfos_radreturn", "h_charge_npfos_radreturn", 51, 0.5, 51.5, 51, 0.5, 51.5);
+  TH2F *h_charge_npfos_qq = new TH2F("h_charge_npfos_qq", "h_charge_npfos_qq", 201, 0.5, 201.5, 201, 0.5, 201.5);
+  TH2F *h_charge_npfos_cc = new TH2F("h_charge_npfos_cc", "h_charge_npfos_cc", 201, 0.5, 201.5, 201, 0.5, 201.5);
+  TH2F *h_charge_npfos_bb = new TH2F("h_charge_npfos_bb", "h_charge_npfos_bb", 201, 0.5, 201.5, 201, 0.5, 201.5);
+  TH2F *h_charge_npfos_radreturn = new TH2F("h_charge_npfos_radreturn", "h_charge_npfos_radreturn", 201, 0.5, 201.5, 201, 0.5, 201.5);
 
-  TH2F *h_npfos_bb = new TH2F("h_npfos_bb", "h_npfos_bb", 101, -0.5, 100.5, 101, -0.5, 100.5);
-  TH2F *h_npfos_radreturn = new TH2F("h_npfos_radreturn", "h_npfos_radreturn", 101, -0.5, 100.5, 101, -0.5, 100.5);
-  TH2F *h_npfos_qq = new TH2F("h_npfos_qq", "h_npfos_qq", 101, -0.5, 100.5, 101, -0.5, 100.5);
-  TH2F *h_npfos_cc = new TH2F("h_npfos_cc", "h_npfos_cc", 101, -0.5, 100.5, 101, -0.5, 100.5);
+  TH2F *h_npfos_bb = new TH2F("h_npfos_bb", "h_npfos_bb", 201, -0.5, 200.5, 201, -0.5, 200.5);
+  TH2F *h_npfos_radreturn = new TH2F("h_npfos_radreturn", "h_npfos_radreturn", 201, -0.5, 200.5, 201, -0.5, 200.5);
+  TH2F *h_npfos_qq = new TH2F("h_npfos_qq", "h_npfos_qq", 201, -0.5, 200.5, 201, -0.5, 200.5);
+  TH2F *h_npfos_cc = new TH2F("h_npfos_cc", "h_npfos_cc", 201, -0.5, 200.5, 201, -0.5, 200.5);
 
-  TH2F *h_costheta_energy_bb = new TH2F("h_costheta_energy_bb", "h_costheta_energy_bb", 100, 0, 1, 150, 0.5, 150.5);
-  TH2F *h_costheta_energy_radreturn = new TH2F("h_costheta_energy_radreturn", "h_costheta_energy_radreturn", 100, 0, 1, 150, 0.5, 150.5);
-  TH2F *h_costheta_energy_qq = new TH2F("h_costheta_energy_qq", "h_costheta_energy_qq", 100, 0, 1, 150, 0.5, 150.5);
-  TH2F *h_costheta_energy_cc = new TH2F("h_costheta_energy_cc", "h_npfos_cc", 100, 0, 1, 150, 0.5, 150.5);
+  TH2F *h_costheta_energy_bb = new TH2F("h_costheta_energy_bb", "h_costheta_energy_bb", 100, 0, 1, 500, 0.5, 500.5);
+  TH2F *h_costheta_energy_radreturn = new TH2F("h_costheta_energy_radreturn", "h_costheta_energy_radreturn", 100, 0, 1, 500, 0.5, 500.5);
+  TH2F *h_costheta_energy_qq = new TH2F("h_costheta_energy_qq", "h_costheta_energy_qq", 100, 0, 1, 500, 0.5, 500.5);
+  TH2F *h_costheta_energy_cc = new TH2F("h_costheta_energy_cc", "h_npfos_cc", 100, 0, 1, 500, 0.5, 500.5);
 
   // jet algorithm variables
-  TH1F *h_y23_bb = new TH1F("h_y23_bb", "h_y23_bb", 4000, 0.0001, 0.2501);
-  TH1F *h_y23_radreturn = new TH1F("h_y23_radreturn", "h_y23_radreturn", 4000, 0.0001, 0.2501);
-  TH1F *h_y23_qq = new TH1F("h_y23_qq", "h_y23_qq", 4000, 0.0001, 0.2501);
-  TH1F *h_y23_cc = new TH1F("h_y23_cc", "h_y23_cc", 4000, 0.0001, 0.2501);
+  TH1F *h_y23_bb = new TH1F("h_y23_bb", "h_y23_bb", 5000, 0.0001, 1.0001);
+  TH1F *h_y23_radreturn = new TH1F("h_y23_radreturn", "h_y23_radreturn",5000, 0.0001, 1.0001);
+  TH1F *h_y23_qq = new TH1F("h_y23_qq", "h_y23_qq",5000, 0.0001, 1.0001);
+  TH1F *h_y23_cc = new TH1F("h_y23_cc", "h_y23_cc",5000, 0.0001, 1.0001);;
 
   TH1F *h_d23_bb = new TH1F("h_d23_bb", "h_d23_bb", 5000, 0.5, 5000.5);
   TH1F *h_d23_radreturn = new TH1F("h_d23_radreturn", "h_d23_radreturn", 5000, 0.5, 5000.5);
@@ -180,10 +180,10 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
   TH1F *h_acol_cc = new TH1F("h_acol_cc", "h_acol_cc", 201, 0, 2.01);
 
   // mass of two jets
-  TH1F *h_mj1_mj2_bb = new TH1F("h_mj1_mj2_bb", "h_mj1_mj2_bb", 400, 0, 200);
-  TH1F *h_mj1_mj2_radreturn = new TH1F("h_mj1_mj2_radreturn", "h_mj1_mj2_radreturn", 400, 0, 200);
-  TH1F *h_mj1_mj2_qq = new TH1F("h_mj1_mj2_qq", "h_mj1_mj2_qq", 400, 0, 200);
-  TH1F *h_mj1_mj2_cc = new TH1F("h_mj1_mj2_cc", "h_mj1_mj2_cc", 400, 0, 200);
+  TH1F *h_mj1_mj2_bb = new TH1F("h_mj1_mj2_bb", "h_mj1_mj2_bb", 1000,0,500);
+  TH1F *h_mj1_mj2_radreturn = new TH1F("h_mj1_mj2_radreturn", "h_mj1_mj2_radreturn", 1000,0,500);
+  TH1F *h_mj1_mj2_qq = new TH1F("h_mj1_mj2_qq", "h_mj1_mj2_qq", 1000,0,500);
+  TH1F *h_mj1_mj2_cc = new TH1F("h_mj1_mj2_cc", "h_mj1_mj2_cc", 1000,0,500);
 
   Long64_t nentries;
   if (n_entries > 0)
