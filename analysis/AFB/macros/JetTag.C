@@ -297,9 +297,9 @@ void JetTag() {
 
   int sample=1; //1= signal, no cuts in rad return; 0= signa+radreturncut, 2=zz, 3=hz, 4=ww
 
-  DTeffPlotPols(sample,5,900);
+  DTeffPlotPols(sample,5,2000);
   //
-  //MCeffPlotPols(sample,5,900);
-  //  MCuneffPlotPols(sample,5,900);
+  //MCeffPlotPols(sample,5,2000);
+  //  MCuneffPlotPols(sample,5,2000);
 
 }

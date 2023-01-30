@@ -21,12 +21,12 @@
 #include "TStyle.h"
 #include "TMath.h"
 #include "TSystemFile.h"
-#include "histograms.h"
+#include "../../common/histograms.h"
 #include "utils.h"
 
 
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 
 void PurityChargePlots(int quark=5) {

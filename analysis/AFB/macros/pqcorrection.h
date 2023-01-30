@@ -29,7 +29,7 @@ std::vector<float> CalculateP(TH1F* h_accepted, TH1F *h_rejected)
 	        float accepted = h_accepted->GetBinContent(40+1-i)+i1*sqrt(h_accepted->GetBinContent(40+1-i));
 	        float rejected = h_rejected->GetBinContent(40+1-i)+i2*sqrt(h_rejected->GetBinContent(40+1-i));
 	        accepted += h_accepted->GetBinContent(i)+i3*sqrt(h_accepted->GetBinContent(i));
-	  
+          
 	        float a=1;
 	        float b=-1;
 	        float c= rejected/ (2* (accepted+rejected));
@@ -50,7 +50,7 @@ std::vector<float> CalculateP(TH1F* h_accepted, TH1F *h_rejected)
 	      n++;
       }
     }
-    average/=n;
+    if(n>0) average/=n;
  
     if(average!=0) {
       result.push_back(average);

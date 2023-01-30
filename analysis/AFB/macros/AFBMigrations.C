@@ -24,7 +24,7 @@
 #include "../../common/histograms.h"
 #include "utils.h"
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 /*
   void Labels(int quark){
@@ -57,23 +57,23 @@ void Migrations(int pol=2,int quark=5, int syst=0) {
   TGaxis::SetMaxDigits(3);
 
 
-  TH1F *reco_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_syst%i",syst),pol,quark,900,1,0);
-  TH1F *reco_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_syst%i",syst),pol,quark,900,1,0);
-  TH1F *reco_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_syst%i",syst),pol,quark,900,1,0);
+  TH1F *reco_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_syst%i",syst),pol,quark,2000,1,0);
+  TH1F *reco_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_syst%i",syst),pol,quark,2000,1,0);
+  TH1F *reco_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_syst%i",syst),pol,quark,2000,1,0);
   reco_0->Add(reco_1);
   reco_0->Add(reco_2);
 
-  TH1F *corrected_0 = GetHisto2(1,TString::Format("h_AFBreco_pqcorrectedreco_cat0_syst%i",syst),pol,quark,900,1,0);
-  TH1F *corrected_1 = GetHisto2(1,TString::Format("h_AFBreco_pqcorrectedreco_cat1_syst%i",syst),pol,quark,900,1,0);
-  TH1F *corrected_2 = GetHisto2(1,TString::Format("h_AFBreco_pqcorrectedreco_cat2_syst%i",syst),pol,quark,900,1,0);
+  TH1F *corrected_0 = GetHisto2(1,TString::Format("h_AFBreco_pqcorrectedreco_cat0_syst%i",syst),pol,quark,2000,1,0);
+  TH1F *corrected_1 = GetHisto2(1,TString::Format("h_AFBreco_pqcorrectedreco_cat1_syst%i",syst),pol,quark,2000,1,0);
+  TH1F *corrected_2 = GetHisto2(1,TString::Format("h_AFBreco_pqcorrectedreco_cat2_syst%i",syst),pol,quark,2000,1,0);
   corrected_0->Add(corrected_1);
   corrected_0->Add(corrected_2);
   if(pol==2 && quark==5) corrected_0->SetBinError(1,500.);
   if(pol==3 && quark==4) corrected_0->SetBinError(1,100.);
 
-  TH1F *chargecheatreco_0 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat0_syst%i",syst),pol,quark,900,1,0);
-  TH1F *chargecheatreco_1 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat1_syst%i",syst),pol,quark,900,1,0);
-  TH1F *chargecheatreco_2 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,900,1,0);
+  TH1F *chargecheatreco_0 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat0_syst%i",syst),pol,quark,2000,1,0);
+  TH1F *chargecheatreco_1 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat1_syst%i",syst),pol,quark,2000,1,0);
+  TH1F *chargecheatreco_2 = GetHisto2(1,TString::Format("h_AFBreco_chargecheatreco_cat2_syst%i",syst),pol,quark,2000,1,0);
   chargecheatreco_0->Add(chargecheatreco_1);
   chargecheatreco_0->Add(chargecheatreco_2);
 
@@ -104,7 +104,7 @@ void Migrations(int pol=2,int quark=5, int syst=0) {
   reco_0->Draw("pesame");
 
 
-  Labels(pol,quark,900,960);
+  Labels(pol,quark,2000,960);
 
   TLegend *leg = new TLegend(0.18,0.70,0.7,0.85,"","blNDC");
   leg->SetTextFont(42);

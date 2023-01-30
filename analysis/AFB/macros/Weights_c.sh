@@ -1,3 +1,4 @@
+
 for pol in 0 1 2 3
 do
     for tipo in 0 1

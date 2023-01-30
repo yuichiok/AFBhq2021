@@ -1,6 +1,6 @@
 #include "Rq.C"
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 void pq_weigths_tagging( int quark=4, int pol=0, float lum=-1) {
 
@@ -34,7 +34,7 @@ void pq_weigths_tagging( int quark=4, int pol=0, float lum=-1) {
       purity2->Write();
      } else {
        TH1F *hacc=N_PQ_HistoBKG(TString::Format("Nacc_%s",chargemethod_string[i].Data()),pol,quark,lum,0);
-       TH1F *hrej=N_PQ_HistoBKG(TString::Format("Nrej_%s",chargemethod_string[i].Data()),pol,quark,lum,0);			     
+       TH1F *hrej=N_PQ_HistoBKG(TString::Format("Nrej_%s",chargemethod_string[i].Data()),pol,quark,lum,0);	
        TH1F * purity=PurityHist(hacc,hrej);
        purity->SetName(TString::Format("purity_%s",chargemethod_string[i].Data()));
        MyFile->cd();
@@ -293,8 +293,8 @@ void Weights_c(int pol=2, int quark=4, int type=2, int otherparam=5) {
   folder="../results_"+energy+"/AFB_PQ_";
 
   cout<<"  ------------------------------------------ "<<endl;
-  if(type==1) pq_weigths_tagging(quark,pol,900);
-  if(type==0) weigths_tagging(quark,pol,900);
-  if(type==2) weigths_charge(quark,pol,900,otherparam);
+  if(type==1) pq_weigths_tagging(quark,pol,2000);
+  if(type==0) weigths_tagging(quark,pol,2000);
+  if(type==2) weigths_charge(quark,pol,2000,otherparam);
 }
 

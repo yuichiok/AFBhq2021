@@ -1,6 +1,6 @@
 #include "Rq.C"
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 void RPlots_b( int pol=0, float lum=-1) {
 

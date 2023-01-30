@@ -24,7 +24,7 @@
 #include "../../../style/Style.C"
 #include "../../../style/Labels.C"
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 
 void Labels(int quark){

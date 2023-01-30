@@ -2,7 +2,7 @@ process=$1
 pol=$2
 method=$3
 bkg=$4
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2020/"${process}"_"${pol}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2021/"${process}"_"${pol}"/"
 local=$PWD
 
 
@@ -26,7 +26,7 @@ do
 	cat > ${local}/steer/afbsignal_quark${quark}_${process}_${pol}_${name}_${method}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
 root -l -q ${local}/AFBSignalBkg.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${quark},${method},${bkg}\) > ${local}/output/log_AFBSignalBkg_quark${quark}_${process}_${pol}_${name}_${method}_${bkg}
-mv ${local}/SigBkg_quark${quark}_${process}_${pol}_file_${name}_cheatmethod_${method}.root ${local}/output/.
+mv SigBkg_quark${quark}_${process}_${pol}_file_${name}_cheatmethod_${method}.root ${local}/output/.
 EOF
 	
 	cat > ${local}/steer/afbsignal_quark${quark}_${process}_${pol}_${name}_${method}.sub <<EOF

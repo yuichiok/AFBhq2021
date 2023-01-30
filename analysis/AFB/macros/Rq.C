@@ -18,18 +18,21 @@ TH1F* N_PQ_HistoBKG(TString histo="Nacc_Kc", int pol=0, int iquark=5,  float lum
 
   
   // //BKG--------------------------------
-  TH1F *hb0[4];
+  TH1F *hb0[10];
   //ZZ
   hb0[0]=GetHisto(2,TString::Format("h_%s_0",histo.Data()),pol,iquark,lum,factor);
   //hz
   hb0[1]=GetHisto(3,TString::Format("h_%s_0",histo.Data()),pol,iquark,lum,factor);
   //ww
   hb0[2]=GetHisto(4,TString::Format("h_%s_0",histo.Data()),pol,iquark,lum,factor);
+  //ttbar
+  hb0[3]=GetHisto(5,TString::Format("h_%s_0",histo.Data()),pol,iquark,lum,factor);
   //rad return
-  hb0[3]=GetHisto(0,TString::Format("h_%s_3",histo.Data()),pol,iquark,lum,factor);
-  //  hb0[0]->Add(hb0[1]);
-  // hb0[0]->Add(hb0[2]);
-  //hb0[0]->Add(hb0[3]);
+  hb0[4]=GetHisto(0,TString::Format("h_%s_3",histo.Data()),pol,iquark,lum,factor);
+  hb0[0]->Add(hb0[1]);
+  hb0[0]->Add(hb0[2]);
+  hb0[0]->Add(hb0[3]);
+  hb0[0]->Add(hb0[4]);//TBC!!
 
   if(error!=0) {
     hb0[0]->Scale(fabs(error));
@@ -54,18 +57,21 @@ TH1F* N0HistoBKG(int pol=0, int iquark=5,  float lum=900, float error=0.1){
   double factor=1;
   
   //BKG--------------------------------
-  TH1F *hb0[4];
+  TH1F *hb0[10];
   //ZZ
   hb0[0]=GetHisto(2,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
   //hz
   hb0[1]=GetHisto(3,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
   //ww
   hb0[2]=GetHisto(4,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
+  //ttbar
+  hb0[3]=GetHisto(5,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
   //rad return
-  hb0[3]=GetHisto(1,TString::Format("h_N%i_3",0),pol,iquark,lum,factor);
+  hb0[4]=GetHisto(1,TString::Format("h_N%i_3",0),pol,iquark,lum,factor);
   hb0[0]->Add(hb0[1]);
   hb0[0]->Add(hb0[2]);
   hb0[0]->Add(hb0[3]);
+  hb0[0]->Add(hb0[4]);
 
   if(error!=0) {
     hb0[0]->Scale(fabs(error));
@@ -108,21 +114,27 @@ TH1F* FHistoBKG(int pol=0, int histo=1, int iquark=5,  float lum=900, float erro
   hb0[1]=GetHisto(3,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
   //ww
   hb0[2]=GetHisto(4,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
+  //ttbar
+  hb0[3]=GetHisto(5,TString::Format("h_N%i_0",0),pol,iquark,lum,factor);
   //rad return
-  hb0[3]=GetHisto(0,TString::Format("h_N%i_3",0),pol,iquark,lum,factor);
+  hb0[4]=GetHisto(0,TString::Format("h_N%i_3",0),pol,iquark,lum,factor);
   hb0[0]->Add(hb0[1]);
   hb0[0]->Add(hb0[2]);
   hb0[0]->Add(hb0[3]);
+  hb0[0]->Add(hb0[4]);
   if(error!=0) hb0[0]->Scale(fabs(error));
 
   //BKG2--------------------------------
   hbj[0]=GetHisto(2,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
   hbj[1]=GetHisto(3,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
   hbj[2]=GetHisto(4,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
-  hbj[3]=GetHisto(0,TString::Format("h_N%i_3",histo),pol,iquark,lum,1);
+  hbj[3]=GetHisto(5,TString::Format("h_N%i_0",histo),pol,iquark,lum,1);
+  hbj[4]=GetHisto(0,TString::Format("h_N%i_3",histo),pol,iquark,lum,1);
+  
   hbj[0]->Add(hbj[1]);
   hbj[0]->Add(hbj[2]);
   hbj[0]->Add(hbj[3]);
+  hbj[0]->Add(hbj[4]);
 
   if(error!=0) hbj[0]->Scale(fabs(error));
 
@@ -312,7 +324,8 @@ TH1F* FHistoChargeBKG(TString method="Kc",int pol=0, int histo=1, int iquark=5, 
   hb0[3]=GetHisto(2,TString::Format("h_N%i_%s_%i",0,method.Data(),0),pol,iquark,lum,factor);
   hb0[4]=GetHisto(3,TString::Format("h_N%i_%s_%i",0,method.Data(),0),pol,iquark,lum,factor);
   hb0[5]=GetHisto(4,TString::Format("h_N%i_%s_%i",0,method.Data(),0),pol,iquark,lum,factor);
-  for(int i=1; i<6; i++) hb0[0]->Add(hb0[i]);
+  hb0[6]=GetHisto(5,TString::Format("h_N%i_%s_%i",0,method.Data(),0),pol,iquark,lum,factor);
+  for(int i=1; i<7; i++) hb0[0]->Add(hb0[i]);
   if(error!=0) {
     hb0[0]->Scale(fabs(error));
     h0[0]->Add(hb0[0],error/fabs(error));
@@ -324,7 +337,9 @@ TH1F* FHistoChargeBKG(TString method="Kc",int pol=0, int histo=1, int iquark=5, 
   hbj[3]=GetHisto(2,TString::Format("h_N%i_%s_%i",histo,method.Data(),0),pol,iquark,lum,1);
   hbj[4]=GetHisto(3,TString::Format("h_N%i_%s_%i",histo,method.Data(),0),pol,iquark,lum,1);
   hbj[5]=GetHisto(4,TString::Format("h_N%i_%s_%i",histo,method.Data(),0),pol,iquark,lum,1);
-  for(int i=1; i<6; i++) hbj[0]->Add(hbj[i]);
+  hbj[6]=GetHisto(5,TString::Format("h_N%i_%s_%i",histo,method.Data(),0),pol,iquark,lum,1);
+
+  for(int i=1; i<7; i++) hbj[0]->Add(hbj[i]);
   if(error!=0) {
     hbj[0]->Scale(fabs(error));
     hj[0]->Add(hbj[0],error/fabs(error));

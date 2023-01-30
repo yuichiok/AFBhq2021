@@ -12,7 +12,7 @@ int AFBReco( TString file="", TString process="2f_hadronic", TString pol="eL", i
 
   ss3.dedxcut=7;
   ss3.AFBreconstruction(-1,quark,pol,method);
-  gSystem->Exit(0);
+  //  gSystem->Exit(0);
   
-  return 0;
+  //  return 0;
 }

@@ -122,8 +122,8 @@ void QQbarAnalysisClass::AFB1(int n_entries = -1, int method = 0, float pcut = 2
     costheta_thrust = fabs(GetCostheta(p_thrust));
     h_Ntotal_nocuts->Fill(costheta_thrust);
 
-    TVector3 v1(mc_quark_ps_jet_px[0], mc_quark_ps_jet_py[0], mc_quark_ps_jet_pz[0]);
-    TVector3 v2(mc_quark_ps_jet_px[1], mc_quark_ps_jet_py[1], mc_quark_ps_jet_pz[1]);
+    TVector3 v1(mc_quark_px[0], mc_quark_py[0], mc_quark_pz[0]);
+    TVector3 v2(mc_quark_px[1], mc_quark_py[1], mc_quark_pz[1]);
     float acol = GetSinacol(v1, v2);
 
     if (fabs(mc_quark_pdg[0]) != quark || acol > 0.3)
@@ -339,8 +339,8 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries = -1, int bkg 
     float gamma1_e = mc_ISR_E[1];
     float gamma_e = gamma0_e + gamma1_e;
 
-    TVector3 v1(mc_quark_ps_jet_px[0], mc_quark_ps_jet_py[0], mc_quark_ps_jet_pz[0]);
-    TVector3 v2(mc_quark_ps_jet_px[1], mc_quark_ps_jet_py[1], mc_quark_ps_jet_pz[1]);
+    TVector3 v1(mc_quark_px[0], mc_quark_py[0], mc_quark_pz[0]);
+    TVector3 v2(mc_quark_px[1], mc_quark_py[1], mc_quark_pz[1]);
     float acol = GetSinacol(v1, v2);
 
     int iquark = -1;
@@ -651,8 +651,8 @@ void QQbarAnalysisClass::AFB_energyDependence(int n_entries = -1, int bkg = 0, f
     float gamma1_e = mc_ISR_E[1];
     float gamma_e = gamma0_e + gamma1_e;
 
-    TVector3 v1(mc_quark_ps_jet_px[0], mc_quark_ps_jet_py[0], mc_quark_ps_jet_pz[0]);
-    TVector3 v2(mc_quark_ps_jet_px[1], mc_quark_ps_jet_py[1], mc_quark_ps_jet_pz[1]);
+    TVector3 v1(mc_quark_px[0], mc_quark_py[0], mc_quark_pz[0]);
+    TVector3 v2(mc_quark_px[1], mc_quark_py[1], mc_quark_pz[1]);
     float acol = GetSinacol(v1, v2);
 
     float costheta_ccbar = 1;
@@ -905,10 +905,10 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   //----------------------------------------------------
   // open pq's
-  TString filenamepq = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/weights_250GeV/pq_pdg%i_pol%i.root", quark, pol);
+  TString filenamepq = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/weights_500GeV/pq_pdg%i_pol%i.root", quark, pol);
   TFile *fpq = new TFile(filenamepq);
-  TH1F *purity_0[50];
-  TH1F *purity_1[50];
+  TH1F *purity_0[100];
+  TH1F *purity_1[100];
   for (int isyst = 0; isyst < nsyst; isyst++)
   {
     //    cout<<isyst<<endl;
@@ -927,7 +927,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   //----------------------------------------------------
   // open weights of efficiencies
-  TString filenameweight = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/weights_250GeV/eff_weights_pdg%i_pol%i.root", quark, pol);
+  TString filenameweight = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/weights_500GeV/eff_weights_pdg%i_pol%i.root", quark, pol);
   //  cout<<TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/weights/eff_weights_pdg%i_pol%i.root",quark,pol)<<endl;
   TFile *fw = new TFile(filenameweight);
   TH1F *eff_preselection[50];
@@ -945,7 +945,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   //----------------------------------------------------
   // open weights of charge masurement efficiencies
-  TString filenameweightcharge = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/weights_250GeV/chargeeff_weights_pdg%i_pol%i.root", quark, pol);
+  TString filenameweightcharge = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/weights_500GeV/chargeeff_weights_pdg%i_pol%i.root", quark, pol);
   TFile *fcharge = new TFile(filenameweightcharge);
   TH1F *eff_charge_0[50];
   TH1F *eff_charge_1[50];
@@ -988,8 +988,8 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
     float gamma1_e = mc_ISR_E[1];
     float gamma_e = gamma0_e + gamma1_e;
 
-    TVector3 v1(mc_quark_ps_jet_px[0], mc_quark_ps_jet_py[0], mc_quark_ps_jet_pz[0]);
-    TVector3 v2(mc_quark_ps_jet_px[1], mc_quark_ps_jet_py[1], mc_quark_ps_jet_pz[1]);
+    TVector3 v1(mc_quark_px[0], mc_quark_py[0], mc_quark_pz[0]);
+    TVector3 v2(mc_quark_px[1], mc_quark_py[1], mc_quark_pz[1]);
     float acol = GetSinacol(v1, v2);
     if (fabs(mc_quark_pdg[0]) != quark || acol > 0.3)
       continue;
@@ -1312,8 +1312,8 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     float gamma1_e = mc_ISR_E[1];
     float gamma_e = gamma0_e + gamma1_e;
 
-    TVector3 v1(mc_quark_ps_jet_px[0], mc_quark_ps_jet_py[0], mc_quark_ps_jet_pz[0]);
-    TVector3 v2(mc_quark_ps_jet_px[1], mc_quark_ps_jet_py[1], mc_quark_ps_jet_pz[1]);
+    TVector3 v1(mc_quark_px[0], mc_quark_py[0], mc_quark_pz[0]);
+    TVector3 v2(mc_quark_px[1], mc_quark_py[1], mc_quark_pz[1]);
     float acol = GetSinacol(v1, v2);
 
     int iquark = -1;

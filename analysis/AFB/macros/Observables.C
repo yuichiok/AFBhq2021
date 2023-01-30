@@ -24,7 +24,7 @@
 #include "fit.C"
 
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 
 void Labels(TString extra=""){

@@ -1,7 +1,7 @@
 process=$1
 pol=$2
 method=$3
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2020/"${process}"_"${pol}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2021/"${process}"_"${pol}"/"
 local=$PWD
 
 

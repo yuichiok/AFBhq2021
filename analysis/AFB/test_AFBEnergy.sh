@@ -4,7 +4,7 @@ local=$PWD
 for pol in "eL_pR" "eR_pL"
 do
 
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2020/"${process}"_"${pol}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2021/"${process}"_"${pol}"/"
 
     counter=0
     
