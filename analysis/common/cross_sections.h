@@ -4,7 +4,7 @@ double cross_section[2][5] = {
   {1405.06,343.03,14866.4,127966,33106.23}, //left, zz, hz, ww, qq, qq+radreturncut
   {606.71,219.486,136.822,70416.7,10633.8}
 };*/
-//250GeV, new format
+//500GeV, new format
 double cross_section[2][6] = {
   {31686.1,7166.63,680.3,114.7,7680.7,165*4.}, //left, qq, qq+radreturncut,  zz, hz, ww, ttbar (not applciable at 250GeV)
   {17581.9,2392.2,271.9,73.4,33.5,64.3*4.}
