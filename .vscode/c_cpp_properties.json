@@ -4,6 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
+                "/cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-02-02/root/6.18.04/include/",
+                "/usr/include/c++/4.8.5",
+                "${workspaceFolder}/**",
                 "/home/airqui/programs/root_src/root-install/include",
                 "/usr/include/c++/9"
             ],

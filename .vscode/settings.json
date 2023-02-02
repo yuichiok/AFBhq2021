@@ -85,7 +85,12 @@
         "AFBFit.C": "cpp",
         "AFB.C": "cpp",
         "Observables.C": "cpp",
-        "effpreselection.C": "cpp"
+        "effpreselection.C": "cpp",
+        "EffCharge.C": "cpp",
+        "Rb_calculations.C": "cpp",
+        "Weights_c.C": "cpp",
+        "Rq.C": "cpp",
+        "AFBSigBkg.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
