@@ -2,11 +2,11 @@ for quark in "udscbquark" "cquark" "bquark" "udsquark"
 do
     for pol in "eL_pR" "eR_pL"
     do
-	    hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_ignoreoverlay_2f_hadronic_${pol}_0GeV.root output/*secondary_tracks_ignoreoverlay_2f_hadronic_${pol}*cut_0_${quark}.root
+	hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_ignoreoverlay_2f_hadronic_${pol}_0GeV.root output/*secondary_tracks_ignoreoverlay_2f_hadronic_${pol}*cut_0_${quark}.root
     	#hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_ignoreoverlay_2f_hadronic_${pol}_2GeV.root output/*secondary_tracks_ignoreoverlay_2f_hadronic_${pol}*cut_2_${quark}.root
-	    hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_ignoreoverlay_2f_hadronic_${pol}_3GeV.root output/*secondary_tracks_ignoreoverlay_2f_hadronic_${pol}*cut_3_${quark}.root
+	hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_ignoreoverlay_2f_hadronic_${pol}_3GeV.root output/*secondary_tracks_ignoreoverlay_2f_hadronic_${pol}*cut_3_${quark}.root
         hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_ignoreoverlay_2f_hadronic_${pol}_0GeV_costheta_lt0.8.root output/*secondary_tracks_ignoreoverlay_2f_hadronic_${pol}*cut_0_coshteta_lt0.8_${quark}.root
-	    #hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_ignoreoverlay_2f_hadronic_${pol}_2GeV_costheta_lt0.8.root output/*secondary_tracks_ignoreoverlay_2f_hadronic_${pol}*cut_2_coshteta_lt0.8_${quark}.root
+	#hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_ignoreoverlay_2f_hadronic_${pol}_2GeV_costheta_lt0.8.root output/*secondary_tracks_ignoreoverlay_2f_hadronic_${pol}*cut_2_coshteta_lt0.8_${quark}.root
         hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_ignoreoverlay_2f_hadronic_${pol}_3GeV_costheta_lt0.8.root output/*secondary_tracks_ignoreoverlay_2f_hadronic_${pol}*cut_3_coshteta_lt0.8_${quark}.root
 
         hadd -f -j 4 results_500GeV/histos_${quark}_secondary_tracks_2f_hadronic_${pol}_0GeV.root output/*secondary_tracks_2f_hadronic_${pol}*cut_0_${quark}.root
