@@ -23,453 +23,358 @@
 #include "TSystemFile.h"
 #include "../../../style/Style.C"
 #include "../../../style/Labels.C"
-#include "../../common/cross_sections.h"
+#include "../../common/hidden_cross_sections.h"
 
-void Labels(int i=0, TString pol="eL"){
+TString folder = "../results/";
+void Labels(int i = 0, int ipol = 1, float lum = 900, float ildx=0.86)
+{
 
-  QQBARLabel(0.86,0.954,"");
-  if(i==0) QQBARLabel2(0.04,0.07, "[No Cuts]",kOrange+3);
-  if(i==1) QQBARLabel2(0.04,0.07, "photon veto_{0}",kOrange+3);
-  if(i==2) QQBARLabel2(0.04,0.07, "photon veto cut",kOrange+3);
-  if(i==3) QQBARLabel2(0.04,0.082, "photon veto & acolinearity cuts",kOrange+3);
-
-  if(i==4) {
-    QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} cuts",kOrange+3);
-  }
-  if(i==5) {
-    QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} cuts",kOrange+3);
-  }
-  if(i==6) {
-    QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} & y_{23} cuts",kOrange+3);
-
+  QQBARLabel(ildx, 0.953, "");
+  if (i == 0)
+    QQBARLabel2(0.04, 0.07, "[No Cuts]", kOrange + 3);
+  if (i == 1)
+    QQBARLabel2(0.04, 0.07, "photon veto_{0}", kOrange + 3);
+  if (i == 2)
+    QQBARLabel2(0.04, 0.07, "photon veto cut", kOrange + 3);
+  if (i == 3)
+  {
+    QQBARLabel2(0.04, 0.07, "photon veto cut", kOrange + 3);
+    QQBARLabel2(0.04, 0.03, "& m_{jj} cuts", kOrange + 3);
   }
 
-  if(pol=="eL")QQBARLabel2(0.3,0.97, "e_{L}^{-}e_{R}^{+} #rightarrow q#bar{q}, (q=udscb)",kGray+2);
-  if(pol=="eR")QQBARLabel2(0.3,0.97, "e_{R}^{-}e_{L}^{+} #rightarrow q#bar{q}, (q=udscb)",kGray+2);
+  QQBARLabel2(0.8, 0.03, TString::Format("Int.Lum=%i fb^{-1}", int(lum)), kGray + 1);
+
+  if (ipol == 0)
+    QQBARLabel2(0.7, 0.03, "e_{L}^{-}e_{R}^{+} ", kGray + 1);
+  if (ipol == 1)
+    QQBARLabel2(0.7, 0.03, "e_{R}^{-}e_{L}^{+} ", kGray + 1);
+}
+
+TH1F * PolHisto(TH1F *h1, TH1F* h2, int pol) {
+
+  // this function takes two histograms, 100% polarized, normalized to the same luminosity 
+  // and calcualtes the result of the ILC polarisation default options
+  // 0=100% eL, 1=100% eR, 2=80%eL,30%pR, 2=80%eR,30%pL
+
+  TH1F *hnew = (TH1F*)h1->Clone("hnew");
+  float global=0, a=0., b=0.;
+  float p1=-0.8, p2=0.3;
+
+  if(pol==3) {
+    p1=0.8;
+    p2=-0.3;
+  }
+
+
+  global= 0.25* (1-p1*p2);
+  float peff = (p1-p2)/(1-p1*p2);
+
+  a=global*(1-peff);
+  b=global*(1+peff);
+
+  for(int i=0; i<hnew->GetNbinsX()+1; i++) {
+    float nprime1=a*h1->GetBinContent(i);
+    float nprime2=b*h2->GetBinContent(i);
+    
+    hnew->SetBinError(i,sqrt(nprime1+nprime2));
+    hnew->SetBinContent(i, nprime1 + nprime2 );
+  }
+ 
+  return hnew;
 
 }
 
+TH2F * PolHisto(TH2F *h1, TH2F* h2, int pol) {
 
+  // this function takes two histograms, 100% polarized, normalized to the same luminosity 
+  // and calcualtes the result of the ILC polarisation default options
+  // 0=100% eL, 1=100% eR, 2=80%eL,30%pR, 2=80%eR,30%pL
 
-void selection_plots( bool normalised=false, TString output="efficiency") {
-  for(int polarisation=0; polarisation<1; polarisation ++) {
-  cout<< "bb qq radreturn ww zz hz "<<endl;
+  TH2F *hnew = (TH2F*)h1->Clone("hnew");
+  float global=0, a=0., b=0.;
+  float p1=-0.8, p2=0.3;
 
-  //Efficiency y23.
-  float bb_integral[100];
-  float qq_integral[100];
-  float cc_integral[100];
-  float radreturn_integral[100];
-  float zz_integral[100];
-  float ww_integral[100];
-  float qqH_integral[100];
-  for(int i=0; i<100; i++) {
-    bb_integral[i]=0;
-    qq_integral[i]=0;
-    cc_integral[i]=0;
-    radreturn_integral[i]=0;
-    zz_integral[i]=0;
-    ww_integral[i]=0;
-    qqH_integral[i]=0;
+  if(pol==3) {
+    p1=0.8;
+    p2=-0.3;
   }
 
-  float bb_integral_0=0.;
-  float qq_integral_0=0.;
-  float cc_integral_0=0.;
-  float radreturn_integral_0=0.;
-  float zz_integral_0=0.;
-  float ww_integral_0=0.;
-  float qqH_integral_0=0.;
+  global= 0.25* (1-p1*p2);
+  float peff = (p1-p2)/(1-p1*p2);
 
+  a=global*(1-peff);
+  b=global*(1+peff);
+
+  for(int i=0; i<hnew->GetNbinsX()+1; i++) {
+      for(int j=0; j<hnew->GetNbinsY()+1; j++) {
+
+        float nprime1=a*h1->GetBinContent(i,j);
+        float nprime2=b*h2->GetBinContent(i,j);
+      
+        hnew->SetBinError(i,j,sqrt(nprime1+nprime2));
+        hnew->SetBinContent(i,j, nprime1 + nprime2 );
+      }
+  }
  
-  TString pol="eR_pL";
-  if(polarisation==1) pol="eL_pR";
-    
-  cout<<output<<endl;
-  float luminosity_0=1;
+  return hnew;
 
+}
 
-  for(int i=0; i<2; i++) {
+std::vector<TH1F *> GetHisto1D(TString sample = "2f_hadronic_sample", int ipol = 0, int ibkg = 0, float lum = 900)
+{
 
-    if(i==1) i=4;
+  TString pol[2] = {"eL_pR", "eR_pL"};
 
-    int cuts=i;
-    
-    //**********************************************************
-    // /*ZZ
-    TString folder=TString::Format("../results/selection_cuts%i_",cuts);
-    
-    TString filename = folder+"2f_hadronic_sample_"+pol+"_250GeV.root";
- 
+  std::vector<TH1F *> h1_pol[3];
+
+  for (int i = 0; i < 2; i++)
+  {
+
+    TString filename = folder + "_" + sample + "_" + pol[i] + ".root";
+    if (sample == "radreturn")
+    {
+      filename = folder + "_" + "2f_hadronic_sample_" + pol[i] + ".root";
+      ibkg = 1;
+    }
+    if (sample == "qq")
+    {
+      filename = folder + "_" + "2f_hadronic_sample_" + pol[i] + ".root";
+      ibkg = 1;
+    }
+
     TFile *f = new TFile(filename);
-    TH1F *h_luminosity_cross_2f = (TH1F*)f->Get("h_costheta_nocuts");
-
-    TH1F *h_mjj_bb = (TH1F*)f->Get("h_mjj_bb");
-    TH1F *h_mj1_mj2_bb = (TH1F*)f->Get("h_mj1_mj2_bb");
-    TH1F *h_thrust_bb = (TH1F*)f->Get("h_thrust_bb");
-    TH1F *h_sphericity_bb = (TH1F*)f->Get("h_sphericity_bb");
-    TH1F *h_y23_bb = (TH1F*)f->Get("h_y23_bb");
-    TH1F *h_d23_bb = (TH1F*)f->Get("h_d23_bb");
-    TH1F *h_acol_bb = (TH1F*)f->Get("h_acol_bb");
-    TH1F *h_costheta_bb = (TH1F*)f->Get("h_costheta_bb");
-    TH1F *h_K_bb = (TH1F*)f->Get("h_K_bb");
-   
-    TH1F *h_mjj_cc = (TH1F*)f->Get("h_mjj_cc");
-    TH1F *h_mj1_mj2_cc = (TH1F*)f->Get("h_mj1_mj2_cc");
-    TH1F *h_thrust_cc = (TH1F*)f->Get("h_thrust_cc");
-    TH1F *h_sphericity_cc = (TH1F*)f->Get("h_sphericity_cc");
-    TH1F *h_y23_cc = (TH1F*)f->Get("h_y23_cc");
-    TH1F *h_d23_cc = (TH1F*)f->Get("h_d23_cc");
-    TH1F *h_acol_cc = (TH1F*)f->Get("h_acol_cc");
-    TH1F *h_costheta_cc = (TH1F*)f->Get("h_costheta_cc");
-    TH1F *h_K_cc = (TH1F*)f->Get("h_K_cc");
-    
-    TH1F *h_mjj_qq = (TH1F*)f->Get("h_mjj_qq");
-    TH1F *h_mj1_mj2_qq = (TH1F*)f->Get("h_mj1_mj2_qq");
-    TH1F *h_thrust_qq = (TH1F*)f->Get("h_thrust_qq");
-    TH1F *h_sphericity_qq = (TH1F*)f->Get("h_sphericity_qq");
-    TH1F *h_y23_qq = (TH1F*)f->Get("h_y23_qq");
-    TH1F *h_d23_qq = (TH1F*)f->Get("h_d23_qq");
-    TH1F *h_acol_qq = (TH1F*)f->Get("h_acol_qq");
-    TH1F *h_costheta_qq = (TH1F*)f->Get("h_costheta_qq");
-    TH1F *h_K_qq = (TH1F*)f->Get("h_K_qq");
-    
-
-    TH1F *h_mjj_radreturn = (TH1F*)f->Get("h_mjj_radreturn");
-    TH1F *h_mj1_mj2_radreturn = (TH1F*)f->Get("h_mj1_mj2_radreturn");
-    TH1F *h_thrust_radreturn = (TH1F*)f->Get("h_thrust_radreturn");
-    TH1F *h_sphericity_radreturn = (TH1F*)f->Get("h_sphericity_radreturn");
-    TH1F *h_y23_radreturn = (TH1F*)f->Get("h_y23_radreturn");
-    TH1F *h_d23_radreturn = (TH1F*)f->Get("h_d23_radreturn");
-    TH1F *h_acol_radreturn = (TH1F*)f->Get("h_acol_radreturn");
-    TH1F *h_costheta_radreturn = (TH1F*)f->Get("h_costheta_radreturn");
-    TH1F *h_K_radreturn = (TH1F*)f->Get("h_K_radreturn");
-
-    bb_integral_0=h_mjj_bb->GetEntries();
-    qq_integral_0=h_mjj_qq->GetEntries();
-    cc_integral_0=h_mjj_cc->GetEntries();
-    radreturn_integral_0=h_mjj_radreturn->GetEntries();
-
-    float luminosity = h_luminosity_cross_2f->GetEntries()/cross_section[polarisation][3];
-    if(i==0) luminosity_0=h_luminosity_cross_2f->GetEntries()/cross_section[polarisation][3];
-
-    if(i>0) {
-
-      h_mjj_qq->Add(h_mjj_bb);
-      h_mj1_mj2_qq->Add(h_mj1_mj2_bb);
-      h_thrust_qq->Add(h_thrust_bb);
-      h_sphericity_qq->Add(h_sphericity_bb);
-      h_y23_qq->Add(h_y23_bb);
-      h_d23_qq->Add(h_d23_bb);
-      h_acol_qq->Add(h_acol_bb);
-      h_costheta_qq->Add(h_costheta_bb);
-      h_K_qq->Add(h_K_bb);
-
-      h_mjj_qq->Add(h_mjj_cc);
-      h_mj1_mj2_qq->Add(h_mj1_mj2_cc);
-      h_thrust_qq->Add(h_thrust_cc);
-      h_sphericity_qq->Add(h_sphericity_cc);
-      h_y23_qq->Add(h_y23_cc);
-      h_d23_qq->Add(h_d23_cc);
-      h_acol_qq->Add(h_acol_cc);
-      h_costheta_qq->Add(h_costheta_cc);
-      h_K_qq->Add(h_K_cc);
-
-      h_mjj_qq->Scale(luminosity_0/luminosity);
-      h_mj1_mj2_qq->Scale(luminosity_0/luminosity);
-      h_thrust_qq->Scale(luminosity_0/luminosity);
-      h_sphericity_qq->Scale(luminosity_0/luminosity);
-      h_y23_qq->Scale(luminosity_0/luminosity);
-      h_d23_qq->Scale(luminosity_0/luminosity);
-      h_acol_qq->Scale(luminosity_0/luminosity);
-      h_costheta_qq->Scale(luminosity_0/luminosity);
-      h_K_qq->Scale(luminosity_0/luminosity);
-
-      h_mjj_radreturn->Scale(luminosity_0/luminosity);
-      h_mj1_mj2_radreturn->Scale(luminosity_0/luminosity);
-      h_thrust_radreturn->Scale(luminosity_0/luminosity);
-      h_sphericity_radreturn->Scale(luminosity_0/luminosity);
-      h_y23_radreturn->Scale(luminosity_0/luminosity);
-      h_d23_radreturn->Scale(luminosity_0/luminosity);
-      h_acol_radreturn->Scale(luminosity_0/luminosity);
-      h_costheta_radreturn->Scale(luminosity_0/luminosity);
-      h_K_radreturn->Scale(luminosity_0/luminosity);
+    TH1F *h_luminosity_cross_2f = (TH1F *)f->Get("h_costheta_nocuts");
+    if (sample == "radreturn")
+    {
+      TH1F *h_mjj = (TH1F *)f->Get("h_mjj_radreturn");
+      TH1F *h_mj1_mj2 = (TH1F *)f->Get("h_mj1_mj2_radreturn");
+      TH1F *h_y23 = (TH1F *)f->Get("h_y23_radreturn");
+      TH1F *h_d23 = (TH1F *)f->Get("h_d23_radreturn");
+      TH1F *h_thrust = (TH1F *)f->Get("h_thrust_radreturn");
+      TH1F *h_major_thrust = (TH1F *)f->Get("h_major_thrust_radreturn");
+      TH1F *h_minor_thrust = (TH1F *)f->Get("h_minor_thrust_radreturn");
+      h1_pol[i].push_back(h_luminosity_cross_2f);
+      h1_pol[i].push_back(h_mjj);
+      h1_pol[i].push_back(h_mj1_mj2);
+      h1_pol[i].push_back(h_y23);
+      h1_pol[i].push_back(h_d23);
+      h1_pol[i].push_back(h_thrust);
+      h1_pol[i].push_back(h_major_thrust);
+      h1_pol[i].push_back(h_minor_thrust);
     }
-    //**********************************************************
-    // WW
-    filename = folder+"4f_WW_hadronic_"+pol+"_250GeV.root";
-    //    cout<<filename<<endl;
-    TFile *f2 = new TFile(filename);
-    TH1F *h_luminosity_cross_ww = (TH1F*)f2->Get("h_costheta_nocuts");
-    TH1F *h_mjj_ww = (TH1F*)f2->Get("h_mjj_bb");
-    TH1F *h_mj1_mj2_ww = (TH1F*)f2->Get("h_mj1_mj2_bb");
-    TH1F *h_thrust_ww = (TH1F*)f2->Get("h_thrust_bb");
-    TH1F *h_sphericity_ww = (TH1F*)f2->Get("h_sphericity_bb");
-    TH1F *h_y23_ww = (TH1F*)f2->Get("h_y23_bb");
-    TH1F *h_d23_ww = (TH1F*)f2->Get("h_d23_bb");
-    TH1F *h_acol_ww = (TH1F*)f2->Get("h_acol_bb");
-    TH1F *h_costheta_ww = (TH1F*)f2->Get("h_costheta_bb");
-    TH1F *h_K_ww = (TH1F*)f2->Get("h_K_bb");
-
-    ww_integral_0=h_mjj_ww->GetEntries();
-    float luminosity_ww = h_luminosity_cross_ww->GetEntries()/cross_section[polarisation][2];
-
-    h_mjj_ww->Scale(luminosity/luminosity_ww);
-    h_mj1_mj2_ww->Scale(luminosity/luminosity_ww);
-    h_thrust_ww->Scale(luminosity/luminosity_ww);
-    h_sphericity_ww->Scale(luminosity/luminosity_ww);   
-    h_y23_ww->Scale(luminosity/luminosity_ww);
-    h_d23_ww->Scale(luminosity/luminosity_ww);
-    h_acol_ww->Scale(luminosity/luminosity_ww);
-    h_costheta_ww->Scale(luminosity/luminosity_ww);
-    h_K_ww->Scale(luminosity/luminosity_ww);
-  
-    //**********************************************************
-    // qqH
-    filename = folder+"qqH_"+pol+"_250GeV.root";
-    TFile *f3 = new TFile(filename);
-    TH1F *h_luminosity_cross_qqH = (TH1F*)f3->Get("h_costheta_nocuts");
-    TH1F *h_mjj_qqH = (TH1F*)f3->Get("h_mjj_bb");
-    TH1F *h_mj1_mj2_qqH = (TH1F*)f3->Get("h_mj1_mj2_bb");
-    TH1F *h_thrust_qqH = (TH1F*)f3->Get("h_thrust_bb");
-    TH1F *h_sphericity_qqH = (TH1F*)f3->Get("h_sphericity_bb");
-    TH1F *h_y23_qqH = (TH1F*)f3->Get("h_y23_bb");
-    TH1F *h_d23_qqH = (TH1F*)f3->Get("h_d23_bb");
-    TH1F *h_acol_qqH = (TH1F*)f3->Get("h_acol_bb");
-    TH1F *h_costheta_qqH = (TH1F*)f3->Get("h_costheta_bb");
-    TH1F *h_K_qqH = (TH1F*)f3->Get("h_K_bb");
-
-    qqH_integral_0=h_mjj_qqH->GetEntries();
-    float luminosity_qqH = h_luminosity_cross_qqH->GetEntries()/cross_section[polarisation][1];
-
-    h_mjj_qqH->Scale(luminosity/luminosity_qqH);
-    h_mj1_mj2_qqH->Scale(luminosity/luminosity_qqH);
-    h_thrust_qqH->Scale(luminosity/luminosity_qqH);
-    h_sphericity_qqH->Scale(luminosity/luminosity_qqH);
-    h_y23_qqH->Scale(luminosity/luminosity_qqH);
-    h_d23_qqH->Scale(luminosity/luminosity_qqH);
-    h_acol_qqH->Scale(luminosity/luminosity_qqH);
-    h_costheta_qqH->Scale(luminosity/luminosity_qqH);
-    h_K_qqH->Scale(luminosity/luminosity_qqH);
-  
-
-    //**********************************************************
-    // ZZ
-    filename = folder+"4f_ZZ_hadronic_"+pol+"_250GeV.root";
-    TFile *f4 = new TFile(filename);
-    TH1F *h_luminosity_cross_zz = (TH1F*)f4->Get("h_costheta_nocuts");
-    TH1F *h_mjj_zz = (TH1F*)f4->Get("h_mjj_bb");
-    TH1F *h_mj1_mj2_zz = (TH1F*)f4->Get("h_mj1_mj2_bb");
-    TH1F *h_thrust_zz = (TH1F*)f4->Get("h_thrust_bb");
-    TH1F *h_sphericity_zz = (TH1F*)f4->Get("h_sphericity_bb");
-    TH1F *h_y23_zz = (TH1F*)f4->Get("h_y23_bb");
-    TH1F *h_d23_zz = (TH1F*)f4->Get("h_d23_bb");
-    TH1F *h_acol_zz = (TH1F*)f4->Get("h_acol_bb");
-    TH1F *h_costheta_zz = (TH1F*)f4->Get("h_costheta_bb");
-    TH1F *h_K_zz = (TH1F*)f4->Get("h_K_bb");
-
-    zz_integral_0=h_mjj_zz->GetEntries();
-    float luminosity_zz = h_luminosity_cross_zz->GetEntries()/cross_section[polarisation][0];
-
-    h_mjj_zz->Scale(luminosity/luminosity_zz);
-    h_mj1_mj2_zz->Scale(luminosity/luminosity_zz);
-    h_thrust_zz->Scale(luminosity/luminosity_zz);
-    h_sphericity_zz->Scale(luminosity/luminosity_zz);
-    h_y23_zz->Scale(luminosity/luminosity_zz);
-    h_d23_zz->Scale(luminosity/luminosity_zz);
-    h_acol_zz->Scale(luminosity/luminosity_zz);
-    h_costheta_zz->Scale(luminosity/luminosity_zz);
-    h_K_zz->Scale(luminosity/luminosity_zz);
- 
-
- 
-    //Efficiency 
-    bb_integral[i+1]=h_mjj_bb->Integral();
-    qq_integral[i+1]=h_mjj_qq->Integral();
-    cc_integral[i+1]=h_mjj_cc->Integral();
-    radreturn_integral[i+1]=h_mjj_radreturn->Integral();
-    zz_integral[i+1]=h_mjj_zz->Integral();
-    qqH_integral[i+1]=h_mjj_qqH->Integral();
-    ww_integral[i+1]=h_mjj_ww->Integral();
-
-    if(i==0) {
-      bb_integral[i]=h_mjj_bb->Integral();
-      qq_integral[i]=h_mjj_qq->Integral();
-      cc_integral[i]=h_mjj_cc->Integral();
-      radreturn_integral[i]=h_mjj_radreturn->Integral();
-      zz_integral[i]=h_mjj_zz->Integral();
-      qqH_integral[i]=h_mjj_qqH->Integral();
-      ww_integral[i]=h_mjj_ww->Integral();
+    else
+    {
+      TH1F *h_mjj = (TH1F *)f->Get("h_mjj_qq");
+      TH1F *h_mj1_mj2 = (TH1F *)f->Get("h_mj1_mj2_qq");
+      TH1F *h_y23 = (TH1F *)f->Get("h_y23_qq");
+      TH1F *h_d23 = (TH1F *)f->Get("h_d23_qq");
+      TH1F *h_thrust = (TH1F *)f->Get("h_thrust_qq");
+      TH1F *h_major_thrust = (TH1F *)f->Get("h_major_thrust_qq");
+      TH1F *h_minor_thrust = (TH1F *)f->Get("h_minor_thrust_qq");
+      h1_pol[i].push_back(h_luminosity_cross_2f);
+      h1_pol[i].push_back(h_mjj);
+      h1_pol[i].push_back(h_mj1_mj2);
+      h1_pol[i].push_back(h_y23);
+      h1_pol[i].push_back(h_d23);
+      h1_pol[i].push_back(h_thrust);
+      h1_pol[i].push_back(h_major_thrust);
+      h1_pol[i].push_back(h_minor_thrust);
     }
-  
+
+    float luminosity_sample = h_luminosity_cross_2f->GetEntries() / cross_section[i][ibkg];
+    for (int j = 0; j < h1_pol[i].size(); j++) 
+      h1_pol[i].at(j)->Scale(lum / luminosity_sample);
+  }
+
+  if(ipol<2) return h1_pol[ipol];
+
+  for (int j = 0; j < h1_pol[0].size(); j++)  {
+    h1_pol[2].push_back(PolHisto(h1_pol[0].at(j),h1_pol[1].at(j),ipol));
+  }
+
+  return h1_pol[2];
+}
+
+std::vector<TH2F *> GetHisto2D(TString sample = "2f_hadronic_sample", int ipol = 0, int ibkg = 0, float lum = 900)
+{
+
+  TString pol[2] = {"eL_pR", "eR_pL"};
+
+  std::vector<TH2F *> h1_pol[3];
+
+  for (int i = 0; i < 2; i++)
+  {
+
+    TString filename = folder + "_" + sample + "_" + pol[i] + ".root";
+    if (sample == "radreturn")
+    {
+      filename = folder + "_" + "2f_hadronic_sample_" + pol[i] + ".root";
+      ibkg = 1;
+    }
+    if (sample == "qq")
+    {
+      filename = folder + "_" + "2f_hadronic_sample_" + pol[i] + ".root";
+      ibkg = 1;
+    }
+
+    TFile *f = new TFile(filename);
+    TH1F *h_luminosity_cross_2f = (TH1F *)f->Get("h_costheta_nocuts");
+    if (sample == "radreturn")
+    {
+      TH2F *h_major_minor_thrust = (TH2F *)f->Get("h_major_minor_thrust_radreturn");
+      TH2F *h_costheta_energy = (TH2F *)f->Get("h_costheta_energy_radreturn");
+      TH2F *h_npfos = (TH2F *)f->Get("h_npfos_radreturn");
+      h1_pol[i].push_back(h_major_minor_thrust);
+      h1_pol[i].push_back(h_costheta_energy);
+      h1_pol[i].push_back(h_npfos);
+    }
+    else
+    {
+      TH2F *h_major_minor_thrust = (TH2F *)f->Get("h_major_minor_thrust_qq");
+      TH2F *h_costheta_energy = (TH2F *)f->Get("h_costheta_energy_qq");
+      TH2F *h_npfos = (TH2F *)f->Get("h_npfos_qq");
+      h1_pol[i].push_back(h_major_minor_thrust);
+      h1_pol[i].push_back(h_costheta_energy);
+      h1_pol[i].push_back(h_npfos);
+    }
+
+    float luminosity_sample = h_luminosity_cross_2f->GetEntries() / cross_section[i][ibkg];
+    for (int j = 0; j < h1_pol[i].size(); j++)
+      h1_pol[i].at(j)->Scale(lum / luminosity_sample);
+  }
+  if(ipol<2) return h1_pol[ipol];
+
+  for (int j = 0; j < h1_pol[0].size(); j++)  {
+    h1_pol[2].push_back(PolHisto(h1_pol[0].at(j),h1_pol[1].at(j),ipol));
+  }
+
+  return h1_pol[2];  // Scale histograms with polarisation //to be done
+
+}
+
+void plots(int ipol = 2, int cuts = 0, float lum = 900)
+{
+
+  folder = TString::Format("../results/selection_cuts%i", cuts);
+
+  TString samples[5] = {
+      "qq",
+      "radreturn",
+      "4f_ZZ_hadronic",
+      "qqH",
+      "4f_WW_hadronic"};
+
+  TString histo1d_titles[8] = {
+      "",
+      "M_{j_{1}j_{2}} [GeV]",
+      "M_{j_{1}}+M_{j_{2}} [GeV]",
+      "y23",
+      "d23 [GeV]",
+      "T-principle",
+      "T-major",
+      "T-minor"};
+
+    TString histo2d_titles_x[3] = {
+      "T-major",
+      "cos #theta (photon-candidate)",
+      " # pfos j_{1}"};
+    TString histo2d_titles_y[3] = {
+      "T-mimor",
+      "E (photon candidate) [GeV] ",
+      "# pfos j_{2}"};
+
+  std::vector<std::vector<TH1F *>> h1_bkg;
+  std::vector<std::vector<TH2F *>> h2_bkg;
+
+  for (int isample = 0; isample < 5; isample++)
+  {
+    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], ipol, isample + 1, lum);
+    h1_bkg.push_back(h1_bkg_temp);
+    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples[isample], ipol, isample + 1, lum);
+    h2_bkg.push_back(h2_bkg_temp);
+  }
+
+  for (int i = 0; i < h1_bkg.size(); i++)
+  {
+    cout << samples[i] << ": " << h1_bkg.at(i).at(1)->Integral() << " ";
+  }
+  cout << endl;
+
+  SetQQbarStyle();
+  // gStyle->SetOptFit(0);
+  // gStyle->SetOptStat(0);
+  // gStyle->SetTitleBorderSize(0);
+  // gStyle->SetTitleX(0.2);
+  // gStyle->SetMarkerSize(1.5);
+  TGaxis::SetMaxDigits(3);
+
+  for (int k = 1; k < 8; k++)
+  {
+
+    float xmin = 0.58, ymin = 0.7, xmax = 0.8, ymax = 0.9;
  
-    h_y23_bb->Rebin(10);
-    h_y23_cc->Rebin(10);
-    h_y23_qq->Rebin(10);
-    h_y23_radreturn->Rebin(10);
-    h_y23_zz->Rebin(10);
-    h_y23_qqH->Rebin(10);
-    h_y23_ww->Rebin(10); 
-    
-    h_d23_bb->Rebin(100);
-    h_d23_cc->Rebin(100);
-    h_d23_qq->Rebin(100);
-    h_d23_radreturn->Rebin(100);
-    h_d23_zz->Rebin(100);
-    h_d23_qqH->Rebin(100);
-    h_d23_ww->Rebin(100);
+    TLegend *leg = new TLegend(xmin, 0.76, xmax, 0.9); //(0.4,0.3,0.5,0.6);
+    leg->SetTextSize(0.035);
 
-    h_K_bb->Rebin(10);
-    h_K_cc->Rebin(10);
-    h_K_qq->Rebin(10);
-    h_K_radreturn->Rebin(10);
-    h_K_zz->Rebin(10);
-    h_K_qqH->Rebin(10);
-    h_K_ww->Rebin(10);
-
-    h_sphericity_bb->Rebin(10);
-    h_sphericity_cc->Rebin(10);
-    h_sphericity_qq->Rebin(10);
-    h_sphericity_radreturn->Rebin(10);
-    h_sphericity_zz->Rebin(10);
-    h_sphericity_qqH->Rebin(10);
-    h_sphericity_ww->Rebin(10);
-
-
-    TString cut_string= "";//Nocuts";
-    /*  if(cuts==1) cut_string="$K_{reco}<35\\,GeV$";
-	if(cuts==2) cut_string="$+ m_{j_{1},j_{2}}>130 \\,GeV$";
-	if(cuts==3) cut_string="$+ E^{max}_{nPFO}<100 \\,GeV$";
-	if(cuts==4) cut_string="$+ |cos(\\theta_{E^{max}_{nPFO}})|<0.95$";
-	if(cuts==5) cut_string="mjets<90GeV";
-	if(cuts==6) cut_string="$+ Thrust > 0.9$";
-	if(cuts==11) cut_string="$>1\\,b-jet tagged$";
-	if(cuts==12) cut_string="$2\\,b-jet tagged$";
-	if(cuts==13) cut_string="$>1\\,b-jet tagged$";
-	if(cuts==14) cut_string="$2\\,b-jet tagged$";*/
-
-
-    // cout<<std::setprecision(3)<< cut_string<<" & "<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & "<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & "<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & "<<100.*radreturn_integral[i+1]/radreturn_integral[0]<<"\\% & "<< 100.*qqH_integral[i+1]/qqH_integral[0]<<"\\% & "<< 100.*zz_integral[i+1]/zz_integral[0]<<"\\% & "<< 100.*ww_integral[i+1]/ww_integral[0]<<" \\\\"<<endl;
-
-    if(i==0)  cout<<std::setprecision(3)<<" Cross-Section "<< bb_integral_0/luminosity<<" "<<cc_integral_0/luminosity<<" "<<qq_integral_0/luminosity<<" "<<radreturn_integral_0/luminosity<<" "<<ww_integral_0/luminosity_ww<<" "<<zz_integral_0/luminosity_zz<<" "<<qqH_integral_0/luminosity_qqH<<" "<<endl;
-
-    if(output=="efficiency") cout<<std::setprecision(3)<< i <<" "<< 100.*bb_integral[i+1]/bb_integral[0]<<" "<<100.*cc_integral[i+1]/cc_integral[0]<<" "<<100.*qq_integral[i+1]/qq_integral[0]<<" "<<100.*radreturn_integral[i+1]/radreturn_integral[0]<<" "<<100.*ww_integral[i+1]/ww_integral[0]<<" "<<100.*zz_integral[i+1]/zz_integral[0]<<" "<<100.*qqH_integral[i+1]/qqH_integral[0]<<" "<<endl;
-  
-    //    cout<<std::setprecision(3)<< cut_string<<" & bb:"<< 100.*bb_integral[i+1]/bb_integral[0]<<"\\% & cc:"<<100.*cc_integral[i+1]/cc_integral[0]<<"\\% & qq:"<<100.*qq_integral[i+1]/qq_integral[0]<<"\\% & rad:"<<100.*radreturn_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & WW:"<<100.*ww_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% &  ZZ:"<<100.*zz_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & qqH:"<<100.*qqH_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<"\\% & \\\\"<<endl;
-    
-    if(output=="B_S") cout<<std::setprecision(3)<< cut_string  <<" "<< 100.*bb_integral[i+1]/bb_integral[0]<<" "<<100.*cc_integral[i+1]/cc_integral[0]<<" "<<100.*qq_integral[i+1]/qq_integral[0]<<" "<<100.*radreturn_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<" "<<100.*ww_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<" "<<100.*zz_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<" "<<100.*qqH_integral[i+1]/(bb_integral[i+1]+qq_integral[i+1]+cc_integral[i+1])<<" "<<endl;
-
-
-    SetQQbarStyle();
-     // gStyle->SetOptFit(0); 
-    // gStyle->SetOptStat(0);
-    // gStyle->SetOptTitle(0);
-  
-    // gStyle->SetTitleBorderSize(0);
-    // gStyle->SetTitleX(0.2);
-    // gStyle->SetMarkerSize(1.5);
-    TGaxis::SetMaxDigits(3);
-
-    
-
-       
-    TCanvas * canvas1 = new TCanvas("canvas_thrust","canvas_thrust",800,800);
+    TCanvas *canvas1 = new TCanvas(TString::Format("canvas_%i", k), TString::Format("canvas_%i", k), 800, 800);
     canvas1->cd(1);
-   
-    if(normalised==true) h_thrust_radreturn->GetYaxis()->SetTitle("norm to 1");
-    else h_thrust_radreturn->GetYaxis()->SetTitle("Entries"); 
-    h_thrust_radreturn->GetXaxis()->SetTitle("Thrust");
-    //h_thrust_bb->GetYaxis()->SetRangeUser(10,h_thrust_bb->GetMaximum()*2);
-    h_thrust_radreturn->GetXaxis()->SetRangeUser(0,1);
-    h_thrust_qq->SetLineStyle(1);
-    h_thrust_radreturn->SetLineColor(2);
-    h_thrust_ww->SetLineColor(kOrange);
-    h_thrust_zz->SetLineColor(6);
-    h_thrust_qqH->SetLineColor(7);
+    h1_bkg.at(0).at(k)->GetYaxis()->SetTitle("Entries");
+    h1_bkg.at(0).at(k)->GetXaxis()->SetTitle(histo1d_titles[k]);
 
-
-    h_thrust_qq->SetLineWidth(2);
-    h_thrust_radreturn->SetLineWidth(2);
-    h_thrust_ww->SetLineWidth(2);
-    h_thrust_zz->SetLineWidth(2);
-    h_thrust_qqH->SetLineWidth(2);
-
-
-    if(normalised==true) {
-      h_thrust_qq->DrawNormalized("histosame");
-      h_thrust_ww->DrawNormalized("histosame");
-      h_thrust_zz->DrawNormalized("histosame");
-      h_thrust_qqH->DrawNormalized("histosame");
-      h_thrust_radreturn->DrawNormalized("histosame");
-    } else {
-      h_thrust_qq->Draw("histosame");
-      h_thrust_ww->Draw("histosame");
-      h_thrust_zz->Draw("histosame");
-      h_thrust_qqH->Draw("histosame");
-      h_thrust_radreturn->Draw("histosame");
+    for (int j = 0; j < h1_bkg.size(); j++)
+    {
+      h1_bkg.at(j).at(k)->SetLineColor(j + 1);
+      h1_bkg.at(j).at(k)->SetLineWidth(2);
+      if (j > 2)
+      {
+        h1_bkg.at(j).at(k)->SetLineStyle(2);
+        h1_bkg.at(j).at(k)->SetLineWidth(4);
+      }
+      h1_bkg.at(j).at(k)->Draw("histosame");
+      leg->AddEntry(h1_bkg.at(j).at(k), "#font[42]{" + samples[j]+"}", "l");
     }
+    leg->SetFillStyle(0);
+    leg->SetLineWidth(0);
+    leg->SetLineColor(0);
+    leg->SetBorderSize(0);
 
-    float xmin=0.58, ymin=0.76, xmax=0.8, ymax=0.9;
-    if(i==2) { xmin=0.54; xmax=0.76;}
+    Labels(k, ipol, lum);
+    leg->Draw();
+  }
 
-    TLegend *leg2 = new TLegend(xmin,0.76,xmax,0.9);//(0.4,0.3,0.5,0.6);
-    leg2->SetTextSize(0.035);
-    //leg2->AddEntry(h_thrust_radreturn,"#font[42]{#gammaZ#rightarrow #gammaq#bar{q} (q=udscb)}","l");
-    leg2->AddEntry(h_thrust_qq,"#font[42]{q#bar{q} (q=udscb)}","l");
-    leg2->AddEntry(h_thrust_radreturn,"#font[42]{Radiative Return}","l");
-    leg2->AddEntry(h_thrust_qqH,"#font[42]{qqH}","l");
-    leg2->AddEntry(h_thrust_zz,"#font[42]{ZZ}","l");
-    leg2->AddEntry(h_thrust_ww,"#font[42]{WW}","l");
-    leg2->SetFillStyle(0);
-    leg2->SetLineWidth(0);
-    leg2->SetLineColor(0);
-    leg2->SetBorderSize(0);
-   
-    Labels(i,pol);
+  if (cuts == 3)
+  {
 
-    leg2->Draw();
+    for (int k = 0; k < 1; k++)
+    {
 
-    TCanvas * canvas2 = new TCanvas("canvas_sphericity","canvas_sphericity",800,800);
-    canvas2->cd(1);
-   
-    if(normalised==true) h_sphericity_radreturn->GetYaxis()->SetTitle("norm to 1");
-    else h_sphericity_radreturn->GetYaxis()->SetTitle("Entries"); 
-    h_sphericity_radreturn->GetXaxis()->SetTitle("Sphericity");
-    //h_sphericity_bb->GetYaxis()->SetRangeUser(10,h_sphericity_bb->GetMaximum()*2);
-    h_sphericity_radreturn->GetXaxis()->SetRangeUser(0,1);
-    h_sphericity_qq->SetLineStyle(1);
-    h_sphericity_radreturn->SetLineColor(2);
-    h_sphericity_ww->SetLineColor(kOrange);
-    h_sphericity_zz->SetLineColor(6);
-    h_sphericity_qqH->SetLineColor(7);
+      gStyle->SetPadRightMargin(0.2);
+      TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 2400, 800);
+      canvas1->Divide(3, 2);
 
+      for (int j = 0; j < h2_bkg.size(); j++)
+      {
+        canvas1->cd(j + 1);
+        h2_bkg.at(j).at(k)->GetXaxis()->SetTitle(histo2d_titles_x[k]);
+        h2_bkg.at(j).at(k)->GetYaxis()->SetTitle(histo2d_titles_y[k]);
+        h2_bkg.at(j).at(k)->Draw("colz");
+        QQBARLabel2(0.2, 0.7, TString::Format("#font[42]{%s, aaN_{total}=%i}",samples[j].Data(),int(h1_bkg.at(j).at(0)->Integral())), kBlack);
 
-    h_sphericity_qq->SetLineWidth(2);
-    h_sphericity_radreturn->SetLineWidth(2);
-    h_sphericity_ww->SetLineWidth(2);
-    h_sphericity_zz->SetLineWidth(2);
-    h_sphericity_qqH->SetLineWidth(2);
-
-
-    if(normalised==true) {
-      h_sphericity_qq->DrawNormalized("histosame");
-      h_sphericity_ww->DrawNormalized("histosame");
-      h_sphericity_zz->DrawNormalized("histosame");
-      h_sphericity_qqH->DrawNormalized("histosame");
-      h_sphericity_radreturn->DrawNormalized("histosame");
-    } else {
-      h_sphericity_qq->Draw("histosame");
-      h_sphericity_ww->Draw("histosame");
-      h_sphericity_zz->Draw("histosame");
-      h_sphericity_qqH->Draw("histosame");
-      h_sphericity_radreturn->Draw("histosame");
+        Labels(k, ipol, lum, 0.7);
+      }
     }
-    Labels(i,pol);
-    leg2->Draw();
-  
-    }
+  }
+}
+
+void selection_plots()
+{
+
+  float lum = 900;
+  int pol = 3;
+  cout << "Events for Polarization " << pol << " (0=left, 1=right, 2=80left,30right, 3=80right,30left) and Lum=" << lum << endl;
+  for (int cuts = 3; cuts < 4; cuts++)
+  {
+    cout << cuts << " ";
+    plots(pol,cuts, 900);
   }
 }

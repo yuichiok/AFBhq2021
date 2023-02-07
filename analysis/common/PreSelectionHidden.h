@@ -1,14 +1,14 @@
-#include "variables_dedx.h"
+#include "variables_dedx_hidden.h"
 
 //  bbmass:  
-double bbmasscut=140;
+double bbmasscut=150;
 //  npfos:  
-double NPFOS_cut=1.;
+double NPFOS_cut=2.;
 // n charged_npfos:
 double CNPFOS_cut=1.0;
 // LOS LIMITES DEL CORTE en h_e_costheta_gamma:cuts in energy and angle of detected photons
 double costheta_isr=0.97;
-double energy_isr_cut=115;
+double energy_isr_cut=100;
 // cuts in y23
 double y23cut=0.0125;
 // ----------------------------------
@@ -190,8 +190,8 @@ bool PreSelection(int type=0,float Kvcut=25, float acolcut=0.3) {
   double bbmass= sqrt(pow(jet_E[0]+jet_E[1],2)-pow(jet_px[0]+jet_px[1],2)-pow(jet_py[0]+jet_py[1],2)-pow(jet_pz[0]+jet_pz[1],2));
 
   // KRECO CALCULATION
-   float Kv=Kreco();
-   float acol_value=AcolValue();
+  //float Kv=Kreco();
+  //float acol_value=AcolValue();
 
   //----------------------------------------------------------
   // IDENTIFICATION OF PFO's associated to photons, charged pfos, neutral pgos
@@ -219,8 +219,8 @@ bool PreSelection(int type=0,float Kvcut=25, float acolcut=0.3) {
    cut_[1]=( npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut);
    cut_[2]=( cut_[1] &&  fabs(photonjet_cos_max)<costheta_isr && photonjet_e_max<energy_isr_cut ) ;
    //cut_[3]=( cut_[2] && acol_value<acolcut );
-   cut_[3]=( cut_[2] && Kv < Kvcut);
-   cut_[4]=( cut_[3] && bbmass>bbmasscut );
+   //cut_[3]=( cut_[2] && Kv < Kvcut);
+   cut_[3]=( cut_[2] && bbmass>bbmasscut );
    //cut_[6]=( cut_[5] && d23>0.5 && d23/pow(bbmass,2)<y23cut );
    
    //cut_[7]=(cut_[6] && jet_btag[0]>btag1 && jet_btag[1]>btag2);
