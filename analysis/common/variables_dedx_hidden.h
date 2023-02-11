@@ -79,6 +79,10 @@ Float_t principle_thrust_value;
 Float_t principle_thrust_axis[3];
 Float_t sphericity;
 Float_t sphericity_tensor[3];
+Float_t fourjet_E[2];
+Float_t fourjet_px[2];
+Float_t fourjet_py[2];
+Float_t fourjet_pz[2];
 Int_t pfo_n;
 Int_t jet_nvtx;
 Int_t pfo_n_j1;
@@ -223,6 +227,10 @@ TBranch *b_principle_thrust_value;  //!
 TBranch *b_principle_thrust_axis;   //!
 TBranch *b_sphericity;              //!
 TBranch *b_sphericity_tensor;       //!
+TBranch *b_fourjet_E;                   //!
+TBranch *b_fourjet_px;                  //!
+TBranch *b_fourjet_py;                  //!
+TBranch *b_fourjet_pz;                  //!
 TBranch *b_pfo_n;                   //!
 TBranch *b_jet_nvtx;                //!
 TBranch *b_pfo_n_j1;                //!
@@ -369,6 +377,10 @@ void SetBranchAddressFunction(TTree *fChain)
   fChain->SetBranchAddress("principle_thrust_axis", principle_thrust_axis, &b_principle_thrust_axis);
   fChain->SetBranchAddress("sphericity", &sphericity, &b_sphericity);
   fChain->SetBranchAddress("sphericity_tensor", sphericity_tensor, &b_sphericity_tensor);
+  fChain->SetBranchAddress("fourjet_E", fourjet_E, &b_fourjet_E);
+  fChain->SetBranchAddress("fourjet_px", fourjet_px, &b_fourjet_px);
+  fChain->SetBranchAddress("fourjet_py", fourjet_py, &b_fourjet_py);
+  fChain->SetBranchAddress("fourjet_pz", fourjet_pz, &b_fourjet_pz);
   fChain->SetBranchAddress("pfo_n", &pfo_n, &b_pfo_n);
   fChain->SetBranchAddress("jet_nvtx", &jet_nvtx, &b_jet_nvtx);
   fChain->SetBranchAddress("pfo_n_j1", &pfo_n_j1, &b_pfo_n_j1);

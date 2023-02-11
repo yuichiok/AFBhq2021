@@ -36,6 +36,32 @@ std::vector< float > getAngles(std::vector< float > & direction) {
   return result;
 }
 
+std::vector< float > getAngles(std::vector< float > & direction,std::vector< float > & directionT) {
+  vector< float > result;
+
+  TLorentzVector v1(direction[0],direction[1],0,0);
+  TLorentzVector v2(directionT[0],directionT[1],0,0);
+     
+  float phi = v1.Angle(v2.Vect()); 
+  if(direction[1]<0 && direction[0]>0) phi=2*TMath::Pi() - phi;
+  if(direction[1]<0 && direction[0]<0) phi=2*TMath::Pi() - phi;
+    
+  if(direction[1]<0 && direction[0]==0) phi=3.*TMath::Pi()/2.;
+  if(direction[1]>0 && direction[0]==0) phi=TMath::Pi()/2.;
+  if(direction[1]==0 && direction[0]>0) phi=0;
+  if(direction[1]==0 && direction[0]<0) phi=TMath::Pi();
+
+
+  TLorentzVector v3(direction[0],0,direction[2],0);
+  TLorentzVector v4(directionT[0],0,directionT[2],0);
+  
+  float teta = v3.Angle(v4.Vect());
+
+  result.push_back(phi);
+  result.push_back(teta);
+  return result;
+}
+
 std::vector< float > CalculateAnglesMom(float px, float py, float pz) {
   std::vector<float> p;
   p.push_back(px);
@@ -57,6 +83,30 @@ std::vector< float > CalculateAngles(float px, float py, float pz) {
   return angles;
 }
    
+
+std::vector< float > GetAnglesThrust(std::vector<float> & vectorPoint, std::vector<float> & vectorT){
+  float costheta1 =  -2.0;
+  std::vector< float > d1= getDirection(vectorPoint);
+  std::vector< float > d2= getDirection(vectorT);
+
+  std::vector< float > result= getAngles(d1,d2);
+  return result;
+}
+
+float GetTheta(std::vector<float> & vectorPoint){
+  float costheta1 =  -2.0;
+  std::vector< float > d1= getDirection(vectorPoint);
+  //costheta1 =  std::cos( getAngles(d1).at(1) );
+  return getAngles(d1).at(1);
+}
+
+float GetPhi(std::vector<float> & vectorPoint){
+  float cosphi= -2.0;
+  std::vector<float> d1 = getDirection(vectorPoint);
+  //cosphi = std::cos(getAngles(d1).at(0));
+  return getAngles(d1).at(0);
+}
+
 float GetCostheta(std::vector<float> & vectorPoint){
   float costheta1 =  -2.0;
   std::vector< float > d1= getDirection(vectorPoint);
