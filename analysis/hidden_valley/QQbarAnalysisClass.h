@@ -43,6 +43,7 @@ public:
   virtual void Selection(int, int, float, int);
   virtual void TextQCDCorr(int, int, float);
   virtual std::vector<float> ChargedPFOThetaPhi(int);
+  //virtual std::vector<float> MW1_MW2();
 
 
   virtual Bool_t Notify();
