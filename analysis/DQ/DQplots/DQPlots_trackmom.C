@@ -15,7 +15,7 @@ void DQPlots_trackmom() {
   gStyle->SetMarkerSize(1.5);
   TGaxis::SetMaxDigits(3);
 
-  TString file="../DQ_250GeV_15162.root";
+  TString file="../DQ_250GeV_test.root";
 
   std::vector<TString> leg;
   leg.push_back("Pions");
