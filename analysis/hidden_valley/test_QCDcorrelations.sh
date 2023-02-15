@@ -17,7 +17,7 @@ do
         name=$counter
     fi
 
-    for cuts in 5
+    for cuts in 5 4 3 2 1 0
     do
 
 	cat > ${local}/steer/qcd_${process}_${pol}_${name}_cuts${cuts}.sh <<EOF

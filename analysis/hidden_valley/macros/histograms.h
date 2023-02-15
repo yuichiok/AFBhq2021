@@ -117,12 +117,12 @@ std::vector<TH1F *> GetHisto1D(TString sample = "2f_hadronic_sample", int ipol =
     if (sample == "radreturn")
     {
       filename = folder + "_" + "2f_hadronic_sample_" + pol[i] + ".root";
-      ibkg = 1;
+      //ibkg = 1;
     }
     if (sample == "qq")
     {
       filename = folder + "_" + "2f_hadronic_sample_" + pol[i] + ".root";
-      ibkg = 1;
+      //ibkg = 1;
     }
 
     TFile *f = new TFile(filename);
@@ -202,7 +202,7 @@ std::vector<TH1F *> GetHisto1D_2(TString sample = "qq_radreturn", int ipol = 0, 
   return h1_pol[2];
 }
 
-std::vector<TH2F *> GetHisto2D(TString sample = "2f_hadronic_sample", int ipol = 0, int ibkg = 0, float lum = 900, std::vector<TString> histonames={"h_major_minor_thrust","h_costheta_energy","h_npfos"}) 
+std::vector<TH2F *> GetHisto2D(TString sample = "2f_hadronic_sample", int ipol = 0, int ibkg = 0, float lum = 900, std::vector<TString> histonames={"h_npfos","h_costheta_energy","h_mw1_mw2"}) 
 {
 
   TString pol[2] = {"eL_pR", "eR_pL"};

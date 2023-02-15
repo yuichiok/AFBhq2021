@@ -48,7 +48,10 @@ void plotsN(int ipol = 2, int cuts = 0, float lum = 900)
 
   for (int isample = 0; isample < 4; isample++)
   {
-    std::vector<TH1F *> h1_bkg_temp = GetHisto1D_2(samples[isample], ipol, isample + 2, lum,{"h_costheta_cuts","ncharged","mom"});
+    int sample_index=isample;
+    if(isample==0) sample_index=1;
+    if(isample>0) sample_index=isample + 2;
+    std::vector<TH1F *> h1_bkg_temp = GetHisto1D_2(samples[isample], ipol, sample_index, lum,{"h_costheta_cuts","ncharged","mom"});
     h1_bkg.push_back(h1_bkg_temp);
   }
 
@@ -117,9 +120,9 @@ void plotsC2(int ipol = 2, int cuts = 0, float lum = 900)
   }
 
   for(int i=0; i<h2_bkg.size(); i++) {
-    h2_bkg.at(i).at(0)->Rebin2D(50);
-    h2_bkg.at(i).at(1)->Rebin2D(50);
-    h2_bkg.at(i).at(2)->Rebin2D(50);
+    h2_bkg.at(i).at(0)->Rebin2D(5);
+    h2_bkg.at(i).at(1)->Rebin2D(5);
+    h2_bkg.at(i).at(2)->Rebin2D(5);
 
     h2_bkg.at(i).at(2)->Divide(h2_bkg.at(i).at(1));
 
@@ -147,8 +150,8 @@ void plotsC2(int ipol = 2, int cuts = 0, float lum = 900)
   {
 
     gStyle->SetPadRightMargin(0.2);
-    TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 2400, 800);
-    canvas1->Divide(3, 2);
+    TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 1600, 800);
+    canvas1->Divide(2, 2);
 
     for (int j = 0; j < h2_bkg.size(); j++)
     {
@@ -177,7 +180,7 @@ void C2()
   float lum = 900;
   int pol = 2;
   cout << "Events for Polarization " << pol << " (0=left, 1=right, 2=80left,30right, 3=80right,30left) and Lum=" << lum << endl;
-  int cuts = 4;
+  int cuts = 5;
   folder = TString::Format("../results/QCDcorrelations_cuts%i", cuts);
   cout << cuts << " ";
   plotsC2(pol,cuts, 900);

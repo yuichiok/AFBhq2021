@@ -49,13 +49,13 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
       "T-minor"};
 
     TString histo2d_titles_x[3] = {
-      "T-major",
-      "cos #theta (photon-candidate)",
-      " # pfos j_{1}"};
+      "# pfos j_{1}",
+      "|cos #theta| most energetic #gamma_{cand}",
+      "m_{W}^{cand.1} [GeV]"};
     TString histo2d_titles_y[3] = {
-      "T-minor",
-      "E (photon candidate) [GeV] ",
-      "# pfos j_{2}"};
+      "# pfos j_{2}",
+      "E most energetic #gamma_{cand} [GeV]",
+      "m_{W}^{cand.2} [GeV]"};
 
 
   std::vector<std::vector<TH1F *>> h1_bkg;
@@ -63,9 +63,13 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
 
   for (int isample = 0; isample < 5; isample++)
   {
-    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], ipol, isample + 1, lum);
+
+    int sample_index=isample;
+    if(isample<1) sample_index=1;
+    if(isample>1) sample_index=isample + 1;
+    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], ipol, sample_index, lum);
     h1_bkg.push_back(h1_bkg_temp);
-    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples[isample], ipol, isample + 1, lum);
+    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples[isample], ipol, sample_index, lum);
     h2_bkg.push_back(h2_bkg_temp);
   }
 
@@ -117,10 +121,11 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
     leg->Draw();
   }
 
-  if (cuts == 3)
+  
+  if (cuts == 0)
   {
 
-    for (int k = 0; k < 1; k++)
+    for (int k = 0; k < 2; k++)
     {
 
       gStyle->SetPadRightMargin(0.2);
@@ -133,7 +138,29 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
         h2_bkg.at(j).at(k)->GetXaxis()->SetTitle(histo2d_titles_x[k]);
         h2_bkg.at(j).at(k)->GetYaxis()->SetTitle(histo2d_titles_y[k]);
         h2_bkg.at(j).at(k)->Draw("colz");
-        QQBARLabel2(0.2, 0.7, TString::Format("#font[42]{%s, aaN_{total}=%i}",samples[j].Data(),int(h1_bkg.at(j).at(0)->Integral())), kBlack);
+        QQBARLabel2(0.2, 0.85, TString::Format("#font[42]{%s, N_{total}=%i}",samples[j].Data(),int(h1_bkg.at(j).at(1)->Integral())), kRed);
+
+        Labels(k, ipol, lum, 0.7);
+      }
+    }
+  }
+  if (cuts == 4)
+  {
+
+    for (int k = 2; k < 3; k++)
+    {
+
+      gStyle->SetPadRightMargin(0.2);
+      TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 2400, 800);
+      canvas1->Divide(3, 2);
+
+      for (int j = 0; j < h2_bkg.size(); j++)
+      {
+        canvas1->cd(j + 1);
+        h2_bkg.at(j).at(k)->GetXaxis()->SetTitle(histo2d_titles_x[k]);
+        h2_bkg.at(j).at(k)->GetYaxis()->SetTitle(histo2d_titles_y[k]);
+        h2_bkg.at(j).at(k)->Draw("colz");
+        QQBARLabel2(0.2, 0.85, TString::Format("#font[42]{%s, N_{total}=%i}",samples[j].Data(),int(h1_bkg.at(j).at(1)->Integral())), kRed);
 
         Labels(k, ipol, lum, 0.7);
       }
@@ -147,7 +174,7 @@ void selection_plots()
   float lum = 900;
   int pol = 2;
   cout << "Events for Polarization " << pol << " (0=left, 1=right, 2=80left,30right, 3=80right,30left) and Lum=" << lum << endl;
-  for (int cuts = 4; cuts < 5; cuts++)
+  for (int cuts = 5; cuts < 6; cuts++)
   {
     cout << cuts << " ";
     plots(pol,cuts, 900);
