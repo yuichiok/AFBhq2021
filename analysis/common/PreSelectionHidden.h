@@ -13,7 +13,7 @@ double energy_isr_cut = 100;
 double y23cut = 0.0125;
 
 // cuts in Thrust
-double thrust_cut = 0.7;
+double thrust_cut = 0.8;
 // ----------------------------------
 
 // flavour tagging
@@ -22,6 +22,52 @@ float btag2 = 0.85;
 
 float ctag1 = 0.875;
 float ctag2 = 0.875;
+
+
+std::vector<float> MW1_MW2()
+{
+
+  std::vector<float> result;
+  float mw=80.4;
+  
+  int i1=0, i2=1; 
+  float mw1= sqrt(pow(fourjet_E[i1] + fourjet_E[i2], 2) - pow(fourjet_px[i1] + fourjet_px[i2], 2) - pow(fourjet_py[i1] + fourjet_py[i2], 2) - pow(fourjet_pz[i1] + fourjet_pz[i2], 2));
+  i1=2; i2=3;
+  float mw2= sqrt(pow(fourjet_E[i1] + fourjet_E[i2], 2) - pow(fourjet_px[i1] + fourjet_px[i2], 2) - pow(fourjet_py[i1] + fourjet_py[i2], 2) - pow(fourjet_pz[i1] + fourjet_pz[i2], 2));
+  float chi2= sqrt(pow(mw1-mw,2))/mw + sqrt(pow(mw2-mw,2))/mw;
+
+  i1=0; i2=2; 
+  float mw1_2= sqrt(pow(fourjet_E[i1] + fourjet_E[i2], 2) - pow(fourjet_px[i1] + fourjet_px[i2], 2) - pow(fourjet_py[i1] + fourjet_py[i2], 2) - pow(fourjet_pz[i1] + fourjet_pz[i2], 2));
+  i1=1; i2=3;
+  float mw2_2= sqrt(pow(fourjet_E[i1] + fourjet_E[i2], 2) - pow(fourjet_px[i1] + fourjet_px[i2], 2) - pow(fourjet_py[i1] + fourjet_py[i2], 2) - pow(fourjet_pz[i1] + fourjet_pz[i2], 2));
+  float chi2_2= sqrt(pow(mw1_2-mw,2))/mw + sqrt(pow(mw2_2-mw,2))/mw;
+
+  i1=0; i2=3; 
+  float mw1_3= sqrt(pow(fourjet_E[i1] + fourjet_E[i2], 2) - pow(fourjet_px[i1] + fourjet_px[i2], 2) - pow(fourjet_py[i1] + fourjet_py[i2], 2) - pow(fourjet_pz[i1] + fourjet_pz[i2], 2));
+  i1=1; i2=2;
+  float mw2_3= sqrt(pow(fourjet_E[i1] + fourjet_E[i2], 2) - pow(fourjet_px[i1] + fourjet_px[i2], 2) - pow(fourjet_py[i1] + fourjet_py[i2], 2) - pow(fourjet_pz[i1] + fourjet_pz[i2], 2));
+  float chi2_3= sqrt(pow(mw1_3-mw,2))/mw + sqrt(pow(mw2_3-mw,2))/mw;
+
+  if(chi2_2 < chi2) {
+    if(chi2_3<chi2_2) {
+      result.push_back(mw1_3);
+      result.push_back(mw2_3);
+    } else {
+      result.push_back(mw1_2);
+      result.push_back(mw2_2);
+    }
+  } else {
+    if(chi2_3<chi2) {
+      result.push_back(mw1_3);
+      result.push_back(mw2_3);
+    } else {
+      result.push_back(mw1);
+      result.push_back(mw2);
+    }
+  }
+  return result;
+
+}
 
 // K-reco
 float Kreco()
@@ -242,7 +288,10 @@ bool PreSelection(int type = 0, float Kvcut = 25, float acolcut = 0.3)
   // cut_[3]=( cut_[2] && Kv < Kvcut);
   cut_[3] = (cut_[2] && bbmass > bbmasscut);
   cut_[4] = (cut_[3] && principle_thrust_value < thrust_cut);
-  cut_[5] = (cut_[3] && principle_thrust_value < 0.8);
+  std::vector<float> mw1mw2=MW1_MW2();
+  float mw1=mw1mw2.at(0);
+  float mw2=mw1mw2.at(1);
+  cut_[5] = (cut_[4] && sqrt( pow(mw1-80.4,2) + pow(mw2-80.4,2) )>15 && sqrt( pow(mw1-91,2) + pow(mw2-91,2) )>15 );
 
   // cut_[6]=( cut_[5] && d23>0.5 && d23/pow(bbmass,2)<y23cut );
 
