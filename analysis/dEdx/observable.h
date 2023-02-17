@@ -47,7 +47,8 @@ public :
   virtual Long64_t LoadTree(Long64_t entry);
   virtual void     Init(TTree *tree);
 
-  virtual void     dEdx(int n, TString, bool, bool, float, float, int);
+  virtual void     dEdx(int n, TString, bool, bool, float, float, int,int);
+  virtual void     dEdxDist(int n, TString, float);
    
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);

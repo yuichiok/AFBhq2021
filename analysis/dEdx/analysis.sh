@@ -1,6 +1,6 @@
 process=$1
 pol=$2
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2020/"${process}"_"${pol}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2023-test/"${process}"_"${pol}"/"
 local=$PWD
 counter=0
 
@@ -16,9 +16,9 @@ do
         name=$counter
     fi
 
-    for quark in 5
+    for quark in 4 5
     do
-	for cut_p in 0
+	for cut_p in 0 3
 	do
 	    #0 2 3
 	    for cut_theta in 0 

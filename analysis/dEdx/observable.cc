@@ -6,7 +6,7 @@
 #include "observable.h"
 #include "TPad.h"
 
-void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false, bool ignoreoverlay=true,float momentum_min=3, float costheta_max=0.8, int pdg=4) {
+void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false, bool ignoreoverlay=true,float momentum_min=3, float costheta_max=0.8, int pdg=4, int cheattype=0) {
 
   //  1.,1.33,1.667
   //  Float_t bins_p[]={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2,2.5,3,4,5,6,7,8,9,10,12,14,16,18,20,24,28,32,36,40,44,48,52,56,60,64,68,72,80,90,100};
@@ -292,8 +292,11 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
       if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
       if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
 
-      if(pfo_piddedx_k_dedxdist[ipfo]==0) continue;
       float dedx_k_dist_gauss=pfo_piddedx_k_dedxdist[ipfo];
+      if(cheattype==1) dedx_k_dist_gauss=pfo_piddedx_k_dedxdist_improved_1[ipfo];
+      if(cheattype==2) dedx_k_dist_gauss=pfo_piddedx_k_dedxdist_improved_2[ipfo];
+      if(dedx_k_dist_gauss==0 || dedx_k_dist_gauss<-1000) continue;
+
       //TMath::Sqrt(TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]))*pfo_piddedx_k_dedxdist[ipfo]/TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]);
       if( pfo_ntracks[ipfo]==1 && nhits_bool==true) {      
 	      
@@ -625,6 +628,9 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   TString fname="all_tracks";
   if(secondary==true) fname = "secondary_tracks";
   if(ignoreoverlay==true) fname += "_ignoreoverlay";
+  if(cheattype==1) fname += "_improved_1";
+  if(cheattype==2) fname += "_improved_2";
+
   if(costheta_max>0.) {
     if(pdg==4) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_cquark.root",fname.Data(),process.Data());
     if(pdg==5) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_bquark.root",fname.Data(),process.Data());
@@ -824,6 +830,137 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   costheta_kdEdx_dist_others->Write();
 
   n_costheta_kaon->Write();
+
+  MyFile->Close();
+  
+  
+}
+
+void observable::dEdxDist(int n_entries=-1, TString process="", float momentum_min=3) {
+
+   //
+  TH2F* costheta_kdEdx_dist_kaon = new TH2F("costheta_kdEdx_dist_kaon","costheta_kdEdx_dist_kaon",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_proton = new TH2F("costheta_kdEdx_dist_proton","costheta_kdEdx_dist_proton",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_pion = new TH2F("costheta_kdEdx_dist_pion","costheta_kdEdx_dist_pion",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_electron = new TH2F("costheta_kdEdx_dist_electron","costheta_kdEdx_dist_electron",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_muon = new TH2F("costheta_kdEdx_dist_muon","costheta_kdEdx_dist_muon",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_others = new TH2F("costheta_kdEdx_dist_others","costheta_kdEdx_dist_others",10,0,1,1000,-30,30);
+
+  TH2F* costheta_kdEdx_dist_kaon_1 = new TH2F("costheta_kdEdx_dist_kaon_1","costheta_kdEdx_dist_kaon_1",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_proton_1 = new TH2F("costheta_kdEdx_dist_proton_1","costheta_kdEdx_dist_proton_1",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_pion_1 = new TH2F("costheta_kdEdx_dist_pion_1","costheta_kdEdx_dist_pion_1",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_electron_1 = new TH2F("costheta_kdEdx_dist_electron_1","costheta_kdEdx_dist_electron_1",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_muon_1 = new TH2F("costheta_kdEdx_dist_muon_1","costheta_kdEdx_dist_muon_1",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_others_1 = new TH2F("costheta_kdEdx_dist_others_1","costheta_kdEdx_dist_others_1",10,0,1,1000,-30,30);
+
+  TH2F* costheta_kdEdx_dist_kaon_2 = new TH2F("costheta_kdEdx_dist_kaon_2","costheta_kdEdx_dist_kaon_2",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_proton_2 = new TH2F("costheta_kdEdx_dist_proton_2","costheta_kdEdx_dist_proton_2",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_pion_2 = new TH2F("costheta_kdEdx_dist_pion_2","costheta_kdEdx_dist_pion_2",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_electron_2 = new TH2F("costheta_kdEdx_dist_electron_2","costheta_kdEdx_dist_electron_2",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_muon_2 = new TH2F("costheta_kdEdx_dist_muon_2","costheta_kdEdx_dist_muon_2",10,0,1,1000,-30,30);
+  TH2F* costheta_kdEdx_dist_others_2 = new TH2F("costheta_kdEdx_dist_others_2","costheta_kdEdx_dist_others_2",10,0,1,1000,-30,30);
+
+  Long64_t nentries;
+  if(n_entries>0) nentries= n_entries;
+  else nentries= fChain->GetEntriesFast();
+  std::cout<<nentries<<std::endl;
+  Long64_t nbytes = 0, nb = 0;
+
+  float njetstotal=0;
+  float nvtxtotal=0;
+
+  for (Long64_t jentry=0; jentry<nentries;jentry++) {
+    Long64_t ientry = LoadTree(jentry);
+    if (ientry < 0) break;
+    nb = fChain->GetEntry(jentry);   nbytes += nb;
+
+    if ( jentry > 100000 && jentry % 100000 ==0 ) std::cout << "Progress: " << 100.*jentry/nentries <<" %"<<endl;
+	
+	  for(int ipfo=0; ipfo<pfo_n; ipfo++) {
+
+      float momentum = sqrt (pow(pfo_px[ipfo],2) +pow(pfo_py[ipfo],2) +pow(pfo_pz[ipfo],2) );
+        
+      if(momentum < momentum_min) continue;
+      if(pfo_vtx[ipfo]<1) continue;
+      if(pfo_isoverlay[ipfo]==1) continue;
+      if( pfo_ntracks[ipfo]!=1) continue;
+
+      float costheta;
+      std::vector<float> p_track;
+      p_track.push_back(pfo_px[ipfo]);
+      p_track.push_back(pfo_py[ipfo]);
+      p_track.push_back(pfo_pz[ipfo]);
+      costheta=GetCostheta(p_track);
+
+      bool nhits_bool=false;
+      if(fabs(costheta)<0.75 && pfo_tpc_hits[ipfo]>210) nhits_bool=true;
+      if(fabs(costheta)>0.75 && pfo_tpc_hits[ipfo]> (210 + (210-50)*(fabs(costheta)-0.75)/(0.75-0.9)) ) nhits_bool=true;
+      if(fabs(costheta)>0.9 && pfo_tpc_hits[ipfo]>50) nhits_bool=true;
+
+      float dedx_k_dist_gauss=pfo_piddedx_k_dedxdist[ipfo];
+      //TMath::Sqrt(TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]))*pfo_piddedx_k_dedxdist[ipfo]/TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]);
+      if( dedx_k_dist_gauss!=0 && pfo_ntracks[ipfo]==1 && nhits_bool==true) {      
+	      
+        if( fabs(pfo_pdgcheat[ipfo])==321 )  costheta_kdEdx_dist_kaon->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==211 )  costheta_kdEdx_dist_pion->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==2212 )  costheta_kdEdx_dist_proton->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==11 )  costheta_kdEdx_dist_electron->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==13 )  costheta_kdEdx_dist_muon->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else  costheta_kdEdx_dist_others->Fill(fabs(costheta),dedx_k_dist_gauss);
+      }
+
+      dedx_k_dist_gauss=pfo_piddedx_k_dedxdist_improved_1[ipfo];
+      //TMath::Sqrt(TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]))*pfo_piddedx_k_dedxdist[ipfo]/TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]);
+      if( dedx_k_dist_gauss!=0 && pfo_ntracks[ipfo]==1 && nhits_bool==true) {      
+	      
+        if( fabs(pfo_pdgcheat[ipfo])==321 )  costheta_kdEdx_dist_kaon_1->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==211 )  costheta_kdEdx_dist_pion_1->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==2212 )  costheta_kdEdx_dist_proton_1->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==11 )  costheta_kdEdx_dist_electron_1->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==13 )  costheta_kdEdx_dist_muon_1->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else  costheta_kdEdx_dist_others_1->Fill(fabs(costheta),dedx_k_dist_gauss);
+      }
+      
+      dedx_k_dist_gauss=pfo_piddedx_k_dedxdist_improved_2[ipfo];
+      //TMath::Sqrt(TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]))*pfo_piddedx_k_dedxdist[ipfo]/TMath::Abs(pfo_piddedx_k_dedxdist[ipfo]);
+      if( dedx_k_dist_gauss!=0 && pfo_ntracks[ipfo]==1 && nhits_bool==true) {      
+	      
+        if( fabs(pfo_pdgcheat[ipfo])==321 )  costheta_kdEdx_dist_kaon_2->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==211 )  costheta_kdEdx_dist_pion_2->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==2212 )  costheta_kdEdx_dist_proton_2->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==11 )  costheta_kdEdx_dist_electron_2->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else if( fabs(pfo_pdgcheat[ipfo])==13 )  costheta_kdEdx_dist_muon_2->Fill(fabs(costheta),dedx_k_dist_gauss);
+        else  costheta_kdEdx_dist_others_2->Fill(fabs(costheta),dedx_k_dist_gauss);
+      }
+    }
+  }
+
+  TString fname= TString::Format("output/dEdxdist_%s_cutP_%i.root",process.Data(),int(momentum_min));
+  
+  TFile *MyFile = new TFile(fname,"RECREATE");
+  MyFile->cd();
+
+  costheta_kdEdx_dist_kaon->Write();
+  costheta_kdEdx_dist_proton->Write();
+  costheta_kdEdx_dist_pion->Write();
+  costheta_kdEdx_dist_electron->Write();
+  costheta_kdEdx_dist_muon->Write();
+  costheta_kdEdx_dist_others->Write();
+
+  costheta_kdEdx_dist_kaon_1->Write();
+  costheta_kdEdx_dist_proton_1->Write();
+  costheta_kdEdx_dist_pion_1->Write();
+  costheta_kdEdx_dist_electron_1->Write();
+  costheta_kdEdx_dist_muon_1->Write();
+  costheta_kdEdx_dist_others_1->Write();
+
+  costheta_kdEdx_dist_kaon_2->Write();
+  costheta_kdEdx_dist_proton_2->Write();
+  costheta_kdEdx_dist_pion_2->Write();
+  costheta_kdEdx_dist_electron_2->Write();
+  costheta_kdEdx_dist_muon_2->Write();
+  costheta_kdEdx_dist_others_2->Write();
+
 
   MyFile->Close();
   

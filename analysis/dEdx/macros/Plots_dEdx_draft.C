@@ -99,7 +99,7 @@ void NHits() {
   
   TString squark="udscbquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_0GeV.root";
+  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
   TFile *f = new TFile(filename);
   cout<<filename<<endl;
 
@@ -145,7 +145,7 @@ void Mom(int quarkid=4) {
   if(iquark==3) squark="udsquark";
   if(iquark==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_0GeV.root";
+  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
   TFile *f = new TFile(filename);
   cout<<filename<<endl;
 
@@ -154,7 +154,7 @@ void Mom(int quarkid=4) {
   TH1F*  p_proton = (TH1F*)f->Get("p_proton");
   TH1F*  p_kaontest = (TH1F*)f->Get("kdEdx_dist_kaon");
 
-  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_0GeV.root";
+  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
   TFile *f2 = new TFile(filename2);
   TH1F*  p_kaon2 = (TH1F*)f2->Get("p_kaon");
   TH1F*  p_pion2 = (TH1F*)f2->Get("p_pion");
@@ -253,7 +253,7 @@ void Costheta(int quarkid=4) {
   if(iquark==3) squark="udsquark";
   if(iquark==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_0GeV.root";
+  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
   TFile *f = new TFile(filename);
   cout<<filename<<endl;
 
@@ -262,7 +262,7 @@ void Costheta(int quarkid=4) {
   TH1F*  costheta_proton = (TH1F*)f->Get("costheta_proton");
   TH1F*  costheta_kaontest = (TH1F*)f->Get("kdEdx_dist_kaon");
 
-  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_0GeV.root";
+  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
   TFile *f2 = new TFile(filename2);
   TH1F*  costheta_kaon2 = (TH1F*)f2->Get("costheta_kaon");
   TH1F*  costheta_pion2 = (TH1F*)f2->Get("costheta_pion");
@@ -559,14 +559,14 @@ void Ntracks() {
     if(quarkid==4) squark="cquark";
     if(quarkid==5) squark="bquark";
     
-    TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_0GeV.root";
+    TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
     TFile *f = new TFile(filename);
     cout<<filename<<endl;
     n_sectracks_eL[quarkid-3] = (TH1F*)f->Get("n_secvtx");
     if(quarkid==3) test = (TH1F*)f->Get("kdEdx_dist_proton");
     // n_sectracks_eL[quarkid-3]->Scale( n_sectracks_eL[0]->Integral()/ n_sectracks_eL[quarkid-3]->Integral());
 
-    filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_0GeV.root";
+    filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
     TFile *f2 = new TFile(filename);
     n_sectracks_eR[quarkid-3] = (TH1F*)f2->Get("n_secvtx");
     // n_sectracks_eR[quarkid-3]->Scale( n_sectracks_eR[0]->Integral()/ n_sectracks_eR[quarkid-3]->Integral());
@@ -670,14 +670,14 @@ void Ntracks2() {
     if(quarkid==4) squark="cquark";
     if(quarkid==5) squark="bquark";
     
-    TString filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_eL_pR_0GeV.root";
+    TString filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_sample_eL_pR_0GeV.root";
     TFile *f = new TFile(filename);
     cout<<filename<<endl;
     n_sectracks_eL[quarkid-3] = (TH1F*)f->Get("n_sectracks_vtx");
     if(quarkid==3) test = (TH1F*)f->Get("kdEdx_dist_proton");
 
 
-    filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_eR_pL_0GeV.root";
+    filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_sample_eR_pL_0GeV.root";
     TFile *f2 = new TFile(filename);
     n_sectracks_eR[quarkid-3] = (TH1F*)f2->Get("n_sectracks_vtx");
  
@@ -781,7 +781,7 @@ void dEdxdist(int quarkid=3) {
   if(quarkid==4) squark="cquark";
   if(quarkid==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_0GeV.root";
+  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
 
   TFile *f = new TFile(filename);
 
@@ -790,8 +790,8 @@ void dEdxdist(int quarkid=3) {
   TH1F*  kdEdx_dist_proton = (TH1F*)f->Get("kdEdx_dist_proton");
   TH1F*  test = (TH1F*)f->Get("n_sectracks");
 
-  // TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_3GeV_costheta_lt0.8.root";
-  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_3GeV.root";
+  // TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV_costheta_lt0.8.root";
+  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_improved_1_2f_hadronic_sample_eL_pR_3GeV.root";
 
 
   TFile *f2 = new TFile(filename2);
@@ -893,7 +893,7 @@ void dEdxdistProjection(int quarkid=3) {
   if(quarkid==4) squark="cquark";
   if(quarkid==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_0GeV.root";
+  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
 
   TFile *f = new TFile(filename);
   TH2F*  p_kdEdx_dist_kaon = (TH2F*)f->Get("p_kdEdx_dist_kaon");
@@ -901,7 +901,7 @@ void dEdxdistProjection(int quarkid=3) {
   TH2F*  p_kdEdx_dist_proton = (TH2F*)f->Get("p_kdEdx_dist_proton");
   TH2F*  test = (TH2F*)f->Get("n_sectracks");
 
-  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_3GeV.root";
+  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
 
   TFile *f2 = new TFile(filename2);
 
@@ -1061,7 +1061,7 @@ void dEdxdistProjection2(int quarkid=3) {
   if(quarkid==4) squark="cquark";
   if(quarkid==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_0GeV.root";
+  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
 
   TFile *f = new TFile(filename);
   TH2F*  costheta_kdEdx_dist_kaon = (TH2F*)f->Get("costheta_kdEdx_dist_kaon");
@@ -1069,7 +1069,7 @@ void dEdxdistProjection2(int quarkid=3) {
   TH2F*  costheta_kdEdx_dist_proton = (TH2F*)f->Get("costheta_kdEdx_dist_proton");
   TH2F*  test = (TH2F*)f->Get("n_sectracks");
 
-  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_3GeV.root";
+  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
 
   TFile *f2 = new TFile(filename2);
 
@@ -1230,7 +1230,7 @@ void EffPurity_angle(int quarkid) {
   if(quarkid==5) squark="bquark";
 
  
-  TString filename =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_0GeV.root";
+  TString filename =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
 
   TFile *f = new TFile(filename);
   TH2F*  kdEdxdist_kaon = (TH2F*)f->Get("costheta_kdEdx_dist_kaon");
@@ -1268,7 +1268,7 @@ void EffPurity_angle(int quarkid) {
   TGraph* purity = new TGraph(n,x,pur);
   TGraph* efficiency_purity = new TGraph(n,eff,pur);
   
-TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_3GeV.root";
+TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
 
   TFile *f2 = new TFile(filename2);
   TH2F*  kdEdxdist_kaon2 = (TH2F*)f2->Get("costheta_kdEdx_dist_kaon");
@@ -1388,7 +1388,7 @@ void EffPurity_momentum(int quarkid=4) {
   if(quarkid==5) squark="bquark";
 
  
-  TString filename =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_0GeV.root";
+  TString filename =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
 
   TFile *f = new TFile(filename);
   TH2F*  kdEdxdist_kaon = (TH2F*)f->Get("p_kdEdx_dist_kaon");
@@ -1426,7 +1426,7 @@ void EffPurity_momentum(int quarkid=4) {
   TGraph* efficiency_purity = new TGraph(n,eff,pur);
   
   // //-----------------------
-  // filename =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_3GeV.root";
+  // filename =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
 
   // f = new TFile(filename);
   // kdEdxdist_kaon = (TH2F*)f->Get("p_kdEdx_dist_kaon");
@@ -1543,7 +1543,7 @@ void EffPurity_dedxdist(int quarkid) {
   if(quarkid==5) squark="bquark";
 
   
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eL_pR_0GeV.root";
+  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
   TFile *f = new TFile(filename);
   TH1F*  p_kaon = (TH1F*)f->Get("p_kaon");
   TH1F*  kdEdxdist_kaon = (TH1F*)f->Get("kdEdx_dist_kaon");
@@ -1573,7 +1573,7 @@ void EffPurity_dedxdist(int quarkid) {
   TGraph* efficiency_purity = new TGraph(n,eff,pur);
 
   //----------
-  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_eR_pL_3GeV.root";
+  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
   TFile *f2 = new TFile(filename2);
   TH1F*  p_kaon2 = (TH1F*)f2->Get("p_kaon");
   TH1F*  kdEdxdist_kaon2 = (TH1F*)f2->Get("kdEdx_dist_kaon");
@@ -1662,9 +1662,9 @@ void Plots_dEdx_draft() {
   Ntracks();*/
   //Ntracks2();
 
-  for(int i=4; i<6; i++)  dEdxdist(i);
-  for(int i=4; i<6; i++)  dEdxdistProjection(i);
-  for(int i=4; i<6; i++)  dEdxdistProjection2(i);
+  for(int i=4; i<5; i++)  dEdxdist(i);
+  //for(int i=4; i<6; i++)  dEdxdistProjection(i);
+  //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 
   /* NHits();
   for(int i=4; i<6; i++) EffPurity_momentum(i);
