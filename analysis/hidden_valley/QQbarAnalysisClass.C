@@ -517,13 +517,14 @@ std::vector<float> QQbarAnalysisClass::ChargedPFOThetaPhi(int ipfo, std::vector<
   pfo_vec_0.push_back(pfo_pz[ipfo]);
 
   std::vector<float> pfo_vec;
-  pfo_vec.push_back(ProjectionVector(pfo_vec_0,Tprinc));
-  pfo_vec.push_back(ProjectionVector(pfo_vec_0,Tmajor));
   pfo_vec.push_back(ProjectionVector(pfo_vec_0,Tminor));
+  pfo_vec.push_back(ProjectionVector(pfo_vec_0,Tmajor));
+  pfo_vec.push_back(ProjectionVector(pfo_vec_0,Tprinc));
   // std::vector<float> angles = GetAnglesThrust(pfo_vec, vectorT);
   // for the moment, we use the Lab frame
   float theta = GetCostheta(pfo_vec);
-  float eta = 0.5 * log ( (pfo_E[ipfo] + pfo_vec.at(2) ) / (pfo_E[ipfo] - pfo_vec.at(2) ) );
+  float mom= sqrt(pow(pfo_vec.at(0),2)+pow(pfo_vec.at(1),2)+pow(pfo_vec.at(2),2));
+  float eta = 0.5 * log ( (mom + pfo_vec.at(2) ) / (mom- pfo_vec.at(2) ) );
   float phi = GetPhi(pfo_vec);
 
   result.push_back(theta);
@@ -550,13 +551,15 @@ std::vector<float> QQbarAnalysisClass::ChargedMCThetaPhi(int ipfo, std::vector<f
   mc_stable_vec_0.push_back(mc_stable_pz[ipfo]);
 
   std::vector<float> mc_stable_vec;
-  mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0,Tprinc));
-  mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0,Tmajor));
   mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0,Tminor));
+  mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0,Tmajor));
+  mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0,Tprinc));
+  
   // std::vector<float> angles = GetAnglesThrust(mc_stable_vec, vectorT);
   // for the moment, we use the Lab frame
   float theta = GetCostheta(mc_stable_vec);
-  float eta = 0.5 * log ( (mc_stable_E[ipfo] + mc_stable_vec.at(2) ) / (mc_stable_E[ipfo] - mc_stable_vec.at(2) ) );
+  float mom= sqrt(pow(mc_stable_vec.at(0),2)+pow(mc_stable_vec.at(1),2)+pow(mc_stable_vec.at(2),2));
+  float eta = 0.5 * log ( (mom + mc_stable_vec.at(2) ) / (mom- mc_stable_vec.at(2) ) );
   float phi = GetPhi(mc_stable_vec);
 
   result.push_back(theta);
