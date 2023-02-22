@@ -272,8 +272,8 @@ std::vector<TH2F *> GetHisto2D_2(TString sample = "qq_radreturn", int ipol = 0, 
     TH1F *h_luminosity_cross_2f = (TH1F *)f->Get("h_costheta_nocuts");
     TH2F * htemp[20];
     for(int j=0; j<histonames.size(); j++) {
-    htemp[j]= (TH2F *)f->Get(histonames.at(j));
-    h1_pol[i].push_back(htemp[j]);
+      htemp[j]= (TH2F *)f->Get(histonames.at(j));
+      h1_pol[i].push_back(htemp[j]);
     }
 
     float luminosity_sample = h_luminosity_cross_2f->GetEntries() / cross_section[i][ibkg];
