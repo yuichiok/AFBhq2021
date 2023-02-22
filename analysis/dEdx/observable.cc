@@ -632,10 +632,10 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
   if(cheattype==2) fname += "_improved_2";
 
   if(costheta_max>0.) {
-    if(pdg==4) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_cquark.root",fname.Data(),process.Data());
-    if(pdg==5) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_bquark.root",fname.Data(),process.Data());
-    if(pdg==3) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_udsquark.root",fname.Data(),process.Data());
-    if(pdg==0) fname = TString::Format("output/output_250_%s_%s_coshteta_lt0.8_udscbquark.root",fname.Data(),process.Data());
+    if(pdg==4) fname = TString::Format("output/output_250_%s_%s_costheta_lt0.8_cquark.root",fname.Data(),process.Data());
+    if(pdg==5) fname = TString::Format("output/output_250_%s_%s_costheta_lt0.8_bquark.root",fname.Data(),process.Data());
+    if(pdg==3) fname = TString::Format("output/output_250_%s_%s_costheta_lt0.8_udsquark.root",fname.Data(),process.Data());
+    if(pdg==0) fname = TString::Format("output/output_250_%s_%s_costheta_lt0.8_udscbquark.root",fname.Data(),process.Data());
   } else {
     if(pdg==4) fname = TString::Format("output/output_250_%s_%s_cquark.root",fname.Data(),process.Data());
     if(pdg==5) fname = TString::Format("output/output_250_%s_%s_bquark.root",fname.Data(),process.Data());

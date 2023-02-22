@@ -791,7 +791,7 @@ void dEdxdist(int quarkid=3) {
   TH1F*  test = (TH1F*)f->Get("n_sectracks");
 
   // TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV_costheta_lt0.8.root";
-  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_improved_1_2f_hadronic_sample_eL_pR_3GeV.root";
+  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
 
 
   TFile *f2 = new TFile(filename2);
@@ -860,6 +860,118 @@ void dEdxdist(int quarkid=3) {
   leg->SetTextFont(42);
   leg->AddEntry(test,"All secondary tracks","l");
   leg->AddEntry(test2,"|p_{trk}|>3 GeV","l");
+  // leg->AddEntry(test2,"|p_{trk}|>3 GeV & |cos(#theta_{trk})|<0.8","l");
+  leg->AddEntry(kdEdx_dist_pion,"pions","l");
+  leg->AddEntry(kdEdx_dist_kaon,"kaons","l");
+  leg->AddEntry(kdEdx_dist_proton,"protons","l");
+  leg->SetFillColor(0);
+  leg->SetLineColor(0);
+  leg->SetShadowColor(0);
+  leg->Draw();
+
+  c_mom->Print("plots_draft/dEdx_dist_"+squark+".eps");
+
+
+}
+
+void dEdxdist2(int quarkid=3) {
+
+  
+  SetQQbarStyle();
+  gStyle->SetOptFit(0); 
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  
+  gStyle->SetTitleBorderSize(0);
+  gStyle->SetTitleStyle(0);
+  gStyle->SetTitleX(0.2);
+  gStyle->SetMarkerSize(0.2);
+  //  gStyle->SetGridStyle(1);
+  TGaxis::SetMaxDigits(3);
+  iquark=quarkid;
+  TString squark="udsquark";
+  if(quarkid==4) squark="cquark";
+  if(quarkid==5) squark="bquark";
+
+  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_3GeV_costheta_lt0.8.root";
+
+  TFile *f = new TFile(filename);
+
+  TH1F*  kdEdx_dist_kaon = (TH1F*)f->Get("kdEdx_dist_kaon");
+  TH1F*  kdEdx_dist_pion = (TH1F*)f->Get("kdEdx_dist_pion");
+  TH1F*  kdEdx_dist_proton = (TH1F*)f->Get("kdEdx_dist_proton");
+  TH1F*  test = (TH1F*)f->Get("n_sectracks");
+
+  // TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV_costheta_lt0.8.root";
+  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_improved_1_2f_hadronic_sample_eL_pR_3GeV_costheta_lt0.8.root";
+
+
+  TFile *f2 = new TFile(filename2);
+
+  TH1F*  kdEdx_dist_kaon2 = (TH1F*)f2->Get("kdEdx_dist_kaon");
+  TH1F*  kdEdx_dist_pion2 = (TH1F*)f2->Get("kdEdx_dist_pion");
+  TH1F*  kdEdx_dist_proton2 = (TH1F*)f2->Get("kdEdx_dist_proton");
+  TH1F*  test2 = (TH1F*)f2->Get("n_sectracks");
+
+  kdEdx_dist_pion2->Scale(kdEdx_dist_pion->GetEntries()/kdEdx_dist_pion2->GetEntries());
+  kdEdx_dist_kaon2->Scale(kdEdx_dist_kaon->GetEntries()/kdEdx_dist_kaon2->GetEntries());
+  kdEdx_dist_proton2->Scale(kdEdx_dist_proton->GetEntries()/kdEdx_dist_proton2->GetEntries());
+  
+  TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
+  c_mom->cd(1);
+  kdEdx_dist_pion2->GetXaxis()->SetTitle("#Delta_{dE/dx-K}");
+  //  kdEdx_dist_pion2->GetXaxis()->SetTitle("signed [(dE/dx-dE/dx_{fit-kaon})/#Delta_{dE/dx}]^{2}");
+  kdEdx_dist_pion2->GetYaxis()->SetTitle("a.u.");
+  //kdEdx_dist_pion->GetYaxis()->SetTitleOffset(1.25);
+  //kdEdx_dist_pion->GetXaxis()->SetTitleOffset(1.);
+
+  kdEdx_dist_pion2->SetLineColor(4);
+  kdEdx_dist_pion2->SetLineWidth(3);
+  kdEdx_dist_pion2->SetLineStyle(2);
+  kdEdx_dist_pion2->Draw("histo");
+
+  kdEdx_dist_kaon->SetLineColor(2);
+  kdEdx_dist_kaon->SetLineWidth(3);
+  kdEdx_dist_kaon->SetLineStyle(1);
+  kdEdx_dist_kaon->Draw("histosame");
+
+  kdEdx_dist_proton->SetLineColor(kGreen+2);
+  kdEdx_dist_proton->SetLineWidth(3);
+  kdEdx_dist_proton->SetLineStyle(1);
+  kdEdx_dist_proton->Draw("histosame");
+
+  kdEdx_dist_pion->SetLineColor(4);
+  kdEdx_dist_pion->SetLineWidth(3);
+  kdEdx_dist_pion->SetLineStyle(1);
+  kdEdx_dist_pion->Draw("histosame");
+
+  kdEdx_dist_kaon2->SetLineColor(2);
+  kdEdx_dist_kaon2->SetLineWidth(3);
+  kdEdx_dist_kaon2->SetLineStyle(2);
+  kdEdx_dist_kaon2->Draw("histosame");
+
+  kdEdx_dist_proton2->SetLineColor(kGreen+2);
+  kdEdx_dist_proton2->SetLineWidth(3);
+  kdEdx_dist_proton2->SetLineStyle(2);
+  kdEdx_dist_proton2->Draw("histosame");
+
+  
+  test->SetLineColor(1);
+  test->SetLineWidth(3);
+  test->SetLineStyle(1);
+
+  test2->SetLineColor(1);
+  test2->SetLineWidth(3);
+  test2->SetLineStyle(2);
+
+ 
+  Labels("");
+  
+  TLegend *leg = new TLegend(0.18,0.6,0.46,0.85);
+  leg->SetTextSize(0.03);
+  leg->SetTextFont(42);
+  leg->AddEntry(test,"Nominal dEdx performance, |p_{trk}|>3 GeV","l");
+  leg->AddEntry(test2,"Estimated Cluster Counting dEdx performance, |p_{trk}|>3 GeV","l");
   // leg->AddEntry(test2,"|p_{trk}|>3 GeV & |cos(#theta_{trk})|<0.8","l");
   leg->AddEntry(kdEdx_dist_pion,"pions","l");
   leg->AddEntry(kdEdx_dist_kaon,"kaons","l");
@@ -1662,7 +1774,7 @@ void Plots_dEdx_draft() {
   Ntracks();*/
   //Ntracks2();
 
-  for(int i=4; i<5; i++)  dEdxdist(i);
+  for(int i=4; i<5; i++)  dEdxdist2(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 

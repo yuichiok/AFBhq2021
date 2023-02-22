@@ -21,7 +21,7 @@ do
 	for cut_p in 0 3
 	do
 	    #0 2 3
-	    for cut_theta in 0 
+	    for cut_theta in 0 0.8
 	    do
 		#0 0.8	       
 		cat > ${local}/steer/dedx_${process}_${pol}_quark${quark}_${name}_cutsP${cut_p}_cutTheta${cut_theta}.sh <<EOF
