@@ -207,28 +207,32 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, f
 
 }
 
-void QQbarAnalysisClass::TextQCDCorr(int n_entries = -1, int selection_type = 0, float Kvcut = 50)
+void QQbarAnalysisClass::QCDCorr(int n_entries = -1, int selection_type = 0)
 {
 
-  TFile *MyFile = new TFile(TString::Format("QCDcorrelations_%s.root", process.Data()), "RECREATE");
+  TString name=TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/hidden_valley/output/QCDcorrelations_%s.root", process.Data());
+
+  TFile *MyFile = new TFile(name ,"RECREATE");
   MyFile->cd();
 
   TH1F *h_costheta_nocuts = new TH1F("h_costheta_nocuts", "h_costheta_nocuts", 20, 0, 1);
   TH1F *h_costheta_cuts = new TH1F("h_costheta_cuts", "h_costheta_cuts", 20, 0, 1);
 
-  TH1F *ncharged = new TH1F("ncharged", "Content of charged PFOs (p>1GeV); # charged PFOs;", 200, -0.5, 199.5);
-  TH1F *mom = new TH1F("mom", "mom; |#vec{p_{PFO}}|; Momentum of charged PFOs", 300, -0.5, 149.5);
+  TH1F *ncharged = new TH1F("ncharged", "Content of charged PFOs. (p_{T}>1GeV); # charged PFOs; ",200, -0.5,199.5);
+  TH1F *mom = new TH1F("mom", "Momentum of charged PFOs. (p_{T}>1GeV); |#vec{p_{PFO}}|; ",300 ,-0.5,149.5);
 
-  // TH1F *ncharged_particle = new TH1F("ncharged_particle", "Content of charged MCpart. (p>1GeV); # charged PFOs; ",200, -0.5,199.5);
-  // TH1F *mom_particle = new TH1F("mom_particle", "Momentum of charged MCpart. (p>1GeV); |#vec{p_{PFO}}|; ",300 ,-0.5,149.5);
+  TH1F *ncharged_MC = new TH1F("ncharged_MC", "Content of charged MCpart. (p_{T}>1GeV); # charged PFOs; ",200, -0.5,199.5);
+  TH1F *mom_MC = new TH1F("mom_MC", "Momentum of charged MCpart. (p_{T}>1GeV); |#vec{p_{PFO}}|; ",300 ,-0.5,149.5);
 
-  TH2F *S2 = new TH2F("S2", "S2; #Delta Cos(#theta); #Delta #phi; S2", 200, -1, 1, 200, -6.283185307, 6.283185307);
-  // TH2F *C2 = new TH2F("C2", "C2; #Delta Cos(#theta)_{t-axis}; #Delta #phi{t-axis}; C_{2}", 500,-1,1, 500, -6.283185307, 6.283185307);
-  TH2F *B2 = new TH2F("B2", "B2; #Delta Cos(#theta); #Delta #phi; B2", 200, -1, 1, 200, 0, 6.283185307);
-
-  // TH2F *S2_particle = new TH2F("S2_particle", "S2_particle; #Delta Cos(#theta)_{t-axis}; #Delta #phi{t-axis}; S2", 500,-1,1, 500, -6.283185307, 6.283185307);
-  // TH2F *C2_particle = new TH2F("C2_particle", "C2_particle; #Delta Cos(#theta)_{t-axis}; #Delta #phi{t-axis}; C_{2}", 500,-1,1, 500, -6.283185307, 6.283185307);
-  // TH2F *B2_particle = new TH2F("B2_particle", "B2_particle; #Delta Cos(#theta)_{t-axis}; #Delta #phi{t-axis}; B2", 500,-1,1,500, -6.283185307, 6.283185307);
+  S2 = new TH2F("S2", "S2; #Delta Cos(#theta); #Delta #phi; S2", 200, -1, 1, 200, -6.283185307, 6.283185307);
+  B2= new TH2F("B2", "B2; #Delta Cos(#theta); #Delta #phi; B2", 200, -1, 1, 200, -6.283185307, 6.283185307);
+  S2_eta = new TH2F("S2_eta", "S2_eta; #Delta #eta; #Delta #phi; S2", 400, -4, 4, 200, -6.283185307, 6.283185307);
+  B2_eta = new TH2F("B2_eta", "B2_eta; #Delta #eta; #Delta #phi; B2", 400, -4, 4, 200, -6.283185307, 6.283185307);
+  
+  S2_MC = new TH2F("S2_MC", "S2; #Delta Cos(#theta); #Delta #phi; S2", 200, -1, 1, 200, -6.283185307, 6.283185307);
+  B2_MC= new TH2F("B2_MC", "B2; #Delta Cos(#theta); #Delta #phi; B2", 200, -1, 1, 200, -6.283185307, 6.283185307);
+  S2_MC_eta = new TH2F("S2_MC_eta", "S2_eta; #Delta #eta; #Delta #phi; S2", 400, -4, 4, 200, -6.283185307, 6.283185307);
+  B2_MC_eta = new TH2F("B2_MC_eta", "B2_eta; #Delta #eta; #Delta #phi; B2", 400, -4, 4, 200, -6.283185307, 6.283185307);
 
   Long64_t nentries;
   if (n_entries > 0)
@@ -250,7 +254,7 @@ void QQbarAnalysisClass::TextQCDCorr(int n_entries = -1, int selection_type = 0,
     float gamma0_e = mc_ISR_E[0];
     float gamma1_e = mc_ISR_E[1];
     float gamma_e = gamma0_e + gamma1_e;
-
+   
     h_costheta_nocuts->Fill(0.5);
 
     if (jentry > 1000 && jentry % 1000 == 0)
@@ -263,75 +267,143 @@ void QQbarAnalysisClass::TextQCDCorr(int n_entries = -1, int selection_type = 0,
 
     h_costheta_cuts->Fill(0.5);
 
-    std::vector<float> vectorT;
-    vectorT.push_back(principle_thrust_axis[0]);
-    vectorT.push_back(principle_thrust_axis[1]);
-    vectorT.push_back(fabs(principle_thrust_axis[2]));
+
+    //**************************************************************************************
+    // DETECTOR LEVEL
+    std::vector<float> Tprinc;
+    Tprinc.push_back(principle_thrust_axis[0]);
+    Tprinc.push_back(principle_thrust_axis[1]);
+    Tprinc.push_back(principle_thrust_axis[2]);
+
+    std::vector<float> Tmajor;
+    Tmajor.push_back(major_thrust_axis[0]);
+    Tmajor.push_back(major_thrust_axis[1]);
+    Tmajor.push_back(major_thrust_axis[2]);
+
+    std::vector<float> Tminor;
+    Tminor.push_back(minor_thrust_axis[0]);
+    Tminor.push_back(minor_thrust_axis[1]);
+    Tminor.push_back(minor_thrust_axis[2]);
 
     int npfo_charged = 0;
     std::vector<float> theta_charged_temp;
+    std::vector<float> eta_charged_temp;
     std::vector<float> phi_charged_temp;
     std::vector<int> ipfo_temp;
 
     for (int ipfo = 0; ipfo < pfo_n; ipfo++)
     {
 
-      std::vector<float> angles = ChargedPFOThetaPhi(ipfo);
+      std::vector<float> angles = ChargedPFOThetaPhi(ipfo,Tprinc,Tmajor,Tminor);
       if(angles.size()==0) continue;
       mom->Fill(sqrt(pow(pfo_px[ipfo], 2) + pow(pfo_py[ipfo], 2) + pow(pfo_pz[ipfo], 2)));
       npfo_charged++;
 
       theta_charged_temp.push_back(angles.at(0));
-      phi_charged_temp.push_back(angles.at(1));
+      eta_charged_temp.push_back(angles.at(1));
+      phi_charged_temp.push_back(angles.at(2));
       ipfo_temp.push_back(ipfo);
     }
+    ncharged->Fill(npfo_charged);
+
 
     for (int jpfo = 0; jpfo < pfo_n; jpfo++)
     {
-      std::vector<float> angles = ChargedPFOThetaPhi(jpfo);
+      std::vector<float> angles = ChargedPFOThetaPhi(jpfo,Tprinc,Tmajor,Tminor);
       if(angles.size()==0) continue;
       float theta2 = angles.at(0);
-      float phi2 = angles.at(1);
+      float eta2 = angles.at(1);
+      float phi2 = angles.at(2);
 
       for (int i = 0; i < theta_charged_temp.size(); i++)
       {
         if (jpfo == ipfo_temp.at(i))
           continue;
+
+        float etadif = eta_charged_temp.at(i) - eta2;
         float thetadif = theta_charged_temp.at(i) - theta2;
         float phidif = phi_charged_temp.at(i) - phi2;
         S2->Fill(thetadif, phidif);
+        S2_eta->Fill(etadif, phidif);
+
+      }
+    }
+
+    FillBkg(theta_charged_temp,eta_charged_temp, phi_charged_temp);
+
+    eta_charged_temp.clear();
+    theta_charged_temp.clear();
+    phi_charged_temp.clear();
+
+    //**************************************************************************************
+    // Particle LEVEL
+    std::vector<float> TprincMC;
+    TprincMC.push_back(mc_principle_thrust_axis[0]);
+    TprincMC.push_back(mc_principle_thrust_axis[1]);
+    TprincMC.push_back(mc_principle_thrust_axis[2]);
+
+    std::vector<float> TmajorMC;
+    TmajorMC.push_back(mc_major_thrust_axis[0]);
+    TmajorMC.push_back(mc_major_thrust_axis[1]);
+    TmajorMC.push_back(mc_major_thrust_axis[2]);
+
+    std::vector<float> TminorMC;
+    TminorMC.push_back(mc_minor_thrust_axis[0]);
+    TminorMC.push_back(mc_minor_thrust_axis[1]);
+    TminorMC.push_back(mc_minor_thrust_axis[2]);
+
+    int nMC_charged = 0;
+    std::vector<float> theta_charged_temp_MC;
+    std::vector<float> eta_charged_temp_MC;
+    std::vector<float> phi_charged_temp_MC;
+    std::vector<int> iMC_temp;
+
+    //MC
+    for (int imc = 0; imc < mc_stable_n; imc++)
+    {
+
+      std::vector<float> angles = ChargedMCThetaPhi(imc,TprincMC,TmajorMC,TminorMC);
+      if(angles.size()==0) continue;
+      mom_MC->Fill(sqrt(pow(mc_stable_px[imc], 2) + pow(mc_stable_py[imc], 2) + pow(mc_stable_pz[imc], 2)));
+      nMC_charged++;
+
+      theta_charged_temp_MC.push_back(angles.at(0));
+      eta_charged_temp_MC.push_back(angles.at(1));
+      phi_charged_temp_MC.push_back(angles.at(2));
+      iMC_temp.push_back(imc);
+    }
+    ncharged_MC->Fill(nMC_charged);
+
+    for (int jmc = 0; jmc < mc_stable_n; jmc++)
+    {
+      std::vector<float> angles = ChargedMCThetaPhi(jmc,TprincMC,TmajorMC,TminorMC);
+      if(angles.size()==0) continue;
+      float theta2 = angles.at(0);
+      float eta2 = angles.at(1);
+      float phi2 = angles.at(2);
+
+      for (int i = 0; i < theta_charged_temp_MC.size(); i++)
+      {
+        if (jmc == iMC_temp.at(i))
+          continue;
+
+        float etadif = eta_charged_temp_MC.at(i) - eta2;
+        float thetadif = theta_charged_temp_MC.at(i) - theta2;
+        float phidif = phi_charged_temp_MC.at(i) - phi2;
+        S2_MC->Fill(thetadif, phidif);
+        S2_MC_eta->Fill(etadif, phidif);
+
       }
       // C2->Fill(thetadif, phidif);
     }
 
-    ncharged->Fill(npfo_charged);
+    FillBkgMC(theta_charged_temp_MC,eta_charged_temp_MC, phi_charged_temp_MC);
 
-    if (theta_charged.size() > 0)
-    {
-      for (int jpfo = 0; jpfo < theta_charged.size(); jpfo++)
-      {
-        for (int i = 0; i < theta_charged_temp.size(); i++)
-        {
-          float thetadif = theta_charged_temp.at(i) - theta_charged.at(jpfo);
-          float phidif = phi_charged_temp.at(i) - phi_charged.at(jpfo);
-          B2->Fill(thetadif, phidif);
-        }
-      }
-      theta_charged.clear();
-      phi_charged.clear();
-    }
+    eta_charged_temp_MC.clear();
+    theta_charged_temp_MC.clear();
+    phi_charged_temp_MC.clear();
 
-    if (theta_charged.size() == 0)
-    {
-      for (int i = 0; i < theta_charged_temp.size(); i++)
-        {
-          theta_charged.push_back(theta_charged_temp.at(i));
-          phi_charged.push_back(phi_charged_temp.at(i));
-        }
-    }
 
-    theta_charged_temp.clear();
-    phi_charged_temp.clear();
 
   } // jentry
 
@@ -340,44 +412,155 @@ void QQbarAnalysisClass::TextQCDCorr(int n_entries = -1, int selection_type = 0,
 
   ncharged->Write();
   mom->Write();
-  // ncharged_particle->Write();
-  // mom_particle ->Write();
 
   S2->Write();
   B2->Write();
-  // C2->Divide(B2);
-  // C2->Write();
+  S2_eta->Write();
+  B2_eta->Write();
 
-  // S2_particle->Write();
-  // B2_particle->Write();
-  // C2_particle->Divide(B2_particle);
-  // C2_particle->Write();
+  ncharged_MC->Write();
+  mom_MC->Write();
+
+  S2_MC->Write();
+  B2_MC->Write();
+  S2_MC_eta->Write();
+  B2_MC_eta->Write();
+
 }
 
-std::vector<float> QQbarAnalysisClass::ChargedPFOThetaPhi(int ipfo)
+void QQbarAnalysisClass::FillBkg(std::vector<float> theta_charged_temp, std::vector<float> eta_charged_temp, std::vector<float> phi_charged_temp)
+{
+
+  if (theta_charged.size() > 0)
+  {
+    for (int jpfo = 0; jpfo < theta_charged.size(); jpfo++)
+    {
+      for (int i = 0; i < theta_charged_temp.size(); i++)
+      {
+        float etadif = eta_charged_temp.at(i) - eta_charged.at(jpfo);
+        float thetadif = theta_charged_temp.at(i) - theta_charged.at(jpfo);
+        float phidif = phi_charged_temp.at(i) - phi_charged.at(jpfo);
+        B2->Fill(thetadif, phidif);
+        B2_eta->Fill(etadif, phidif);
+      }
+    }
+    eta_charged.clear();
+    theta_charged.clear();
+    phi_charged.clear();
+  }
+
+  if (theta_charged.size() == 0)
+  {
+    for (int i = 0; i < theta_charged_temp.size(); i++)
+    {
+      theta_charged.push_back(theta_charged_temp.at(i));
+      eta_charged.push_back(eta_charged_temp.at(i));
+      phi_charged.push_back(phi_charged_temp.at(i));
+    }
+  }
+}
+
+void QQbarAnalysisClass::FillBkgMC(std::vector<float> theta_charged_temp, std::vector<float> eta_charged_temp, std::vector<float> phi_charged_temp)
+{
+
+  if (theta_charged_MC.size() > 0)
+  {
+    for (int jpfo = 0; jpfo < theta_charged_MC.size(); jpfo++)
+    {
+      for (int i = 0; i < theta_charged_temp.size(); i++)
+      {
+        float etadif = eta_charged_temp.at(i) - eta_charged_MC.at(jpfo);
+        float thetadif = theta_charged_temp.at(i) - theta_charged_MC.at(jpfo);
+        float phidif = phi_charged_temp.at(i) - phi_charged_MC.at(jpfo);
+        B2_MC->Fill(thetadif, phidif);
+        B2_MC_eta->Fill(etadif, phidif);
+      }
+    }
+    eta_charged_MC.clear();
+    theta_charged_MC.clear();
+    phi_charged_MC.clear();
+  }
+
+  if (theta_charged_MC.size() == 0)
+  {
+    for (int i = 0; i < theta_charged_temp.size(); i++)
+    {
+      theta_charged_MC.push_back(theta_charged_temp.at(i));
+      eta_charged_MC.push_back(eta_charged_temp.at(i));
+      phi_charged_MC.push_back(phi_charged_temp.at(i));
+    }
+  }
+}
+
+
+
+float QQbarAnalysisClass::ProjectionVector(std::vector<float> p, std::vector<float> T) {
+
+  return (p.at(0)*T.at(0)+p.at(1)*T.at(1)+p.at(2)*T.at(2))/TMath::Sqrt(T.at(0)*T.at(0)+T.at(1)*T.at(1)+T.at(2)*T.at(2));  
+
+}
+
+std::vector<float> QQbarAnalysisClass::ChargedPFOThetaPhi(int ipfo, std::vector<float> Tprinc, std::vector<float> Tmajor, std::vector<float> Tminor)
 {
 
   std::vector<float> result;
 
-  if (pfo_match[ipfo] < 0 || pfo_match[ipfo] > 1)
-    return result;
-
   if (pfo_charge[ipfo] == 0 || pfo_ntracks[ipfo] != 1)
     return result;
 
-  if (sqrt(pow(pfo_px[ipfo], 2) + pow(pfo_py[ipfo], 2) + pow(pfo_pz[ipfo], 2)) < 1)
+  if (sqrt(pow(pfo_px[ipfo], 2) + pow(pfo_py[ipfo], 2)) < 1)
     return result;
 
+  std::vector<float> pfo_vec_0;
+  pfo_vec_0.push_back(pfo_px[ipfo]);
+  pfo_vec_0.push_back(pfo_py[ipfo]);
+  pfo_vec_0.push_back(pfo_pz[ipfo]);
+
   std::vector<float> pfo_vec;
-  pfo_vec.push_back(pfo_px[ipfo]);
-  pfo_vec.push_back(pfo_py[ipfo]);
-  pfo_vec.push_back(pfo_pz[ipfo]);
+  pfo_vec.push_back(ProjectionVector(pfo_vec_0,Tprinc));
+  pfo_vec.push_back(ProjectionVector(pfo_vec_0,Tmajor));
+  pfo_vec.push_back(ProjectionVector(pfo_vec_0,Tminor));
   // std::vector<float> angles = GetAnglesThrust(pfo_vec, vectorT);
   // for the moment, we use the Lab frame
   float theta = GetCostheta(pfo_vec);
+  float eta = 0.5 * log ( (pfo_E[ipfo] + pfo_vec.at(2) ) / (pfo_E[ipfo] - pfo_vec.at(2) ) );
   float phi = GetPhi(pfo_vec);
 
   result.push_back(theta);
+  result.push_back(eta);
+  result.push_back(phi);
+  return result;
+}
+
+
+std::vector<float> QQbarAnalysisClass::ChargedMCThetaPhi(int ipfo, std::vector<float> Tprinc, std::vector<float> Tmajor, std::vector<float> Tminor)
+{
+
+  std::vector<float> result;
+
+  if (pfo_charge[ipfo] == 0 )
+    return result;
+
+  if (sqrt(pow(mc_stable_px[ipfo], 2) + pow(mc_stable_py[ipfo], 2)) < 1)
+    return result;
+
+  std::vector<float> mc_stable_vec_0;
+  mc_stable_vec_0.push_back(mc_stable_px[ipfo]);
+  mc_stable_vec_0.push_back(mc_stable_py[ipfo]);
+  mc_stable_vec_0.push_back(mc_stable_pz[ipfo]);
+
+  std::vector<float> mc_stable_vec;
+  mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0,Tprinc));
+  mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0,Tmajor));
+  mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0,Tminor));
+  // std::vector<float> angles = GetAnglesThrust(mc_stable_vec, vectorT);
+  // for the moment, we use the Lab frame
+  float theta = GetCostheta(mc_stable_vec);
+  float eta = 0.5 * log ( (mc_stable_E[ipfo] + mc_stable_vec.at(2) ) / (mc_stable_E[ipfo] - mc_stable_vec.at(2) ) );
+  float phi = GetPhi(mc_stable_vec);
+
+  result.push_back(theta);
+  result.push_back(eta);
   result.push_back(phi);
   return result;
 }

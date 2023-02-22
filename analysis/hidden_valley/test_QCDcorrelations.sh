@@ -1,7 +1,7 @@
 
 process=$1
 pol=$2
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2023/"${process}"_"${pol}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-250GeV-2023/"${process}"_"${pol}"/"
 local=$PWD
 counter=0
 
@@ -17,13 +17,12 @@ do
         name=$counter
     fi
 
-    for cuts in 5 4 3 2 1 0
+    for cuts in 0 1 2 3 4 5
     do
 
 	cat > ${local}/steer/qcd_${process}_${pol}_${name}_cuts${cuts}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
 root -l -q ${local}/test_QCDcorrelations.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${cuts}\) > ${local}/output/log_QCDcorrelations_${process}_${pol}_${name}_cuts${cuts}
-mv QCDcorrelations*cuts${cuts}_${process}_${pol}_file_${name}.root ${local}/output/.
 EOF
 	
 	cat > ${local}/steer/qcd_${process}_${pol}_${name}_cuts${cuts}.sub <<EOF
