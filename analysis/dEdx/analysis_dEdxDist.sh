@@ -1,6 +1,6 @@
 process=$1
 pol=$2
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-2023-test/"${process}"_"${pol}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-250GeV-2023/"${process}"_"${pol}"/"
 local=$PWD
 counter=0
 
@@ -16,7 +16,7 @@ do
         name=$counter
     fi
 
-	for cut_p in 3
+	for cut_p in 0 3
 	do
    	    cat > ${local}/steer/dedx_${process}_${pol}_${name}_cutsP${cut_p}.sh <<EOF
 source ${local}/../init_ilcsoft.sh 
