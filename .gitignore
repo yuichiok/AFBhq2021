@@ -1,6 +1,11 @@
 # temp files
 *~
 *#
+#log, steer, output folders
+
+*/*/log
+*/*/steer
+*/*/output
 
 # log files
 log_*

@@ -90,7 +90,8 @@
         "Rb_calculations.C": "cpp",
         "Weights_c.C": "cpp",
         "Rq.C": "cpp",
-        "AFBSigBkg.C": "cpp"
+        "AFBSigBkg.C": "cpp",
+        "C2.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
