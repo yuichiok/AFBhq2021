@@ -85,7 +85,15 @@
         "AFBFit.C": "cpp",
         "AFB.C": "cpp",
         "Observables.C": "cpp",
-        "effpreselection.C": "cpp"
+        "effpreselection.C": "cpp",
+        "AFBSigBkg.C": "cpp",
+        "Weights_c.C": "cpp",
+        "labels.c": "cpp",
+        "selection_plots copy.C": "cpp",
+        "C2.C": "cpp",
+        "DQPlots_trackmom.C": "cpp",
+        "Plots_dEdx_draft copy.C": "cpp",
+        "dEdxDist.C": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
