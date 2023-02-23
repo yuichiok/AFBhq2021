@@ -15,7 +15,7 @@ do
 		hadd -f -j 4 -k results/QCDcorrelations_cuts${cut}_2f_hadronic_sample_${pol}.root output/QCDcorrelations_cuts${cut}_2f_hadronic_sample_${pol}_*.root
 		hadd -f -j 4 -k results/QCDcorrelations_cuts${cut}_qqH_${pol}.root output/QCDcorrelations_cuts${cut}_qqH_${pol}_*.root &
 		hadd -f -j 4 -k results/QCDcorrelations_cuts${cut}_4f_WW_hadronic_${pol}.root output/QCDcorrelations_cuts${cut}_4f_WW_hadronic_${pol}_*.root 
-  		hadd -f -j 4 -k results/QCDcorrelations_cuts${cut}_2f_hadronic_${pol}.root output/QCDcorrelations_cuts${cut}_2f_hadronic_${pol}_*.root
+  		#hadd -f -j 4 -k results/QCDcorrelations_cuts${cut}_2f_hadronic_${pol}.root output/QCDcorrelations_cuts${cut}_2f_hadronic_${pol}_*.root
    done
 done
 
