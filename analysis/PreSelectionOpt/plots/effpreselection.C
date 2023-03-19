@@ -56,7 +56,7 @@ void effpreselection() {
 
   cout<< "bb qq radreturn ww zz hz "<<endl;
 
-  for(int step=4; step<5; step++) {
+  for(int step=5; step<6; step++) {
     
   TH1F *h_costheta_bb[2]; 
   TH1F *h_costheta_cc[2]; 
@@ -152,7 +152,7 @@ void effpreselection() {
   h_costheta_bb[1]->SetName("Eff Presel");
   h_costheta_bb[1]->SetTitle("Eff Presel");
   h_costheta_bb[1]->Write();
-  canvas2->Print(TString::Format("plots_"+energy+" _2023/epsilonhad_cuts%i_%s.eps",step,pol.Data()));
+  canvas2->Print(TString::Format("plots_"+energy+"_2023/epsilonhad_cuts%i_%s.eps",step,pol.Data()));
 
  
   }

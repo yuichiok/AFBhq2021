@@ -137,15 +137,17 @@ TH1F *Efficiency (TH1F* h1, TH1F* parton, TH1F* parton2, TString title="",int er
     float eff_pres_=eff_pres_plus;
     if(x<0) eff_pres_=eff_pres_minus;
     if(error==0) {
-      result->SetBinContent(j+1,input->GetBinContent(j+1)+error*0.1*input->GetBinContent(j+1));//eff_pres_);
-      result->SetBinError(j+1,input->GetBinError(j+1));
+      result->SetBinContent(j+1,input->GetBinContent(j+1));//eff_pres_);
+      result->SetBinError(j+1,0);
     } else {
-      result->SetBinContent(j+1,input->GetBinContent(j+1)+error*0.1*input->GetBinContent(j+1));//eff_pres_);
-      result->SetBinError(j+1,input->GetBinContent(j+1)*1.1);//eff_pres_);
-
+      result->SetBinContent(j+1,input->GetBinContent(j+1)+error*0.05*input->GetBinContent(j+1));//eff_pres_);
+      result->SetBinError(j+1,input->GetBinError(j+1));
     }
+    parton->SetBinError(j+1,0);
+    parton2->SetBinError(j+1,0);
+    
     //result->SetBinError(40-j+1,input->GetBinError(40-j+1));
-    result->SetBinError(j+1,input->GetBinError(j+1));
+    //    result->SetBinError(j+1,input->GetBinError(j+1));
    }
    result->SetBinContent(1,0);
    result->SetBinError(1,0);
@@ -178,7 +180,7 @@ void Plots_AFB(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   gStyle->SetMarkerSize(0.8);
   TGaxis::SetMaxDigits(3);
 
-  int iprocess=4; //cut in radiative return
+  int iprocess=1; //cut in radiative return
 
   float luminosity[2]={0};
   TH1F *hstats[2];
@@ -344,7 +346,7 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   float dAfb_corrected[100]={0};
 
   for(int syst_=0; syst_<23; syst_++) {
-  int iprocess=4; //cut in radiative return
+  int iprocess=1; //cut in radiative return
 
   int syst=syst_;
   if(syst_==22) syst=21;
@@ -402,22 +404,23 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
   if(syst==21 && syst_==21) error=1;
   
   TH1F* eff=Efficiency(AFBcheat,AFBparton,AFBparton2,"",error);
+  if(syst==0)  eff=Efficiency(AFBcheat,AFBparton,AFBparton2);
   AFBcorrected->Divide(eff);
   
   //***** DRAW
   TF1 *func_parton=fit_histo(AFBparton2, -1,1,false);
   TF1 *func_corrected=fit_histo(AFBcorrected, -0.9,0.9,false);
 
-  float plus_corrected = func_corrected->Integral(0,1);
-  float minus_corrected = func_corrected->Integral(-1,0);
-  float plus_e_corrected = func_corrected->IntegralError(0,1);
-  float minus_e_corrected = func_corrected->IntegralError(1,0);
+  float plus_corrected = func_corrected->Integral(0,0.9);
+  float minus_corrected = func_corrected->Integral(-0.9,0);
+  float plus_e_corrected = func_corrected->IntegralError(0,0.9);
+  float minus_e_corrected = func_corrected->IntegralError(-0.9,0);
   Afb_corrected[syst_]=Afb_v(plus_corrected,minus_corrected);
   dAfb_corrected[syst_]=dAfb_v(plus_corrected,minus_corrected, plus_e_corrected, minus_e_corrected);
 
   }
 
-  for(int syst=0; syst<1; syst++)  std::cout<<setprecision(7)<<"PDG: "<<quark<<" polarisation:"<<ipol<<" Syst:"<<syst<<"  --> AFB:"<<Afb_corrected[syst]<<" Rel_Error:"<<100.*dAfb_corrected[syst]/Afb_corrected[syst]<<"%"<<endl;
+  for(int syst=0; syst<23; syst++)  std::cout<<setprecision(7)<<"PDG: "<<quark<<" polarisation:"<<ipol<<" Syst:"<<syst<<"  --> AFB:"<<Afb_corrected[syst]<<" Rel_Error:"<<100.*dAfb_corrected[syst]/Afb_corrected[syst]<<"%"<<endl;
 
 }
 
@@ -445,7 +448,7 @@ void AFBPol(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {
       p1error=eel*i;
       p2error=epos*j;
 
-      int iprocess=4; //cut in radiative return
+      int iprocess=1; //cut in radiative return
 
   float luminosity[2]={0};
   TH1F *hstats[2];
@@ -491,13 +494,13 @@ pol="eR_pL";
 
 
   void AFBFit() {
-    //Plots_AFB(4,2,900);
+    Plots_AFB(4,2,900);
     //Plots_AFB(4,3,900);
     //Plots_AFB(5,2,900);
-    Plots_AFB(5,3,900);
+    //Plots_AFB(5,3,900);
 
-    //AFBSyst(5,3,900,3);
-    //AFBPol(5,2,900,1);
+    //    AFBSyst(4,2,900,1);
+    //    AFBPol(4,3,900,1);
 
   }
     

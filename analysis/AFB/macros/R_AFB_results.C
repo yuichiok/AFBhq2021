@@ -24,9 +24,9 @@
 #include "AFBFit.C"
 
 double r_stat[4]={0.18,0.27,0.12,0.23};//c-left, c-right, b-left, b-right
-double afb_stat[4]={0.29,0.40,0.34,1.02};
+double afb_stat[4]={0.38,0.52,0.24,0.7};
 double r_syst[4]={0.15,0.12,0.18,0.29};
-double afb_syst[4]={0.13,0.15,0.14,0.34};
+double afb_syst[4]={0.16,0.19,0.13,0.22};
 
 
 // double AFBStat(int quark=4, int ipol=0, float lum=900, int cheatmethod=0) {

@@ -23,10 +23,14 @@
 #include "TSystemFile.h"
 #include "AFBFit.C"
 
+//double r_stat[4]={0.18,0.27,0.12,0.23};//c-left, c-right, b-left, b-right
+//double afb_stat[4]={0.29,0.40,0.34,1.02};
+//double r_syst[4]={0.15,0.12,0.18,0.29};
+//double afb_syst[4]={0.13,0.15,0.14,0.34};
 double r_stat[4]={0.18,0.27,0.12,0.23};//c-left, c-right, b-left, b-right
-double afb_stat[4]={0.29,0.40,0.34,1.02};
+double afb_stat[4]={0.38,0.52,0.24,0.7};
 double r_syst[4]={0.15,0.12,0.18,0.29};
-double afb_syst[4]={0.13,0.15,0.14,0.34};
+double afb_syst[4]={0.16,0.19,0.13,0.22};
 double Pel=0.8;
 double Ppos=0.3;
 
@@ -289,7 +293,7 @@ void HelicityAmplitudes() {
   gPad->SetLogy();
   h_c_stat_and_syst->GetXaxis()->SetLabelSize(0.09);
   h_c_stat_and_syst->GetYaxis()->SetRangeUser(0.01,20);
-  h_c_stat_and_syst->GetYaxis()->SetTitle("total uncertainty [%]");
+  h_c_stat_and_syst->GetYaxis()->SetTitle("relative uncertainty [%]");
   h_c_stat_and_syst->GetYaxis()->SetNdivisions(5+100*5+10000*0);
   h_c_stat_and_syst->GetXaxis()->SetTickLength(0);
 
@@ -358,7 +362,7 @@ void HelicityAmplitudes() {
   leg->SetShadowColor(0);
   leg->Draw();
 
-  c1->Print("plots_draft_final/HelicityAmplitude_Unc.eps");
+  c1->Print("plots_"+energy+"_final/HelicityAmplitude_Unc.eps");
 
 }
     
