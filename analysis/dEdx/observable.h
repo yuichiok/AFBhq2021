@@ -48,7 +48,7 @@ public :
   virtual void     Init(TTree *tree);
 
   virtual void     dEdx(int n, TString, bool, bool, float, float, int,int);
-  virtual void     dEdxDist(int n, TString, float);
+  virtual void     dEdxDist(int n, TString, TString, float);
    
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);

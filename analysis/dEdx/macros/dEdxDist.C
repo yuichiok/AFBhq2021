@@ -26,7 +26,7 @@
 
 
 
-void dEdxDist(TString type="") {
+void dEdxDist(TString reference="proton",TString type="") {
 
   
   SetQQbarStyle();
@@ -42,7 +42,7 @@ void dEdxDist(TString type="") {
   TGaxis::SetMaxDigits(3);
 
 
-  TString filename = "../results/dEdxdist_2f_hadronic_eL_pR_cutP_3.root";
+  TString filename = "../results/dEdxdist_"+reference+"_2f_hadronic_sample_eL_pR_cutP_3.root";
 
   TFile *f = new TFile(filename);
 
@@ -63,14 +63,16 @@ void dEdxDist(TString type="") {
     }
   }
 
+  cout<<" ############################## "<<endl;
+  cout<< reference <<" "<< type<< endl;
  for(int i=0; i<6; i++) {
-    cout<< "std::vector<float> _dedx_dist_"<<name[i]<<"_mean={";
+    cout<< "std::vector<float> _dedx_dist_BB"<<reference<<"_"<<name[i]<<"_mean={";
     for(int ip=0; ip<10; ip++) {
       if(ip<9) cout<<mean[i][ip]<<",";
       else cout<<mean[i][ip]<<"};"<<endl;
     }
   
-    cout<< "std::vector<float> _dedx_dist_"<<name[i]<<"_rms={";
+    cout<< "std::vector<float> _dedx_dist_BB"<<reference<<"_"<<name[i]<<"_rms={";
     for(int ip=0; ip<10; ip++) {
       if(ip<9) cout<<rms[i][ip]<<",";
       else cout<<rms[i][ip]<<"};"<<endl;
