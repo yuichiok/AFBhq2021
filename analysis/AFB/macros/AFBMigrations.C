@@ -53,7 +53,7 @@ void Migrations(int pol=2,int quark=5, int syst=0) {
   gStyle->SetTitleBorderSize(0);
   gStyle->SetTitleStyle(0);
   gStyle->SetTitleX(0.2);
-  gStyle->SetMarkerSize(0.8);
+  gStyle->SetMarkerSize(1.);
   TGaxis::SetMaxDigits(3);
 
 
@@ -93,7 +93,7 @@ void Migrations(int pol=2,int quark=5, int syst=0) {
   corrected_0->SetLineColor(4);
   corrected_0->SetMarkerColor(4);
   corrected_0->SetLineWidth(2);
-  corrected_0->SetMarkerStyle(20);
+  corrected_0->SetMarkerStyle(4);
   corrected_0->SetMarkerColor(4);
   corrected_0->Draw("pesame");
 
@@ -110,8 +110,8 @@ void Migrations(int pol=2,int quark=5, int syst=0) {
   leg->SetTextFont(42);
   leg->SetTextSize(0.028);
   leg->AddEntry(chargecheatreco_0,"Detector Level (true-MC charge)","f");
-  leg->AddEntry(reco_0,"Detector Level (w/o charge correction)","ple");
-  leg->AddEntry(corrected_0,"Detector Level (w/ charge correction)","ple");
+  leg->AddEntry(reco_0,"Detector Level (w/o charge correction)","pe");
+  leg->AddEntry(corrected_0,"Detector Level (w/ charge correction)","pe");
   // leg->AddEntry(bkg_zz_0,"ZZ","lf");
   
   // leg->SetFillStyle(1001);

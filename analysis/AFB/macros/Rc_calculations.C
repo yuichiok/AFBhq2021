@@ -417,10 +417,10 @@ void RPlots2_c( float lum=-1) {
   h_mistag_b[1]->Draw("histoesame");
 
   h_mistag_uds[0]->SetLineColor(kGreen+2);
-  h_mistag_uds[0]->SetLineWidth(2);
+  h_mistag_uds[0]->SetLineWidth(4);
   h_mistag_uds[0]->Draw("histoesame");
   h_mistag_uds[1]->SetLineColor(kGreen+2);
-  h_mistag_uds[1]->SetLineWidth(2);
+  h_mistag_uds[1]->SetLineWidth(4);
   h_mistag_uds[1]->SetLineStyle(2);
   h_mistag_uds[1]->Draw("histoesame");
 
@@ -457,7 +457,7 @@ void RPlots2_c( float lum=-1) {
   Rmeasured[0]->GetYaxis()->SetRangeUser(0,1);
 
   Rmeasured[0]->SetLineColor(2);
-  Rmeasured[0]->SetLineWidth(2);
+  Rmeasured[0]->SetLineWidth(4);
   Rmeasured[0]->Draw("histoe");
   Rmeasured[1]->SetLineColor(4);
   Rmeasured[1]->SetLineWidth(2);
@@ -465,7 +465,7 @@ void RPlots2_c( float lum=-1) {
   Rmeasured[1]->Draw("histoesame");
 
   h_Rhisto[0]->SetLineColor(2);
-  h_Rhisto[0]->SetLineWidth(2);
+  h_Rhisto[0]->SetLineWidth(4);
   h_Rhisto[0]->SetLineStyle(2);
   h_Rhisto[0]->Draw("histoesame");
   h_Rhisto[1]->SetLineColor(4);
@@ -649,10 +649,10 @@ void RPlots2_b( float lum=-1) {
   h_mistag_b[1]->Draw("histoesame");
 
   h_mistag_uds[0]->SetLineColor(kGreen+2);
-  h_mistag_uds[0]->SetLineWidth(2);
+  h_mistag_uds[0]->SetLineWidth(4);
   h_mistag_uds[0]->Draw("histoesame");
   h_mistag_uds[1]->SetLineColor(kGreen+2);
-  h_mistag_uds[1]->SetLineWidth(2);
+  h_mistag_uds[1]->SetLineWidth(4);
   h_mistag_uds[1]->SetLineStyle(2);
   h_mistag_uds[1]->Draw("histoesame");
 
@@ -690,7 +690,7 @@ void RPlots2_b( float lum=-1) {
   Rmeasured[0]->GetYaxis()->SetRangeUser(0,1);
 
   Rmeasured[0]->SetLineColor(2);
-  Rmeasured[0]->SetLineWidth(2);
+  Rmeasured[0]->SetLineWidth(4);
   Rmeasured[0]->Draw("histoe");
   Rmeasured[1]->SetLineColor(4);
   Rmeasured[1]->SetLineWidth(2);
@@ -698,7 +698,7 @@ void RPlots2_b( float lum=-1) {
   Rmeasured[1]->Draw("histoesame");
 
   h_Rhisto[0]->SetLineColor(2);
-  h_Rhisto[0]->SetLineWidth(2);
+  h_Rhisto[0]->SetLineWidth(4);
   h_Rhisto[0]->SetLineStyle(2);
   h_Rhisto[0]->Draw("histoesame");
   h_Rhisto[1]->SetLineColor(4);
@@ -1016,9 +1016,9 @@ void R_theory_vs_reco( int pol=0, float lum=-1) {
 void Rc_calculations() {
 
   folder="../results_"+energy+"/AFB_PQ_";
-  //RPlots2_c(900);
-  //RPlots2_b(900);
-
+  RPlots2_c(900);
+  RPlots2_b(900);
+  /*
   for(int pol=2; pol<3;pol++) {
     cout<<" Plots "<<endl;
     cout<<"  ------------------------------------------ "<<endl;
@@ -1034,5 +1034,5 @@ void Rc_calculations() {
     // cout<<"  ------------------------------------------ "<<endl;
     R_cbkg(pol,900);
     //    R_theory_vs_reco(pol,900);
-  }
+    }*/
 }

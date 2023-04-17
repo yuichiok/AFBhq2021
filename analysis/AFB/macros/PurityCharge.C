@@ -21,7 +21,6 @@
 #include "TStyle.h"
 #include "TMath.h"
 #include "TSystemFile.h"
-#include "histograms.h"
 #include "utils.h"
 
 
@@ -79,7 +78,7 @@ void PurityChargePlots(int quark=5) {
   purity_vtx->GetXaxis()->SetRangeUser(0,1);
 
   purity_vtx->SetLineColor(4);
-  purity_vtx->SetLineWidth(2);
+  purity_vtx->SetLineWidth(4);
   purity_vtx->SetLineStyle(1);
   purity_vtx->Draw("histo");
 
@@ -89,7 +88,7 @@ void PurityChargePlots(int quark=5) {
   purity_kc->Draw("histosame");
 
   purity_vtx_2->SetLineColor(4);
-  purity_vtx_2->SetLineWidth(2);
+  purity_vtx_2->SetLineWidth(4);
   purity_vtx_2->SetLineStyle(2);
   purity_vtx_2->Draw("histoesame");
 

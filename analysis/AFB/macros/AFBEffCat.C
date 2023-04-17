@@ -152,7 +152,7 @@ void EffCat(int quark=5, int syst=0) {
   chargecheatreco_0->GetYaxis()->SetRangeUser(0,40);
   if(quark==4) chargecheatreco_0->GetYaxis()->SetRangeUser(0,10);
   chargecheatreco_0->SetLineColor(kBlue+1);
-  chargecheatreco_0->SetLineWidth(2);
+  chargecheatreco_0->SetLineWidth(3);
   chargecheatreco_0->SetLineStyle(1);
   chargecheatreco_0->SetMarkerColor(kBlue+1);
   chargecheatreco_0->Draw("histoe");
@@ -164,16 +164,18 @@ void EffCat(int quark=5, int syst=0) {
   chargecheatreco_1->Draw("histoesame");
 
   chargecheatreco_2->SetLineColor(kRed+1);
-  chargecheatreco_2->SetLineWidth(2);
+  chargecheatreco_2->SetLineWidth(1);
   chargecheatreco_2->SetLineStyle(1);
   chargecheatreco_2->SetMarkerColor(kRed+1);
   chargecheatreco_2->Draw("histoesame");
 
   chargecheatreco_3->SetLineColor(kGray+1);
-  chargecheatreco_3->SetLineWidth(2);
+  chargecheatreco_3->SetLineWidth(1);
   chargecheatreco_3->SetLineStyle(1);
+  chargecheatreco_3->SetMarkerSize(1.6);
+  chargecheatreco_3->SetMarkerStyle(3);
   chargecheatreco_3->SetMarkerColor(kGray+1);
-  chargecheatreco_3->Draw("histoesame");
+  chargecheatreco_3->Draw("histopesame");
   
   chargecheatreco_0_eR->SetMarkerColor(kBlue+1);
   chargecheatreco_0_eR->SetFillColor(kBlue+1);
