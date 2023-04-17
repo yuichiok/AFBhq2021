@@ -99,34 +99,35 @@ void NPlots(int iquark=5, float lum=-1, int pol=0) {
     
     if(iquark==4) {
       //signal
-      Nhisto[6]->SetLineColor(2);
+      Nhisto[6]->SetLineColor(kRed);
       Nhisto[6]->SetLineWidth(2);
-      Nhisto[6]->SetFillColor(2);
+      Nhisto[6]->SetFillColor(kWhite);
       
       //heavy quark bkg
-      Nhisto[5]->SetLineColor(4);
+      Nhisto[5]->SetLineColor(kRed);
       Nhisto[5]->SetLineWidth(2);
-      Nhisto[5]->SetFillColor(4);
+      Nhisto[5]->SetFillColor(kRed);
     }
 
     if(iquark==5) {
       //c-quark bkg
-      Nhisto[5]->SetLineColor(2);
+      Nhisto[5]->SetLineColor(kRed);
       Nhisto[5]->SetLineWidth(2);
-      Nhisto[5]->SetFillColor(2);
+      Nhisto[5]->SetFillColor(kRed);
       
       //signakl
-      Nhisto[6]->SetLineColor(4);
+      Nhisto[6]->SetLineColor(kRed);
       Nhisto[6]->SetLineWidth(2);
-      Nhisto[6]->SetFillColor(4);
+      Nhisto[6]->SetFillColor(kWhite);
     }
     //uds quark bkg
     Nhisto[4]->SetLineColor(kMagenta+2);
     Nhisto[4]->SetLineWidth(2);
     Nhisto[4]->SetFillColor(kMagenta+2);
+    Nhisto[4]->SetFillStyle(3002);
     //radreturn
     Nhisto[3]->SetLineColor(kGreen+1);
-    Nhisto[3]->SetLineWidth(2);
+    Nhisto[3]->SetLineWidth(1);
     Nhisto[3]->SetFillColor(kGreen+1);
     Nhisto[3]->SetFillStyle(3001);
 
@@ -165,12 +166,12 @@ void NPlots(int iquark=5, float lum=-1, int pol=0) {
     }
 
     leg->AddEntry(Nhisto[6],signal,"lf");
-    leg->AddEntry(Nhisto[5],qbkg,"lf");
-    leg->AddEntry(Nhisto[4],"q#bar{q}, q=uds","lf");
-    leg->AddEntry(Nhisto[3],"Rad. Ret.","lf");
-    leg->AddEntry(Nhisto[2],"WW","lf");
-    leg->AddEntry(Nhisto[1],"q#bar{q}H","lf");
-    leg->AddEntry(Nhisto[0],"ZZ","lf");
+    leg->AddEntry(Nhisto[5],qbkg,"f");
+    leg->AddEntry(Nhisto[4],"q#bar{q}, q=uds","f");
+    leg->AddEntry(Nhisto[3],"Rad. Ret.","f");
+    leg->AddEntry(Nhisto[2],"WW","f");
+    leg->AddEntry(Nhisto[1],"q#bar{q}H","f");
+    leg->AddEntry(Nhisto[0],"ZZ","f");
 
     if(ihisto==0) cout<<ihisto<<" "<<iquark<<" "<<pol<<" "<<(Nhisto[4]->Integral()+Nhisto[5]->Integral()+Nhisto[6]->Integral())/Nhisto[3]->Integral()<<endl;
     else  cout<<ihisto<<" "<<iquark<<" "<<pol<<" "<<Nhisto[6]->Integral()/Nhisto[3]->Integral()<<endl;
