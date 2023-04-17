@@ -390,8 +390,8 @@ void Plots_CrossDiff(int mode=0) {
   TH1F* total_eR = (TH1F*)f2->Get("h_Ntotal_nocuts");
   totalev=total->Integral();
   totalev_eR=total_eR->Integral();
-  luminosity=totalev/cross_section[0][3];
-  luminosity_eR=totalev_eR/cross_section[1][3];
+  luminosity=totalev/cross_section[0][0];
+  luminosity_eR=totalev_eR/cross_section[1][0];
   
   TH1F* temp_AFBb = (TH1F*)f->Get(TString::Format("h_AFBb_acol30_KLowerThan%i",35));
   TH1F* temp_AFBb_eR = (TH1F*)f2->Get(TString::Format("h_AFBb_acol30_KLowerThan%i",35));
@@ -462,24 +462,24 @@ void Plots_CrossDiff(int mode=0) {
   gAFBb->GetYaxis()->SetTitle("cross section [fb] / 0.05");
   gAFBb->GetYaxis()->SetRangeUser(0,500);
   gAFBb->GetXaxis()->SetRangeUser(-1,1);
-  gAFBb->SetLineColor(4);
-  gAFBb->SetLineWidth(2);
+  gAFBb->SetLineColor(kGreen+1);
+  gAFBb->SetLineWidth(5);
   gAFBb->SetLineStyle(1);
   gAFBb->Draw("ac");
 
-  gAFBb_eR->SetLineColor(4);
-  gAFBb_eR->SetLineWidth(2);
+  gAFBb_eR->SetLineColor(kGreen+1);
+  gAFBb_eR->SetLineWidth(5);
   gAFBb_eR->SetLineStyle(2);
   gAFBb_eR->Draw("c");
 
-  gAFBc->SetLineColor(2);
+  gAFBc->SetLineColor(kRed);
   gAFBc->SetLineWidth(2);
   gAFBc->SetLineStyle(1);
   gAFBc->Draw("c");
 
-  gAFBc_eR->SetLineColor(2);
+  gAFBc_eR->SetLineColor(kRed);
   gAFBc_eR->SetLineWidth(2);
-  gAFBc_eR->SetLineStyle(2);
+  gAFBc_eR->SetLineStyle(7);
   gAFBc_eR->Draw("c");
 
 
@@ -496,8 +496,8 @@ void Plots_CrossDiff(int mode=0) {
   TString pol_string1 = "e_{L}^{-}e_{R}^{+}";
   TString pol_string2 = "e_{R}^{-}e_{L}^{+}";
 
-  TString string1 = "";
-  TString string2 = "";
+  TString string1 = ", P_{e^{-}e^{+}}=(-1,+1)";
+  TString string2 = ", P_{e^{-}e^{+}}=(+1,-1)";
 
   if(mode==1) {
     pol_string1 = "e^{-}e^{+}";
@@ -509,10 +509,10 @@ void Plots_CrossDiff(int mode=0) {
   TLegend *leg_b = new TLegend(0.2,0.72,0.5,0.91);
   leg_b->SetTextSize(0.035);
   leg_b->SetTextFont(42);
-  leg_b->AddEntry(test,TString::Format("%s#rightarrow q#bar{q}%s",pol_string1.Data(),string1.Data()),"l");
-  leg_b->AddEntry(test2,TString::Format("%s#rightarrow q#bar{q}%s",pol_string2.Data(),string2.Data()),"l");
-  leg_b->AddEntry(gAFBb,"q=b","l");
-  leg_b->AddEntry(gAFBc,"q=c","l");
+  leg_b->AddEntry(gAFBb,TString::Format("%s#rightarrow b#bar{b}%s",pol_string1.Data(),string1.Data()),"l");
+  leg_b->AddEntry(gAFBb_eR,TString::Format("%s#rightarrow b#bar{b}%s",pol_string2.Data(),string2.Data()),"l");
+  leg_b->AddEntry(gAFBc,TString::Format("%s#rightarrow c#bar{c}%s",pol_string1.Data(),string1.Data()),"l");
+  leg_b->AddEntry(gAFBc_eR,TString::Format("%s#rightarrow c#bar{c}%s",pol_string2.Data(),string2.Data()),"l");
   leg_b->SetFillColor(0);
   leg_b->SetLineColor(0);
   leg_b->SetShadowColor(0);
@@ -1488,7 +1488,6 @@ void Plots_R2(int mode=0) {
   
     TString pol_string1 = "e_{L}^{-}e_{R}^{+}";
   TString pol_string2 = "e_{R}^{-}e_{L}^{+}";
-
   TString string1 = "";
   TString string2 = "";
 
@@ -1763,14 +1762,14 @@ void Observables() {
 
   //Plots_Cross();
   for(int i=0; i<2; i++) {
-    Plots_AFB(i);
-    Plots_AFB2(i);
-    Plots_Cross0(i);
-    Plots_Cross(i);
-    Plots_Cross2(i);
+    //Plots_AFB(i);
+    //Plots_AFB2(i);
+    //Plots_Cross0(i);
+    //Plots_Cross(i);
+    //Plots_Cross2(i);
     Plots_CrossDiff(i);
-    Plots_R(i);
-    Plots_R2(i);
+    //Plots_R(i);
+    //Plots_R2(i);
   }
 
   //Plots_R();
