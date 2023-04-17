@@ -144,9 +144,9 @@ void Plots_R_AFB() {
   double y2[4]={sqrt(pow(afb_stat[0]/sqrt(0.25),2)+pow(afb_syst[0],2)),sqrt(pow(afb_stat[1]/sqrt(0.25),2)+pow(afb_syst[1],2)),sqrt(pow(afb_stat[2]/sqrt(0.54),2)+pow(afb_syst[2],2)),sqrt(pow(afb_stat[3]/sqrt(0.54),2)+pow(afb_syst[2],2))};
   double x2[4]={3.5,4.5,9.5,10.5};
 
-  double ey2[4]={0,0,0,0};
-  double ex2[4]={0,0,0,0};//0.5,0.5,0.5,0.5};
-  TGraphAsymmErrors * g_noTPC = new TGraphAsymmErrors(4,x2,y2,ex2,ex2,y2,ey2);
+  double ex2[4]={0,0,0,0};
+  double ey2[4]={y2[0]-sqrt( pow(afb_stat[0],2)+pow(afb_syst[0],2)),y2[1],y2[2]-sqrt( pow(afb_stat[2],2)+pow(afb_syst[2],2)),y2[3]};//0.5,0.5,0.5,0.5};
+  TGraphAsymmErrors * g_noTPC = new TGraphAsymmErrors(4,x2,y2,ex2,ex2,ey2,ex2);
 
 
   c_eL->Fill(0.5, sqrt( pow(r_stat[0],2)+pow(r_syst[0],2)));
@@ -185,6 +185,7 @@ void Plots_R_AFB() {
   q_eL->GetYaxis()->SetRangeUser(0,1.5);
   q_eL->GetXaxis()->SetRangeUser(0,11);
   q_eL->GetXaxis()->SetTickLength(0);
+  q_eL->SetFillStyle(3001);
   //  q_eL->GetXaxis()->SetNdivisions(512);
   q_eL->GetXaxis()->SetLabelSize(0.1);
 
@@ -207,6 +208,7 @@ void Plots_R_AFB() {
   c_eL->SetLineWidth(0);
   c_eL->SetLineStyle(0);
   c_eL->SetFillColor(kRed+1);
+  c_eL->SetFillStyle(3001);
   c_eL->Draw("histosame");
 
   c_eR->SetLineWidth(0);
@@ -218,6 +220,7 @@ void Plots_R_AFB() {
   b_eL->SetLineWidth(0);
   b_eL->SetLineStyle(0);
   b_eL->SetFillColor(kRed+1);
+  b_eL->SetFillStyle(3001);
   b_eL->Draw("histosame");
 
   b_eR->SetLineWidth(0);

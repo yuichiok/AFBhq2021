@@ -299,25 +299,25 @@ void HelicityAmplitudes() {
 
   h_c_stat_and_syst->SetLineWidth(0);
   h_c_stat_and_syst->SetLineStyle(0);
-  h_c_stat_and_syst->SetFillColor(kGreen-2);
+  h_c_stat_and_syst->SetFillColor(kGreen-3);
   h_c_stat_and_syst->Draw("histo");
   h_b_stat_and_syst->SetLineWidth(0);
   h_b_stat_and_syst->SetLineStyle(0);
-  h_b_stat_and_syst->SetFillColor(kMagenta+2);
+  h_b_stat_and_syst->SetFillColor(kGreen+3);
   h_b_stat_and_syst->Draw("histosame");
 
   h_c_notpc->SetLineWidth(0);
   h_c_notpc->SetLineStyle(1);
-  h_c_notpc->SetLineColor(kGreen-2);
+  h_c_notpc->SetLineColor(kGreen-3);
   h_c_notpc->SetFillStyle(3005);
-  h_c_notpc->SetFillColor(kGreen-2);
+  h_c_notpc->SetFillColor(kGreen-3);
   h_c_notpc->Draw("histosame");
 
   h_b_notpc->SetLineWidth(0);
   h_b_notpc->SetLineStyle(1);
-  h_b_notpc->SetLineColor(kMagenta+2);
+  h_b_notpc->SetLineColor(kGreen+3);
   h_b_notpc->SetFillStyle(3005);
-  h_b_notpc->SetFillColor(kMagenta+2);
+  h_b_notpc->SetFillColor(kGreen+3);
   h_b_notpc->Draw("histosame");
 
   h_c_stat->SetMarkerStyle(21);
