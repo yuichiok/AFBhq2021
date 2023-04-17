@@ -34,7 +34,7 @@ void Labels(TString pol)
   else if (pol == "eR")
     QQBARLabel2(0.3, 0.965, "e_{R}^{-}e_{L}^{+} #rightarrow c#bar{c} mc-2020", kGray + 2);
   else
-    QQBARLabel2(0.15, 0.965, "e^{-}e^{+} #rightarrow q#bar{q} (q=udscb, same size samples)", kGray + 2);
+    QQBARLabel2(0.15, 0.965, "e^{-}e^{+} #rightarrow q#bar{q} (q=uds,c,b same size samples)", kGray + 2);
 
   // QQBARLabel2(0.2,0.22, "Secondary Tracks in c-jets",kGray+4);
 }
@@ -50,10 +50,10 @@ void Plots()
   gStyle->SetTitleBorderSize(0);
   gStyle->SetTitleStyle(0);
   gStyle->SetTitleX(0.2);
-  gStyle->SetMarkerSize(0.2);
+  gStyle->SetMarkerSize(0.);
   // TGaxis::SetMaxDigits(2);
 
-  TString filename = "../results_"+energy+" _2023/jettag_cuts5_2f_hadronic_eL_pR.root";
+  TString filename = "../results_"+energy+"_2023/jettag_cuts5_2f_hadronic_eL_pR.root";
   TFile *f = new TFile(filename);
   TH1F *btag[40][2];
   TH1F *ctag[40][2];
@@ -63,7 +63,7 @@ void Plots()
     ctag[i][0] = (TH1F *)f->Get(TString::Format("h_jet_ctag_%i", i));
   }
 
-  filename = "../results_"+energy+" _2023/jettag_cuts5_2f_hadronic_eR_pL.root";
+  filename = "../results_"+energy+"_2023/jettag_cuts5_2f_hadronic_eR_pL.root";
   TFile *f2 = new TFile(filename);
 
   for (int i = 0; i < 40; i++)
@@ -135,18 +135,18 @@ void Plots()
   efficiency_b_b_eL->GetXaxis()->SetRangeUser(0, 1);
 
   efficiency_b_b_eL->SetLineColor(4);
-  efficiency_b_b_eL->SetLineWidth(2);
+  efficiency_b_b_eL->SetLineWidth(4);
   efficiency_b_b_eL->SetLineStyle(1);
   efficiency_b_b_eL->Draw("alp");
 
-  efficiency_c_b_eL->SetLineColor(kGreen + 2);
-  efficiency_c_b_eL->SetLineWidth(2);
+  efficiency_c_b_eL->SetLineColor(kGreen + 1);
+  efficiency_c_b_eL->SetLineWidth(1);
   efficiency_c_b_eL->SetLineStyle(1);
   efficiency_c_b_eL->Draw("lp");
 
   efficiency_uds_b_eL->SetLineColor(2);
-  efficiency_uds_b_eL->SetLineWidth(2);
-  efficiency_uds_b_eL->SetLineStyle(1);
+  efficiency_uds_b_eL->SetLineWidth(4);
+  efficiency_uds_b_eL->SetLineStyle(7);
   efficiency_uds_b_eL->Draw("lp");
 
   g_WP_b->SetLineColor(kGray);
@@ -193,7 +193,7 @@ void Plots()
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
-  c_eff_b->Print("plots_"+energy+" _2023/btagging_performance.eps");
+  c_eff_b->Print("plots_"+energy+"_2023/btagging_performance.eps");
 
   ///---------------------------------------------
   TGraph *efficiency_c_c_eL = new TGraph(n, x, eff_c[0][1]);
@@ -218,18 +218,18 @@ void Plots()
   efficiency_c_c_eL->GetXaxis()->SetRangeUser(0, 1);
 
   efficiency_c_c_eL->SetLineColor(4);
-  efficiency_c_c_eL->SetLineWidth(2);
+  efficiency_c_c_eL->SetLineWidth(4);
   efficiency_c_c_eL->SetLineStyle(1);
   efficiency_c_c_eL->Draw("al");
 
-  efficiency_b_c_eL->SetLineColor(kGreen + 2);
-  efficiency_b_c_eL->SetLineWidth(2);
+  efficiency_b_c_eL->SetLineColor(kGreen + 1);
+  efficiency_b_c_eL->SetLineWidth(1);
   efficiency_b_c_eL->SetLineStyle(1);
   efficiency_b_c_eL->Draw("l");
 
   efficiency_uds_c_eL->SetLineColor(2);
-  efficiency_uds_c_eL->SetLineWidth(2);
-  efficiency_uds_c_eL->SetLineStyle(1);
+  efficiency_uds_c_eL->SetLineWidth(4);
+  efficiency_uds_c_eL->SetLineStyle(2);
   efficiency_uds_c_eL->Draw("l");
 
   g_WP_c->SetLineColor(kGray);
@@ -273,7 +273,7 @@ void Plots()
   leg_c->SetLineColor(0);
   leg_c->SetShadowColor(0);
   leg_c->Draw();
-  c_eff_c->Print("plots_"+energy+" _2023/ctagging_performance.eps");
+  c_eff_c->Print("plots_"+energy+"_2023/ctagging_performance.eps");
 }
 
 void JetTag()
