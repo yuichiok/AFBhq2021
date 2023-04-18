@@ -1023,7 +1023,7 @@ void dEdxdistProjection(int quarkid=3) {
   TH2F*  p_kdEdx_dist_proton = (TH2F*)f->Get("p_kdEdx_dist_proton");
   TH2F*  test = (TH2F*)f->Get("n_sectracks");
 
-  TString filename2 =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
+  TString filename2 =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_3GeV.root";
 
   TFile *f2 = new TFile(filename2);
 
@@ -1099,8 +1099,8 @@ void dEdxdistProjection(int quarkid=3) {
   g_pion->Draw("a3");
 
   g_pion2->SetLineColor(4);
-  g_pion2->SetLineWidth(3);
-  g_pion2->SetLineStyle(2);
+  g_pion2->SetLineWidth(2);
+  g_pion2->SetLineStyle(1);
   g_pion2->Draw("l");
 
   g_kaon->SetLineColor(2);
@@ -1111,8 +1111,8 @@ void dEdxdistProjection(int quarkid=3) {
   g_kaon->Draw("3");
 
   g_kaon2->SetLineColor(2);
-  g_kaon2->SetLineWidth(3);
-  g_kaon2->SetLineStyle(2);
+  g_kaon2->SetLineWidth(1);
+  g_kaon2->SetLineStyle(1);
   g_kaon2->Draw("l");
   
 
@@ -1124,21 +1124,20 @@ void dEdxdistProjection(int quarkid=3) {
   g_proton->Draw("3");
 
   g_proton2->SetLineColor(kGreen+2);
-  g_proton2->SetLineWidth(3);
-  g_proton2->SetLineStyle(2);
+  g_proton2->SetLineWidth(2);
+  g_proton2->SetLineStyle(1);
   g_proton2->Draw("l");
 
   
   test->SetLineColor(1);
   test->SetLineWidth(0);
   test->SetLineStyle(0);
-  test->SetFillStyle(3002);
+  test->SetFillStyle(3001);
   test->SetFillColor(kGray+1);
 
   test2->SetLineColor(1);
-  test2->SetLineWidth(3);
-  test2->SetLineStyle(2);
-
+  test2->SetLineWidth(2);
+  test2->SetLineStyle(1);
  
   if(quarkid==3)   QQBARLabel2(0.5,0.9,"Secondary Tracks in q-jets (q=uds)",kGray+4);
   if(quarkid==4)   QQBARLabel2(0.5,0.9,"Secondary Tracks in c-jets",kGray+4);
@@ -1149,9 +1148,9 @@ void dEdxdistProjection(int quarkid=3) {
   leg->SetTextFont(42);
   leg->AddEntry(test,"All secondary tracks","f");
   leg->AddEntry(test2,"|p_{trk}|>3 GeV","l");
-  leg->AddEntry(g_pion,"pions","l");
-  leg->AddEntry(g_kaon,"kaons","l");
-  leg->AddEntry(g_proton,"protons","l");
+  leg->AddEntry(g_pion,"pions","f");
+  leg->AddEntry(g_kaon,"kaons","f");
+  leg->AddEntry(g_proton,"protons","f");
   leg->SetFillColor(0);
   leg->SetLineColor(0);
   leg->SetShadowColor(0);
@@ -1956,12 +1955,12 @@ void Plots_dEdx_draft() {
   //Ntracks2();
 
   //for(int i=5; i<6; i++)  dEdxdist(i);
-  //for(int i=4; i<6; i++)  dEdxdistProjection(i);
+  for(int i=4; i<6; i++)  dEdxdistProjection(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 
   // NHits();
   //for(int i=4; i<6; i++) EffPurity_momentum(i);
-  for(int i=4; i<6; i++) EffPurity_angle(i);
+  //for(int i=4; i<6; i++) EffPurity_angle(i);
   //for(int i=4; i<6; i++) EffPurity_dedxdist2(i);
   //dEdx(0);
   //dEdx2(0);
