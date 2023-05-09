@@ -26,23 +26,24 @@
 
 TString energy="250GeV";
 
-void Labels(int i=0, TString pol="eL"){
+void Labels(int i=0, TString pol="eL", float textsize=0.045)
+{
 
   QQBARLabel(0.86,0.954,"");
-  if(i==0) QQBARLabel2(0.04,0.07, "[No Cuts]",kOrange+3);
-  if(i==1) QQBARLabel2(0.04,0.07, "photon veto_{0}",kOrange+3);
-  if(i==2) QQBARLabel2(0.04,0.07, "photon veto cut",kOrange+3);
-  if(i==3) QQBARLabel2(0.04,0.082, "photon veto & acolinearity cuts",kOrange+3);
+  if(i==0) QQBARLabel2(0.04,0.07, "[No Cuts]",kOrange+ 2, textsize);
+  if(i==1) QQBARLabel2(0.04,0.07, "photon veto_{0}",kOrange+ 2, textsize);
+  if(i==2) QQBARLabel2(0.04,0.07, "photon veto cut",kOrange+ 2, textsize);
+  if(i==3) QQBARLabel2(0.04,0.08, "photon veto & acolinearity cuts",kOrange+ 2, textsize);
 
   if(i==4) {
-    QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} cuts",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& m_{j1j1} cuts",kOrange+3);
+    QQBARLabel2(0.04,0.08, "photon veto & acolinearity",kOrange+ 2, textsize);
+    //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} cuts",kOrange+ 2, textsize);
+    QQBARLabel2(0.04,0.028, "& m_{j1j1} cuts",kOrange+ 2, textsize);
   }
   if(i==5) {
-    QQBARLabel2(0.04,0.082, "photon veto & acolinearity",kOrange+3);
-    //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} & y_{23} cuts",kOrange+3);
-    QQBARLabel2(0.04,0.03, "& m_{j1j1} & y_{23} cuts",kOrange+3);
+    QQBARLabel2(0.04,0.08, "photon veto & acolinearity",kOrange+ 2, textsize);
+    //QQBARLabel2(0.04,0.03, "& K_{reco} & m_{j1j1} & y_{23} cuts",kOrange+ 2, textsize);
+    QQBARLabel2(0.04,0.028, "& m_{j1j1} & y_{23} cuts",kOrange+ 2, textsize);
 
   }
 
@@ -75,7 +76,7 @@ void effpreselection() {
     if(i==0) cuts=0;
     if(i==1) cuts=step;
     
-    TString folder=TString::Format("../results_"+energy+"_2023/selection_cuts%i_",cuts);
+    TString folder=TString::Format("../results/selection_cuts%i_",cuts);
     
     //----------------------------------
     TString filename = folder+"2f_hadronic_sample_"+pol+".root";//folder+"bbbar_"+kt+sel+"250GeV_"+pol+".root";

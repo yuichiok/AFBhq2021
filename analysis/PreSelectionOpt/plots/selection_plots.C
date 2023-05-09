@@ -27,30 +27,30 @@
 
 TString energy="250GeV";
 
-void Labels(int i = 0, TString pol = "eL")
+void Labels(int i = 0, TString pol = "eL", float textsize=0.045)
 {
 
   QQBARLabel(0.86, 0.954, "");
   if (i == 0)
-    QQBARLabel2(0.04, 0.07, "[No Cuts]", kOrange + 3);
+    QQBARLabel2(0.04, 0.07, "[No Cuts]", kOrange + 2,textsize);
   if (i == 1)
-    QQBARLabel2(0.04, 0.07, "photon veto_{0}", kOrange + 3);
+    QQBARLabel2(0.04, 0.07, "photon veto_{0}", kOrange + 2,textsize);
   if (i == 2)
-    QQBARLabel2(0.04, 0.07, "photon veto cut", kOrange + 3);
+    QQBARLabel2(0.04, 0.07, "photon veto cut", kOrange + 2,textsize);
   if (i == 3)
-    QQBARLabel2(0.04, 0.082, "photon veto & acolinearity cuts", kOrange + 3);
+    QQBARLabel2(0.04, 0.07, "photon veto & acolinearity cuts", kOrange + 2,textsize);
 
   if (i == 4)
   {
-    QQBARLabel2(0.04, 0.082, "photon veto & acolinearity", kOrange + 3);
+    QQBARLabel2(0.04, 0.08, "photon veto & acolinearity", kOrange + 2,textsize);
     // QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} cuts",kOrange+3);
-    QQBARLabel2(0.04, 0.03, "& m_{jj} cuts", kOrange + 3);
+    QQBARLabel2(0.04, 0.028, "& m_{jj} cuts", kOrange + 2,textsize);
   }
   if (i == 5)
   {
-    QQBARLabel2(0.04, 0.082, "photon veto & acolinearity", kOrange + 3);
+    QQBARLabel2(0.04, 0.08, "photon veto & acolinearity", kOrange + 2,textsize);
     // QQBARLabel2(0.04,0.03, "& K_{reco} & m_{jj} & y_{23} cuts",kOrange+3);
-    QQBARLabel2(0.04, 0.03, "& m_{jj} & y_{23} cuts", kOrange + 3);
+    QQBARLabel2(0.04, 0.028, "& m_{jj} & y_{23} cuts", kOrange + 2,textsize);
   }
 
   if (pol == "eL")
@@ -61,7 +61,7 @@ void Labels(int i = 0, TString pol = "eL")
 
 void selection_plots(bool normalised = true, TString output = "efficiency")
 {
-  for (int polarisation = 0; polarisation < 1; polarisation++)
+  for (int polarisation = 1; polarisation < 2; polarisation++)
   {
     cout << "bb qq radreturn ww zz hz 6fttbar " << endl;
 
@@ -99,7 +99,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
     cout << output << endl;
     float luminosity_0 = 1;
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 1; i++)
     {
 
       // if(i==1) i=8;
@@ -108,7 +108,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
 
       //**********************************************************
       // /*ZZ
-      TString folder = TString::Format("../results_"+energy+"_2023/selection_cuts%i_", cuts);
+      TString folder = TString::Format("../results/selection_cuts%i_", cuts);
 
       TString filename = folder + "2f_hadronic_sample_" + pol + ".root";
 
@@ -155,10 +155,10 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       TH1F *h_costheta_radreturn = (TH1F *)f->Get("h_costheta_radreturn");
       TH1F *h_K_radreturn = (TH1F *)f->Get("h_K_radreturn");
 
-      bb_integral_0 = h_mjj_bb->GetEntries();
-      qq_integral_0 = h_mjj_qq->GetEntries();
-      cc_integral_0 = h_mjj_cc->GetEntries();
-      radreturn_integral_0 = h_mjj_radreturn->GetEntries();
+      bb_integral_0 = h_costheta_bb->GetEntries();
+      qq_integral_0 = h_costheta_qq->GetEntries();
+      cc_integral_0 = h_costheta_cc->GetEntries();
+      radreturn_integral_0 = h_costheta_radreturn->GetEntries();
 
       float luminosity = h_luminosity_cross_2f->GetEntries() / cross_section[polarisation][0];
       if (i == 0)
@@ -222,7 +222,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       TH1F *h_costheta_ww = (TH1F *)f2->Get("h_costheta_bb");
       TH1F *h_K_ww = (TH1F *)f2->Get("h_K_bb");
 
-      ww_integral_0 = h_mjj_ww->GetEntries();
+      ww_integral_0 = h_costheta_ww->GetEntries();
       float luminosity_ww = h_luminosity_cross_ww->GetEntries() / cross_section[polarisation][4];
 
       h_mjj_ww->Scale(luminosity / luminosity_ww);
@@ -250,7 +250,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       TH1F *h_costheta_qqH = (TH1F *)f3->Get("h_costheta_bb");
       TH1F *h_K_qqH = (TH1F *)f3->Get("h_K_bb");
 
-      qqH_integral_0 = h_mjj_qqH->GetEntries();
+      qqH_integral_0 = h_costheta_qqH->GetEntries();
       float luminosity_qqH = h_luminosity_cross_qqH->GetEntries() / cross_section[polarisation][3];
 
       h_mjj_qqH->Scale(luminosity / luminosity_qqH);
@@ -278,7 +278,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       TH1F *h_costheta_zz = (TH1F *)f4->Get("h_costheta_bb");
       TH1F *h_K_zz = (TH1F *)f4->Get("h_K_bb");
 
-      zz_integral_0 = h_mjj_zz->GetEntries();
+      zz_integral_0 = h_costheta_zz->GetEntries();
       float luminosity_zz = h_luminosity_cross_zz->GetEntries() / cross_section[polarisation][2];
 
       h_mjj_zz->Scale(luminosity / luminosity_zz);
@@ -292,23 +292,27 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_K_zz->Scale(luminosity / luminosity_zz);
 
       // Efficiency
-      bb_integral[i + 1] = h_mjj_bb->Integral();
-      qq_integral[i + 1] = h_mjj_qq->Integral();
-      cc_integral[i + 1] = h_mjj_cc->Integral();
-      radreturn_integral[i + 1] = h_mjj_radreturn->Integral();
-      zz_integral[i + 1] = h_mjj_zz->Integral();
-      qqH_integral[i + 1] = h_mjj_qqH->Integral();
-      ww_integral[i + 1] = h_mjj_ww->Integral();
+      float scale=1.;
+      if(polarisation==1) scale=1.;
+      bb_integral[i + 1] = scale*h_costheta_bb->Integral();
+      qq_integral[i + 1] = h_costheta_qq->Integral();
+      scale=1.;
+      if(polarisation==1) scale=1.;
+      cc_integral[i + 1] = scale*h_costheta_cc->Integral();
+      radreturn_integral[i + 1] = h_costheta_radreturn->Integral();
+      zz_integral[i + 1] = h_costheta_zz->Integral();
+      qqH_integral[i + 1] = h_costheta_qqH->Integral();
+      ww_integral[i + 1] = h_costheta_ww->Integral();
 
       if (i == 0)
       {
-        bb_integral[i] = h_mjj_bb->Integral();
-        qq_integral[i] = h_mjj_qq->Integral();
-        cc_integral[i] = h_mjj_cc->Integral();
-        radreturn_integral[i] = h_mjj_radreturn->Integral();
-        zz_integral[i] = h_mjj_zz->Integral();
-        qqH_integral[i] = h_mjj_qqH->Integral();
-        ww_integral[i] = h_mjj_ww->Integral();
+        bb_integral[i] = h_costheta_bb->Integral();
+        qq_integral[i] = h_costheta_qq->Integral();
+        cc_integral[i] = h_costheta_cc->Integral();
+        radreturn_integral[i] = h_costheta_radreturn->Integral();
+        zz_integral[i] = h_costheta_zz->Integral();
+        qqH_integral[i] = h_costheta_qqH->Integral();
+        ww_integral[i] = h_costheta_ww->Integral();
       }
 
       h_y23_bb->Rebin(100);
@@ -488,7 +492,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       leg2->Draw();
       Labels(i, pol);
 
-      TArrow *arr0 = new TArrow(0.3, 0, 0.3, 0.34, 0.02, "<|>");
+      TArrow *arr0 = new TArrow(0.3, 0, 0.3, 0.325, 0.02, "<|>");
       arr0->SetLineColor(kGray);
       arr0->SetFillColor(kGray);
       arr0->Draw();
@@ -627,7 +631,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       leg3->Draw();
       leg2->Draw();
 
-      TArrow *arr2 = new TArrow(140., h_mjj_bb->GetMinimum(), 140, 0.178, 0.02, "<|>");
+      TArrow *arr2 = new TArrow(140., h_mjj_bb->GetMinimum(), 140, 0.165, 0.02, "<|>");
       arr2->SetLineColor(kGray);
       arr2->SetFillColor(kGray);
       arr2->Draw();
@@ -691,7 +695,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       leg1->Draw();
       leg2->Draw();
 
-      TArrow *arr3 = new TArrow(0.0125, 0, 0.0125, 0.9, 0.02, "<|>");
+      TArrow *arr3 = new TArrow(0.015, 0.0000013, 0.015, 0.98, 0.02, "<|>");
       arr3->SetLineColor(kGray);
       arr3->SetFillColor(kGray);
       arr3->Draw();
