@@ -311,13 +311,13 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         ww_integral[i] = h_mjj_ww->Integral();
       }
 
-      h_y23_bb->Rebin(10);
-      h_y23_cc->Rebin(10);
-      h_y23_qq->Rebin(10);
-      h_y23_radreturn->Rebin(10);
-      h_y23_zz->Rebin(10);
-      h_y23_qqH->Rebin(10);
-      h_y23_ww->Rebin(10);
+      h_y23_bb->Rebin(100);
+      h_y23_cc->Rebin(100);
+      h_y23_qq->Rebin(100);
+      h_y23_radreturn->Rebin(100);
+      h_y23_zz->Rebin(100);
+      h_y23_qqH->Rebin(100);
+      h_y23_ww->Rebin(100);
 
       h_d23_bb->Rebin(100);
       h_d23_cc->Rebin(100);
@@ -388,7 +388,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         h_acol_radreturn->GetYaxis()->SetTitle("Entries");
       h_acol_radreturn->GetXaxis()->SetTitle("sin(#Psi_{acol})");
       h_acol_radreturn->GetXaxis()->SetRangeUser(0, 1);
-      h_acol_bb->SetLineColor(4);
+      /*h_acol_bb->SetLineColor(4);
       h_acol_qq->SetLineColor(1);
       h_acol_cc->SetLineStyle(2);
       h_acol_radreturn->SetLineColor(2);
@@ -402,7 +402,27 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_acol_radreturn->SetLineWidth(2);
       h_acol_ww->SetLineWidth(2);
       h_acol_zz->SetLineWidth(2);
+      h_acol_qqH->SetLineWidth(2);*/
+      h_acol_bb->SetLineColor(kBlue+3);
+      h_acol_cc->SetLineColor(kBlue);
+      h_acol_qq->SetLineColor(kBlue-3);
+      h_acol_bb->SetLineWidth(4);
+      h_acol_cc->SetLineWidth(3);
+      h_acol_qq->SetLineWidth(2);
+      h_acol_radreturn->SetLineColor(kRed+2);
+      h_acol_ww->SetLineColor(kRed);
+      h_acol_zz->SetLineColor(kRed-4);
+      h_acol_qqH->SetLineColor(kRed-7);
+
+      h_acol_radreturn->SetLineWidth(2);
+      h_acol_ww->SetLineWidth(2);
+      h_acol_zz->SetLineWidth(4);
       h_acol_qqH->SetLineWidth(2);
+      h_acol_radreturn->SetLineStyle(2);
+      h_acol_ww->SetLineStyle(9);
+      h_acol_zz->SetLineStyle(7);
+      h_acol_qqH->SetLineStyle(1);
+
 
       if (normalised == true)
       {
@@ -425,7 +445,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         h_acol_qqH->Draw("histosame");
       }
 
-      TLegend *leg1 = new TLegend(0.2, 0.78, 0.4, 0.9); //(0.4,0.3,0.5,0.6);
+      TLegend *leg1 = new TLegend(0.3, 0.78, 0.4, 0.9); //(0.4,0.3,0.5,0.6);
       leg1->SetTextSize(0.035);
       leg1->AddEntry(h_acol_bb, "#font[42]{b#bar{b}}", "l");
       leg1->AddEntry(h_acol_cc, "#font[42]{c#bar{c}}", "l");
@@ -437,10 +457,10 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       // leg1->Draw();
 
       float xmin = 0.58, ymin = 0.76, xmax = 0.8, ymax = 0.9;
-      if (i == 2)
+      if (i == 3)
       {
-        xmin = 0.54;
-        xmax = 0.76;
+        xmin = 0.58;
+        xmax = 0.8;
       }
 
       TLegend *leg3 = new TLegend(xmin, 0.48, xmax, 0.6); //(0.4,0.3,0.5,0.6);
@@ -468,7 +488,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       leg2->Draw();
       Labels(i, pol);
 
-      TArrow *arr0 = new TArrow(0.3, 0, 0.3, 0.31, 0.02, "<|>");
+      TArrow *arr0 = new TArrow(0.3, 0, 0.3, 0.34, 0.02, "<|>");
       arr0->SetLineColor(kGray);
       arr0->SetFillColor(kGray);
       arr0->Draw();
@@ -546,6 +566,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       // h_mjj_bb->GetYaxis()->SetRangeUser(0,h_mjj_bb->GetMaximum()*2);
       //   h_mjj_bb->GetYaxis()->SetRangeUser(0,h_mjj_bb->GetMaximum()*10);
       //   h_mjj_bb->GetXaxis()->SetRangeUser(0,0.11);
+      /*
       h_mjj_bb->SetLineColor(4);
       h_mjj_qq->SetLineColor(1);
       h_mjj_cc->SetLineStyle(2);
@@ -561,6 +582,26 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       h_mjj_ww->SetLineWidth(2);
       h_mjj_zz->SetLineWidth(2);
       h_mjj_qqH->SetLineWidth(2);
+      */
+      h_mjj_bb->SetLineColor(kBlue+3);
+      h_mjj_cc->SetLineColor(kBlue);
+      h_mjj_qq->SetLineColor(kBlue-3);
+      h_mjj_bb->SetLineWidth(4);
+      h_mjj_cc->SetLineWidth(3);
+      h_mjj_qq->SetLineWidth(2);
+      h_mjj_radreturn->SetLineColor(kRed+2);
+      h_mjj_ww->SetLineColor(kRed);
+      h_mjj_zz->SetLineColor(kRed-4);
+      h_mjj_qqH->SetLineColor(kRed-7);
+
+      h_mjj_radreturn->SetLineWidth(2);
+      h_mjj_ww->SetLineWidth(2);
+      h_mjj_zz->SetLineWidth(4);
+      h_mjj_qqH->SetLineWidth(2);
+      h_mjj_radreturn->SetLineStyle(2);
+      h_mjj_ww->SetLineStyle(9);
+      h_mjj_zz->SetLineStyle(7);
+      h_mjj_qqH->SetLineStyle(1);
 
       if (normalised == true)
       {
@@ -591,7 +632,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       arr2->SetFillColor(kGray);
       arr2->Draw();
 
-      if (i == 4)
+      if (i == 3)
         canvas2->Print("plots_"+energy+"_2023/mjj_cut.eps");
 
       TCanvas *canvas3 = new TCanvas("canvas_y23", "canvas_y23", 800, 800);
@@ -604,23 +645,27 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
         h_y23_bb->GetYaxis()->SetTitle("Entries");
       h_y23_bb->GetXaxis()->SetTitle("y_{23}");
       // h_y23_bb->GetYaxis()->SetRangeUser(10,h_y23_bb->GetMaximum()*10);
-      h_y23_bb->GetXaxis()->SetRangeUser(0, 0.2);
+      //      h_y23_bb->GetXaxis()->SetRangeUser(0.00001, 0.2);
 
-      h_y23_bb->SetLineColor(4);
-      h_y23_qq->SetLineColor(1);
-      h_y23_cc->SetLineStyle(2);
-      h_y23_radreturn->SetLineColor(2);
-      h_y23_ww->SetLineColor(kOrange);
-      h_y23_zz->SetLineColor(6);
-      h_y23_qqH->SetLineColor(7);
-
-      h_y23_bb->SetLineWidth(2);
-      h_y23_cc->SetLineWidth(2);
+      h_y23_bb->SetLineColor(kBlue+3);
+      h_y23_cc->SetLineColor(kBlue);
+      h_y23_qq->SetLineColor(kBlue-3);
+      h_y23_bb->SetLineWidth(4);
+      h_y23_cc->SetLineWidth(3);
       h_y23_qq->SetLineWidth(2);
+      h_y23_radreturn->SetLineColor(kRed+2);
+      h_y23_ww->SetLineColor(kRed);
+      h_y23_zz->SetLineColor(kRed-4);
+      h_y23_qqH->SetLineColor(kRed-7);
+
       h_y23_radreturn->SetLineWidth(2);
       h_y23_ww->SetLineWidth(2);
-      h_y23_zz->SetLineWidth(2);
+      h_y23_zz->SetLineWidth(4);
       h_y23_qqH->SetLineWidth(2);
+      h_y23_radreturn->SetLineStyle(2);
+      h_y23_ww->SetLineStyle(9);
+      h_y23_zz->SetLineStyle(7);
+      h_y23_qqH->SetLineStyle(1);
 
       if (normalised == true)
       {
@@ -646,7 +691,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
       leg1->Draw();
       leg2->Draw();
 
-      TArrow *arr3 = new TArrow(0.0125, h_y23_bb->GetMinimum(), 0.0125, 0.4, 0.02, "<|>");
+      TArrow *arr3 = new TArrow(0.0125, 0, 0.0125, 0.9, 0.02, "<|>");
       arr3->SetLineColor(kGray);
       arr3->SetFillColor(kGray);
       arr3->Draw();

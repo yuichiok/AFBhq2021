@@ -28,6 +28,8 @@
 bool cquark;
 int iquark=-1;
 
+TString energy="250GeV";
+
 void Labels(TString pol){
   // QQBARLabel(0.86,0.952,"Work in Progress");
   if(iquark>-1)
@@ -99,7 +101,7 @@ void NHits() {
   
   TString squark="udscbquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
   TFile *f = new TFile(filename);
   cout<<filename<<endl;
 
@@ -121,7 +123,7 @@ void NHits() {
   QQBARLabel(0.8,0.954,"");
   QQBARLabel2(0.3,0.25,"Secondary Tracks in q-jets (q=udscb)",kGray+4);
 
-  c_mom->Print("plots_draft/TPCHits_in_"+squark+"jets.eps");
+  c_mom->Print("plots_draft_"+energy+"/TPCHits_in_"+squark+"jets.eps");
 
 }
 
@@ -145,7 +147,7 @@ void Mom(int quarkid=4) {
   if(iquark==3) squark="udsquark";
   if(iquark==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
   TFile *f = new TFile(filename);
   cout<<filename<<endl;
 
@@ -154,7 +156,7 @@ void Mom(int quarkid=4) {
   TH1F*  p_proton = (TH1F*)f->Get("p_proton");
   TH1F*  p_kaontest = (TH1F*)f->Get("kdEdx_dist_kaon");
 
-  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
+  TString filename2 = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
   TFile *f2 = new TFile(filename2);
   TH1F*  p_kaon2 = (TH1F*)f2->Get("p_kaon");
   TH1F*  p_pion2 = (TH1F*)f2->Get("p_pion");
@@ -166,31 +168,33 @@ void Mom(int quarkid=4) {
   p_proton2->Scale(p_proton->GetEntries()/p_proton2->GetEntries());
 
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
-  //gPad->SetLogy();
+  gPad->SetLogy();
   c_mom->cd(1);
   // c_mom->SetGrid();
   p_pion->GetXaxis()->SetTitle("|#vec{p}_{trk}| [GeV]");
   p_pion->GetYaxis()->SetTitle("a.u.");
   p_pion->GetXaxis()->SetRangeUser(0,60);
+  p_pion->GetYaxis()->SetRangeUser(100,p_pion->GetMaximum()*5);
+
 
   p_pion->SetLineColor(4);
-  p_pion->SetLineWidth(3);
-  p_pion->SetLineStyle(1);
+  p_pion->SetLineWidth(4);
+  p_pion->SetLineStyle(7);
   p_pion->Draw("histo");
 
   p_kaon->SetLineColor(2);
-  p_kaon->SetLineWidth(3);
+  p_kaon->SetLineWidth(4);
   p_kaon->SetLineStyle(1);
   p_kaon->Draw("histosame");
 
   p_proton->SetLineColor(kGreen+2);
-  p_proton->SetLineWidth(3);
+  p_proton->SetLineWidth(2);
   p_proton->SetLineStyle(1);
   p_proton->Draw("histosame");
 
-  p_pion2->SetLineColor(4);
-  p_pion2->SetLineWidth(3);
-  p_pion2->SetLineStyle(2);
+ /* p_pion2->SetLineColor(4);
+  p_pion2->SetLineWidth(1);
+  p_pion2->SetLineStyle(1);
   p_pion2->Draw("histosame");
 
   p_kaon2->SetLineColor(2);
@@ -201,7 +205,7 @@ void Mom(int quarkid=4) {
   p_proton2->SetLineColor(kGreen+2);
   p_proton2->SetLineWidth(3);
   p_proton2->SetLineStyle(2);
-  p_proton2->Draw("histosame");
+  p_proton2->Draw("histosame");*/
    
   p_kaontest->SetLineColor(1);
   p_kaontest->SetLineWidth(3);
@@ -215,11 +219,11 @@ void Mom(int quarkid=4) {
   if(quarkid==4)   QQBARLabel2(0.5,0.9,"Secondary Tracks in c-jets",kGray+4);
   if(quarkid==5)   QQBARLabel2(0.5,0.9,"Secondary Tracks in b-jets",kGray+4);
   */
-  TLegend *leg = new TLegend(0.6,0.65,0.8,0.85);
+  TLegend *leg = new TLegend(0.6,0.75,0.8,0.85);
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
-  leg->AddEntry(p_kaontest,"e_{L}^{-}e_{R}^{+}","l");
-  leg->AddEntry(p_kaontest2,"e_{R}^{-}e_{L}^{+}","l");
+ // leg->AddEntry(p_kaontest,"e_{L}^{-}e_{R}^{+}","l");
+  //leg->AddEntry(p_kaontest2,"e_{R}^{-}e_{L}^{+}","l");
 
   leg->AddEntry(p_pion,"pions","l");
   leg->AddEntry(p_kaon,"kaons","l");
@@ -230,7 +234,7 @@ void Mom(int quarkid=4) {
   leg->Draw();
 
 
-  c_mom->Print("plots_draft/MomentumSecTracks_in_"+squark+"jets.eps");
+  c_mom->Print("plots_draft_"+energy+"/MomentumSecTracks_in_"+squark+"jets.eps");
 
 }
 
@@ -253,7 +257,7 @@ void Costheta(int quarkid=4) {
   if(iquark==3) squark="udsquark";
   if(iquark==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
   TFile *f = new TFile(filename);
   cout<<filename<<endl;
 
@@ -262,7 +266,7 @@ void Costheta(int quarkid=4) {
   TH1F*  costheta_proton = (TH1F*)f->Get("costheta_proton");
   TH1F*  costheta_kaontest = (TH1F*)f->Get("kdEdx_dist_kaon");
 
-  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
+  TString filename2 = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
   TFile *f2 = new TFile(filename2);
   TH1F*  costheta_kaon2 = (TH1F*)f2->Get("costheta_kaon");
   TH1F*  costheta_pion2 = (TH1F*)f2->Get("costheta_pion");
@@ -283,21 +287,21 @@ void Costheta(int quarkid=4) {
   costheta_pion->GetYaxis()->SetRangeUser(0,costheta_pion->GetMaximum()*1.1);
 
   costheta_pion->SetLineColor(4);
-  costheta_pion->SetLineWidth(3);
-  costheta_pion->SetLineStyle(1);
+  costheta_pion->SetLineWidth(4);
+  costheta_pion->SetLineStyle(7);
   costheta_pion->Draw("histo");
 
   costheta_kaon->SetLineColor(2);
-  costheta_kaon->SetLineWidth(3);
+  costheta_kaon->SetLineWidth(4);
   costheta_kaon->SetLineStyle(1);
   costheta_kaon->Draw("histosame");
 
   costheta_proton->SetLineColor(kGreen+2);
-  costheta_proton->SetLineWidth(3);
+  costheta_proton->SetLineWidth(2);
   costheta_proton->SetLineStyle(1);
   costheta_proton->Draw("histosame");
 
-  costheta_pion2->SetLineColor(4);
+  /*costheta_pion2->SetLineColor(4);
   costheta_pion2->SetLineWidth(3);
   costheta_pion2->SetLineStyle(2);
   costheta_pion2->Draw("histosame");
@@ -310,7 +314,7 @@ void Costheta(int quarkid=4) {
   costheta_proton2->SetLineColor(kGreen+2);
   costheta_proton2->SetLineWidth(3);
   costheta_proton2->SetLineStyle(2);
-  costheta_proton2->Draw("histosame");
+  costheta_proton2->Draw("histosame");*/
    
   costheta_kaontest->SetLineColor(1);
   costheta_kaontest->SetLineWidth(3);
@@ -324,11 +328,11 @@ void Costheta(int quarkid=4) {
   if(quarkid==4)   QQBARLabel2(0.4,0.9,"Secondary Tracks in c-jets",kGray+4);
   if(quarkid==5)   QQBARLabel2(0.4,0.9,"Secondary Tracks in b-jets",kGray+4);
   */
-  TLegend *leg = new TLegend(0.65,0.4,0.8,0.58);
+  TLegend *leg = new TLegend(0.5,0.7,0.6,0.8);
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
-  leg->AddEntry(costheta_kaontest,"e_{L}^{-}e_{R}^{+}","l");
-  leg->AddEntry(costheta_kaontest2,"e_{R}^{-}e_{L}^{+}","l");
+  //leg->AddEntry(costheta_kaontest,"e_{L}^{-}e_{R}^{+}","l");
+  //leg->AddEntry(costheta_kaontest2,"e_{R}^{-}e_{L}^{+}","l");
 
   leg->AddEntry(costheta_pion,"pions","l");
   leg->AddEntry(costheta_kaon,"kaons","l");
@@ -339,7 +343,7 @@ void Costheta(int quarkid=4) {
   leg->Draw();
 
 
-  c_mom->Print("plots_draft/CosthetaSecTracks_in_"+squark+"jets.eps");
+  c_mom->Print("plots_draft_"+energy+"/CosthetaSecTracks_in_"+squark+"jets.eps");
 
 }
 
@@ -364,7 +368,7 @@ void dEdx(int quarkid=4) {
   if(iquark==5) squark="bquark";
   if(iquark==0) squark="udscbquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
   TFile *f = new TFile(filename);
   cout<<filename<<endl;
 
@@ -431,8 +435,8 @@ void dEdx(int quarkid=4) {
   leg->Draw();
 
 
-  c_mom->Print("plots_draft/dEdx_p.eps");
-  c_mom->Print("plots_draft/dEdx_p.pdf");
+  c_mom->Print("plots_draft_"+energy+"/dEdx_p.eps");
+  c_mom->Print("plots_draft_"+energy+"/dEdx_p.pdf");
 
 }
 
@@ -458,7 +462,7 @@ void dEdx2(int quarkid=4) {
   if(iquark==5) squark="bquark";
   if(iquark==0) squark="udscbquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
   TFile *f = new TFile(filename);
   cout<<filename<<endl;
 
@@ -528,8 +532,8 @@ void dEdx2(int quarkid=4) {
   leg->Draw();
 
 
-  c_mom->Print("plots_draft/dEdx_costheta.eps");
-  c_mom->Print("plots_draft/dEdx_costheta.pdf");
+  c_mom->Print("plots_draft_"+energy+"/dEdx_costheta.eps");
+  c_mom->Print("plots_draft_"+energy+"/dEdx_costheta.pdf");
 
 }
 
@@ -559,14 +563,14 @@ void Ntracks() {
     if(quarkid==4) squark="cquark";
     if(quarkid==5) squark="bquark";
     
-    TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+    TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
     TFile *f = new TFile(filename);
     cout<<filename<<endl;
     n_sectracks_eL[quarkid-3] = (TH1F*)f->Get("n_secvtx");
     if(quarkid==3) test = (TH1F*)f->Get("kdEdx_dist_proton");
     // n_sectracks_eL[quarkid-3]->Scale( n_sectracks_eL[0]->Integral()/ n_sectracks_eL[quarkid-3]->Integral());
 
-    filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
+    filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
     TFile *f2 = new TFile(filename);
     n_sectracks_eR[quarkid-3] = (TH1F*)f2->Get("n_secvtx");
     // n_sectracks_eR[quarkid-3]->Scale( n_sectracks_eR[0]->Integral()/ n_sectracks_eR[quarkid-3]->Integral());
@@ -584,21 +588,21 @@ void Ntracks() {
   n_sectracks_eL[0]->GetXaxis()->SetRangeUser(0,2.5);
 
   n_sectracks_eL[0]->SetLineColor(kGreen+2);
-  n_sectracks_eL[0]->SetLineWidth(3);
+  n_sectracks_eL[0]->SetLineWidth(2);
   n_sectracks_eL[0]->SetLineStyle(1);
   n_sectracks_eL[0]->DrawNormalized("p");
 
   n_sectracks_eL[1]->SetLineColor(2);
-  n_sectracks_eL[1]->SetLineWidth(3);
+  n_sectracks_eL[1]->SetLineWidth(4);
   n_sectracks_eL[1]->DrawNormalized("psame");
  
   n_sectracks_eL[2]->SetLineColor(4);
-  n_sectracks_eL[2]->SetLineWidth(3);
-  n_sectracks_eL[2]->SetLineStyle(1);
+  n_sectracks_eL[2]->SetLineWidth(4);
+  n_sectracks_eL[2]->SetLineStyle(7);
   n_sectracks_eL[2]->DrawNormalized("psame");
 
   
-  n_sectracks_eR[0]->SetLineColor(kGreen+2);
+  /*n_sectracks_eR[0]->SetLineColor(kGreen+2);
   n_sectracks_eR[0]->SetLineWidth(3);
   n_sectracks_eR[0]->SetLineStyle(2);
 
@@ -612,7 +616,7 @@ void Ntracks() {
 
   n_sectracks_eR[0]->DrawNormalized("psame");
   n_sectracks_eR[1]->DrawNormalized("psame");
-  n_sectracks_eR[2]->DrawNormalized("psame");
+  n_sectracks_eR[2]->DrawNormalized("psame");*/
 
 
   test->SetLineColor(1);
@@ -625,11 +629,11 @@ void Ntracks() {
 
   Labels("");
 
-  TLegend *leg = new TLegend(0.65,0.65,0.85,0.85);
+  TLegend *leg = new TLegend(0.65,0.75,0.85,0.85);
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
-  leg->AddEntry(test,"e_{L}^{-}e_{R}^{+}","l");
-  leg->AddEntry(test2,"e_{R}^{-}e_{L}^{+}","l");
+  //leg->AddEntry(test,"e_{L}^{-}e_{R}^{+}","l");
+  //leg->AddEntry(test2,"e_{R}^{-}e_{L}^{+}","l");
 
   leg->AddEntry(n_sectracks_eL[2],"b-jets","l");
   leg->AddEntry(n_sectracks_eL[1],"c-jets","l");
@@ -640,7 +644,7 @@ void Ntracks() {
   leg->Draw();
 
 
-  c_mom->Print("plots_draft/NSecVtx_in_jets.eps");
+  c_mom->Print("plots_draft_"+energy+"/NSecVtx_in_jets.eps");
 
 }
 
@@ -656,7 +660,7 @@ void Ntracks2() {
   gStyle->SetTitleBorderSize(0);
   gStyle->SetTitleStyle(0);
   gStyle->SetTitleX(0.2);
-  gStyle->SetMarkerSize(0.2);
+  gStyle->SetMarkerSize(0.);
   TGaxis::SetMaxDigits(3);
   
   TH1F*  n_sectracks_eL[3];
@@ -670,14 +674,14 @@ void Ntracks2() {
     if(quarkid==4) squark="cquark";
     if(quarkid==5) squark="bquark";
     
-    TString filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_sample_eL_pR_0GeV.root";
+    TString filename = "../results_250GeV/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
     TFile *f = new TFile(filename);
     cout<<filename<<endl;
     n_sectracks_eL[quarkid-3] = (TH1F*)f->Get("n_sectracks_vtx");
     if(quarkid==3) test = (TH1F*)f->Get("kdEdx_dist_proton");
 
 
-    filename = "../results/histos_"+squark+"_secondary_tracks_2f_hadronic_sample_eR_pL_0GeV.root";
+    filename = "../results_250GeV/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
     TFile *f2 = new TFile(filename);
     n_sectracks_eR[quarkid-3] = (TH1F*)f2->Get("n_sectracks_vtx");
  
@@ -691,30 +695,31 @@ void Ntracks2() {
   n_sectracks_eL[0]->GetXaxis()->SetTitle("# of tracks per vtx");
   //n_sectracks_eL[0]->GetYaxis()->SetTitle("a.u.");
   n_sectracks_eL[0]->GetXaxis()->SetRangeUser(0,20);
-  n_sectracks_eL[0]->GetYaxis()->SetRangeUser(1000,3000000);
+  n_sectracks_eL[0]->GetYaxis()->SetRangeUser(100,300000);
 
   n_sectracks_eL[0]->SetLineColor(kGreen+2);
   n_sectracks_eL[0]->SetLineWidth(3);
   n_sectracks_eL[0]->SetLineStyle(1);
-  n_sectracks_eL[0]->SetFillStyle(3004);
+  n_sectracks_eL[0]->SetFillStyle(0);
   n_sectracks_eL[0]->SetFillColor(kGreen+2);
   n_sectracks_eL[0]->DrawNormalized("h");
+ 
+  n_sectracks_eL[2]->SetLineColor(4);
+  n_sectracks_eL[2]->SetLineWidth(3);
+  n_sectracks_eL[2]->SetLineStyle(1);
+  n_sectracks_eL[2]->SetFillStyle(3001);
+  n_sectracks_eL[2]->SetFillColor(4);
+  n_sectracks_eL[2]->DrawNormalized("hsame");
+
 
   n_sectracks_eL[1]->SetLineColor(2);
   n_sectracks_eL[1]->SetLineWidth(3);
   n_sectracks_eL[1]->SetFillStyle(3005);
   n_sectracks_eL[1]->SetFillColor(2);
   n_sectracks_eL[1]->DrawNormalized("hsame");
- 
-  n_sectracks_eL[2]->SetLineColor(4);
-  n_sectracks_eL[2]->SetLineWidth(3);
-  n_sectracks_eL[2]->SetLineStyle(1);
-  n_sectracks_eL[2]->SetFillStyle(3003);
-  n_sectracks_eL[2]->SetFillColor(4);
-  n_sectracks_eL[2]->DrawNormalized("hsame");
 
   
-  n_sectracks_eR[0]->SetLineColor(kGreen+2);
+  /*n_sectracks_eR[0]->SetLineColor(kGreen+2);
   n_sectracks_eR[0]->SetLineWidth(3);
   n_sectracks_eR[0]->SetLineStyle(2);
 
@@ -728,7 +733,7 @@ void Ntracks2() {
 
   n_sectracks_eR[0]->DrawNormalized("psame");
   n_sectracks_eR[1]->DrawNormalized("psame");
-  n_sectracks_eR[2]->DrawNormalized("psame");
+  n_sectracks_eR[2]->DrawNormalized("psame");*/
 
 
   test->SetLineColor(1);
@@ -741,22 +746,22 @@ void Ntracks2() {
 
   Labels("");
 
-  TLegend *leg = new TLegend(0.65,0.65,0.85,0.85);
+  TLegend *leg = new TLegend(0.65,0.75,0.85,0.85);
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
-  leg->AddEntry(test,"e_{L}^{-}e_{R}^{+}","l");
-  leg->AddEntry(test2,"e_{R}^{-}e_{L}^{+}","l");
+  //leg->AddEntry(test,"e_{L}^{-}e_{R}^{+}","l");
+  //leg->AddEntry(test2,"e_{R}^{-}e_{L}^{+}","l");
 
-  leg->AddEntry(n_sectracks_eL[2],"b-jets","l");
-  leg->AddEntry(n_sectracks_eL[1],"c-jets","l");
-  leg->AddEntry(n_sectracks_eL[0],"uds-jets","l");
+  leg->AddEntry(n_sectracks_eL[2],"b-jets","f");
+  leg->AddEntry(n_sectracks_eL[1],"c-jets","f");
+  leg->AddEntry(n_sectracks_eL[0],"uds-jets","f");
   leg->SetFillStyle(0);
   leg->SetLineColor(0);
   leg->SetShadowColor(0);
   leg->Draw();
 
 
-  c_mom->Print("plots_draft/NSecTracks_in_jets.eps");
+  c_mom->Print("plots_draft_"+energy+"/NSecTracks_in_jets.eps");
 
 }
 
@@ -781,7 +786,7 @@ void dEdxdist(int quarkid=3) {
   if(quarkid==4) squark="cquark";
   if(quarkid==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
 
   TFile *f = new TFile(filename);
 
@@ -790,8 +795,8 @@ void dEdxdist(int quarkid=3) {
   TH1F*  kdEdx_dist_proton = (TH1F*)f->Get("kdEdx_dist_proton");
   TH1F*  test = (TH1F*)f->Get("n_sectracks");
 
-  // TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV_costheta_lt0.8.root";
-  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
+  // TString filename2 =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV_costheta_lt0.8.root";
+  TString filename2 =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_3GeV.root";
 
 
   TFile *f2 = new TFile(filename2);
@@ -807,33 +812,38 @@ void dEdxdist(int quarkid=3) {
   
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
   c_mom->cd(1);
-  kdEdx_dist_pion2->GetXaxis()->SetTitle("#Delta_{dE/dx-K}");
+  kdEdx_dist_kaon->GetXaxis()->SetTitle("#Delta_{dE/dx-K}");
   //  kdEdx_dist_pion2->GetXaxis()->SetTitle("signed [(dE/dx-dE/dx_{fit-kaon})/#Delta_{dE/dx}]^{2}");
-  kdEdx_dist_pion2->GetYaxis()->SetTitle("a.u.");
-  //kdEdx_dist_pion->GetYaxis()->SetTitleOffset(1.25);
+  kdEdx_dist_kaon->GetYaxis()->SetTitle("a.u.");
+  kdEdx_dist_kaon->GetYaxis()->SetRangeUser(0,150000);
   //kdEdx_dist_pion->GetXaxis()->SetTitleOffset(1.);
 
-  kdEdx_dist_pion2->SetLineColor(4);
+  /*kdEdx_dist_pion2->SetLineColor(4);
   kdEdx_dist_pion2->SetLineWidth(3);
   kdEdx_dist_pion2->SetLineStyle(2);
-  kdEdx_dist_pion2->Draw("histo");
+  kdEdx_dist_pion2->SetFillStyle(3001);
+  kdEdx_dist_pion2->SetFillColor(4);
+  kdEdx_dist_pion2->Draw("histo");*/
 
   kdEdx_dist_kaon->SetLineColor(2);
-  kdEdx_dist_kaon->SetLineWidth(3);
+  kdEdx_dist_kaon->SetLineWidth(2);
   kdEdx_dist_kaon->SetLineStyle(1);
   kdEdx_dist_kaon->Draw("histosame");
 
-  kdEdx_dist_proton->SetLineColor(kGreen+2);
+  kdEdx_dist_pion->SetLineColor(4);
+  kdEdx_dist_pion->SetLineWidth(1);
+  kdEdx_dist_pion->SetLineStyle(1);
+  kdEdx_dist_pion->SetFillStyle(3001);
+  kdEdx_dist_pion->SetFillColor(4);
+  kdEdx_dist_pion->Draw("histosame");
+kdEdx_dist_proton->SetLineColor(kGreen+2);
   kdEdx_dist_proton->SetLineWidth(3);
   kdEdx_dist_proton->SetLineStyle(1);
+  kdEdx_dist_proton->SetFillStyle(1000);
+  kdEdx_dist_proton->SetFillColor(kGreen+2);
   kdEdx_dist_proton->Draw("histosame");
 
-  kdEdx_dist_pion->SetLineColor(4);
-  kdEdx_dist_pion->SetLineWidth(3);
-  kdEdx_dist_pion->SetLineStyle(1);
-  kdEdx_dist_pion->Draw("histosame");
-
-  kdEdx_dist_kaon2->SetLineColor(2);
+  /*kdEdx_dist_kaon2->SetLineColor(2);
   kdEdx_dist_kaon2->SetLineWidth(3);
   kdEdx_dist_kaon2->SetLineStyle(2);
   kdEdx_dist_kaon2->Draw("histosame");
@@ -841,7 +851,7 @@ void dEdxdist(int quarkid=3) {
   kdEdx_dist_proton2->SetLineColor(kGreen+2);
   kdEdx_dist_proton2->SetLineWidth(3);
   kdEdx_dist_proton2->SetLineStyle(2);
-  kdEdx_dist_proton2->Draw("histosame");
+  kdEdx_dist_proton2->Draw("histosame");*/
 
   
   test->SetLineColor(1);
@@ -858,18 +868,18 @@ void dEdxdist(int quarkid=3) {
   TLegend *leg = new TLegend(0.18,0.6,0.46,0.85);
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
-  leg->AddEntry(test,"All secondary tracks","l");
-  leg->AddEntry(test2,"|p_{trk}|>3 GeV","l");
+  //leg->AddEntry(test,"All secondary tracks","l");
+  //leg->AddEntry(test2,"|p_{trk}|>3 GeV","l");
   // leg->AddEntry(test2,"|p_{trk}|>3 GeV & |cos(#theta_{trk})|<0.8","l");
-  leg->AddEntry(kdEdx_dist_pion,"pions","l");
-  leg->AddEntry(kdEdx_dist_kaon,"kaons","l");
-  leg->AddEntry(kdEdx_dist_proton,"protons","l");
+  leg->AddEntry(kdEdx_dist_pion,"pions","f");
+  leg->AddEntry(kdEdx_dist_kaon,"kaons","f");
+  leg->AddEntry(kdEdx_dist_proton,"protons","f");
   leg->SetFillColor(0);
   leg->SetLineColor(0);
   leg->SetShadowColor(0);
   leg->Draw();
 
-  c_mom->Print("plots_draft/dEdx_dist_"+squark+".eps");
+  c_mom->Print("plots_draft_"+energy+"/dEdx_dist_"+squark+".eps");
 
 
 }
@@ -893,7 +903,7 @@ void dEdxdist2(int quarkid=3) {
   if(quarkid==4) squark="cquark";
   if(quarkid==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_3GeV_costheta_lt0.8.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_3GeV_costheta_lt0.8.root";
 
   TFile *f = new TFile(filename);
 
@@ -902,8 +912,8 @@ void dEdxdist2(int quarkid=3) {
   TH1F*  kdEdx_dist_proton = (TH1F*)f->Get("kdEdx_dist_proton");
   TH1F*  test = (TH1F*)f->Get("n_sectracks");
 
-  // TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV_costheta_lt0.8.root";
-  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_improved_1_2f_hadronic_sample_eL_pR_3GeV_costheta_lt0.8.root";
+  // TString filename2 =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV_costheta_lt0.8.root";
+  TString filename2 =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_improved_1_2f_hadronic_sample_eL_pR_3GeV_costheta_lt0.8.root";
 
 
   TFile *f2 = new TFile(filename2);
@@ -981,7 +991,7 @@ void dEdxdist2(int quarkid=3) {
   leg->SetShadowColor(0);
   leg->Draw();
 
-  c_mom->Print("plots_draft/dEdx_dist_"+squark+".eps");
+  c_mom->Print("plots_draft_"+energy+"/dEdx_dist_"+squark+".eps");
 
 
 }
@@ -1005,7 +1015,7 @@ void dEdxdistProjection(int quarkid=3) {
   if(quarkid==4) squark="cquark";
   if(quarkid==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
 
   TFile *f = new TFile(filename);
   TH2F*  p_kdEdx_dist_kaon = (TH2F*)f->Get("p_kdEdx_dist_kaon");
@@ -1013,7 +1023,7 @@ void dEdxdistProjection(int quarkid=3) {
   TH2F*  p_kdEdx_dist_proton = (TH2F*)f->Get("p_kdEdx_dist_proton");
   TH2F*  test = (TH2F*)f->Get("n_sectracks");
 
-  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
+  TString filename2 =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_3GeV.root";
 
   TFile *f2 = new TFile(filename2);
 
@@ -1089,8 +1099,8 @@ void dEdxdistProjection(int quarkid=3) {
   g_pion->Draw("a3");
 
   g_pion2->SetLineColor(4);
-  g_pion2->SetLineWidth(3);
-  g_pion2->SetLineStyle(2);
+  g_pion2->SetLineWidth(2);
+  g_pion2->SetLineStyle(1);
   g_pion2->Draw("l");
 
   g_kaon->SetLineColor(2);
@@ -1101,8 +1111,8 @@ void dEdxdistProjection(int quarkid=3) {
   g_kaon->Draw("3");
 
   g_kaon2->SetLineColor(2);
-  g_kaon2->SetLineWidth(3);
-  g_kaon2->SetLineStyle(2);
+  g_kaon2->SetLineWidth(1);
+  g_kaon2->SetLineStyle(1);
   g_kaon2->Draw("l");
   
 
@@ -1114,21 +1124,20 @@ void dEdxdistProjection(int quarkid=3) {
   g_proton->Draw("3");
 
   g_proton2->SetLineColor(kGreen+2);
-  g_proton2->SetLineWidth(3);
-  g_proton2->SetLineStyle(2);
+  g_proton2->SetLineWidth(2);
+  g_proton2->SetLineStyle(1);
   g_proton2->Draw("l");
 
   
   test->SetLineColor(1);
   test->SetLineWidth(0);
   test->SetLineStyle(0);
-  test->SetFillStyle(3002);
+  test->SetFillStyle(3001);
   test->SetFillColor(kGray+1);
 
   test2->SetLineColor(1);
-  test2->SetLineWidth(3);
-  test2->SetLineStyle(2);
-
+  test2->SetLineWidth(2);
+  test2->SetLineStyle(1);
  
   if(quarkid==3)   QQBARLabel2(0.5,0.9,"Secondary Tracks in q-jets (q=uds)",kGray+4);
   if(quarkid==4)   QQBARLabel2(0.5,0.9,"Secondary Tracks in c-jets",kGray+4);
@@ -1139,15 +1148,15 @@ void dEdxdistProjection(int quarkid=3) {
   leg->SetTextFont(42);
   leg->AddEntry(test,"All secondary tracks","f");
   leg->AddEntry(test2,"|p_{trk}|>3 GeV","l");
-  leg->AddEntry(g_pion,"pions","l");
-  leg->AddEntry(g_kaon,"kaons","l");
-  leg->AddEntry(g_proton,"protons","l");
+  leg->AddEntry(g_pion,"pions","f");
+  leg->AddEntry(g_kaon,"kaons","f");
+  leg->AddEntry(g_proton,"protons","f");
   leg->SetFillColor(0);
   leg->SetLineColor(0);
   leg->SetShadowColor(0);
   leg->Draw();
 
-  c_mom->Print("plots_draft/dEdx_dist_Proj_vs_mom_"+squark+".eps");
+  c_mom->Print("plots_draft_"+energy+"/dEdx_dist_Proj_vs_mom_"+squark+".eps");
   
 
 }
@@ -1173,7 +1182,7 @@ void dEdxdistProjection2(int quarkid=3) {
   if(quarkid==4) squark="cquark";
   if(quarkid==5) squark="bquark";
 
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
 
   TFile *f = new TFile(filename);
   TH2F*  costheta_kdEdx_dist_kaon = (TH2F*)f->Get("costheta_kdEdx_dist_kaon");
@@ -1181,7 +1190,7 @@ void dEdxdistProjection2(int quarkid=3) {
   TH2F*  costheta_kdEdx_dist_proton = (TH2F*)f->Get("costheta_kdEdx_dist_proton");
   TH2F*  test = (TH2F*)f->Get("n_sectracks");
 
-  TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
+  TString filename2 =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
 
   TFile *f2 = new TFile(filename2);
 
@@ -1258,8 +1267,8 @@ void dEdxdistProjection2(int quarkid=3) {
   g_pion->Draw("a3");
 
   g_pion2->SetLineColor(4);
-  g_pion2->SetLineWidth(3);
-  g_pion2->SetLineStyle(2);
+  g_pion2->SetLineWidth(2);
+  g_pion2->SetLineStyle(1);
   g_pion2->Draw("l");
 
   g_kaon->SetLineColor(2);
@@ -1270,8 +1279,8 @@ void dEdxdistProjection2(int quarkid=3) {
   g_kaon->Draw("3");
 
   g_kaon2->SetLineColor(2);
-  g_kaon2->SetLineWidth(3);
-  g_kaon2->SetLineStyle(2);
+  g_kaon2->SetLineWidth(1);
+  g_kaon2->SetLineStyle(1);
   g_kaon2->Draw("l");
   
 
@@ -1283,20 +1292,20 @@ void dEdxdistProjection2(int quarkid=3) {
   g_proton->Draw("3");
 
   g_proton2->SetLineColor(kGreen+2);
-  g_proton2->SetLineWidth(3);
-  g_proton2->SetLineStyle(2);
+  g_proton2->SetLineWidth(2);
+  g_proton2->SetLineStyle(1);
   g_proton2->Draw("l");
 
   
   test->SetLineColor(1);
   test->SetLineWidth(0);
   test->SetLineStyle(0);
-  test->SetFillStyle(3002);
+  test->SetFillStyle(3001);
   test->SetFillColor(kGray+1);
 
   test2->SetLineColor(1);
-  test2->SetLineWidth(3);
-  test2->SetLineStyle(2);
+  test2->SetLineWidth(2);
+  test2->SetLineStyle(1);
 
  
   if(quarkid==3)   QQBARLabel2(0.5,0.9,"Secondary Tracks in q-jets (q=uds)",kGray+4);
@@ -1308,15 +1317,15 @@ void dEdxdistProjection2(int quarkid=3) {
   leg->SetTextFont(42);
   leg->AddEntry(test,"All secondary tracks","f");
   leg->AddEntry(test2,"|#vec{p}_{trk}|>3 GeV","ple");
-  leg->AddEntry(g_pion,"pions","l");
-  leg->AddEntry(g_kaon,"kaons","l");
-  leg->AddEntry(g_proton,"protons","l");
+  leg->AddEntry(g_pion,"pions","f");
+  leg->AddEntry(g_kaon,"kaons","f");
+  leg->AddEntry(g_proton,"protons","f");
   leg->SetFillColor(0);
   leg->SetLineColor(0);
   leg->SetShadowColor(0);
   leg->Draw();
 
-  c_mom->Print("plots_draft/dEdx_dist_Proj_vs_costheta_"+squark+".eps");
+  c_mom->Print("plots_draft_"+energy+"/dEdx_dist_Proj_vs_costheta_"+squark+".eps");
   
 
 }
@@ -1342,7 +1351,7 @@ void EffPurity_angle(int quarkid) {
   if(quarkid==5) squark="bquark";
 
  
-  TString filename =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
+  TString filename =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
 
   TFile *f = new TFile(filename);
   TH2F*  kdEdxdist_kaon = (TH2F*)f->Get("costheta_kdEdx_dist_kaon");
@@ -1357,20 +1366,25 @@ void EffPurity_angle(int quarkid) {
   //  option 1, 80eff, 92 pur = 16,21
   //  option 1, 87eff, 87 pur = 16,23
 
-
   for(int i=1;i<21; i++) {
-    int ipion=22;
-    if(i>16) ipion=22-(i-16);
-    float n_kaons=  kdEdxdist_kaon->Integral(i, i,16,ipion);
-    float n_pions=  kdEdxdist_pion->Integral(i, i,16,ipion);
-    float n_protons=  kdEdxdist_proton->Integral(i, i,16,ipion);
-    float n_muons=  kdEdxdist_muon->Integral(i, i,16,ipion);
-    float n_electrons=  kdEdxdist_electron->Integral(i, i,16,ipion);
-    float nkaons=  kdEdxdist_kaon->Integral(i, i,0,1000);
+    //int lowbin=16; old macros with 20bins                                                              
+    int lowbin=151;//400bins                                                                             
+    //int ipion=22; old macros with 20bins                                                               
+    int ipion=222;
+    //if(i>16) {
+    //  lowbin=lowbin+(i-16)*5;
+    //  ipion=ipion-(i-16)*5;//-(i-lowbin);
+    //}
+    float n_kaons=  kdEdxdist_kaon->Integral(i, i,lowbin,ipion);
+    float n_pions=  kdEdxdist_pion->Integral(i, i,lowbin,ipion);
+    float n_protons=  kdEdxdist_proton->Integral(i, i,lowbin,ipion);
+    float n_muons=  kdEdxdist_muon->Integral(i, i,lowbin,ipion);
+    float n_electrons=  kdEdxdist_electron->Integral(i, i,lowbin,ipion);
+    float nkaons=  kdEdxdist_kaon->Integral(i, i,0,400);
     if(nkaons==0) nkaons=10000000;
     x[i-1]=i*1./20;
-    eff[i-1]=100.*(n_kaons)/nkaons;       
-    //  eff2[i-1]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                    
+    eff[i-1]=100.*(n_kaons)/nkaons;
+    //  eff2[i-1]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                           
     pur[i-1]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
     n++;
   }
@@ -1380,7 +1394,7 @@ void EffPurity_angle(int quarkid) {
   TGraph* purity = new TGraph(n,x,pur);
   TGraph* efficiency_purity = new TGraph(n,eff,pur);
   
-TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
+  TString filename2 =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
 
   TFile *f2 = new TFile(filename2);
   TH2F*  kdEdxdist_kaon2 = (TH2F*)f2->Get("costheta_kdEdx_dist_kaon");
@@ -1395,22 +1409,26 @@ TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverla
   //  option 1, 80eff, 92 pur = 16,21
   //  option 1, 87eff, 87 pur = 16,23
 
-  for(int i=1;i<21; i++) {
-    int ipion=22;
-    if(i>16) ipion=22-(i-16);
-    float n_kaons=  kdEdxdist_kaon2->Integral(i, i,16,ipion);
-    float n_pions=  kdEdxdist_pion2->Integral(i, i,16,ipion);
-    float n_protons=  kdEdxdist_proton2->Integral(i, i,16,ipion);
-    float n_muons=  kdEdxdist_muon2->Integral(i, i,16,ipion);
-    float n_electrons=  kdEdxdist_electron2->Integral(i, i,16,ipion);
+    for(int i=1;i<21; i++) {
+    //int lowbin=16; old macros with 20bins                                                              
+    int lowbin=151;//400bins                                                                             
+    //int ipion=22; old macros with 20bins                                                               
+    int ipion=222;
+    if(i>lowbin) ipion=ipion-(i-lowbin);
+    float n_kaons=  kdEdxdist_kaon2->Integral(i, i,lowbin,ipion);
+    float n_pions=  kdEdxdist_pion2->Integral(i, i,lowbin,ipion);
+    float n_protons=  kdEdxdist_proton2->Integral(i, i,lowbin,ipion);
+    float n_muons=  kdEdxdist_muon2->Integral(i, i,lowbin,ipion);
+    float n_electrons=  kdEdxdist_electron2->Integral(i, i,lowbin,ipion);
     float nkaons=  kdEdxdist_kaon2->Integral(i, i,0,1000);
     if(nkaons==0) nkaons=10000000;
     x2[i-1]=i*1./20;
-    eff2[i-1]=100.*(n_kaons)/nkaons;       
-    //  eff2[i-1]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                    
+    eff2[i-1]=100.*(n_kaons)/nkaons;
+    //  eff2[i-1]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                           
     pur2[i-1]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
     n2++;
   }
+
  
 
   TGraph* efficiency2 = new TGraph(n2,x2,eff2);
@@ -1428,22 +1446,22 @@ TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverla
   efficiency->GetXaxis()->SetRangeUser(0,60);
 
   efficiency->SetLineColor(kMagenta+1);
-  efficiency->SetLineWidth(3);
+  efficiency->SetLineWidth(5);
   efficiency->SetLineStyle(1);
   efficiency->Draw("al");
   
   purity->SetLineColor(kOrange+1);
-  purity->SetLineWidth(3);
+  purity->SetLineWidth(2);
   purity->SetLineStyle(1);
   purity->Draw("lsame");
 
   efficiency2->SetLineColor(kMagenta+1);
-  efficiency2->SetLineWidth(3);
+  efficiency2->SetLineWidth(5);
   efficiency2->SetLineStyle(2);
   efficiency2->Draw("same");
   
   purity2->SetLineColor(kOrange+1);
-  purity2->SetLineWidth(3);
+  purity2->SetLineWidth(2);
   purity2->SetLineStyle(2);
   purity2->Draw("lsame");
 
@@ -1463,16 +1481,18 @@ TString filename2 =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverla
   TLegend *leg0 = new TLegend(0.25,0.3,0.5,0.5);
   leg0->SetTextSize(0.03);
   leg0->SetTextFont(42);
-  leg0->AddEntry(test,"All secondary tracks","l");
-  leg0->AddEntry(test2,"|p_{trk}|>3 GeV","l");
+  //leg0->AddEntry(test,"All secondary tracks","l");
+ // leg0->AddEntry(test2,"|p_{trk}|>3 GeV","l");
   leg0->AddEntry(efficiency,"Efficiency of Kaon ID","l");
+  leg0->AddEntry(efficiency2,"Efficiency of Kaon ID, |p_{trk}|>3 GeV","l");
   leg0->AddEntry(purity,"Purity of Kaon ID","l");
+  leg0->AddEntry(purity2,"Purity of Kaon ID, |p_{trk}|>3 GeV","l");
   leg0->SetFillColor(0);
   leg0->SetLineColor(0);
   leg0->SetShadowColor(0);
   leg0->Draw();
 
-  c_mom->Print("plots_draft/eff_purity_angle_"+squark+".eps");
+  c_mom->Print("plots_draft_"+energy+"/eff_purity_angle_"+squark+".eps");
   
  
 
@@ -1500,7 +1520,7 @@ void EffPurity_momentum(int quarkid=4) {
   if(quarkid==5) squark="bquark";
 
  
-  TString filename =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
+  TString filename =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
 
   TFile *f = new TFile(filename);
   TH2F*  kdEdxdist_kaon = (TH2F*)f->Get("p_kdEdx_dist_kaon");
@@ -1510,35 +1530,52 @@ void EffPurity_momentum(int quarkid=4) {
   TH2F*  kdEdxdist_electron = (TH2F*)f->Get("p_kdEdx_dist_electron");
   TH1F* test = (TH1F*)f->Get("n_sectracks");
 
+  filename =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_0GeV.root";
+
+  TFile *f2 = new TFile(filename);
+  TH2F*  kdEdxdist_kaon2 = (TH2F*)f2->Get("p_kdEdx_dist_kaon");
+  TH2F*  kdEdxdist_pion2 = (TH2F*)f2->Get("p_kdEdx_dist_pion");
+  TH2F*  kdEdxdist_proton2 = (TH2F*)f2->Get("p_kdEdx_dist_proton");
+  TH2F*  kdEdxdist_muon2 = (TH2F*)f2->Get("p_kdEdx_dist_muon");
+  TH2F*  kdEdxdist_electron2 = (TH2F*)f2->Get("p_kdEdx_dist_electron");
+  kdEdxdist_kaon->Add(kdEdxdist_kaon2);
+  kdEdxdist_pion->Add(kdEdxdist_pion2);
+  kdEdxdist_proton->Add(kdEdxdist_proton2);
+  kdEdxdist_muon->Add(kdEdxdist_muon2);
+  kdEdxdist_electron->Add(kdEdxdist_electron2);
+
   float x[100], eff[100], pur[100];
   int n=0;
   //  option 1, 80eff, 92 pur = 16,21
   //  option 1, 87eff, 87 pur = 16,23
 
 
-  for(int i=2;i<80; i++) {
-    int ipion=22;
-    // if(i>16) ipion=22-(i-16);
-    float n_kaons=  kdEdxdist_kaon->Integral(i, i,16,ipion);
-    float n_pions=  kdEdxdist_pion->Integral(i, i,16,ipion);
-    float n_protons=  kdEdxdist_proton->Integral(i, i,16,ipion);
-    float n_muons=  kdEdxdist_muon->Integral(i, i,16,ipion);
-    float n_electrons=  kdEdxdist_electron->Integral(i, i,16,ipion);
+    for(int i=2;i<80; i++) {
+    //int lowbin=16; old macros with 20bins                                                              
+    int lowbin=151;//400bins                                                                             
+    //int ipion=22; old macros with 20bins                                                               
+    int ipion=222;
+    if(i>lowbin) ipion=ipion-(i-lowbin);
+    float n_kaons=  kdEdxdist_kaon->Integral(i, i,lowbin,ipion);
+    float n_pions=  kdEdxdist_pion->Integral(i, i,lowbin,ipion);
+    float n_protons=  kdEdxdist_proton->Integral(i, i,lowbin,ipion);
+    float n_muons=  kdEdxdist_muon->Integral(i, i,lowbin,ipion);
+    float n_electrons=  kdEdxdist_electron->Integral(i, i,lowbin,ipion);
     float nkaons=  kdEdxdist_kaon->Integral(i, i,0,1000);
     if(nkaons==0) nkaons=10000000;
     x[i-2]=i;
-    eff[i-2]=100.*(n_kaons)/nkaons;       
-    //  eff2[i-1]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                    
+    eff[i-2]=100.*(n_kaons)/nkaons;
+    //  eff2[i-1]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                           
     pur[i-2]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
     n++;
   }
 
-  TGraph* efficiency = new TGraph(n,x,eff);
+  TGraphErrors* efficiency = new TGraphErrors(n,x,eff);
   TGraph* purity = new TGraph(n,x,pur);
   TGraph* efficiency_purity = new TGraph(n,eff,pur);
   
   // //-----------------------
-  // filename =  "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
+  // filename =  "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
 
   // f = new TFile(filename);
   // kdEdxdist_kaon = (TH2F*)f->Get("p_kdEdx_dist_kaon");
@@ -1587,12 +1624,12 @@ void EffPurity_momentum(int quarkid=4) {
   efficiency->GetXaxis()->SetRangeUser(0,60);
 
   efficiency->SetLineColor(kMagenta+1);
-  efficiency->SetLineWidth(3);
+  efficiency->SetLineWidth(5);
   efficiency->SetLineStyle(1);
-  efficiency->Draw("al");
+  efficiency->Draw("ale");
   
   purity->SetLineColor(kOrange+1);
-  purity->SetLineWidth(3);
+  purity->SetLineWidth(2);
   purity->SetLineStyle(1);
   purity->Draw("lsame");
 
@@ -1630,7 +1667,7 @@ void EffPurity_momentum(int quarkid=4) {
   leg0->SetLineColor(0);
   leg0->SetShadowColor(0);
   leg0->Draw();
-  c_mom->Print("plots_draft/eff_purity_momentum_"+squark+".eps");
+  c_mom->Print("plots_draft_"+energy+"/eff_purity_momentum_"+squark+".eps");
   
 
 }
@@ -1655,7 +1692,9 @@ void EffPurity_dedxdist(int quarkid) {
   if(quarkid==5) squark="bquark";
 
   
-  TString filename = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root";
+  cout<<   "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_0GeV.root" <<endl;
+
   TFile *f = new TFile(filename);
   TH1F*  p_kaon = (TH1F*)f->Get("p_kaon");
   TH1F*  kdEdxdist_kaon = (TH1F*)f->Get("kdEdx_dist_kaon");
@@ -1667,16 +1706,16 @@ void EffPurity_dedxdist(int quarkid) {
   
   float x[10000], eff[10000], pur[10000];
   int n=0;
-  for(int i=16;i<25; i++) {
-    float n_kaons=  kdEdxdist_kaon->Integral(16,i);
-    float n_pions=  kdEdxdist_pion->Integral(16,i);
-    float n_protons=  kdEdxdist_proton->Integral(16,i);
-    float n_muons=  kdEdxdist_muon->Integral(16,i);
-    float n_electrons=  kdEdxdist_electron->Integral(16,i);
-    x[i-16]=i;
-    //    eff[i-16]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;
-    eff[i-16]=100.*(n_kaons)/nkaons;                    
-    pur[i-16]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
+  for(int i=100;i<402; i++) {
+    float n_kaons=  kdEdxdist_kaon->Integral(100,i);
+    float n_pions=  kdEdxdist_pion->Integral(100,i);
+    float n_protons=  kdEdxdist_proton->Integral(100,i);
+    float n_muons=  kdEdxdist_muon->Integral(100,i);
+    float n_electrons=  kdEdxdist_electron->Integral(100,i);
+    x[i-100]=i;
+    //    eff[i-100]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;
+    eff[i-100]=100.*(n_kaons)/nkaons;                    
+    pur[i-100]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
     n++;
   }
  
@@ -1685,7 +1724,7 @@ void EffPurity_dedxdist(int quarkid) {
   TGraph* efficiency_purity = new TGraph(n,eff,pur);
 
   //----------
-  TString filename2 = "../results/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
+  TString filename2 = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
   TFile *f2 = new TFile(filename2);
   TH1F*  p_kaon2 = (TH1F*)f2->Get("p_kaon");
   TH1F*  kdEdxdist_kaon2 = (TH1F*)f2->Get("kdEdx_dist_kaon");
@@ -1697,16 +1736,16 @@ void EffPurity_dedxdist(int quarkid) {
 
   float x2[10000], eff2[10000], pur2[10000];
   int n2=0;
-  for(int i=16;i<25; i++) {
-    float n_kaons=  kdEdxdist_kaon2->Integral(16,i);
-    float n_pions=  kdEdxdist_pion2->Integral(16,i);
-    float n_protons=  kdEdxdist_proton2->Integral(16,i);
-    float n_muons=  kdEdxdist_muon2->Integral(16,i);
-    float n_electrons=  kdEdxdist_electron2->Integral(16,i);
-    x2[i-16]=i;
-    //    eff[i-16]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                     
-    eff2[i-16]=100.*(n_kaons)/nkaons2;
-    pur2[i-16]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
+  for(int i=100;i<402; i++) {
+    float n_kaons=  kdEdxdist_kaon2->Integral(100,i);
+    float n_pions=  kdEdxdist_pion2->Integral(100,i);
+    float n_protons=  kdEdxdist_proton2->Integral(100,i);
+    float n_muons=  kdEdxdist_muon2->Integral(100,i);
+    float n_electrons=  kdEdxdist_electron2->Integral(100,i);
+    x2[i-100]=i;
+    //    eff[i-100]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                     
+    eff2[i-100]=100.*(n_kaons)/nkaons2;
+    pur2[i-100]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
     n2++;
   }
 
@@ -1764,26 +1803,167 @@ void EffPurity_dedxdist(int quarkid) {
   leg1->SetShadowColor(0);
   leg1->Draw();
    
-  c_mom3->Print("plots_draft/eff_purity_"+squark+".eps");
+  c_mom3->Print("plots_draft_"+energy+"/eff_purity_"+squark+".eps");
 
 }
 
+
+
+void EffPurity_dedxdist2(int quarkid) {
+
+  
+  SetQQbarStyle();
+  gStyle->SetOptFit(0); 
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  
+  gStyle->SetTitleBorderSize(0);
+  gStyle->SetTitleStyle(0);
+  gStyle->SetTitleX(0.2);
+  gStyle->SetMarkerSize(0.2);
+  // TGaxis::SetMaxDigits(2);
+
+  iquark=quarkid;
+  TString squark="udsquark";
+  if(quarkid==4) squark="cquark";
+  if(quarkid==5) squark="bquark";
+
+  
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_3GeV.root";
+
+  TFile *f = new TFile(filename);
+  TH1F*  p_kaon = (TH1F*)f->Get("p_kaon");
+  TH1F*  kdEdxdist_kaon = (TH1F*)f->Get("kdEdx_dist_kaon");
+  TH1F*  kdEdxdist_pion = (TH1F*)f->Get("kdEdx_dist_pion");
+  TH1F*  kdEdxdist_proton = (TH1F*)f->Get("kdEdx_dist_proton");
+  TH1F*  kdEdxdist_muon = (TH1F*)f->Get("kdEdx_dist_muon");
+  TH1F*  kdEdxdist_electron = (TH1F*)f->Get("kdEdx_dist_electron");
+  float nkaons=p_kaon->GetEntries();
+  
+  float x[10000], eff[10000], pur[10000];
+  int n=0;
+  for(int i=151;i<260; i++) {
+    float n_kaons=  kdEdxdist_kaon->Integral(151,i);
+    float n_pions=  kdEdxdist_pion->Integral(151,i);
+    float n_protons=  kdEdxdist_proton->Integral(151,i);
+    float n_muons=  kdEdxdist_muon->Integral(151,i);
+    float n_electrons=  kdEdxdist_electron->Integral(151,i);
+    x[i-151]=i;
+    //    eff[i-151]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;
+    eff[i-151]=100.*(n_kaons)/nkaons;                    
+    pur[i-151]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
+    n++;
+  }
+ 
+  TGraph* efficiency = new TGraph(n,x,eff);
+  TGraph* purity = new TGraph(n,x,pur);
+  TGraph* efficiency_purity = new TGraph(n,eff,pur);
+
+  //----------
+  TString filename2 = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_improved_1_2f_hadronic_sample_eL_pR_3GeV.root";
+  TFile *f2 = new TFile(filename2);
+  TH1F*  p_kaon2 = (TH1F*)f2->Get("p_kaon");
+  TH1F*  kdEdxdist_kaon2 = (TH1F*)f2->Get("kdEdx_dist_kaon");
+  TH1F*  kdEdxdist_pion2 = (TH1F*)f2->Get("kdEdx_dist_pion");
+  TH1F*  kdEdxdist_proton2 = (TH1F*)f2->Get("kdEdx_dist_proton");
+  TH1F*  kdEdxdist_muon2 = (TH1F*)f2->Get("kdEdx_dist_muon");
+  TH1F*  kdEdxdist_electron2 = (TH1F*)f2->Get("kdEdx_dist_electron");
+  float nkaons2=p_kaon2->GetEntries();
+
+  float x2[10000], eff2[10000], pur2[10000];
+  int n2=0;
+  for(int i=165;i<260; i++) {
+    float n_kaons=  kdEdxdist_kaon2->Integral(165,i);
+    float n_pions=  kdEdxdist_pion2->Integral(165,i);
+    float n_protons=  kdEdxdist_proton2->Integral(165,i);
+    float n_muons=  kdEdxdist_muon2->Integral(165,i);
+    float n_electrons=  kdEdxdist_electron2->Integral(165,i);
+    x2[i-165]=i;
+    //    eff[i-165]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                     
+    eff2[i-165]=100.*(n_kaons)/nkaons2;
+    pur2[i-165]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
+    n2++;
+    if(eff2[i-165]>89.99 && pur2[i-165]>97.32) cout<<i<<endl;
+    if(i==223) cout<<eff2[i-165]<<" "<< pur2[i-165]<<endl;
+  }
+
+  x[0]=90;
+  if(iquark==4) x[0]=90;
+  float y[100]={0};
+  y[0]=95;
+  if(iquark==4) y[0]=97.33;
+
+  TGraph* working_point = new TGraph(1,x,y);
+  TGraph* efficiency_purity2 = new TGraph(n2,eff2,pur2);
+  
+  TCanvas* c_mom3 = new TCanvas("c_mom3","c_mom3",800,800);
+  c_mom3->cd(1);
+  
+  efficiency_purity->GetXaxis()->SetTitle("Efficiency [%]");
+  efficiency_purity->GetYaxis()->SetTitle("Purity [%]");
+  efficiency_purity->GetYaxis()->SetTitleOffset(1.25);
+  efficiency_purity->GetXaxis()->SetTitleOffset(1.);
+  efficiency_purity->GetYaxis()->SetRangeUser(0,100);
+
+  efficiency_purity->SetLineColor(4);
+  efficiency_purity->SetLineWidth(3);
+  efficiency_purity->SetLineStyle(2);
+  efficiency_purity->Draw("alp");
+
+  efficiency_purity2->SetLineColor(2);
+  efficiency_purity2->SetLineWidth(3);
+  efficiency_purity2->SetLineStyle(1);
+  efficiency_purity2->Draw("lp");
+
+  working_point->SetMarkerStyle(29);
+  working_point->SetMarkerSize(4);
+  working_point->SetMarkerColor(kYellow+2);
+  working_point->Draw("p");
+
+  Labels("");
+  //  QQBARLabel2(0.3,0.2, "Method dEdx-distance",kBlack);
+
+  TLegend *leg0 = new TLegend(0.25,0.5,0.5,0.6);
+  leg0->SetTextSize(0.03);
+  leg0->SetTextFont(42);
+  leg0->AddEntry(efficiency_purity,"|p_{trk}|>3 GeV, default dEdx","l");
+  leg0->AddEntry(efficiency_purity2,"|p_{trk}|>3 GeV, Cluster Counting approx.","l");
+  leg0->SetFillColor(0);
+  leg0->SetLineColor(0);
+  leg0->SetShadowColor(0);
+  leg0->Draw();
+
+  TLegend *leg1 = new TLegend(0.4,0.3,0.6,0.35);
+  leg1->SetTextSize(0.03);
+  leg1->SetTextFont(42);
+  leg1->AddEntry(working_point,"Working Point","p");
+  leg1->SetFillColor(0);
+  leg1->SetLineColor(0);
+  leg1->SetShadowColor(0);
+  leg1->Draw();
+   
+  c_mom3->Print("plots_draft_"+energy+"/eff_purity_"+squark+".eps");
+
+}
+
+
+
 void Plots_dEdx_draft() {
-  /*for(int i=3; i<6; i++) Mom(i);
-  for(int i=3; i<6; i++) Costheta(i);
-  Ntracks();*/
+  //for(int i=3; i<6; i++) Mom(i);
+  //for(int i=3; i<6; i++) Costheta(i);
+  //Ntracks();
   //Ntracks2();
 
-  for(int i=4; i<5; i++)  dEdxdist2(i);
-  //for(int i=4; i<6; i++)  dEdxdistProjection(i);
+  //for(int i=5; i<6; i++)  dEdxdist(i);
+  for(int i=4; i<6; i++)  dEdxdistProjection(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 
-  /* NHits();
-  for(int i=4; i<6; i++) EffPurity_momentum(i);
-  for(int i=4; i<6; i++) EffPurity_angle(i);
-  for(int i=4; i<6; i++) EffPurity_dedxdist(i);
-  dEdx(0);
-  dEdx2(0);*/
+  // NHits();
+  //for(int i=4; i<6; i++) EffPurity_momentum(i);
+  //for(int i=4; i<6; i++) EffPurity_angle(i);
+  //for(int i=4; i<6; i++) EffPurity_dedxdist2(i);
+  //dEdx(0);
+  //dEdx2(0);
 
  
 }

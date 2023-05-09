@@ -71,7 +71,7 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
 
   //**********************************************************
   // /*ZZ
-  TString folder = TString::Format("../results_"+energy+" _2023/selection_cuts%i_", cuts);
+  TString folder = TString::Format("../results_"+energy+"_2023/selection_cuts%i_", cuts);
 
   TString filename = folder + "2f_hadronic_sample_" + pol + ".root";
 

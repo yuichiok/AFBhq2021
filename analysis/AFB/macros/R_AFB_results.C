@@ -185,17 +185,17 @@ void Plots_R_AFB() {
   q_eL->GetYaxis()->SetRangeUser(0,1.5);
   q_eL->GetXaxis()->SetRangeUser(0,11);
   q_eL->GetXaxis()->SetTickLength(0);
-  q_eL->SetFillStyle(3001);
+  //q_eL->SetFillStyle(3001);
   //  q_eL->GetXaxis()->SetNdivisions(512);
   q_eL->GetXaxis()->SetLabelSize(0.1);
 
   q_eL->SetLineWidth(0);
   q_eL->SetLineStyle(0);
-  q_eL->SetFillColor(kRed+1);
+  q_eL->SetFillColor(kGreen+3);
   q_eL->Draw("");
   q_eR->SetLineWidth(0);
   q_eR->SetLineStyle(0);
-  q_eR->SetFillColor(kBlue-4);
+  q_eR->SetFillColor(kGreen-4);
   //  q_eR->SetFillStyle(3003);
 
   g_noTPC->SetMarkerStyle(29);
@@ -207,25 +207,25 @@ void Plots_R_AFB() {
   
   c_eL->SetLineWidth(0);
   c_eL->SetLineStyle(0);
-  c_eL->SetFillColor(kRed+1);
-  c_eL->SetFillStyle(3001);
+  c_eL->SetFillColor(kGreen+3);
+  //c_eL->SetFillStyle(3001);
   c_eL->Draw("histosame");
 
   c_eR->SetLineWidth(0);
   c_eR->SetLineStyle(0);
-  c_eR->SetFillColor(kBlue-4);
+  c_eR->SetFillColor(kGreen-4);
   //  c_eR->SetFillStyle(3003);
   c_eR->Draw("histosame");
 
   b_eL->SetLineWidth(0);
   b_eL->SetLineStyle(0);
-  b_eL->SetFillColor(kRed+1);
-  b_eL->SetFillStyle(3001);
+  b_eL->SetFillColor(kGreen+3);
+  //b_eL->SetFillStyle(3001);
   b_eL->Draw("histosame");
 
   b_eR->SetLineWidth(0);
   b_eR->SetLineStyle(0);
-  b_eR->SetFillColor(kBlue-4);
+  b_eR->SetFillColor(kGreen-4);
   //b_eR->SetFillStyle(3003);
   b_eR->Draw("histosame");
 
