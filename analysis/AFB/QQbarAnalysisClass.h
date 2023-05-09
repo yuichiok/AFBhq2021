@@ -39,33 +39,25 @@ public :
   virtual void     Init(TTree *tree);
 
   //analysis
-  virtual void AFBc1(int , int,  float);
-  virtual void AFBb1(int , int,  float);
-  virtual void AFB1(int , int,  float, int);
   virtual void AFB_histos_for_PQ_analysis(int , int , int );
-  virtual void AFB_energyDependence(int , int , float );
+  virtual void AFB_energyDependence(int , int );
 
-  virtual void AFBreconstruction(int , int, TString , int );
-  virtual void AFBreconstruction2(int , int, TString , int ,int );
-  virtual float ChargeKJet(int, int , float, bool, bool);
-  virtual float ChargeVtxJet(int, int, float );
+  virtual void AFBreconstruction(int , int, TString  );
+  virtual void AFBreconstruction2(int , int, TString ,int );
 
-  virtual float ChargeKJetMethod0(int ,float , bool, bool);
-  virtual float ChargeKJetMethod1(int ,float , bool, bool);
-  virtual float ChargeKJetMethod2(int ,float , bool, bool);
-
-  virtual float ChargeVtxJetMethod0(int , float);
-  virtual float ChargeVtxJetMethod1(int , float);
-  virtual float ChargeVtxJetMethod2(int , float);
+  virtual float ChargeKJetMethod(int ,float );
+  virtual float ChargeVtxJetMethod(int , float);
 
 
 
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
 
-  int dedxcut=1;
-  float dedxcut_up=0.75;
-  float dedxcut_down=-2.25;
+  int dedxcut=0;
+  float dedxcut_up=1.1;
+  float dedxcut_down=-2.45;
+  float acol_cut=0.3;
+  float qqbar_m_cut=140;
 
  private:
 
