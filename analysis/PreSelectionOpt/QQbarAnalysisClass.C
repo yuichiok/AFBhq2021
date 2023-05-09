@@ -2,7 +2,7 @@
 #include "QQbarAnalysisClass.h"
 #include "TPad.h"
 
-void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, float acol_cut = 0.3)
+void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, float acol_cut = 0.3, float qqbar_m_cut = 140)
 {
 
   TFile *MyFile = new TFile(TString::Format("jettag_%s.root", process.Data()), "RECREATE");
@@ -11,10 +11,16 @@ void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, floa
   TH1F *h_jet_btag[40];
   TH1F *h_jet_ctag[40];
 
+
+  TH1F *h_jet_btag_cc[40]; //cluster counting
+  TH1F *h_jet_ctag_cc[40];
+
   for (int i = 0; i < 40; i++)
   {
     h_jet_btag[i] = new TH1F(TString::Format("h_jet_btag_%i", i), TString::Format("h_jet_btag_%i", i), 6, -0.5, 5.5);
     h_jet_ctag[i] = new TH1F(TString::Format("h_jet_ctag_%i", i), TString::Format("h_jet_ctag_%i", i), 6, -0.5, 5.5);
+    h_jet_btag_cc[i] = new TH1F(TString::Format("h_jet_btag_cc_%i", i), TString::Format("h_jet_btag_cc_%i", i), 6, -0.5, 5.5);
+    h_jet_ctag_cc[i] = new TH1F(TString::Format("h_jet_ctag_cc_%i", i), TString::Format("h_jet_ctag_cc_%i", i), 6, -0.5, 5.5);
   }
 
   Long64_t nentries;
@@ -42,6 +48,9 @@ void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, floa
     TVector3 v2(mc_quark_px[1], mc_quark_py[1], mc_quark_pz[1]);
     float acol = GetSinacol(v1, v2);
 
+    float qqbar_m =  sqrt(pow(mc_quark_E[0] + mc_quark_E[1], 2) - pow(mc_quark_px[0] + mc_quark_px[1], 2) - pow(mc_quark_py[0] + mc_quark_py[1], 2) - pow(mc_quark_pz[0] + mc_quark_pz[1], 2));
+
+
     if (jentry > 100000 && jentry % 100000 == 0)
       std::cout << "Progress: " << 100. * jentry / nentries << " %" << endl;
 
@@ -50,7 +59,7 @@ void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, floa
     bool selection = PreSelection(selection_type);
     if (selection == false)
       continue;
-    if (acol < acol_cut)
+    if (acol > acol_cut || qqbar_m < qqbar_m_cut)
       continue;
 
     for (int ijet = 0; ijet < 2; ijet++)
@@ -70,6 +79,18 @@ void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, floa
           h_jet_ctag[j]->Fill(0);
           h_jet_ctag[j]->Fill(fabs(mc_quark_pdg[0]));
         }
+        if (jet_btag_2[ijet] > tag)
+        {
+          if (fabs(mc_quark_pdg[0]) < 4)
+          h_jet_btag_cc[j]->Fill(0);
+          h_jet_btag_cc[j]->Fill(fabs(mc_quark_pdg[0]));
+        }
+        if (jet_ctag_2[ijet] > tag)
+        {
+          if (fabs(mc_quark_pdg[0]) < 4)
+          h_jet_ctag_cc[j]->Fill(0);
+          h_jet_ctag_cc[j]->Fill(fabs(mc_quark_pdg[0]));
+        }
       } // for tag
     }   // for ijet
 
@@ -79,10 +100,12 @@ void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, floa
   {
     h_jet_btag[i]->Write();
     h_jet_ctag[i]->Write();
+    h_jet_btag_cc[i]->Write();
+    h_jet_ctag_cc[i]->Write();
   }
 }
 
-void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, int bkg = 0, float acol_cut = 0.3)
+void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, int bkg = 0, float acol_cut = 0.3, float qqbar_m_cut= 140)
 {
 
   TFile *MyFile = new TFile(TString::Format("selection_%s.root", process.Data()), "RECREATE");
@@ -206,16 +229,18 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
     float gamma1_e = mc_ISR_E[1];
     float gamma_e = gamma0_e + gamma1_e;
 
+    float qqbar_m =  sqrt(pow(mc_quark_E[0] + mc_quark_E[1], 2) - pow(mc_quark_px[0] + mc_quark_px[1], 2) - pow(mc_quark_py[0] + mc_quark_py[1], 2) - pow(mc_quark_pz[0] + mc_quark_pz[1], 2));
+
     TVector3 v1(mc_quark_px[0], mc_quark_py[0], mc_quark_pz[0]);
     TVector3 v2(mc_quark_px[1], mc_quark_py[1], mc_quark_pz[1]);
     float acol = GetSinacol(v1, v2);
     acol_vs_ISR->Fill(gamma_e, acol);
 
-    if (fabs(mc_quark_pdg[0]) == 5 && acol < acol_cut)
+    if (fabs(mc_quark_pdg[0]) == 5 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
     {
       bb_gen++;
     }
-    if (acol > acol_cut)
+    if ((acol > acol_cut || qqbar_m < qqbar_m_cut))
     {
       if (fabs(mc_quark_pdg[0]) == 5)
         bb_radreturn_gen++;
@@ -224,11 +249,11 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
       if (fabs(mc_quark_pdg[0]) < 4)
         qq_radreturn_gen++;
     }
-    if (fabs(mc_quark_pdg[0]) == 4 && acol < acol_cut)
+    if (fabs(mc_quark_pdg[0]) == 4 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
     {
       cc_gen++;
     }
-    if (fabs(mc_quark_pdg[0]) < 5 && acol < acol_cut)
+    if (fabs(mc_quark_pdg[0]) < 5 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
     {
       qq_gen++;
     }
@@ -316,11 +341,11 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
     else
     {
 
-      if (fabs(mc_quark_pdg[0]) == 5 && acol < acol_cut)
+      if (fabs(mc_quark_pdg[0]) == 5 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
       {
         bb_counter++;
       }
-      if (acol > acol_cut)
+      if ((acol > acol_cut || qqbar_m < qqbar_m_cut))
       {
         if (fabs(mc_quark_pdg[0]) == 5)
           bb_radreturn_counter++;
@@ -329,16 +354,16 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
         if (fabs(mc_quark_pdg[0]) < 4)
           qq_radreturn_counter++;
       }
-      if (fabs(mc_quark_pdg[0]) == 4 && acol < acol_cut)
+      if (fabs(mc_quark_pdg[0]) == 4 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
       {
         cc_counter++;
       }
-      if (fabs(mc_quark_pdg[0]) < 5 && acol < acol_cut)
+      if (fabs(mc_quark_pdg[0]) < 5 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
       {
         qq_counter++;
       }
 
-      if (acol > acol_cut)
+      if ((acol > acol_cut || qqbar_m < qqbar_m_cut))
       {
 
         h_costheta_energy_radreturn->Fill(fabs(photonjet_cos_max), photonjet_e_max);
@@ -364,7 +389,7 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
         h_K_parton_K_radreturn->Fill(gamma_e, Kv);
       }
 
-      if (fabs(mc_quark_pdg[0]) == 5 && acol < acol_cut)
+      if (fabs(mc_quark_pdg[0]) == 5 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
       {
 
         h_costheta_energy_bb->Fill(fabs(photonjet_cos_max), photonjet_e_max);
@@ -391,7 +416,7 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
         h_K_parton_K_bb->Fill(gamma_e, Kv);
       }
 
-      if (fabs(mc_quark_pdg[0]) == 4 && acol < acol_cut)
+      if (fabs(mc_quark_pdg[0]) == 4 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
       {
 
         h_costheta_energy_cc->Fill(fabs(photonjet_cos_max), photonjet_e_max);
@@ -417,7 +442,7 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
         h_K_parton_K_cc->Fill(gamma_e, Kv);
       }
 
-      if (fabs(mc_quark_pdg[0]) < 4 && acol < acol_cut)
+      if (fabs(mc_quark_pdg[0]) < 4 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
       {
 
         h_costheta_energy_qq->Fill(fabs(photonjet_cos_max), photonjet_e_max);
