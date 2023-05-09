@@ -980,8 +980,8 @@ void dEdxdist2(int quarkid=3) {
   TLegend *leg = new TLegend(0.18,0.6,0.46,0.85);
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
-  leg->AddEntry(test,"Nominal dEdx performance, |p_{trk}|>3 GeV","l");
-  leg->AddEntry(test2,"Estimated Cluster Counting dEdx performance, |p_{trk}|>3 GeV","l");
+  leg->AddEntry(test,"Nominal dEdx","l");//, |p_{trk}|>3 GeV","l");
+  leg->AddEntry(test2,"Estimated Cluster Counting dNdx","l");//, |p_{trk}|>3 GeV","l");
   // leg->AddEntry(test2,"|p_{trk}|>3 GeV & |cos(#theta_{trk})|<0.8","l");
   leg->AddEntry(kdEdx_dist_pion,"pions","l");
   leg->AddEntry(kdEdx_dist_kaon,"kaons","l");
@@ -1954,14 +1954,14 @@ void Plots_dEdx_draft() {
   //Ntracks();
   //Ntracks2();
 
-  //for(int i=5; i<6; i++)  dEdxdist(i);
-  for(int i=4; i<6; i++)  dEdxdistProjection(i);
+  for(int i=4; i<6; i++)  dEdxdist2(i);
+  //for(int i=4; i<6; i++)  dEdxdistProjection(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 
   // NHits();
   //for(int i=4; i<6; i++) EffPurity_momentum(i);
   //for(int i=4; i<6; i++) EffPurity_angle(i);
-  //for(int i=4; i<6; i++) EffPurity_dedxdist2(i);
+  for(int i=4; i<6; i++) EffPurity_dedxdist2(i);
   //dEdx(0);
   //dEdx2(0);
 

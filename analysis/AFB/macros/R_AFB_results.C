@@ -160,6 +160,7 @@ void Plots_R_AFB() {
 
   b_eR->Fill(7.5, sqrt( pow(r_stat[3],2)+pow(r_syst[3],2)));
   b_eR->Fill(10.5, sqrt( pow(afb_stat[3],2)+pow(afb_syst[3],2)));
+  cout<< sqrt( pow(afb_stat[3],2)+pow(afb_syst[3],2))<<endl;
 
 
   //LABELS

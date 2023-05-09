@@ -31,7 +31,7 @@ void Labels(TString extra=""){
   QQBARLabel(0.86,0.952,"");
   // QQBARLabel2(0.3,0.97, "e^{-}e^{+} #rightarrow q#bar{q}, q=udscb, 250 GeV, 250fb^{-1}",kGray+2);
 
-  QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow q#bar{q}"+extra,kGray+2);
+  //  QQBARLabel2(0.3,0.965, "e^{-}e^{+} #rightarrow q#bar{q}"+extra,kGray+2);
 
   //QQBARLabel2(0.2,0.22, "Secondary Tracks in c-jets",kGray+4);
 
@@ -161,7 +161,7 @@ void Plots_AFB(int mode=1) {
   gAFBc_eR->SetLineStyle(2);
   gAFBc_eR->Draw("lp");
 
-  Labels(", sin(#Psi_{acol})<0.3");
+  Labels();//", sin(#Psi_{acol})<0.3");
 
   TString pol_string1 = "e_{L}^{-}e_{R}^{+}";
   TString pol_string2 = "e_{R}^{-}e_{L}^{+}";
@@ -490,7 +490,7 @@ void Plots_CrossDiff(int mode=0) {
   test2->SetLineWidth(2);
   test2->SetLineStyle(2);
 
-  Labels(", sin(#Psi_{acol})<0.3 ");
+    Labels();//", sin(#Psi_{acol})<0.3 ");
 
 
   TString pol_string1 = "e_{L}^{-}e_{R}^{+}";
@@ -886,7 +886,7 @@ void Plots_Cross(int mode=0) {
   test2->SetLineWidth(2);
   test2->SetLineStyle(2);
 
-  Labels(", sin(#Psi_{acol})<0.3");
+  Labels();//", sin(#Psi_{acol})<0.3");
 
 
   TString pol_string1 = "e_{L}^{-}e_{R}^{+}";
@@ -1285,7 +1285,7 @@ void Plots_R(int mode=0) {
   gAFBc_eR->Draw("l");
 
 
-  Labels(", sin(#Psi_{acol})<0.3");
+  Labels();//", sin(#Psi_{acol})<0.3");
   
    TString pol_string1 = "e_{L}^{-}e_{R}^{+}";
   TString pol_string2 = "e_{R}^{-}e_{L}^{+}";
