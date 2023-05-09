@@ -99,7 +99,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
     cout << output << endl;
     float luminosity_0 = 1;
 
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 6; i++)
     {
 
       // if(i==1) i=8;
@@ -108,7 +108,7 @@ void selection_plots(bool normalised = true, TString output = "efficiency")
 
       //**********************************************************
       // /*ZZ
-      TString folder = TString::Format("../results/selection_cuts%i_", cuts);
+      TString folder = TString::Format("../results_250GeV_2023/selection_cuts%i_", cuts);
 
       TString filename = folder + "2f_hadronic_sample_" + pol + ".root";
 
