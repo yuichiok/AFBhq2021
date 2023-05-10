@@ -17,8 +17,8 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries = -1, int bkg 
    // optimal one dNdx
   if (dedxcut == 1)
   {
-    dedxcut_up = 1.1; //bin 151,
-    dedxcut_down = -2.45; //bin 161
+    dedxcut_up = 3.05; //bin 151,
+    dedxcut_down = -2.45; //bin 261
   }
 
   TString filename = TString::Format("AFB_quark%i_%s.root", quark, process.Data());
@@ -580,8 +580,8 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
     jet_ctag_used[1]=jet_ctag[1];
   }
   if( dedxcut == 1) {
-    dedxcut_up = 1.1;//bin 151
-    dedxcut_down = -2.45; //bin161
+    dedxcut_up = 3.05; //bin 151,
+    dedxcut_down = -2.45; //bin 261   
     jet_btag_used[0]=jet_btag_2[0];
     jet_btag_used[1]=jet_btag_2[1];
     jet_ctag_used[0]=jet_ctag_2[0];
@@ -682,8 +682,8 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
   }
 
   //----------------------------------------------------
-  // open pq's
-  TString filenamepq = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/%s/pq_pdg%i_pol%i.root", weight_folder.Data(),quark, pol);
+  // open pq'
+  TString filenamepq = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-250GeV/analysis/AFB/%s/pq_pdg%i_pol%i.root", weight_folder.Data(),quark, pol);
   TFile *fpq = new TFile(filenamepq);
   TH1F *purity_0[50];
   TH1F *purity_1[50];
@@ -705,7 +705,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   //----------------------------------------------------
   // open weights of efficiencies
-  TString filenameweight = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/%s/eff_weights_pdg%i_pol%i.root",weight_folder.Data(), quark, pol);
+  TString filenameweight = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-250GeV/analysis/AFB/%s/eff_weights_pdg%i_pol%i.root",weight_folder.Data(), quark, pol);
   TFile *fw = new TFile(filenameweight);
   TH1F *eff_preselection[50];
   TH1F *eff_tagging[50];
@@ -721,7 +721,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   //----------------------------------------------------
   // open weights of charge masurement efficiencies
-  TString filenameweightcharge = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-dev/analysis/AFB/%s/chargeeff_weights_pdg%i_pol%i.root",weight_folder.Data(), quark, pol);
+  TString filenameweightcharge = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-250GeV/analysis/AFB/%s/chargeeff_weights_pdg%i_pol%i.root",weight_folder.Data(), quark, pol);
   TFile *fcharge = new TFile(filenameweightcharge);
   TH1F *eff_charge_0[50];
   TH1F *eff_charge_1[50];
@@ -952,8 +952,10 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   for (int icat = 0; icat < 3; icat++)
   {
+    cout<<icat<<endl;
     for (int isyst = 0; isyst < nsyst; isyst++)
     {
+      cout<<icat<<" "<<isyst<<endl;
       TF1 *func = new TF1("func", "[0]+[1]*x+[2]*x*x+[3]*x*x*x+[4]*x*x*x*x", 0.0, 0.9);
       eff_preselection[isyst]->Fit(func, "MER");
       float a = func->GetParameter(0);
@@ -978,6 +980,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
         }
       }
 
+      cout<<"write h_AFBreco[icat][isyst]->Write(); "<<endl;
       h_AFBreco[icat][isyst]->Write();
       h_AFBreco_pqcorrected[icat][isyst]->Write();
       h_AFBreco_chargecheat[icat][isyst]->Write();
@@ -1024,8 +1027,8 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     jet_ctag_used[1]=jet_ctag[1];
   }
   if( dedxcut == 1) {
-    dedxcut_up = 1.1;//bin 151
-    dedxcut_down = -2.45; //bin161
+    dedxcut_up = 3.05; //bin 151,
+    dedxcut_down = -2.45; //bin 261
     jet_btag_used[0]=jet_btag_2[0];
     jet_btag_used[1]=jet_btag_2[1];
     jet_ctag_used[0]=jet_ctag_2[0];

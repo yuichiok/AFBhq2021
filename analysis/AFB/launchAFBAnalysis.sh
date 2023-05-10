@@ -9,13 +9,17 @@ do
     source test_AFBAnalysis.sh 4f_WW_hadronic $pol 1
 done
 
+#sleep 4h 
+#mv *root output/.
+
 #source hadd_AFBSignalBkg.sh
 #source hadd_AFB_PQ.sh
 #cd macros
 #source Weights_c.sh
-#mkdir weights_dEdx_250GeV_2023
+#mkdir ../weights_dEdx_250GeV_2023
 #mv *root ../weights_dEdx_250GeV_2023/.
 #cd ..
 ##source test_AFBEnergy.sh
 #source launchAFBReco.sh
+#source hadd_AFBReco.sh
 

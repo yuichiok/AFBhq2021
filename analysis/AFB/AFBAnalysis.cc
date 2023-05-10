@@ -11,7 +11,6 @@ int AFBAnalysis( TString file="", TString process="2f_hadronic", TString pol="eL
   else if(file_n<100) ss3.process=process+"_"+pol+TString::Format("_file_0%i",file_n);
   else ss3.process=process+"_"+pol+TString::Format("_file_%i",file_n);
 
-  ss3.dedxcut=7;
   ss3.AFB_histos_for_PQ_analysis(-1,bkg,quark);
   gSystem->Exit(0);
   

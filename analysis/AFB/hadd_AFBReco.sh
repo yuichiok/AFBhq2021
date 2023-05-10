@@ -1,6 +1,6 @@
 for pol in "eL_pR" "eR_pL" 
 do
-    for sample in "2f_hadronic_sample" "2f_hadronic"
+    for sample in "2f_hadronic"
     do
 		for quark in 4 5 
 		do
