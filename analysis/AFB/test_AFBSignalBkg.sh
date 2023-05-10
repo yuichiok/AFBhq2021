@@ -25,7 +25,7 @@ do
 	cat > ${local}/steer/afbsignal_quark${quark}_${process}_${pol}_${name}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
 root -l -q ${local}/AFBSignalBkg.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${quark},${bkg}\) > ${local}/output/log_AFBSignalBkg_quark${quark}_${process}_${pol}_${name}_${bkg}
-mv ${local}/SigBkg_quark${quark}_${process}_${pol}_file_${name}.root ${local}/output/.
+mv SigBkg_quark${quark}_${process}_${pol}_file_${name}.root ${local}/output/.
 EOF
 	
 	cat > ${local}/steer/afbsignal_quark${quark}_${process}_${pol}_${name}.sub <<EOF
