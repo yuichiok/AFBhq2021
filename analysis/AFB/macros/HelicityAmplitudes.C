@@ -330,10 +330,10 @@ void HelicityAmplitudes() {
   h_b_stat->SetLineColor(kBlack);
   h_b_stat->Draw("psame");
 
-  QQBARLabel(0.865,0.953,"");
+  QQBARLabel(0.865,0.953,"work in progress");
   QQBARLabel2(0.15,0.96, "ILC250 2000 fb^{-1} ",960);
 
-  TLegend *leg_c = new TLegend(0.3,0.88,0.5,0.93);
+  TLegend *leg_c = new TLegend(0.3,0.85,0.5,0.90);
   leg_c->SetTextSize(0.035);
   leg_c->SetTextFont(42);
   leg_c->AddEntry(h_c_stat_and_syst,"q=c-quark","f");
@@ -342,7 +342,7 @@ void HelicityAmplitudes() {
   leg_c->SetShadowColor(0);
   leg_c->Draw();
 
-  TLegend *leg_b = new TLegend(0.6,0.88,0.9,0.93);
+  TLegend *leg_b = new TLegend(0.6,0.85,0.9,0.90);
   leg_b->SetTextSize(0.035);
   leg_b->SetTextFont(42);
   leg_b->AddEntry(h_b_stat_and_syst,"q=b-quark","f");

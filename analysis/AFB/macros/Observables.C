@@ -458,7 +458,7 @@ void Plots_CrossDiff(int mode=0) {
   TCanvas* c_AFBb = new TCanvas("c_AFBb","c_AFBb",800,800);
   c_AFBb->cd(1);
   // gPad->SetLogy();
-  gAFBb->GetXaxis()->SetTitle("cos(#theta_{q})");
+  gAFBb->GetXaxis()->SetTitle("cos #theta_{q}");
   gAFBb->GetYaxis()->SetTitle("cross section [fb] / 0.05");
   gAFBb->GetYaxis()->SetRangeUser(0,500);
   gAFBb->GetXaxis()->SetRangeUser(-1,1);
