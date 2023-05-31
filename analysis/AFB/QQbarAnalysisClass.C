@@ -7,20 +7,6 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries = -1, int bkg 
 
   float pcut = 3.;
 
-  // optimal one dEdx
-  if (dedxcut == 0)
-  {
-    dedxcut_up = 1.1;
-    dedxcut_down = -2.45;
-  }
-
-  // optimal one dNdx
-  if (dedxcut == 1)
-  {
-    dedxcut_up = 3.05;    // bin 151,
-    dedxcut_down = -2.45; // bin 261
-  }
-
   TString filename = TString::Format("AFB_quark%i_%s.root", quark, process.Data());
   TFile *MyFile = new TFile(filename, "RECREATE");
   MyFile->cd();
@@ -1285,10 +1271,15 @@ float QQbarAnalysisClass::ChargeKJetMethod(int ijet, float pcut = 2.) // bool ch
     if (nhits_bool == true)
     {
       float dedx_dist = pfo_piddedx_k_dedxdist[ipfo];
-      if (dedxcut == 1)
-        dedx_dist = pfo_piddedx_k_dedxdist_2[ipfo];
-      if (dedx_dist > dedxcut_down && dedx_dist < dedxcut_up)
-        charge -= pfo_charge[ipfo];
+      if (dedxcut == 0){//        dedx_dist = pfo_piddedx_k_dedxdist_2[ipfo];
+	if (dedx_dist > dedxcut_down && dedx_dist < dedxcut_up && dedx_dist!=0)
+	  charge -= pfo_charge[ipfo];
+      } else {
+	if( fabs(pfo_pdgcheat[ipfo])==321 ) charge -= pfo_charge[ipfo];
+	TRandom *r1 = new TRandom1();
+	float x= r1->Uniform(0,1);
+	if(x>0.98) charge *=-1;
+      }
     }
   }
 

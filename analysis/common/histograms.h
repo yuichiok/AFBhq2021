@@ -236,7 +236,7 @@ TH1F* GetHisto(int iprocess, TString histo, int pol, int iquark, float lum, floa
 
 TH1F* GetHisto2(int iprocess, TString histo, int pol, int iquark, float lum, float norm=1, int cheatmethod=0) {
 
-  TString folder_="../results_250GeV/AFB_PQ_";
+  TString folder_="../results_250GeV_dNdx/AFB_PQ_";
 
   TString filename = TString::Format("%spdg%i_%s_eL_pR.root",folder_.Data(),iquark,process[iprocess].Data());
   cout<<filename<<" "<<histo<<endl;
@@ -257,13 +257,13 @@ TH1F* GetHisto2(int iprocess, TString histo, int pol, int iquark, float lum, flo
   cout<<"Lum0="<<luminosity[0]<<" Lum1="<<luminosity[1]<<endl;
   
  
-  filename = TString::Format("%spdg%i_%s_eL_pR_cheatmethod_%i.root",folder.Data(),iquark,process[iprocess].Data(),cheatmethod);
+  filename = TString::Format("%spdg%i_%s_eL_pR.root",folder.Data(),iquark,process[iprocess].Data());
   cout<<filename<<" "<<histo<<endl;
   TFile *ff = new TFile(filename);
   TH1F *h[2];
   h[0]= (TH1F*)ff->Get(histo);
 
-  filename = TString::Format("%spdg%i_%s_eR_pL_cheatmethod_%i.root",folder.Data(),iquark,process[iprocess].Data(),cheatmethod);
+  filename = TString::Format("%spdg%i_%s_eR_pL.root",folder.Data(),iquark,process[iprocess].Data());
   TFile *ff2 = new TFile(filename);
   h[1]= (TH1F*)ff2->Get(histo);
 

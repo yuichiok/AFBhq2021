@@ -290,7 +290,7 @@ void weigths_charge( int quark=4, int pol=0, float lum=-1, int lastit=2) {
 
 void Weights_c(int pol=2, int quark=4, int type=2) {
 
-  folder="../results_"+energy+"_dEdx/AFB_PQ_";
+  folder="../results_"+energy+"_dNdx/AFB_PQ_";
 
   cout<<"  ------------------------------------------ "<<endl;
   if(type==1) pq_weigths_tagging(quark,pol,900);

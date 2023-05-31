@@ -40,6 +40,8 @@
   }*/
 
 TString energy="250GeV";
+TString pid="dNdx";
+
 
 void EffCat(int quark=5, int syst=0) {
 
@@ -58,9 +60,9 @@ void EffCat(int quark=5, int syst=0) {
 
   //*************
   int pol=0;
-  folder="../results_"+energy+"/AFBreco_";
+  folder="../results_"+energy+"_"+pid+"/AFBreco_";
 
-  TString filename = TString::Format("../weights_"+energy+"/eff_weights_pdg%i_pol%i.root",quark,pol);
+  TString filename = TString::Format("../weights_"+pid+"_"+energy+"_2023/eff_weights_pdg%i_pol%i.root",quark,pol);
   TFile *f = new TFile(filename);
   TH1F*  eff_q = (TH1F*)f->Get("eff_pres");
   TH1F * eff40_q = new TH1F("eff40_q","eff40_q",40,-1,1);
@@ -102,9 +104,9 @@ void EffCat(int quark=5, int syst=0) {
 
   //***********
   pol=1;
-  folder="../results_"+energy+"/AFBreco_";
+  //folder="../results_"+energy+"/AFBreco_";
 
-  filename = TString::Format("../weights_"+energy+"/eff_weights_pdg%i_pol%i.root",quark,pol);
+  filename = TString::Format("../weights_"+pid+"_"+energy+"_2023/eff_weights_pdg%i_pol%i.root",quark,pol);
   f = new TFile(filename);
   TH1F*  eff_q_eR = (TH1F*)f->Get("eff_pres");
   TH1F * eff40_q_eR = new TH1F("eff40_q_eR","eff40_q_eR",40,-1,1);

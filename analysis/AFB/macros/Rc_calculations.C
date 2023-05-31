@@ -1015,11 +1015,11 @@ void R_theory_vs_reco( int pol=0, float lum=-1) {
 
 void Rc_calculations() {
 
-  folder="../results_"+energy+"/AFB_PQ_";
-  RPlots2_c(900);
-  RPlots2_b(900);
-  /*
-  for(int pol=2; pol<3;pol++) {
+  folder="../results_"+energy+"_dNdx/AFB_PQ_";
+  //RPlots2_c(900);
+  //RPlots2_b(900);
+  
+  for(int pol=3; pol<4;pol++) {
     cout<<" Plots "<<endl;
     cout<<"  ------------------------------------------ "<<endl;
     //RPartonPlots(pol,900);
@@ -1034,5 +1034,5 @@ void Rc_calculations() {
     // cout<<"  ------------------------------------------ "<<endl;
     R_cbkg(pol,900);
     //    R_theory_vs_reco(pol,900);
-    }*/
+    }
 }
