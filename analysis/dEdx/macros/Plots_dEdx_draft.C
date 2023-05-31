@@ -110,7 +110,7 @@ void NHits() {
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
   c_mom->cd(1);
   // c_mom->SetGrid();
-  nhits->GetXaxis()->SetTitle("cos(#theta_{trk})");
+  nhits->GetXaxis()->SetTitle("cos #theta_{trk}");
   nhits->GetYaxis()->SetTitle("# TPC hits");
   nhits->GetXaxis()->SetRangeUser(-1,1);
 
@@ -174,8 +174,8 @@ void Mom(int quarkid=4) {
   p_pion->GetXaxis()->SetTitle("|#vec{p}_{trk}| [GeV]");
   p_pion->GetYaxis()->SetTitle("a.u.");
   p_pion->GetXaxis()->SetRangeUser(0,60);
-  p_pion->GetYaxis()->SetRangeUser(100,p_pion->GetMaximum()*5);
-
+  if(quarkid==3)  p_pion->GetYaxis()->SetRangeUser(10,p_pion->GetMaximum()*5);
+  else p_pion->GetYaxis()->SetRangeUser(100,p_pion->GetMaximum()*5);
 
   p_pion->SetLineColor(4);
   p_pion->SetLineWidth(4);
@@ -281,7 +281,7 @@ void Costheta(int quarkid=4) {
   // gPad->SetLogy();
   c_mom->cd(1);
   // c_mom->SetGrid();
-  costheta_pion->GetXaxis()->SetTitle("cos(#theta_{trk})");
+  costheta_pion->GetXaxis()->SetTitle("cos #theta_{trk}");
   costheta_pion->GetYaxis()->SetTitle("a.u.");
   costheta_pion->GetXaxis()->SetRangeUser(-1,1);
   costheta_pion->GetYaxis()->SetRangeUser(0,costheta_pion->GetMaximum()*1.1);
@@ -486,7 +486,7 @@ void dEdx2(int quarkid=4) {
   TCanvas* c_mom = new TCanvas("c_mom","c_mom",800,800);
   c_mom->cd(1);
   // c_mom->SetGrid();
-  pion->GetXaxis()->SetTitle("cos(#theta_{trk})");
+  pion->GetXaxis()->SetTitle("cos #theta_{trk}");
   pion->GetYaxis()->SetTitle("#frac{dE}{dx} [MeV/cm]");
   pion->GetYaxis()->SetTitleOffset(1.6);
 
@@ -815,7 +815,7 @@ void dEdxdist(int quarkid=3) {
   kdEdx_dist_kaon->GetXaxis()->SetTitle("#Delta_{dE/dx-K}");
   //  kdEdx_dist_pion2->GetXaxis()->SetTitle("signed [(dE/dx-dE/dx_{fit-kaon})/#Delta_{dE/dx}]^{2}");
   kdEdx_dist_kaon->GetYaxis()->SetTitle("a.u.");
-  kdEdx_dist_kaon->GetYaxis()->SetRangeUser(0,150000);
+  kdEdx_dist_kaon->GetYaxis()->SetRangeUser(0,70000);
   //kdEdx_dist_pion->GetXaxis()->SetTitleOffset(1.);
 
   /*kdEdx_dist_pion2->SetLineColor(4);
@@ -1253,7 +1253,7 @@ void dEdxdistProjection2(int quarkid=3) {
 
   TCanvas* c_mom = new TCanvas("c_mom2","c_mom2",800,800);
   c_mom->cd(1);
-  g_pion->GetXaxis()->SetTitle("cos(#theta_{trk})");
+  g_pion->GetXaxis()->SetTitle("cos #theta_{trk}");
   g_pion->GetYaxis()->SetTitle("#mu_{#Delta_{dE/dx-K}} #pm #sigma_{#Delta_{dE/dx-K}}");
   g_pion->GetYaxis()->SetTitleOffset(1.2);
   g_pion->GetYaxis()->SetRangeUser(-10,20);
@@ -1438,7 +1438,7 @@ void EffPurity_angle(int quarkid) {
 
   TCanvas* c_mom = new TCanvas("c_mom2","c_mom2",800,800);
   c_mom->cd(1);
-  efficiency->GetXaxis()->SetTitle("|cos(#theta_{trk})|");
+  efficiency->GetXaxis()->SetTitle("|cos #theta_{trk}|");
   efficiency->GetYaxis()->SetTitle("[%]");
   efficiency->GetYaxis()->SetTitleOffset(1.25);
   efficiency->GetXaxis()->SetTitleOffset(1.);
@@ -1742,6 +1742,7 @@ void EffPurity_dedxdist(int quarkid) {
     float n_protons=  kdEdxdist_proton2->Integral(100,i);
     float n_muons=  kdEdxdist_muon2->Integral(100,i);
     float n_electrons=  kdEdxdist_electron2->Integral(100,i);
+    
     x2[i-100]=i;
     //    eff[i-100]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                     
     eff2[i-100]=100.*(n_kaons)/nkaons2;
@@ -1752,7 +1753,7 @@ void EffPurity_dedxdist(int quarkid) {
   x[0]=80.63;
   if(iquark==4) x[0]=80.65;
   float y[100]={0};
-  y[0]=87.82;
+  y[0]=86.7;
   if(iquark==4) y[0]=90.54;
 
   TGraph* working_point = new TGraph(1,x,y);
@@ -1949,19 +1950,19 @@ void EffPurity_dedxdist2(int quarkid) {
 
 
 void Plots_dEdx_draft() {
-  //for(int i=3; i<6; i++) Mom(i);
+  //for(int i=3; i<4; i++) Mom(i);
   //for(int i=3; i<6; i++) Costheta(i);
   //Ntracks();
   //Ntracks2();
 
-  for(int i=4; i<6; i++)  dEdxdist2(i);
+  //for(int i=4; i<5; i++)  dEdxdist(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection(i);
-  //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
+  for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 
-  // NHits();
+  //NHits();
   //for(int i=4; i<6; i++) EffPurity_momentum(i);
   //for(int i=4; i<6; i++) EffPurity_angle(i);
-  for(int i=4; i<6; i++) EffPurity_dedxdist2(i);
+  //for(int i=4; i<6; i++) EffPurity_dedxdist(i);
   //dEdx(0);
   //dEdx2(0);
 
