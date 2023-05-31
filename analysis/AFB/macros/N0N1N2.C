@@ -29,7 +29,7 @@
 //pol=2 eLpR 80/30
 //pol=3 eRpL 80/30
 
-TString energy="250GeV";
+TString energy="250GeV_dEdx";
 
 std::vector<TH1F*> Histograms(int histo=0, int pol=0, int iquark=5,  float lum=900){
 

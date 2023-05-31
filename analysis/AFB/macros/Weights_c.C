@@ -8,14 +8,14 @@ void pq_weigths_tagging( int quark=4, int pol=0, float lum=-1) {
 
 
   //P-Q factors
-  TString chargemethod_string[5]={"KcCheatTOF","KcCheatdEdxTOF","KcCheatdEdx","Vtx","Kc"};
+  TString chargemethod_string[2]={"Vtx","Kc"};
   for(int j=0; j<4; j++) {
     int error_bkg=0;//percent
     if(j==1) error_bkg=1;
     if(j==2) error_bkg=5;//1%
     if(j==3) error_bkg=10;//1%
 
-    for(int i=0; i<5; i++) {
+    for(int i=0; i<2; i++) {
       int jhisto=0;
       if(quark==4) jhisto=1;
      if(j>0) {
@@ -240,11 +240,11 @@ void weigths_tagging( int quark=4, int pol=0, float lum=-1) {
 }
 
 
-void weigths_charge( int quark=4, int pol=0, float lum=-1, int lastit=4) {
+void weigths_charge( int quark=4, int pol=0, float lum=-1, int lastit=2) {
 
-  TString chargemethod_string[5]={"KcCheatTOF","KcCheatdEdxTOF","KcCheatdEdx","Vtx","Kc"};
+  TString chargemethod_string[5]={"Vtx","Kc"};
 
-  for(int imethod=lastit-1; imethod<lastit; imethod++) {
+  for(int imethod=0; imethod<lastit; imethod++) {
     TString filemode="RECREATE";
     if(imethod>0) filemode="UPDATE";
     TFile *MyFile = new TFile(TString::Format("chargeeff_weights_pdg%i_pol%i.root",quark,pol),filemode);
@@ -255,29 +255,29 @@ void weigths_charge( int quark=4, int pol=0, float lum=-1, int lastit=4) {
     eff_charge->Write();
       for(int i=1; i<5; i++) {
 
-   
-	int error_bkg=0;//percent
-	if(i==1) error_bkg=1;
-	if(i==2) error_bkg=2;//1%
-	if(i==3) error_bkg=5;//5%
-	if(i==4) error_bkg=10;//10%
-	
-	TH1F* eff_charge2=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,float(error_bkg/100.));
-	MyFile->cd();
-	eff_charge2->SetName(TString::Format("eff_charge_%s_bkg_p%i",chargemethod_string[imethod].Data(),error_bkg));
-	eff_charge2->Write();
+        
+        int error_bkg=0;//percent
+        if(i==1) error_bkg=1;
+        if(i==2) error_bkg=2;//1%
+        if(i==3) error_bkg=5;//5%
+        if(i==4) error_bkg=10;//10%
+        
+        TH1F* eff_charge2=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,float(error_bkg/100.));
+        MyFile->cd();
+        eff_charge2->SetName(TString::Format("eff_charge_%s_bkg_p%i",chargemethod_string[imethod].Data(),error_bkg));
+        eff_charge2->Write();
 
-	TH1F* eff_charge2_bis=FHistoChargeBKG(chargemethod_string[imethod],pol, 2,quark,  lum,float(error_bkg/100.));
-	eff_charge2_bis->Divide(eff_charge2);
-	eff_charge2_bis->Divide(eff_charge2);
-	MyFile->cd();
-	eff_charge2_bis->SetName(TString::Format("rho_charge_%s_bkg_p%i",chargemethod_string[imethod].Data(),error_bkg));
-	eff_charge2_bis->Write();
-	
-	TH1F* eff_charge3=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,-float(error_bkg/100.));
-	MyFile->cd();
-	eff_charge3->SetName(TString::Format("eff_charge_%s_bkg_m%i",chargemethod_string[imethod].Data(),error_bkg));
-	eff_charge3->Write();
+        TH1F* eff_charge2_bis=FHistoChargeBKG(chargemethod_string[imethod],pol, 2,quark,  lum,float(error_bkg/100.));
+        eff_charge2_bis->Divide(eff_charge2);
+        eff_charge2_bis->Divide(eff_charge2);
+        MyFile->cd();
+        eff_charge2_bis->SetName(TString::Format("rho_charge_%s_bkg_p%i",chargemethod_string[imethod].Data(),error_bkg));
+        eff_charge2_bis->Write();
+        
+        TH1F* eff_charge3=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,-float(error_bkg/100.));
+        MyFile->cd();
+        eff_charge3->SetName(TString::Format("eff_charge_%s_bkg_m%i",chargemethod_string[imethod].Data(),error_bkg));
+        eff_charge3->Write();
 
       }
       MyFile->Close();
@@ -288,13 +288,13 @@ void weigths_charge( int quark=4, int pol=0, float lum=-1, int lastit=4) {
 
 
 
-void Weights_c(int pol=2, int quark=4, int type=2, int otherparam=5) {
+void Weights_c(int pol=2, int quark=4, int type=2) {
 
-  folder="../results_"+energy+"/AFB_PQ_";
+  folder="../results_"+energy+"_dNdx/AFB_PQ_";
 
   cout<<"  ------------------------------------------ "<<endl;
   if(type==1) pq_weigths_tagging(quark,pol,900);
   if(type==0) weigths_tagging(quark,pol,900);
-  if(type==2) weigths_charge(quark,pol,900,otherparam);
+  if(type==2) weigths_charge(quark,pol,900,2);
 }
 

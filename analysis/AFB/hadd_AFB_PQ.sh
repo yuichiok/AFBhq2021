@@ -4,7 +4,7 @@ do
     do
 	for quark in 4 5 
 	do
-	    hadd -f -j 4 results_250GeV/AFB_PQ_pdg${quark}_${sample}_${pol}.root output/AFB_quark${quark}_${sample}_${pol}_*.root
+	    hadd -f -j 4 results_250GeV_dEdx/AFB_PQ_pdg${quark}_${sample}_${pol}.root output/AFB_quark${quark}_${sample}_${pol}_*.root
 	done
     done
 done

@@ -24,7 +24,7 @@
 #include "fit.C"
 
 
-TString energy="250GeV";
+TString energy="250GeV_dEdx";
 
 
 void Labels(TString extra=""){

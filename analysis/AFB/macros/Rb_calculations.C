@@ -433,9 +433,9 @@ void R_theory_vs_reco( int pol=0, float lum=-1) {
 
 void Rb_calculations() {
 
-  folder="../results_"+energy+"/AFB_PQ_";
+  folder="../results_"+energy+"_dNdx/AFB_PQ_";
 
-  for(int pol=2; pol<3; pol++) {
+  for(int pol=2; pol<4; pol++) {
     cout<<" Plots "<<endl;
     cout<<"  ------------------------------------------ "<<endl;
     //RPlots_b(pol,900);

@@ -24,7 +24,7 @@
 #include "../../common/histograms.h"
 #include "utils.h"
 
-TString energy="250GeV";
+TString energy="250GeV_dNdx";
 
 /*
   void Labels(int quark){

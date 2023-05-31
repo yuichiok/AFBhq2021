@@ -39,7 +39,7 @@ void Labels(TString pol)
   // QQBARLabel2(0.2,0.22, "Secondary Tracks in c-jets",kGray+4);
 }
 
-void Plots()
+void Plots(bool cluster_counting=false)
 {
 
   SetQQbarStyle();
@@ -53,23 +53,26 @@ void Plots()
   gStyle->SetMarkerSize(0.);
   // TGaxis::SetMaxDigits(2);
 
-  TString filename = "../results_"+energy+"_2023/jettag_cuts5_2f_hadronic_eL_pR.root";
+  TString sufix="";
+  if(cluster_counting==true) sufix="_cc";
+
+  TString filename = "../results_"+energy+"_2023/jettag_cuts5_2f_hadronic_sample_eL_pR.root";
   TFile *f = new TFile(filename);
   TH1F *btag[40][2];
   TH1F *ctag[40][2];
   for (int i = 0; i < 40; i++)
   {
-    btag[i][0] = (TH1F *)f->Get(TString::Format("h_jet_btag_%i", i));
-    ctag[i][0] = (TH1F *)f->Get(TString::Format("h_jet_ctag_%i", i));
+    btag[i][0] = (TH1F *)f->Get(TString::Format("h_jet_btag%s_%i", sufix.Data(),i));
+    ctag[i][0] = (TH1F *)f->Get(TString::Format("h_jet_ctag%s_%i", sufix.Data(),i));
   }
 
-  filename = "../results_"+energy+"_2023/jettag_cuts5_2f_hadronic_eR_pL.root";
+  filename = "../results_"+energy+"_2023/jettag_cuts5_2f_hadronic_sample_eL_pR.root";
   TFile *f2 = new TFile(filename);
 
   for (int i = 0; i < 40; i++)
   {
-    btag[i][1] = (TH1F *)f2->Get(TString::Format("h_jet_btag_%i", i));
-    ctag[i][1] = (TH1F *)f2->Get(TString::Format("h_jet_ctag_%i", i));
+    btag[i][1] = (TH1F *)f2->Get(TString::Format("h_jet_btag%s_%i", sufix.Data(),i));
+    ctag[i][1] = (TH1F *)f2->Get(TString::Format("h_jet_ctag%s_%i", sufix.Data(),i));
   }
 
   float x[40], eff_b[2][3][40], eff_c[2][3][40];
@@ -123,6 +126,10 @@ void Plots()
   TGraph *efficiency_uds_b_eR = new TGraph(n, x, eff2_b[1][0]);
 
   TGraph *g_WP_b = new TGraph(2,WP_b,y2);
+
+  for(int i=0; i<n; i++) {
+    if(eff_b[0][2][i]>72.0) cout<<" B: "<<x[i]<< " eff:"<<eff_b[0][2][i]<<" pur_c:"<<eff2_b[0][1][i]<<" pur_uds:"<<eff2_b[0][0][i]<<endl;
+  }
 
   TCanvas *c_eff_b = new TCanvas("c_eff_b", "c_eff_b", 800, 800);
   c_eff_b->cd(1);
@@ -279,5 +286,5 @@ void Plots()
 void JetTag()
 {
 
-  Plots();
+  Plots(false);
 }

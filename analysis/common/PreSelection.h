@@ -10,7 +10,7 @@ double CNPFOS_cut=1.0;
 double costheta_isr=0.97;
 double energy_isr_cut=115;
 // cuts in y23
-double y23cut=0.0125;
+double y23cut=0.025;
 // ----------------------------------
 
 

@@ -43,7 +43,7 @@ TString energy="250GeV";
 
 void SigBkg(int pol=3,int quark=4) {
 
-  folder="../results_"+energy+"/SigBkg_";
+  folder="../results_"+energy+"_dEdx/SigBkg_";
 
   
   SetQQbarStyle();
