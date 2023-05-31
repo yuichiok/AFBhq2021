@@ -27,28 +27,28 @@
 
 TString energy="250GeV";
 
-void Labels(int i = 0, TString pol = "eL")
+void Labels(int i = 0, TString pol = "eL", float textsize=0.045)
 {
 
   QQBARLabel(0.8, 0.954, "");
   if (i == 0)
-    QQBARLabel2(0.04, 0.07, "[No Cuts]", kOrange + 3);
+    QQBARLabel2(0.04, 0.07, "[No Cuts]", kOrange + 2, textsize);
   if (i == 1)
-    QQBARLabel2(0.04, 0.07, "photon veto_{0}", kOrange + 3);
+    QQBARLabel2(0.04, 0.07, "photon veto_{0}", kOrange + 2, textsize);
   if (i == 2)
-    QQBARLabel2(0.04, 0.07, "photon veto cut", kOrange + 3);
+    QQBARLabel2(0.04, 0.07, "photon veto cut", kOrange + 2, textsize);
   if (i == 3)
-    QQBARLabel2(0.04, 0.082, "photon veto & acolinearity cuts", kOrange + 3);
+    QQBARLabel2(0.04, 0.082, "photon veto & acolinearity cuts", kOrange + 2, textsize);
 
   if (i == 4)
   {
-    QQBARLabel2(0.04, 0.082, "photon veto & acolinearity", kOrange + 3);
-    QQBARLabel2(0.04, 0.03, "& K_{reco} & m_{j1j1} cuts", kOrange + 3);
+    QQBARLabel2(0.04, 0.08, "photon veto & acolinearity", kOrange + 2, textsize);
+    QQBARLabel2(0.04, 0.028, "& K_{reco} & m_{j1j1} cuts", kOrange + 2, textsize);
   }
   if (i == 5)
   {
-    QQBARLabel2(0.04, 0.082, "photon veto & acolinearity", kOrange + 3);
-    QQBARLabel2(0.04, 0.03, "& K_{reco} & m_{j1j1} & y_{23} cuts", kOrange + 3);
+    QQBARLabel2(0.04, 0.08, "photon veto & acolinearity", kOrange + 2, textsize);
+    QQBARLabel2(0.04, 0.028, "& K_{reco} & m_{j1j1} & y_{23} cuts", kOrange + 2, textsize);
   }
 
   if (pol == "eL")
@@ -151,7 +151,7 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
   //  h_npfos_qq->Draw("boxsame");
   Labels(0, pol);
 
-  canvas_N_1->Print("plots_"+energy+" _2023/npfos_signal.eps");
+  canvas_N_1->Print("plots_"+energy+"_2023/npfos_signal.eps");
 
   TCanvas *canvas_N_2 = new TCanvas("canvas_npfos2", "canvas_npfos2", 800, 800);
   canvas_N_2->cd(1);
@@ -166,7 +166,7 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
   h_npfos_cc->Draw("boxsame");
   // h_npfos_qq->Draw("boxsame");
   Labels(0, pol);
-  canvas_N_2->Print("plots_"+energy+" _2023/npfos_radreturn.eps");
+  canvas_N_2->Print("plots_"+energy+"_2023/npfos_radreturn.eps");
 
   TCanvas *canvas_e_1 = new TCanvas("canvas_costheta_energy", "canvas_costheta_energy", 800, 800);
   canvas_e_1->cd(1);
@@ -183,7 +183,7 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
   h_costheta_energy_cc->SetLineColor(kRed);
   h_costheta_energy_cc->Draw("boxsame");
   Labels(0, pol);
-  canvas_e_1->Print("plots_"+energy+" _2023/energy_costheta_signal.eps");
+  canvas_e_1->Print("plots_"+energy+"_2023/energy_costheta_signal.eps");
 
   TCanvas *canvas_e_2 = new TCanvas("canvas_costheta_energy2", "canvas_costheta_energy2", 800, 800);
   canvas_e_2->cd(1);
@@ -196,5 +196,5 @@ void selection_plots2(int polarisation = 0, bool normalised = true, TString outp
   h_costheta_energy_radreturn->Draw("colz");
   h_costheta_energy_cc->Draw("boxsame");
   Labels(0, pol);
-  canvas_e_2->Print("plots_"+energy+" _2023/energy_costheta_radreturn.eps");
+  canvas_e_2->Print("plots_"+energy+"_2023/energy_costheta_radreturn.eps");
 }
