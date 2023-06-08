@@ -56,6 +56,7 @@ void Plots_R_AFB() {
   double y2[4]={sqrt(pow(afb_stat[0]/sqrt(0.25),2)+pow(afb_syst[0],2)),sqrt(pow(afb_stat[1]/sqrt(0.25),2)+pow(afb_syst[1],2)),sqrt(pow(afb_stat[2]/sqrt(0.54),2)+pow(afb_syst[2],2)),sqrt(pow(afb_stat[3]/sqrt(0.54),2)+pow(afb_syst[2],2))};
   double x2[4]={3.5,4.5,9.5,10.5};
 
+
   double ex2[4]={0,0,0,0};
   double ey2[4]={y2[0]-sqrt( pow(afb_stat[0],2)+pow(afb_syst[0],2)),y2[1],y2[2]-sqrt( pow(afb_stat[2],2)+pow(afb_syst[2],2)),y2[3]};//0.5,0.5,0.5,0.5};
   TGraphAsymmErrors * g_noTPC = new TGraphAsymmErrors(4,x2,y2,ex2,ex2,ey2,ex2);
@@ -223,6 +224,8 @@ void Plots_R_AFB_comparison() {
 
   double y2[4]={sqrt(pow(afb_stat[0]/sqrt(0.25),2)+pow(afb_syst[0],2)),sqrt(pow(afb_stat[1]/sqrt(0.25),2)+pow(afb_syst[1],2)),sqrt(pow(afb_stat[2]/sqrt(0.54),2)+pow(afb_syst[2],2)),sqrt(pow(afb_stat[3]/sqrt(0.54),2)+pow(afb_syst[2],2))};
   double x2[4]={3.5,4.5,9.5,10.5};
+
+  for(int i=0; i<4; i++) cout<<y2[i]<<endl;
 
   double ex2[4]={0,0,0,0};
   double ey2[4]={y2[0]-sqrt( pow(afb_stat[0],2)+pow(afb_syst[0],2)),y2[1],y2[2]-sqrt( pow(afb_stat[2],2)+pow(afb_syst[2],2)),y2[3]};//0.5,0.5,0.5,0.5};

@@ -16,7 +16,7 @@ do
         name=$counter
     fi
 
-    for quark in 4 5
+    for quark in 4 5 3 
     do
 	for cut_p in 0 3
 	do

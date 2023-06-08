@@ -418,6 +418,16 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900) {
   Afb_corrected[syst_]=Afb_v(plus_corrected,minus_corrected);
   dAfb_corrected[syst_]=dAfb_v(plus_corrected,minus_corrected, plus_e_corrected, minus_e_corrected);
 
+  if(syst_==0) {
+    float x=AFBcheat->Integral(0,20);
+    float y=AFBcheat->Integral(20,40);
+    float ex=sqrt(x);
+    float ey=sqrt(y);
+    float d1=(2*y)/pow(x+y,2);
+    float d2=(2*x)/pow(x+y,2);
+    float stat_error=sqrt(pow(d1*ex,2)+pow(d2*ey,2));
+    dAfb_corrected[syst_]=stat_error;
+  }
   }
 
   for(int syst=0; syst<23; syst++)  std::cout<<setprecision(7)<<"PDG: "<<quark<<" polarisation:"<<ipol<<" Syst:"<<syst<<"  --> AFB:"<<Afb_corrected[syst]<<" Rel_Error:"<<100.*dAfb_corrected[syst]/Afb_corrected[syst]<<"%"<<endl;
@@ -499,7 +509,7 @@ pol="eR_pL";
     //Plots_AFB(5,2,900);
     //Plots_AFB(5,3,900);
 
-    AFBSyst(5,2,900);
+    AFBSyst(5,3,900);
     //AFBPol(4,3,900);
 
   }

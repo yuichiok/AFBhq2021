@@ -1,4 +1,4 @@
-source launchAFBSignalBkg.sh
+#source launchAFBSignalBkg.sh
 
 for pol in "eL_pR" "eR_pL"
 do
@@ -16,8 +16,8 @@ done
 #source hadd_AFB_PQ.sh
 #cd macros
 #source Weights_c.sh
-#mkdir ../weights_dEdx_250GeV_2023
-#mv *root ../weights_dEdx_250GeV_2023/.
+#mkdir ../weights_dNdx_250GeV_2023
+#mv *root ../weights_dNdx_250GeV_2023/.
 #cd ..
 ##source test_AFBEnergy.sh
 #source launchAFBReco.sh

@@ -1830,7 +1830,9 @@ void EffPurity_dedxdist2(int quarkid) {
   if(quarkid==5) squark="bquark";
 
   
-  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eL_pR_3GeV.root";
+  TString filename = "../results_"+energy+"/histos_"+squark+"_secondary_tracks_ignoreoverlay_2f_hadronic_sample_eR_pL_3GeV.root";
+
+
 
   TFile *f = new TFile(filename);
   TH1F*  p_kaon = (TH1F*)f->Get("p_kaon");
@@ -1843,16 +1845,16 @@ void EffPurity_dedxdist2(int quarkid) {
   
   float x[10000], eff[10000], pur[10000];
   int n=0;
-  for(int i=151;i<260; i++) {
-    float n_kaons=  kdEdxdist_kaon->Integral(151,i);
-    float n_pions=  kdEdxdist_pion->Integral(151,i);
-    float n_protons=  kdEdxdist_proton->Integral(151,i);
-    float n_muons=  kdEdxdist_muon->Integral(151,i);
-    float n_electrons=  kdEdxdist_electron->Integral(151,i);
-    x[i-151]=i;
-    //    eff[i-151]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;
-    eff[i-151]=100.*(n_kaons)/nkaons;                    
-    pur[i-151]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
+  for(int i=100;i<402; i++) {
+    float n_kaons=  kdEdxdist_kaon->Integral(100,i);
+    float n_pions=  kdEdxdist_pion->Integral(100,i);
+    float n_protons=  kdEdxdist_proton->Integral(100,i);
+    float n_muons=  kdEdxdist_muon->Integral(100,i);
+    float n_electrons=  kdEdxdist_electron->Integral(100,i);
+    x[i-100]=i;
+    //    eff[i-100]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;
+    eff[i-100]=100.*(n_kaons)/nkaons;                    
+    pur[i-100]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
     n++;
   }
  
@@ -1873,19 +1875,19 @@ void EffPurity_dedxdist2(int quarkid) {
 
   float x2[10000], eff2[10000], pur2[10000];
   int n2=0;
-  for(int i=165;i<260; i++) {
-    float n_kaons=  kdEdxdist_kaon2->Integral(165,i);
-    float n_pions=  kdEdxdist_pion2->Integral(165,i);
-    float n_protons=  kdEdxdist_proton2->Integral(165,i);
-    float n_muons=  kdEdxdist_muon2->Integral(165,i);
-    float n_electrons=  kdEdxdist_electron2->Integral(165,i);
-    x2[i-165]=i;
-    //    eff[i-165]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                     
-    eff2[i-165]=100.*(n_kaons)/nkaons2;
-    pur2[i-165]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
+  for(int i=155;i<260; i++) {
+    float n_kaons=  kdEdxdist_kaon2->Integral(155,i);
+    float n_pions=  kdEdxdist_pion2->Integral(155,i);
+    float n_protons=  kdEdxdist_proton2->Integral(155,i);
+    float n_muons=  kdEdxdist_muon2->Integral(155,i);
+    float n_electrons=  kdEdxdist_electron2->Integral(155,i);
+    x2[i-155]=i;
+    //    eff[i-155]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                     
+    eff2[i-155]=100.*(n_kaons)/nkaons2;
+    pur2[i-155]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
     n2++;
-    if(eff2[i-165]>89.99 && pur2[i-165]>97.32) cout<<i<<endl;
-    if(i==223) cout<<eff2[i-165]<<" "<< pur2[i-165]<<endl;
+    if(eff2[i-155]>89.99 && pur2[i-155]>97.32) cout<<i<<endl;
+    if(i==223) cout<<eff2[i-155]<<" "<< pur2[i-155]<<endl;
   }
 
   x[0]=90;
@@ -1957,12 +1959,12 @@ void Plots_dEdx_draft() {
 
   //for(int i=4; i<5; i++)  dEdxdist(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection(i);
-  for(int i=4; i<6; i++)  dEdxdistProjection2(i);
+  //for(int i=4; i<6; i++)  dEdxdistProjection2(i);
 
   //NHits();
   //for(int i=4; i<6; i++) EffPurity_momentum(i);
   //for(int i=4; i<6; i++) EffPurity_angle(i);
-  //for(int i=4; i<6; i++) EffPurity_dedxdist(i);
+  for(int i=4; i<5; i++) EffPurity_dedxdist2(i);
   //dEdx(0);
   //dEdx2(0);
 

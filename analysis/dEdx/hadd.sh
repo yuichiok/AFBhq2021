@@ -1,4 +1,4 @@
-for quark in "cquark" "bquark"
+for quark in "cquark" "bquark" "udsquark"
 do
 #"cquark" "bquark" "udsquark"
 #do
@@ -18,7 +18,7 @@ do
      done
 done
 
-for pol in "eL_pR" "eR_pL"
-do
-    hadd -k -f -j 4 results/dEdxdist_2f_hadronic_sample_${pol}_cutP_3.root output/dEdxdist_2f_hadronic_sample_${pol}_*root
-done
+#for pol in "eL_pR" "eR_pL"
+#do
+#    hadd -k -f -j 4 results/dEdxdist_2f_hadronic_sample_${pol}_cutP_3.root output/dEdxdist_2f_hadronic_sample_${pol}_*root
+#done

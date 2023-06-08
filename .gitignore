@@ -9,6 +9,7 @@
 log_*
 errors_*
 output_*
+*.root
 
 #output files
 *.root
