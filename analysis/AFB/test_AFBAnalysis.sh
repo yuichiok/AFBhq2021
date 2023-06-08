@@ -2,7 +2,7 @@
 process=$1
 pol=$2
 bkg=$3
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-250GeV-2023/"${process}"_"${pol}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-500GeV-2023/"${process}"_"${pol}"/"
 local=$PWD
 
 

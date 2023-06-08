@@ -39,8 +39,8 @@
 
   }*/
 
-TString energy="250GeV";
-TString pid="dNdx";
+TString energy="500GeV";
+TString pid="dEdx";
 
 
 void EffCat(int quark=5, int syst=0) {

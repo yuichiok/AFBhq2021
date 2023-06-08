@@ -51,13 +51,13 @@ public :
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
 
-  int dedxcut=1;
+  int dedxcut=1;//1 for dNdx, 0 for dEdx
   //float dedxcut_up=1.1;
   //float dedxcut_down=-2.45;
   float dedxcut_up = 3.05; //bin 151,
   float  dedxcut_down = -2.45; //bin 261
   float acol_cut=0.3;
-  float qqbar_m_cut=140;
+  float qqbar_m_cut=200;
 
  private:
 

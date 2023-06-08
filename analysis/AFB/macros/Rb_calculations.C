@@ -1,6 +1,6 @@
 #include "Rq.C"
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 void RPlots_b( int pol=0, float lum=-1) {
 
@@ -435,19 +435,19 @@ void Rb_calculations() {
 
   folder="../results_"+energy+"_dNdx/AFB_PQ_";
 
-  for(int pol=2; pol<4; pol++) {
+  for(int pol=3; pol<4; pol++) {
     cout<<" Plots "<<endl;
     cout<<"  ------------------------------------------ "<<endl;
     //RPlots_b(pol,900);
     // cout<<"  ------------------------------------------ "<<endl;
     
-    R_b(pol,900);
+    R_b(pol,2000);
     // cout<<" polarization "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
-    R_bpol(pol,900);
+    R_bpol(pol,2000);
     // cout<<" bkg "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
-    R_bbkg(pol,900);
+    R_bbkg(pol,2000);
     //R_theory_vs_reco(pol,900);
     
   }

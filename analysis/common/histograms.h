@@ -32,7 +32,7 @@ float p2error=0;
 //pol=2 eLpR 80/30
 //pol=3 eRpL 80/30
 
-TString process[6]={"2f_hadronic_sample","2f_hadronic","4f_ZZ_hadronic","qqH","4f_WW_hadronic","6fttbar"};
+TString process[6]={"2f_hadronic_sample","2f_hadronic","4f_ZZ_hadronic","qqH","4f_WW_hadronic","6f_ttbar"};
 
 bool debug=false;
 
@@ -236,7 +236,7 @@ TH1F* GetHisto(int iprocess, TString histo, int pol, int iquark, float lum, floa
 
 TH1F* GetHisto2(int iprocess, TString histo, int pol, int iquark, float lum, float norm=1, int cheatmethod=0) {
 
-  TString folder_="../results_250GeV_dNdx/AFB_PQ_";
+  TString folder_="../results_500GeV_dNdx/AFB_PQ_";
 
   TString filename = TString::Format("%spdg%i_%s_eL_pR.root",folder_.Data(),iquark,process[iprocess].Data());
   cout<<filename<<" "<<histo<<endl;

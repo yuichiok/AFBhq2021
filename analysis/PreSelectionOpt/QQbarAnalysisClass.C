@@ -2,7 +2,7 @@
 #include "QQbarAnalysisClass.h"
 #include "TPad.h"
 
-void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, float acol_cut = 0.3, float qqbar_m_cut = 140)
+void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, float acol_cut = 0.3, float qqbar_m_cut = 200)
 {
 
   TFile *MyFile = new TFile(TString::Format("jettag_%s.root", process.Data()), "RECREATE");
@@ -105,7 +105,7 @@ void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, floa
   }
 }
 
-void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, int bkg = 0, float acol_cut = 0.3, float qqbar_m_cut= 140)
+void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, int bkg = 0, float acol_cut = 0.3, float qqbar_m_cut= 200)
 {
 
   TFile *MyFile = new TFile(TString::Format("selection_%s.root", process.Data()), "RECREATE");
@@ -171,10 +171,10 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
   TH2F *h_npfos_qq = new TH2F("h_npfos_qq", "h_npfos_qq", 101, -0.5, 100.5, 101, -0.5, 100.5);
   TH2F *h_npfos_cc = new TH2F("h_npfos_cc", "h_npfos_cc", 101, -0.5, 100.5, 101, -0.5, 100.5);
 
-  TH2F *h_costheta_energy_bb = new TH2F("h_costheta_energy_bb", "h_costheta_energy_bb", 100, 0, 1, 150, 0.5, 150.5);
-  TH2F *h_costheta_energy_radreturn = new TH2F("h_costheta_energy_radreturn", "h_costheta_energy_radreturn", 100, 0, 1, 150, 0.5, 150.5);
-  TH2F *h_costheta_energy_qq = new TH2F("h_costheta_energy_qq", "h_costheta_energy_qq", 100, 0, 1, 150, 0.5, 150.5);
-  TH2F *h_costheta_energy_cc = new TH2F("h_costheta_energy_cc", "h_npfos_cc", 100, 0, 1, 150, 0.5, 150.5);
+  TH2F *h_costheta_energy_bb = new TH2F("h_costheta_energy_bb", "h_costheta_energy_bb", 100, 0, 1, 500, 0.5, 500.5);
+  TH2F *h_costheta_energy_radreturn = new TH2F("h_costheta_energy_radreturn", "h_costheta_energy_radreturn", 100, 0, 1, 500, 0.5, 500.5);
+  TH2F *h_costheta_energy_qq = new TH2F("h_costheta_energy_qq", "h_costheta_energy_qq", 100, 0, 1, 500, 0.5, 500.5);
+  TH2F *h_costheta_energy_cc = new TH2F("h_costheta_energy_cc", "h_npfos_cc", 100, 0, 1, 500, 0.5, 500.5);
 
   // jet algorithm variables
   TH1F *h_y23_bb = new TH1F("h_y23_bb", "h_y23_bb", 4000, 0.0001, 0.2501);
@@ -207,6 +207,11 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
   TH1F *h_mj1_mj2_radreturn = new TH1F("h_mj1_mj2_radreturn", "h_mj1_mj2_radreturn", 400, 0, 200);
   TH1F *h_mj1_mj2_qq = new TH1F("h_mj1_mj2_qq", "h_mj1_mj2_qq", 400, 0, 200);
   TH1F *h_mj1_mj2_cc = new TH1F("h_mj1_mj2_cc", "h_mj1_mj2_cc", 400, 0, 200);
+
+  TH2F *h_mw1_mw2_radreturn = new TH2F("h_mw1_mw2_radreturn", "h_mw1_mw2_radreturn", 201, -0.5, 200.5, 201, -0.5, 200.5);
+  TH2F *h_mw1_mw2_bb = new TH2F("h_mw1_mw2_bb", "h_mw1_mw2_bb", 201, -0.5, 200.5, 201, -0.5, 200.5);
+  TH2F *h_mw1_mw2_cc = new TH2F("h_mw1_mw2_cc", "h_mw1_mw2_cc", 201, -0.5, 200.5, 201, -0.5, 200.5);
+  TH2F *h_mw1_mw2_qq = new TH2F("h_mw1_mw2_qq", "h_mw1_mw2_qq", 201, -0.5, 200.5, 201, -0.5, 200.5);
 
   Long64_t nentries;
   if (n_entries > 0)
@@ -313,6 +318,9 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
 
     // HASTA AQUI Las cosas de PFOs
 
+    std::vector<float> mw1mw2=MW1_MW2();
+
+
     if (bkg == 1)
     {
 
@@ -337,6 +345,8 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
       h_K_bb->Fill(Kv);
       h_K_parton_bb->Fill(gamma_e);
       h_K_parton_K_bb->Fill(gamma_e, Kv);
+      h_mw1_mw2_bb->Fill(mw1mw2.at(0),mw1mw2.at(1)) ;
+
     }
     else
     {
@@ -387,6 +397,8 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
         h_K_radreturn->Fill(Kv);
         h_K_parton_radreturn->Fill(gamma_e);
         h_K_parton_K_radreturn->Fill(gamma_e, Kv);
+        h_mw1_mw2_radreturn->Fill(mw1mw2.at(0),mw1mw2.at(1)) ;
+
       }
 
       if (fabs(mc_quark_pdg[0]) == 5 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
@@ -414,6 +426,8 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
         h_K_bb->Fill(Kv);
         h_K_parton_bb->Fill(gamma_e);
         h_K_parton_K_bb->Fill(gamma_e, Kv);
+        h_mw1_mw2_bb->Fill(mw1mw2.at(0),mw1mw2.at(1)) ;
+
       }
 
       if (fabs(mc_quark_pdg[0]) == 4 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
@@ -440,6 +454,8 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
         h_K_cc->Fill(Kv);
         h_K_parton_cc->Fill(gamma_e);
         h_K_parton_K_cc->Fill(gamma_e, Kv);
+        h_mw1_mw2_cc->Fill(mw1mw2.at(0),mw1mw2.at(1)) ;
+
       }
 
       if (fabs(mc_quark_pdg[0]) < 4 && (acol < acol_cut && qqbar_m > qqbar_m_cut))
@@ -466,6 +482,7 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
         h_K_qq->Fill(Kv);
         h_K_parton_qq->Fill(gamma_e);
         h_K_parton_K_qq->Fill(gamma_e, Kv);
+        h_mw1_mw2_qq->Fill(mw1mw2.at(0),mw1mw2.at(1)) ;
       }
     }
   }
@@ -486,6 +503,12 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, i
   h_mjj_qq->Write();
   h_mjj_cc->Write();
   h_mjj_radreturn->Write();
+
+  h_mw1_mw2_bb->Write();
+  h_mw1_mw2_qq->Write();
+  h_mw1_mw2_cc->Write();
+  h_mw1_mw2_radreturn->Write();
+
 
   h_costheta_bb->Write();
   h_costheta_qq->Write();

@@ -23,7 +23,7 @@
 #include "TSystemFile.h"
 #include "fit.C"
 
-TString energy="250GeV_";
+TString energy="500GeV_";
 
 
 float error_calc(int quark=4, int ipol=0, float lum=900, TString pid="dEdx") {
@@ -101,6 +101,6 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900) {
 
 
   void AFB_dEdx_vs_dNdx() {
-    AFBSyst(4,2,900);
+    AFBSyst(4,2,2000);
   }
     

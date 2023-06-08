@@ -26,7 +26,7 @@
 
 
 
-void dEdxDist(TString reference="proton",TString type="") {
+void dEdxDist(TString reference="kaon",TString type="") {
 
   
   SetQQbarStyle();

@@ -25,7 +25,7 @@
 
 
 
-TString energy="dNdx_250GeV_2023";
+TString energy="dNdx_500GeV_2023";
 
 
 void PurityChargePlots(int quark=5) {

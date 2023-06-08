@@ -5,6 +5,7 @@ do
 	source test_AFBSignalBkg.sh qqH $pol 1 
 	source test_AFBSignalBkg.sh 4f_ZZ_hadronic $pol 1
 	source test_AFBSignalBkg.sh 4f_WW_hadronic $pol 1 
+	source test_AFBSignalBkg.sh 6f_ttbar $pol 1 
 done
 
 

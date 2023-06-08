@@ -23,7 +23,7 @@
 #include "TSystemFile.h"
 #include "fit.C"
 
-TString energy="250GeV_dEdx";
+TString energy="500GeV_dNdx";
   
 TH1F *average (TH1F* h1, TH1F* h2, TH1F* h3, TString title="") {
 
@@ -140,7 +140,7 @@ TH1F *Efficiency (TH1F* h1, TH1F* parton, TH1F* parton2, TString title="",int er
       result->SetBinContent(j+1,input->GetBinContent(j+1));//eff_pres_);
       result->SetBinError(j+1,0);
     } else {
-      result->SetBinContent(j+1,input->GetBinContent(j+1)+error*0.05*input->GetBinContent(j+1));//eff_pres_);
+      result->SetBinContent(j+1,input->GetBinContent(j+1)+error*0.025*input->GetBinContent(j+1));//eff_pres_);
       result->SetBinError(j+1,input->GetBinError(j+1));
     }
     parton->SetBinError(j+1,0);
@@ -402,6 +402,17 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900) {
   float error=0;
   if(syst==21 && syst_==22) error=-1;
   if(syst==21 && syst_==21) error=1;
+
+  if(syst_==0) {
+    float x=AFBcorrected->Integral(0,20);
+    float y=AFBcorrected->Integral(20,40);
+    float ex=sqrt(x);
+    float ey=sqrt(y);
+    float d1=(2*y)/pow(x+y,2);
+    float d2=(2*x)/pow(x+y,2);
+    float stat_error=sqrt(pow(d1*ex,2)+pow(d2*ey,2));
+    dAfb_corrected[syst_]=stat_error;
+  }
   
   TH1F* eff=Efficiency(AFBcheat,AFBparton,AFBparton2,"",error);
   if(syst==0)  eff=Efficiency(AFBcheat,AFBparton,AFBparton2);
@@ -416,9 +427,11 @@ void AFBSyst(int quark=4, int ipol=0, float lum=900) {
   float plus_e_corrected = func_corrected->IntegralError(0,0.9);
   float minus_e_corrected = func_corrected->IntegralError(-0.9,0);
   Afb_corrected[syst_]=Afb_v(plus_corrected,minus_corrected);
-  dAfb_corrected[syst_]=dAfb_v(plus_corrected,minus_corrected, plus_e_corrected, minus_e_corrected);
+  if(syst_!=0) dAfb_corrected[syst_]=dAfb_v(plus_corrected,minus_corrected, plus_e_corrected, minus_e_corrected);
+
 
   }
+
 
   for(int syst=0; syst<23; syst++)  std::cout<<setprecision(7)<<"PDG: "<<quark<<" polarisation:"<<ipol<<" Syst:"<<syst<<"  --> AFB:"<<Afb_corrected[syst]<<" Rel_Error:"<<100.*dAfb_corrected[syst]/Afb_corrected[syst]<<"%"<<endl;
 
@@ -499,8 +512,9 @@ pol="eR_pL";
     //Plots_AFB(5,2,900);
     //Plots_AFB(5,3,900);
 
-    AFBSyst(5,2,900);
-    //AFBPol(4,3,900);
+    AFBSyst(5,2,2000);
+    AFBSyst(5,3,2000);
+    //AFBPol(5,3,2000);
 
   }
     

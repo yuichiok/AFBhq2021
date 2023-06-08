@@ -24,7 +24,7 @@
 #include "../../../style/Style.C"
 #include "../../../style/Labels.C"
 
-TString energy="250GeV";
+TString energy="500GeV";
 void Labels(TString pol)
 {
   QQBARLabel(0.86, 0.954, "");
@@ -286,5 +286,5 @@ void Plots(bool cluster_counting=false)
 void JetTag()
 {
 
-  Plots(false);
+  Plots(true);
 }

@@ -53,7 +53,7 @@ void Plots_R_AFB() {
   double ex[8]={0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5};
   TGraphErrors * gstat = new TGraphErrors(8,x,y,ex,ey);
 
-  double y2[4]={sqrt(pow(afb_stat[0]/sqrt(0.25),2)+pow(afb_syst[0],2)),sqrt(pow(afb_stat[1]/sqrt(0.25),2)+pow(afb_syst[1],2)),sqrt(pow(afb_stat[2]/sqrt(0.54),2)+pow(afb_syst[2],2)),sqrt(pow(afb_stat[3]/sqrt(0.54),2)+pow(afb_syst[2],2))};
+  double y2[4]={sqrt(pow(afb_stat[0]/sqrt(0.35),2)+pow(afb_syst[0],2)),sqrt(pow(afb_stat[1]/sqrt(0.35),2)+pow(afb_syst[1],2)),sqrt(pow(afb_stat[2]/sqrt(0.65),2)+pow(afb_syst[2],2)),sqrt(pow(afb_stat[3]/sqrt(0.65),2)+pow(afb_syst[2],2))};
   double x2[4]={3.5,4.5,9.5,10.5};
 
   double ex2[4]={0,0,0,0};
@@ -153,7 +153,7 @@ void Plots_R_AFB() {
   // Labels(-1,-1,900);
   //    QQBARLabel2(0.1,0.05, "e^{-}e^{+} #rightarrow "+quark,color+2);
   QQBARLabel(0.89,0.954,"");
-  QQBARLabel2(0.15,0.96, "ILC250 2000 fb^{-1} ",960);
+  QQBARLabel2(0.15,0.96, "ILC500 2000 fb^{-1} ",960);
   
   TLegend *leg_b = new TLegend(0.2,0.75,0.4,0.9);
   leg_b->SetTextSize(0.035);
@@ -221,26 +221,27 @@ void Plots_R_AFB_comparison() {
   double ex[8]={0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5};
   TGraphErrors * gstat = new TGraphErrors(8,x,y,ex,ey);
 
-  double y2[4]={sqrt(pow(afb_stat[0]/sqrt(0.25),2)+pow(afb_syst[0],2)),sqrt(pow(afb_stat[1]/sqrt(0.25),2)+pow(afb_syst[1],2)),sqrt(pow(afb_stat[2]/sqrt(0.54),2)+pow(afb_syst[2],2)),sqrt(pow(afb_stat[3]/sqrt(0.54),2)+pow(afb_syst[2],2))};
+  double y2[4]={sqrt(pow(afb_stat[0]/sqrt(0.35),2)+pow(afb_syst[0],2)),sqrt(pow(afb_stat[1]/sqrt(0.35),2)+pow(afb_syst[1],2)),sqrt(pow(afb_stat[2]/sqrt(0.65),2)+pow(afb_syst[2],2)),sqrt(pow(afb_stat[3]/sqrt(0.65),2)+pow(afb_syst[2],2))};
   double x2[4]={3.5,4.5,9.5,10.5};
 
   double ex2[4]={0,0,0,0};
   double ey2[4]={y2[0]-sqrt( pow(afb_stat[0],2)+pow(afb_syst[0],2)),y2[1],y2[2]-sqrt( pow(afb_stat[2],2)+pow(afb_syst[2],2)),y2[3]};//0.5,0.5,0.5,0.5};
   TGraphAsymmErrors * g_noTPC = new TGraphAsymmErrors(4,x2,y2,ex2,ex2,ey2,ex2);
 
+  for(int i=0; i<4; i++) cout<<y2[i]<<endl;
 
   //ILD baseline
   c_eL->Fill(0.5, sqrt( pow(r_stat_dEdx[0],2)+pow(r_syst[0],2)));
-  c_eL->Fill(3.5, sqrt( pow(afb_stat[0],2)+pow(afb_syst[0],2)));
+  c_eL->Fill(3.5, sqrt( pow(afb_stat_dEdx[0],2)+pow(afb_syst[0],2)));
 
   c_eR->Fill(1.5, sqrt( pow(r_stat_dEdx[1],2)+pow(r_syst[1],2)));
-  c_eR->Fill(4.5, sqrt( pow(afb_stat[1],2)+pow(afb_syst[1],2)));
+  c_eR->Fill(4.5, sqrt( pow(afb_stat_dEdx[1],2)+pow(afb_syst[1],2)));
 
   b_eL->Fill(6.5, sqrt( pow(r_stat_dEdx[2],2)+pow(r_syst[2],2)));
-  b_eL->Fill(9.5, sqrt( pow(afb_stat[2],2)+pow(afb_syst[2],2)));
+  b_eL->Fill(9.5, sqrt( pow(afb_stat_dEdx[2],2)+pow(afb_syst[2],2)));
 
   b_eR->Fill(7.5, sqrt( pow(r_stat_dEdx[3],2)+pow(r_syst[3],2)));
-  b_eR->Fill(10.5, sqrt( pow(afb_stat[3],2)+pow(afb_syst[3],2)));
+  b_eR->Fill(10.5, sqrt( pow(afb_stat_dEdx[3],2)+pow(afb_syst[3],2)));
 
   //ILD dNdx
   c_eL_dNdx->Fill(0.5, sqrt( pow(r_stat_dNdx[0],2)+pow(r_syst[0],2)));
@@ -394,7 +395,7 @@ void Plots_R_AFB_comparison() {
   // Labels(-1,-1,900);
   //    QQBARLabel2(0.1,0.05, "e^{-}e^{+} #rightarrow "+quark,color+2);
   QQBARLabel(0.89,0.954,"");
-  QQBARLabel2(0.15,0.96, "ILC250 2000 fb^{-1} ",960);
+  QQBARLabel2(0.15,0.96, "ILC500 5000 fb^{-1} ",960);
   
   TLegend *leg_b = new TLegend(0.2,0.79,0.4,0.94,"color coding");
   leg_b->SetTextSize(0.035);

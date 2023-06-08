@@ -1,6 +1,7 @@
 #include "Rq.C"
 
-TString energy="250GeV";
+TString energy="500GeV";
+bool analysis_500=true;
 
 void pq_weigths_tagging( int quark=4, int pol=0, float lum=-1) {
 
@@ -19,22 +20,22 @@ void pq_weigths_tagging( int quark=4, int pol=0, float lum=-1) {
       int jhisto=0;
       if(quark==4) jhisto=1;
      if(j>0) {
-      TH1F *hacc=N_PQ_HistoBKG(TString::Format("Nacc_%s",chargemethod_string[i].Data()),pol,quark,lum,float(error_bkg/100.));
-      TH1F *hrej=N_PQ_HistoBKG(TString::Format("Nrej_%s",chargemethod_string[i].Data()),pol,quark,lum,float(error_bkg/100.));			     
+      TH1F *hacc=N_PQ_HistoBKG(TString::Format("Nacc_%s",chargemethod_string[i].Data()),pol,quark,lum,float(error_bkg/100.),analysis_500);
+      TH1F *hrej=N_PQ_HistoBKG(TString::Format("Nrej_%s",chargemethod_string[i].Data()),pol,quark,lum,float(error_bkg/100.),analysis_500);			     
       TH1F * purity=PurityHist(hacc,hrej);
       purity->SetName(TString::Format("purity_%s_bkg_p%i",chargemethod_string[i].Data(),error_bkg));
       MyFile->cd();
       purity->Write();
 
-      TH1F *hacc2=N_PQ_HistoBKG(TString::Format("Nacc_%s",chargemethod_string[i].Data()),pol,quark,lum,-float(error_bkg/100.));
-      TH1F *hrej2=N_PQ_HistoBKG(TString::Format("Nrej_%s",chargemethod_string[i].Data()),pol,quark,lum,-float(error_bkg/100.));			     
+      TH1F *hacc2=N_PQ_HistoBKG(TString::Format("Nacc_%s",chargemethod_string[i].Data()),pol,quark,lum,-float(error_bkg/100.),analysis_500);
+      TH1F *hrej2=N_PQ_HistoBKG(TString::Format("Nrej_%s",chargemethod_string[i].Data()),pol,quark,lum,-float(error_bkg/100.),analysis_500);			     
       TH1F * purity2=PurityHist(hacc2,hrej2);
       purity2->SetName(TString::Format("purity_%s_bkg_m%i",chargemethod_string[i].Data(),error_bkg));
       MyFile->cd();
       purity2->Write();
      } else {
-       TH1F *hacc=N_PQ_HistoBKG(TString::Format("Nacc_%s",chargemethod_string[i].Data()),pol,quark,lum,0);
-       TH1F *hrej=N_PQ_HistoBKG(TString::Format("Nrej_%s",chargemethod_string[i].Data()),pol,quark,lum,0);			     
+       TH1F *hacc=N_PQ_HistoBKG(TString::Format("Nacc_%s",chargemethod_string[i].Data()),pol,quark,lum,0,analysis_500);
+       TH1F *hrej=N_PQ_HistoBKG(TString::Format("Nrej_%s",chargemethod_string[i].Data()),pol,quark,lum,0,analysis_500);			     
        TH1F * purity=PurityHist(hacc,hrej);
        purity->SetName(TString::Format("purity_%s",chargemethod_string[i].Data()));
        MyFile->cd();
@@ -60,16 +61,16 @@ void weigths_tagging( int quark=4, int pol=0, float lum=-1) {
     if(i==4) error_bkg=10;//10%
     
     if(i>0) {
-      TH1F* eff_preselection=N0HistoBKG(pol, quark,  lum, float(error_bkg/100.));
+      TH1F* eff_preselection=N0HistoBKG(pol, quark,  lum, float(error_bkg/100.),analysis_500);
       MyFile->cd();
       eff_preselection->SetName(TString::Format("eff_pres_bkg_p%i",error_bkg));
       eff_preselection->Write();
-      TH1F* eff_preselection2=N0HistoBKG(pol, quark,  lum, -float(error_bkg/100.));
+      TH1F* eff_preselection2=N0HistoBKG(pol, quark,  lum, -float(error_bkg/100.),analysis_500);
       MyFile->cd();
       eff_preselection2->SetName(TString::Format("eff_pres_bkg_m%i",error_bkg));
       eff_preselection2->Write();
     } else {
-      TH1F* eff_preselection=N0HistoBKG(pol, quark,  lum, float(error_bkg/100.));
+      TH1F* eff_preselection=N0HistoBKG(pol, quark,  lum, float(error_bkg/100.),analysis_500);
       MyFile->cd();
       eff_preselection->SetName("eff_pres");
       eff_preselection->Write();
@@ -213,8 +214,8 @@ void weigths_tagging( int quark=4, int pol=0, float lum=-1) {
     // for(int isign=-1; isign<2; isign++) {
     //F fractions
     TH1F *h_Fhisto_bkg[2];
-    h_Fhisto_bkg[0]=FHistoBKG(pol, 1, quark, lum,float(error_bkg/100.));
-    h_Fhisto_bkg[1]=FHistoBKG(pol, 2, quark, lum,float(error_bkg/100.));
+    h_Fhisto_bkg[0]=FHistoBKG(pol, 1, quark, lum,float(error_bkg/100.),analysis_500);
+    h_Fhisto_bkg[1]=FHistoBKG(pol, 2, quark, lum,float(error_bkg/100.),analysis_500);
     
     //double tag eff quark estimation
     TH1F* h_eff_quark_bkg = epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_bkg[0] , h_Fhisto_bkg[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
@@ -223,8 +224,8 @@ void weigths_tagging( int quark=4, int pol=0, float lum=-1) {
     h_eff_quark_bkg->Write();
 
     TH1F *h_Fhisto_bkg2[2];
-    h_Fhisto_bkg2[0]=FHistoBKG(pol, 1, quark, lum,-float(error_bkg/100.));
-    h_Fhisto_bkg2[1]=FHistoBKG(pol, 2, quark, lum,-float(error_bkg/100.));
+    h_Fhisto_bkg2[0]=FHistoBKG(pol, 1, quark, lum,-float(error_bkg/100.),analysis_500);
+    h_Fhisto_bkg2[1]=FHistoBKG(pol, 2, quark, lum,-float(error_bkg/100.),analysis_500);
     
     //double tag eff quark estimation
     TH1F* h_eff_quark_bkg2 = epsilon_tag(d_Rparton[1], d_Rparton[0], h_Fhisto_bkg2[0] , h_Fhisto_bkg2[1] , h_mistag_b_truth,h_mistag_uds_truth, rho_MC,true);
@@ -233,7 +234,6 @@ void weigths_tagging( int quark=4, int pol=0, float lum=-1) {
     h_eff_quark_bkg2->Write();
     
   }
-
 
   MyFile->Close();
   
@@ -248,7 +248,7 @@ void weigths_charge( int quark=4, int pol=0, float lum=-1, int lastit=2) {
     TString filemode="RECREATE";
     if(imethod>0) filemode="UPDATE";
     TFile *MyFile = new TFile(TString::Format("chargeeff_weights_pdg%i_pol%i.root",quark,pol),filemode);
-    TH1F* eff_charge=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,0);
+    TH1F* eff_charge=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,0,analysis_500);
 
     MyFile->cd();
     eff_charge->SetName(TString::Format("eff_charge_%s",chargemethod_string[imethod].Data()));
@@ -262,19 +262,19 @@ void weigths_charge( int quark=4, int pol=0, float lum=-1, int lastit=2) {
         if(i==3) error_bkg=5;//5%
         if(i==4) error_bkg=10;//10%
         
-        TH1F* eff_charge2=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,float(error_bkg/100.));
+        TH1F* eff_charge2=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,float(error_bkg/100.),analysis_500);
         MyFile->cd();
         eff_charge2->SetName(TString::Format("eff_charge_%s_bkg_p%i",chargemethod_string[imethod].Data(),error_bkg));
         eff_charge2->Write();
 
-        TH1F* eff_charge2_bis=FHistoChargeBKG(chargemethod_string[imethod],pol, 2,quark,  lum,float(error_bkg/100.));
+        TH1F* eff_charge2_bis=FHistoChargeBKG(chargemethod_string[imethod],pol, 2,quark,  lum,float(error_bkg/100.),analysis_500);
         eff_charge2_bis->Divide(eff_charge2);
         eff_charge2_bis->Divide(eff_charge2);
         MyFile->cd();
         eff_charge2_bis->SetName(TString::Format("rho_charge_%s_bkg_p%i",chargemethod_string[imethod].Data(),error_bkg));
         eff_charge2_bis->Write();
         
-        TH1F* eff_charge3=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,-float(error_bkg/100.));
+        TH1F* eff_charge3=FHistoChargeBKG(chargemethod_string[imethod],pol, 1,quark,  lum,-float(error_bkg/100.),analysis_500);
         MyFile->cd();
         eff_charge3->SetName(TString::Format("eff_charge_%s_bkg_m%i",chargemethod_string[imethod].Data(),error_bkg));
         eff_charge3->Write();

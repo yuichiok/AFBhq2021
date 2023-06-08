@@ -553,7 +553,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   float pcut = 3.;
 
-  TString weight_folder = "weights_dEdx_250GeV_2023";
+  TString weight_folder = "weights_dEdx_500GeV_2023";
   // optimal dedx cutone
   if (dedxcut == 0)
   {
@@ -564,7 +564,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
   {
     dedxcut_up = 3.05;    // bin 151,
     dedxcut_down = -2.45; // bin 261
-    weight_folder = "weights_dNdx_250GeV_2023";
+    weight_folder = "weights_dNdx_500GeV_2023";
   }
 
   int nsyst = 22;
@@ -658,7 +658,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   //----------------------------------------------------
   // open pq'
-  TString filenamepq = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-250GeV/analysis/AFB/%s/pq_pdg%i_pol%i.root", weight_folder.Data(), quark, pol);
+  TString filenamepq = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-500GeV/analysis/AFB/%s/pq_pdg%i_pol%i.root", weight_folder.Data(), quark, pol);
   TFile *fpq = new TFile(filenamepq);
   TH1F *purity_0[50];
   TH1F *purity_1[50];
@@ -681,7 +681,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   //----------------------------------------------------
   // open weights of efficiencies
-  TString filenameweight = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-250GeV/analysis/AFB/%s/eff_weights_pdg%i_pol%i.root", weight_folder.Data(), quark, pol);
+  TString filenameweight = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-500GeV/analysis/AFB/%s/eff_weights_pdg%i_pol%i.root", weight_folder.Data(), quark, pol);
   TFile *fw = new TFile(filenameweight);
   TH1F *eff_preselection[50];
   TH1F *eff_tagging[50];
@@ -697,7 +697,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
 
   //----------------------------------------------------
   // open weights of charge masurement efficiencies
-  TString filenameweightcharge = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-250GeV/analysis/AFB/%s/chargeeff_weights_pdg%i_pol%i.root", weight_folder.Data(), quark, pol);
+  TString filenameweightcharge = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-500GeV/analysis/AFB/%s/chargeeff_weights_pdg%i_pol%i.root", weight_folder.Data(), quark, pol);
   cout << filenameweightcharge << endl;
   TFile *fcharge = new TFile(filenameweightcharge);
   TH1F *eff_charge_0[50];
@@ -1012,7 +1012,7 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
 
   float pcut = 3.;
 
-  TString weight_folder = "weights_dEdx_250GeV_2023";
+  TString weight_folder = "weights_dEdx_500GeV_2023";
 
   // optimal dedx cutone
   if (dedxcut == 0)
@@ -1024,7 +1024,7 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
   {
     dedxcut_up = 3.05;    // bin 151,
     dedxcut_down = -2.45; // bin 261
-    weight_folder = "weights_dNdx_250GeV_2023";
+    weight_folder = "weights_dNdx_500GeV_2023";
   }
 
   // variations for systematics
@@ -1041,7 +1041,7 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
   TH1F *h_AFBreco_cat1[4];
   TH1F *h_AFBreco_cat2[4];
 
-  for (int j = 0; j < 1; j++)
+  for (int j = 0; j < 4; j++)
   {
     h_AFBreco_cat0[j] = new TH1F(TString::Format("h_AFBreco_cat0_%i", j), TString::Format("h_AFBreco_cat0_%i", j), 20, 0, 1.0);
     h_AFBreco_cat1[j] = new TH1F(TString::Format("h_AFBreco_cat1_%i", j), TString::Format("h_AFBreco_cat1_%i", j), 20, 0, 1.0);
@@ -1056,7 +1056,7 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
   // nentries=30000;
 
   Long64_t nbytes = 0, nb = 0;
-  for (Long64_t jentry = 0; jentry < nentries; jentry++)
+  for (Long64_t jentry = 7. * nentries / 10.; jentry < nentries; jentry++)
   {
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0)
@@ -1092,6 +1092,8 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     {
       iquark = 0;
     }
+    if (iquark == -1)
+      continue;
 
     // jet direction
     std::vector<float> p;
@@ -1105,6 +1107,7 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     float px_pfos[2] = {0};
     float py_pfos[2] = {0};
     float pz_pfos[2] = {0};
+
     for (int ipfo = 0; ipfo < pfo_n; ipfo++)
     {
       if ((pfo_match[ipfo] == 0 || pfo_match[ipfo] == 1) && pfo_charge[ipfo] != 0 && pfo_ntracks[ipfo] == 1)
@@ -1125,6 +1128,7 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     // reco level distributions
     //     float Kv=Kreco();
     bool selection = PreSelection(5);
+
     if (selection == false)
       continue;
 
@@ -1210,7 +1214,7 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
 
   MyFile->cd();
 
-  for (int icat = 0; icat < 1; icat++)
+  for (int icat = 0; icat < 4; icat++)
   {
     h_AFBreco_cat0[icat]->Write();
     h_AFBreco_cat1[icat]->Write();
@@ -1271,17 +1275,22 @@ float QQbarAnalysisClass::ChargeKJetMethod(int ijet, float pcut = 2.) // bool ch
     if (nhits_bool == true)
     {
       float dedx_dist = pfo_piddedx_k_dedxdist[ipfo];
-      if (dedxcut == 0){//        dedx_dist = pfo_piddedx_k_dedxdist_2[ipfo];
-	if (dedx_dist > dedxcut_down && dedx_dist < dedxcut_up && dedx_dist!=0)
-	  charge -= pfo_charge[ipfo];
-      } else {
-	if( fabs(pfo_pdgcheat[ipfo])==321 ) charge -= pfo_charge[ipfo];
-	TRandom *r1 = new TRandom1();
-	float x= r1->Uniform(0,1);
-	if(x>0.98) charge *=-1;
+      if (dedxcut == 0)
+      { //        dedx_dist = pfo_piddedx_k_dedxdist_2[ipfo];
+        if (dedx_dist > dedxcut_down && dedx_dist < dedxcut_up && dedx_dist != 0)
+          charge -= pfo_charge[ipfo];
+      }
+      else
+      {
+        if(fabs(pfo_pdgcheat[ipfo])==321) {
+          charge -= pfo_charge[ipfo];
+          TRandom *r1 = new TRandom1();
+          float x = r1->Uniform(0, 1);
+          if (x > 0.95)
+            charge *= -1;
+        }
       }
     }
   }
-
   return charge;
 }

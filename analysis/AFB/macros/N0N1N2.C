@@ -29,7 +29,7 @@
 //pol=2 eLpR 80/30
 //pol=3 eRpL 80/30
 
-TString energy="250GeV_dEdx";
+TString energy="500GeV_dEdx";
 
 std::vector<TH1F*> Histograms(int histo=0, int pol=0, int iquark=5,  float lum=900){
 
@@ -200,9 +200,9 @@ void N0N1N2() {
       NPlots(4,900,1);
       NPlots(5,900,1);*/
   
-  NPlots(4,900,2);
-  NPlots(5,900,2);
-  NPlots(4,900,3);
-  NPlots(5,900,3);
+  //NPlots(4,900,2);
+  //NPlots(5,900,2);
+  //NPlots(4,900,3);
+  NPlots(5,2000,3);
   
 }

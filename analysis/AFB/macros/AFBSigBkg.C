@@ -25,7 +25,7 @@
 #include "utils.h"
 
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 /*
   void Labels(int quark){
@@ -41,7 +41,7 @@ TString energy="250GeV";
   }*/
 
 
-void SigBkg(int pol=3,int quark=4) {
+void SigBkg(int pol=3,int quark=4, float lum=2000) {
 
   folder="../results_"+energy+"_dEdx/SigBkg_";
 
@@ -64,50 +64,56 @@ void SigBkg(int pol=3,int quark=4) {
     iquark=1;
     iquark2=0;
   }
-  TH1F *signal_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_%i",iquark),pol,quark,900,1);
-  TH1F *signal_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_%i",iquark),pol,quark,900,1);
-  TH1F *signal_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_%i",iquark),pol,quark,900,1);
+  TH1F *signal_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_%i",iquark),pol,quark,lum,1);
+  TH1F *signal_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_%i",iquark),pol,quark,lum,1);
+  TH1F *signal_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_%i",iquark),pol,quark,lum,1);
   signal_0->Add(signal_1);
   signal_0->Add(signal_2);
 
-  TH1F *bkg_hq_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_%i",iquark2),pol,quark,900,1);
-  TH1F *bkg_hq_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_%i",iquark2),pol,quark,900,1);
-  TH1F *bkg_hq_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_%i",iquark2),pol,quark,900,1);
+  TH1F *bkg_hq_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_%i",iquark2),pol,quark,lum,1);
+  TH1F *bkg_hq_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_%i",iquark2),pol,quark,lum,1);
+  TH1F *bkg_hq_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_%i",iquark2),pol,quark,lum,1);
   bkg_hq_0->Add(bkg_hq_1);
   bkg_hq_0->Add(bkg_hq_2);
 
-  TH1F *bkg_uds_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_%i",iquark3),pol,quark,900,1);
-  TH1F *bkg_uds_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_%i",iquark3),pol,quark,900,1);
-  TH1F *bkg_uds_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_%i",iquark3),pol,quark,900,1);
+  TH1F *bkg_uds_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_%i",iquark3),pol,quark,lum,1);
+  TH1F *bkg_uds_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_%i",iquark3),pol,quark,lum,1);
+  TH1F *bkg_uds_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_%i",iquark3),pol,quark,lum,1);
   bkg_uds_0->Add(bkg_uds_1);
   bkg_uds_0->Add(bkg_uds_2);
 
-  TH1F *bkg_radret_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_%i",3),pol,quark,900,1);
-  TH1F *bkg_radret_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_%i",3),pol,quark,900,1);
-  TH1F *bkg_radret_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_%i",3),pol,quark,900,1);
+  TH1F *bkg_radret_0 = GetHisto2(1,TString::Format("h_AFBreco_cat0_%i",3),pol,quark,lum,1);
+  TH1F *bkg_radret_1 = GetHisto2(1,TString::Format("h_AFBreco_cat1_%i",3),pol,quark,lum,1);
+  TH1F *bkg_radret_2 = GetHisto2(1,TString::Format("h_AFBreco_cat2_%i",3),pol,quark,lum,1);
   bkg_radret_0->Add(bkg_radret_1);
   bkg_radret_0->Add(bkg_radret_2);
 
   //  TString process[5]={"4f_ZZ_hadronic","qqH","4f_WW_hadronic","2f_hadronic_sample","2f_hadronic"};
 
  
-  TH1F *bkg_zz_0 = GetHisto2(2,TString::Format("h_AFBreco_cat0_%i",3),pol,quark,900,0);
-  TH1F *bkg_zz_1 = GetHisto2(2,TString::Format("h_AFBreco_cat1_%i",3),pol,quark,900,0);
-  TH1F *bkg_zz_2 = GetHisto2(2,TString::Format("h_AFBreco_cat2_%i",3),pol,quark,900,0);
+  TH1F *bkg_zz_0 = GetHisto2(2,TString::Format("h_AFBreco_cat0_%i",3),pol,quark,lum,0);
+  TH1F *bkg_zz_1 = GetHisto2(2,TString::Format("h_AFBreco_cat1_%i",3),pol,quark,lum,0);
+  TH1F *bkg_zz_2 = GetHisto2(2,TString::Format("h_AFBreco_cat2_%i",3),pol,quark,lum,0);
   bkg_zz_0->Add(bkg_zz_1);
   bkg_zz_0->Add(bkg_zz_2);
 
-  TH1F *bkg_qqH_0 = GetHisto2(3,TString::Format("h_AFBreco_cat0_%i",3),pol,quark,900,0);
-  TH1F *bkg_qqH_1 = GetHisto2(3,TString::Format("h_AFBreco_cat1_%i",3),pol,quark,900,0);
-  TH1F *bkg_qqH_2 = GetHisto2(3,TString::Format("h_AFBreco_cat2_%i",3),pol,quark,900,0);
+  TH1F *bkg_qqH_0 = GetHisto2(3,TString::Format("h_AFBreco_cat0_%i",3),pol,quark,lum,0);
+  TH1F *bkg_qqH_1 = GetHisto2(3,TString::Format("h_AFBreco_cat1_%i",3),pol,quark,lum,0);
+  TH1F *bkg_qqH_2 = GetHisto2(3,TString::Format("h_AFBreco_cat2_%i",3),pol,quark,lum,0);
   bkg_qqH_0->Add(bkg_qqH_1);
   bkg_qqH_0->Add(bkg_qqH_2);
 
-  TH1F *bkg_ww_0 = GetHisto2(4,TString::Format("h_AFBreco_cat0_%i",3),pol,quark,900,0);
-  TH1F *bkg_ww_1 = GetHisto2(4,TString::Format("h_AFBreco_cat1_%i",3),pol,quark,900,0);
-  TH1F *bkg_ww_2 = GetHisto2(4,TString::Format("h_AFBreco_cat2_%i",3),pol,quark,900,0);
+  TH1F *bkg_ww_0 = GetHisto2(4,TString::Format("h_AFBreco_cat0_%i",3),pol,quark,lum,0);
+  TH1F *bkg_ww_1 = GetHisto2(4,TString::Format("h_AFBreco_cat1_%i",3),pol,quark,lum,0);
+  TH1F *bkg_ww_2 = GetHisto2(4,TString::Format("h_AFBreco_cat2_%i",3),pol,quark,lum,0);
   bkg_ww_0->Add(bkg_ww_1);
   bkg_ww_0->Add(bkg_ww_2);
+
+  TH1F *bkg_ttbar_0 = GetHisto2(5,TString::Format("h_AFBreco_cat0_%i",3),pol,quark,lum,0);
+  TH1F *bkg_ttbar_1 = GetHisto2(5,TString::Format("h_AFBreco_cat1_%i",3),pol,quark,lum,0);
+  TH1F *bkg_ttbar_2 = GetHisto2(5,TString::Format("h_AFBreco_cat2_%i",3),pol,quark,lum,0);
+  bkg_ttbar_0->Add(bkg_ttbar_1);
+  bkg_ttbar_0->Add(bkg_ttbar_2);
 
 
   //gPad->SetLogy();
@@ -144,6 +150,10 @@ void SigBkg(int pol=3,int quark=4) {
   bkg_ww_0->SetFillColor(kGray);
   bkg_ww_0->SetLineColor(kGray);
   bkg_ww_0->SetFillStyle(3002);
+
+  bkg_ttbar_0->SetFillColor(kGray);
+  bkg_ttbar_0->SetLineColor(kGray);
+  bkg_ttbar_0->SetFillStyle(3002);
   
   bkg_qqH_0->SetFillColor(kGray);
   bkg_qqH_0->SetLineColor(kGray);
@@ -157,13 +167,14 @@ void SigBkg(int pol=3,int quark=4) {
   f1stack->Add(bkg_zz_0);
   f1stack->Add(bkg_qqH_0);
   f1stack->Add(bkg_ww_0);
+  f1stack->Add(bkg_ttbar_0);
   f1stack->Add(bkg_radret_0);
   f1stack->Add(bkg_uds_0);
   f1stack->Add(bkg_hq_0);
   f1stack->Add(signal_0);
 
   float bs_rad=100.*bkg_radret_0->Integral()/signal_0->Integral();
-  float bs_other=100.*(bkg_zz_0->Integral()+bkg_ww_0->Integral()+bkg_qqH_0->Integral()+bkg_hq_0->Integral()+bkg_uds_0->Integral())/signal_0->Integral();
+  float bs_other=100.*(bkg_zz_0->Integral()+bkg_ww_0->Integral()+bkg_ttbar_0->Integral()+bkg_qqH_0->Integral()+bkg_hq_0->Integral()+bkg_uds_0->Integral())/signal_0->Integral();
 
   TCanvas* c_f1_MC = new TCanvas(TString::Format("c_f1_MC_%i_%i",quark,pol),TString::Format("c_f1_MC_%i",quark),800,800);
   c_f1_MC->cd(1);
@@ -175,7 +186,7 @@ void SigBkg(int pol=3,int quark=4) {
   c_f1_MC->Update();
   f1stack->GetYaxis()->SetRangeUser(0,100);
 
-  Labels(pol,iquark,900);
+  Labels(pol,iquark,lum);
 
   TLegend *leg = new TLegend(0.4,0.30,0.8,0.5,"","blNDC");
   leg->SetTextFont(42);
@@ -209,10 +220,10 @@ void SigBkg(int pol=3,int quark=4) {
 
 void AFBSigBkg(int pol=3,int quark=4) {
 
-  SigBkg(2,4);
-  SigBkg(3,4);
   SigBkg(2,5);
-  SigBkg(3,5);
+  //SigBkg(3,4);
+  //SigBkg(2,5);
+  //SigBkg(3,5);
 
 
 }

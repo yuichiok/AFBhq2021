@@ -1,6 +1,6 @@
 #include "Rq.C"
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 void RPartonPlots( int pol=0, float lum=-1) {
 
@@ -1019,20 +1019,20 @@ void Rc_calculations() {
   //RPlots2_c(900);
   //RPlots2_b(900);
   
-  for(int pol=3; pol<4;pol++) {
+  for(int pol=2; pol<3;pol++) {
     cout<<" Plots "<<endl;
     cout<<"  ------------------------------------------ "<<endl;
-    //RPartonPlots(pol,900);
-    //PreSelection(pol,900);
-    //RPlots_c(pol,900);
+    //RPartonPlots(pol,2000);
+    //PreSelection(pol,2000);
+    //RPlots_c(pol,2000);
     // cout<<"  ------------------------------------------ "<<endl;
-    R_c(pol,900);
+    R_c(pol,2000);
     // cout<<" polarization "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
-    R_cpol(pol,900);
+    R_cpol(pol,2000);
     // cout<<" bkg "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
-    R_cbkg(pol,900);
-    //    R_theory_vs_reco(pol,900);
+    R_cbkg(pol,2000);
+    //    R_theory_vs_reco(pol,2000);
     }
 }

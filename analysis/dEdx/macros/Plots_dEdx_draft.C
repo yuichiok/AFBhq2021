@@ -28,7 +28,7 @@
 bool cquark;
 int iquark=-1;
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 void Labels(TString pol){
   // QQBARLabel(0.86,0.952,"Work in Progress");
@@ -1882,7 +1882,7 @@ void EffPurity_dedxdist2(int quarkid) {
     x2[i-165]=i;
     //    eff[i-165]=100.*(n_kaons+n_pions+n_protons+n_muons+n_electrons)/nkaons;                     
     eff2[i-165]=100.*(n_kaons)/nkaons2;
-    pur2[i-165]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons);
+    pur2[i-165]=100.*n_kaons/(n_kaons+n_pions+n_protons+n_muons+n_electrons)*0.97;
     n2++;
     if(eff2[i-165]>89.99 && pur2[i-165]>97.32) cout<<i<<endl;
     if(i==223) cout<<eff2[i-165]<<" "<< pur2[i-165]<<endl;
@@ -1950,19 +1950,19 @@ void EffPurity_dedxdist2(int quarkid) {
 
 
 void Plots_dEdx_draft() {
-  //for(int i=3; i<4; i++) Mom(i);
+  //for(int i=4; i<5; i++) Mom(i);
   //for(int i=3; i<6; i++) Costheta(i);
   //Ntracks();
   //Ntracks2();
 
-  //for(int i=4; i<5; i++)  dEdxdist(i);
+  //for(int i=4; i<5; i++)  dEdxdist2(i);
   //for(int i=4; i<6; i++)  dEdxdistProjection(i);
-  for(int i=4; i<6; i++)  dEdxdistProjection2(i);
+  //for(int i=4; i<5; i++)  dEdxdistProjection2(i);
 
   //NHits();
   //for(int i=4; i<6; i++) EffPurity_momentum(i);
   //for(int i=4; i<6; i++) EffPurity_angle(i);
-  //for(int i=4; i<6; i++) EffPurity_dedxdist(i);
+  for(int i=4; i<5; i++) EffPurity_dedxdist2(i);
   //dEdx(0);
   //dEdx2(0);
 

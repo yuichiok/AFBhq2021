@@ -25,7 +25,7 @@
 #include "../../../style/Labels.C"
 #include "../../common/cross_sections.h"
 
-TString energy="250GeV";
+TString energy="500GeV";
 
 void Labels(int i = 0, TString pol = "eL", float textsize=0.045)
 {

@@ -24,7 +24,7 @@
 #include "../../../style/Style.C"
 #include "../../../style/Labels.C"
 
-TString energy="dEdx_250GeV_2023";
+TString energy="dEdx_500GeV_2023";
 
 
 
