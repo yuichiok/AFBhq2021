@@ -59,11 +59,11 @@ void Plots_AFB(int mode=1) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   double AFBb[145]={0};
@@ -366,11 +366,11 @@ void Plots_CrossDiff(int mode=0) {
   // TGaxis::SetMaxDigits(2);
 
   TString pol="eL_pR";
-  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol+".root";
+  TString filename = "../results_"+energy+"/AFBenergyDep_2f_hadronic_"+pol+".root";
   TFile *f = new TFile(filename);
 
   TString pol2="eR_pL";
-  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_sample_"+pol2+".root";
+  TString filename2 = "../results_"+energy+"/AFBenergyDep_2f_hadronic_"+pol2+".root";
   TFile *f2 = new TFile(filename2);
 
   TGraph* gAFBb;
@@ -390,8 +390,8 @@ void Plots_CrossDiff(int mode=0) {
   TH1F* total_eR = (TH1F*)f2->Get("h_Ntotal_nocuts");
   totalev=total->Integral();
   totalev_eR=total_eR->Integral();
-  luminosity=totalev/cross_section[0][0];
-  luminosity_eR=totalev_eR/cross_section[1][0];
+  luminosity=totalev/cross_section[0][1];
+  luminosity_eR=totalev_eR/cross_section[1][1];
   
   TH1F* temp_AFBb = (TH1F*)f->Get(TString::Format("h_AFBb_acol30_KLowerThan%i",35));
   TH1F* temp_AFBb_eR = (TH1F*)f2->Get(TString::Format("h_AFBb_acol30_KLowerThan%i",35));
@@ -465,22 +465,22 @@ void Plots_CrossDiff(int mode=0) {
   gAFBb->SetLineColor(kGreen+1);
   gAFBb->SetLineWidth(5);
   gAFBb->SetLineStyle(1);
-  gAFBb->Draw("ac");
+  gAFBb->Draw("al");
 
   gAFBb_eR->SetLineColor(kGreen+1);
   gAFBb_eR->SetLineWidth(5);
   gAFBb_eR->SetLineStyle(2);
-  gAFBb_eR->Draw("c");
+  gAFBb_eR->Draw("l");
 
   gAFBc->SetLineColor(kRed);
   gAFBc->SetLineWidth(2);
   gAFBc->SetLineStyle(1);
-  gAFBc->Draw("c");
+  gAFBc->Draw("l");
 
   gAFBc_eR->SetLineColor(kRed);
   gAFBc_eR->SetLineWidth(2);
   gAFBc_eR->SetLineStyle(7);
-  gAFBc_eR->Draw("c");
+  gAFBc_eR->Draw("l");
 
 
   test->SetLineColor(1);
