@@ -5,10 +5,15 @@ double cross_section[2][5] = {
   {606.71,219.486,136.822,70416.7,10633.8}
 };*/
 //250GeV, new format
-double cross_section[2][7] = {
-  {1,127966,33106.23,1405.06,343.03,14866.4,1.}, //left, HV, qq, qq+radreturncut,  zz, hz, ww, ttbar (not applciable at 250GeV)
-  {1,70416.7,10633.8,606.71,219.486,136.822,1.}
+//qvHV100
+double cross_section[2][9] = {
+  {0.002415*127966,0.00251*127966,0.0025*127966,127966,33106.23,1405.06,343.03,14866.4,1.}, //left, HVmqv100, HVmqv50, HVmqv10, qq, qq+radreturncut,  zz, hz, ww, ttbar (not applciable at 250GeV)
+  {0.002415*70416.7,0.00251*70416.7,0.0025*70416.7,70416.7,10633.8,606.71,219.486,136.822,1.}
 };
+//double cross_section[2][7] = {
+//  {0.002415*127966,127966,33106.23,1405.06,343.03,14866.4,1.}, //left, HV, qq, qq+radreturncut,  zz, hz, ww, ttbar (not applciable at 250GeV)
+//  {0.002415*70416.7,70416.7,10633.8,606.71,219.486,136.822,1.}
+//};
 /*cross_section[0][0]=1405.06;//zz eL
 cross_section[1][0]=606.71;//zz eR 
 cross_section[0][1]=343.03;//hz eL

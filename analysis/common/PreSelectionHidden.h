@@ -1,16 +1,18 @@
-#include "variables_dedx_hidden.h"
+#include "variables_2023.h"
 
 //  bbmass:
-double bbmasscut = 200;
+double bbmasscut = 50;
 //  npfos:
 double NPFOS_cut = 2.;
+//total number of pfos
+double NPFOS_tot_cut = 25;
 // n charged_npfos:
 double CNPFOS_cut = 1.0;
 // LOS LIMITES DEL CORTE en h_e_costheta_gamma:cuts in energy and angle of detected photons
-double costheta_isr = 0.97;
-double energy_isr_cut = 100;
+double costheta_isr = 0.7;
+double energy_isr_cut = 60;
 // cuts in y23
-double y23cut = 0.0125;
+double y23cut = 0.05;
 
 // cuts in Thrust
 double thrust_cut = 0.8;
@@ -286,12 +288,19 @@ bool PreSelection(int type = 0, float Kvcut = 25, float acolcut = 0.3)
   cut_[2] = (cut_[1] && fabs(photonjet_cos_max) < costheta_isr && photonjet_e_max < energy_isr_cut);
   // cut_[3]=( cut_[2] && acol_value<acolcut );
   // cut_[3]=( cut_[2] && Kv < Kvcut);
-  cut_[3] = (cut_[2] && bbmass > bbmasscut);
-  cut_[4] = (cut_[3] && principle_thrust_value < thrust_cut);
+  cut_[3] = (cut_[2] && bbmass < bbmasscut);
+  cut_[4] = (cut_[3] && (npfo[0] + npfo[1])<NPFOS_tot_cut );
+  //cut_[5] = (cut_[4] && major_thrust_value>0.5);
+  cut_[5] = (cut_[4] && d23/pow(bbmass,2)<y23cut && d23>0 );
+  cut_[6] = (cut_[5] && (npfo_charge[0]>1 && npfo_charge[0]<8) && (npfo_charge[1]>1 && npfo_charge[1]<8) );
+  cut_[7] = (cut_[6] &&   principle_thrust_value > 0.7);
+  cut_[8] = (cut_[6] &&   principle_thrust_value > 0.9);
+
+ // cut_[4] = (cut_[3] && principle_thrust_value < thrust_cut);
   std::vector<float> mw1mw2=MW1_MW2();
   float mw1=mw1mw2.at(0);
   float mw2=mw1mw2.at(1);
-  cut_[5] = (cut_[4] && sqrt( pow(mw1-80.4,2) + pow(mw2-80.4,2) )>15 && sqrt( pow(mw1-91,2) + pow(mw2-91,2) )>15 );
+  //cut_[5] = (cut_[4] && sqrt( pow(mw1-80.4,2) + pow(mw2-80.4,2) )>15 && sqrt( pow(mw1-91,2) + pow(mw2-91,2) )>15 );
 
   // cut_[6]=( cut_[5] && d23>0.5 && d23/pow(bbmass,2)<y23cut );
 

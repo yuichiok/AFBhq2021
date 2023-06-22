@@ -1,21 +1,11 @@
 
 process=$1
 pol=$2
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-250GeV-2023/"${process}"_"${pol}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-250GeV-2023/"${process}"/"
 local=$PWD
 counter=0
 
 bkg=1
-
-if [ "$process" = "2f_hadronic_sample" ];
-then 
-    bkg=0
-fi
-
-if [ "$process" = "2f_hadronic" ];
-then 
-    bkg=0
-fi
 
 for file in ${folder}/*
 do

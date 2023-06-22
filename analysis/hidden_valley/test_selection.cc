@@ -13,7 +13,7 @@ int test_selection( TString file="", TString process="2f_hadronic", TString pol=
   else if(file_n<100) ss3.process=s_type+process+"_"+pol+TString::Format("_file_0%i",file_n);
   else ss3.process=s_type+process+"_"+pol+TString::Format("_file_%i",file_n);
 
-  ss3.Selection(-1,type,35,bkg);
+  ss3.Selection(-1,type,30,bkg);
   gSystem->Exit(0);
 
   return 0;

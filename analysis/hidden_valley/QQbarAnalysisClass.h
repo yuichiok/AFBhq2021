@@ -41,7 +41,7 @@ public:
 
   // analysis
   virtual void Selection(int, int, float, int);
-  virtual void QCDCorr(int, int);
+  virtual void QCDCorr(int, int, int);
   virtual void FillBkg(std::vector<float>, std::vector<float>, std::vector<float>);
   virtual void FillBkgMC(std::vector<float>, std::vector<float>, std::vector<float>);
 
@@ -58,23 +58,23 @@ public:
 private:
     
     std::vector<float>theta_charged;
-    std::vector<float>eta_charged;
+    std::vector<float>rapidity_charged;
     std::vector<float>phi_charged;
 
     std::vector<float>theta_charged_MC;
-    std::vector<float>eta_charged_MC;
+    std::vector<float>rapidity_charged_MC;
     std::vector<float>phi_charged_MC;
 
 
     TH2F *S2;
     TH2F *B2;
-    TH2F *S2_eta;
-    TH2F *B2_eta;
+    TH2F *S2_rapidity;
+    TH2F *B2_rapidity;
     
     TH2F *S2_MC;
     TH2F *B2_MC;
-    TH2F *S2_MC_eta;
-    TH2F *B2_MC_eta;
+    TH2F *S2_MC_rapidity;
+    TH2F *B2_MC_rapidity;
 
 };
 
