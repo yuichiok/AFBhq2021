@@ -105,30 +105,26 @@ void plotsN(int ipol = 2, int cuts = 0, float lum = 900)
 
 }
 
-void plotsC2(int ipol = 2, int cuts = 0, float lum = 900)
+void plotsC2(int ipol = 2, int cuts = 0, float lum = 900, bool MC=false, bool Yield=true)
 {
 
   std::vector<std::vector<TH1F *>> h1_bkg;
   std::vector<std::vector<TH2F *>> h2_bkg;
+
+  std::vector<TString> histos_1d={"h_costheta_cuts","ncharged","mom"};
+  std::vector<TString> histos_2d={"S2_MC_rapidity","B2_MC_rapidity","S2_MC_rapidity"};
 
   for (int isample = 0; isample < sizeof(samples)/sizeof(TString); isample++)
   {
     cout<<samples[isample]<<endl;
     int sample_index=isample;
     //if(isample>3) sample_index=isample + 1;
-    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], ipol, sample_index , lum,{"h_costheta_cuts","ncharged","mom"},false);
+    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], ipol, sample_index , lum,histos_1d,false);
     h1_bkg.push_back(h1_bkg_temp);
-    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples[isample], ipol, sample_index , lum,{"S2_rapidity","B2_rapidity","S2_rapidity"},false,false);
+    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples[isample], ipol, sample_index , lum,histos_2d,false,false);
     h2_bkg.push_back(h2_bkg_temp);
   }
 
-
-    //for(int i=0; i<h2_bkg.size(); i++) {
-
-
-    //h2_bkg.at(i).at(2)->Divide(h2_bkg.at(i).at(1));
-
-  //}
 
   for (int i = 0; i < h1_bkg.size(); i++)
   {
@@ -146,62 +142,57 @@ void plotsC2(int ipol = 2, int cuts = 0, float lum = 900)
   // gStyle->SetMarkerSize(1.5);
   TGaxis::SetMaxDigits(3);
 
-  /*for (int k = 2; k < 3; k++)
+  if(Yield==false)
   {
 
-    gStyle->SetPadRightMargin(0.2);
-    TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 1600, 800);
-    canvas1->Divide(3, 2);
-
-    for (int j = 0; j < h2_bkg.size(); j++)
+    //for(int i=0; i<h2_bkg.size(); i++) {
+    //  h2_bkg.at(i).at(2)->Divide(h2_bkg.at(i).at(1));
+    // }
+    for (int k = 0; k < 2; k++)
     {
-      canvas1->cd(j + 1);
-      //gPad->SetLogz();
-      //h2_bkg.at(j).at(k)->GetXaxis()->SetTitle(histo2d_titles_x[k]);
-      //h2_bkg.at(j).at(k)->GetYaxis()->SetTitle(histo2d_titles_y[k]);
-      if(k==0) h2_bkg.at(j).at(k)->SetTitle("S_{2} }");
-      if(k==1) h2_bkg.at(j).at(k)->SetTitle("B_{2} ");
-      if(k==2) h2_bkg.at(j).at(k)->SetTitle("C_{2}");
-     // h2_bkg.at(j).at(k)->Draw("surf1");
-      if(k==2) h2_bkg.at(j).at(k)->GetZaxis()->SetRangeUser(0,2.5);
-      h2_bkg.at(j).at(k)->Draw("colz");
 
-      QQBARLabel2(0.3, 0.05, TString::Format("#font[42]{%s, N_{events}=%i}",samples[j].Data(),int(h1_bkg.at(j).at(1)->Integral())), kRed);
+      gStyle->SetPadRightMargin(0.2);
+      TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 1600, 800);
+      canvas1->Divide(3, 2);
 
-      Labels(cuts, ipol, lum, 0.7);
+      for (int j = 0; j < h2_bkg.size(); j++)
+      {
+        canvas1->cd(j + 1);
+        //gPad->SetLogz();
+        //h2_bkg.at(j).at(k)->GetXaxis()->SetTitle(histo2d_titles_x[k]);
+        //h2_bkg.at(j).at(k)->GetYaxis()->SetTitle(histo2d_titles_y[k]);
+        if(k==0) h2_bkg.at(j).at(k)->SetTitle("S_{2} }");
+        if(k==1) h2_bkg.at(j).at(k)->SetTitle("B_{2} ");
+        if(k==2) h2_bkg.at(j).at(k)->SetTitle("C_{2}");
+        h2_bkg.at(j).at(k)->Draw("colz");
+        if(k==2) h2_bkg.at(j).at(k)->GetZaxis()->SetRangeUser(0,2.5);
+        //h2_bkg.at(j).at(k)->Draw("colz");
+
+        QQBARLabel2(0.3, 0.05, TString::Format("#font[42]{%s, N_{events}=%i}",samples[j].Data(),int(h1_bkg.at(j).at(1)->Integral())), kRed);
+
+        Labels(cuts, ipol, lum, 0.7);
+      }
     }
-  }*/
-  
-  for (int k = 2; k < 3; k++)
-  {
+  } else {
 
     gStyle->SetPadRightMargin(0.2);
-    TCanvas *canvas1 = new TCanvas(TString::Format("canvasproj_%i", k), TString::Format("canvasproj_%i", k), 1600, 800);
+    TCanvas *canvas1 = new TCanvas("canvasproj", "canvasproj", 1600, 800);
     canvas1->Divide(3, 2);
 
-    TH1F* htemp[10][10][10]; 
-    TH1F* htemp2[10][10][10]; 
+    TH1F* htemp[10][10]; 
+    TH1F* htemp2[10][10]; 
 
     for (int j = 0; j < h2_bkg.size(); j++)
     {
       canvas1->cd(j + 1);
-      //gPad->SetLogz();
-      //h2_bkg.at(j).at(k)->GetXaxis()->SetTitle(histo2d_titles_x[k]);
-      //h2_bkg.at(j).at(k)->GetYaxis()->SetTitle(histo2d_titles_y[k]);
-      //if(k==0) h2_bkg.at(j).at(k)->SetTitle("S_{2} }");
-      //if(k==1) h2_bkg.at(j).at(k)->SetTitle("B_{2} ");
-      //if(k==2) h2_bkg.at(j).at(k)->SetTitle("C_{2}");
-     // h2_bkg.at(j).at(k)->Draw("surf1");
-      //if(k==2) h2_bkg.at(j).at(k)->GetZaxis()->SetRangeUser(0,2.5);
-      //h2_bkg.at(j).at(k)->Draw("colz");
-      for(int i=0; i<3; i++) {
-        htemp[j][k][i] =(TH1F*)h2_bkg.at(j).at(0)->ProjectionY(TString::Format("htemp_%i_%i_%i",j,k,i),i*15,i*15+15);
-        htemp2[j][k][i] =(TH1F*)h2_bkg.at(j).at(1)->ProjectionY(TString::Format("htemp2_%i_%i_%i",j,k,i),i*15,i*15+15);
-        htemp[j][k][i]->Divide(htemp2[j][k][i]);
-        htemp[j][k][i]->SetLineColor(i+1);
-        htemp[j][k][i]->SetLineWidth(2);
-        htemp[j][k][i]->Draw("histosame");
-        htemp[j][k][i]->GetYaxis()->SetRangeUser(0,htemp[j][k][i]->GetMaximum());
+      for(int i=0; i<2; i++) {
+        htemp[j][i] =(TH1F*)h2_bkg.at(j).at(0)->ProjectionY(TString::Format("htemp_%i_%i",j,i),i*25,i*25+25);
+        htemp2[j][i] =(TH1F*)h2_bkg.at(j).at(1)->ProjectionY(TString::Format("htemp2_%i_%i",j,i),i*25,i*25+25);
+        htemp[j][i]->Divide(htemp2[j][i]);
+        htemp[j][i]->SetLineColor(i+1);
+        htemp[j][i]->SetLineWidth(2);
+        htemp[j][i]->Draw("histosame");
+        htemp[j][i]->GetYaxis()->SetRangeUser(0,htemp[j][i]->GetMaximum());
 
       }
 
@@ -223,9 +214,9 @@ void C2()
   float lum = 900;
   int pol = 0;
   cout << "Events for Polarization " << pol << " (0=left, 1=right, 2=80left,30right, 3=80right,30left) and Lum=" << lum << endl;
-  int cuts = 8;
+  int cuts = 6;
   folder = TString::Format("../results/QCDcorrelations_cuts%i", cuts);
   cout << cuts << " ";
-  plotsC2(pol,cuts, 900);
+  plotsC2(pol,cuts, 900,true,true);
   
 }

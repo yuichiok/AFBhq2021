@@ -127,7 +127,7 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
     leg->SetLineColor(0);
     leg->SetBorderSize(0);
 
-    Labels(k, ipol, lum);
+    Labels(cuts, ipol, lum);
     leg->Draw();
   }
 

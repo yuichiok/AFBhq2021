@@ -1,12 +1,13 @@
 
 process=$1
 pol=$2
-folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-250GeV-2023/"${process}"_"${pol}"/"
 local=$PWD
 counter=0
 
 
 signal=1
+process2=${process}
+
 
 if [ "$process" = "2f_hadronic_sample" ];
 then
@@ -16,7 +17,10 @@ fi
 if [ "$process" = "2f_hadronic" ];
 then
     signal=0
+    process2="2f_hadronic_sample"
 fi
+
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-250GeV-2023/"${process2}"_"${pol}"/"
 
 
 for file in ${folder}/*
