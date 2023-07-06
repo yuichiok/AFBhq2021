@@ -181,7 +181,7 @@ void Plots_R_AFB() {
   
 }
 
-void Plots_R_AFB_comparison() {
+void Plots_R_AFB_comparison(bool statonly=false) {
 
   SetQQbarStyle();
   gStyle->SetOptFit(0); 
@@ -222,6 +222,13 @@ void Plots_R_AFB_comparison() {
   double ex[8]={0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5};
   TGraphErrors * gstat = new TGraphErrors(8,x,y,ex,ey);
 
+  if(statonly==true) {
+    for(int i=0; i<4; i++)  afb_syst[i]=0.;
+    for(int i=0; i<4; i++)  r_syst[i]=0.;
+
+  }
+
+
   double y2[4]={sqrt(pow(afb_stat[0]/sqrt(0.25),2)+pow(afb_syst[0],2)),sqrt(pow(afb_stat[1]/sqrt(0.25),2)+pow(afb_syst[1],2)),sqrt(pow(afb_stat[2]/sqrt(0.54),2)+pow(afb_syst[2],2)),sqrt(pow(afb_stat[3]/sqrt(0.54),2)+pow(afb_syst[2],2))};
   double x2[4]={3.5,4.5,9.5,10.5};
 
@@ -231,6 +238,7 @@ void Plots_R_AFB_comparison() {
   double ey2[4]={y2[0]-sqrt( pow(afb_stat[0],2)+pow(afb_syst[0],2)),y2[1],y2[2]-sqrt( pow(afb_stat[2],2)+pow(afb_syst[2],2)),y2[3]};//0.5,0.5,0.5,0.5};
   TGraphAsymmErrors * g_noTPC = new TGraphAsymmErrors(4,x2,y2,ex2,ex2,ey2,ex2);
 
+  cout<<" ---: "<<sqrt( pow(r_stat_dEdx[0],2)+pow(r_syst[0],2))<<endl;
 
   //ILD baseline
   c_eL->Fill(0.5, sqrt( pow(r_stat_dEdx[0],2)+pow(r_syst[0],2)));
@@ -279,11 +287,12 @@ void Plots_R_AFB_comparison() {
   q_eL->GetXaxis()->SetBinLabel(8,"R_{b}");
   q_eL->GetXaxis()->SetBinLabel(11,"A_{FB}^{b}");
 
-  TCanvas* c_R_AFB = new TCanvas("c_R_AFB","c_AFB",1400,800);
+  TCanvas* c_R_AFB = new TCanvas(TString::Format("c_R_AFB_%i",int(statonly)),TString::Format("c_R_AFB_%i",int(statonly)),1400,800);
   c_R_AFB->cd(1);
-   gPad->SetLogy();
+  gPad->SetLogy();
   // c_eL->GetXaxis()->SetTitle("cos #theta");
-  q_eL->GetYaxis()->SetTitle("total relative uncertainty [%]");
+   if(statonly==true)   q_eL->GetYaxis()->SetTitle("stat. relative uncertainty [%]");
+   else q_eL->GetYaxis()->SetTitle("total relative uncertainty [%]");
   q_eL->GetYaxis()->SetRangeUser(0.09,3);
   q_eL->GetXaxis()->SetRangeUser(0,11);
   q_eL->GetXaxis()->SetTickLength(0);
@@ -420,7 +429,8 @@ void Plots_R_AFB_comparison() {
   leg_b2->SetShadowColor(0);
   leg_b2->Draw();
 
-  c_R_AFB->Print("plots_"+energy+"_final/Observables_Unc.eps");
+  if(statonly==true)  c_R_AFB->Print("plots_"+energy+"_final/Observables_StatUnc.eps");
+  else c_R_AFB->Print("plots_"+energy+"_final/Observables_Unc.eps");
 
   
 }
@@ -429,6 +439,8 @@ void R_AFB_results() {
 
   //Plots_AFB_method();
   Plots_R_AFB_comparison();
+  Plots_R_AFB_comparison(true);
+
   
 }
     
