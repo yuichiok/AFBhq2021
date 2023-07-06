@@ -14,13 +14,13 @@
    Float_t         mc_ISR_pdg[2];
    Float_t         mc_ISR_charge[2];
    Int_t           mc_quark_ps_n;
-   Float_t         mc_quark_ps_E[1];   //[mc_quark_ps_n]
-   Float_t         mc_quark_ps_px[1];   //[mc_quark_ps_n]
-   Float_t         mc_quark_ps_py[1];   //[mc_quark_ps_n]
-   Float_t         mc_quark_ps_pz[1];   //[mc_quark_ps_n]
-   Float_t         mc_quark_ps_m[1];   //[mc_quark_ps_n]
-   Float_t         mc_quark_ps_pdg[1];   //[mc_quark_ps_n]
-   Float_t         mc_quark_ps_charge[1];   //[mc_quark_ps_n]
+   Float_t         mc_quark_ps_E[9999];   //[mc_quark_ps_n]
+   Float_t         mc_quark_ps_px[9999];   //[mc_quark_ps_n]
+   Float_t         mc_quark_ps_py[9999];   //[mc_quark_ps_n]
+   Float_t         mc_quark_ps_pz[9999];   //[mc_quark_ps_n]
+   Float_t         mc_quark_ps_m[9999];   //[mc_quark_ps_n]
+   Float_t         mc_quark_ps_pdg[9999];   //[mc_quark_ps_n]
+   Float_t         mc_quark_ps_charge[9999];   //[mc_quark_ps_n]
    Float_t         mc_quark_ps_y12;
    Float_t         mc_quark_ps_y23;
    Float_t         mc_quark_ps_d12;
@@ -30,15 +30,15 @@
    Float_t         mc_quark_ps_jet_py[2];
    Float_t         mc_quark_ps_jet_pz[2];
    Int_t           mc_stable_n;
-   Float_t         mc_stable_E[1];   //[mc_stable_n]
-   Float_t         mc_stable_px[1];   //[mc_stable_n]
-   Float_t         mc_stable_py[1];   //[mc_stable_n]
-   Float_t         mc_stable_pz[1];   //[mc_stable_n]
-   Float_t         mc_stable_m[1];   //[mc_stable_n]
-   Int_t           mc_stable_pdg[1];   //[mc_stable_n]
-   Float_t         mc_stable_charge[1];   //[mc_stable_n]
-   Int_t           mc_stable_isoverlay[1];   //[mc_stable_n]
-   Int_t           mc_stable_isisr[1];   //[mc_stable_n]
+   Float_t         mc_stable_E[9999];   //[mc_stable_n]
+   Float_t         mc_stable_px[9999];   //[mc_stable_n]
+   Float_t         mc_stable_py[9999];   //[mc_stable_n]
+   Float_t         mc_stable_pz[9999];   //[mc_stable_n]
+   Float_t         mc_stable_m[9999];   //[mc_stable_n]
+   Int_t           mc_stable_pdg[9999];   //[mc_stable_n]
+   Float_t         mc_stable_charge[9999];   //[mc_stable_n]
+   Int_t           mc_stable_isoverlay[9999];   //[mc_stable_n]
+   Int_t           mc_stable_isisr[9999];   //[mc_stable_n]
    Float_t         mc_stable_y12;
    Float_t         mc_stable_y23;
    Float_t         mc_stable_d12;
