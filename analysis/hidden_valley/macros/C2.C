@@ -112,7 +112,7 @@ void plotsC2(int ipol = 2, int cuts = 0, float lum = 900, bool MC=false, bool Yi
   std::vector<std::vector<TH2F *>> h2_bkg;
 
   std::vector<TString> histos_1d={"h_costheta_cuts","ncharged","mom"};
-  std::vector<TString> histos_2d={"S2_MC_rapidity","B2_MC_rapidity","S2_MC_rapidity"};
+  std::vector<TString> histos_2d={"S2_rapidity","B2_rapidity","S2_rapidity"};
 
   for (int isample = 0; isample < sizeof(samples)/sizeof(TString); isample++)
   {
@@ -145,60 +145,94 @@ void plotsC2(int ipol = 2, int cuts = 0, float lum = 900, bool MC=false, bool Yi
   if(Yield==false)
   {
 
-    //for(int i=0; i<h2_bkg.size(); i++) {
-    //  h2_bkg.at(i).at(2)->Divide(h2_bkg.at(i).at(1));
-    // }
-    for (int k = 0; k < 2; k++)
+    for(int i=0; i<h2_bkg.size(); i++) {
+      h2_bkg.at(i).at(2)->Divide(h2_bkg.at(i).at(1));
+    }
+    for (int k = 2; k < 3; k++)
     {
 
-      gStyle->SetPadRightMargin(0.2);
-      TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 1600, 800);
-      canvas1->Divide(3, 2);
+      //gStyle->SetPadRightMargin(0.2);
+      gStyle->SetOptTitle(0);
+
 
       for (int j = 0; j < h2_bkg.size(); j++)
       {
-        canvas1->cd(j + 1);
+        TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i_%i", k,j), TString::Format("canvas2d_%i_%i", k,j), 800, 800);
+        canvas1->cd();
         //gPad->SetLogz();
         //h2_bkg.at(j).at(k)->GetXaxis()->SetTitle(histo2d_titles_x[k]);
         //h2_bkg.at(j).at(k)->GetYaxis()->SetTitle(histo2d_titles_y[k]);
         if(k==0) h2_bkg.at(j).at(k)->SetTitle("S_{2} }");
         if(k==1) h2_bkg.at(j).at(k)->SetTitle("B_{2} ");
         if(k==2) h2_bkg.at(j).at(k)->SetTitle("C_{2}");
-        h2_bkg.at(j).at(k)->Draw("colz");
+        h2_bkg.at(j).at(k)->Draw("surf3");
         if(k==2) h2_bkg.at(j).at(k)->GetZaxis()->SetRangeUser(0,2.5);
+        h2_bkg.at(j).at(k)->GetXaxis()->SetTitleOffset(1.5);
+        h2_bkg.at(j).at(k)->GetYaxis()->SetTitleOffset(1.5);
+        h2_bkg.at(j).at(k)->GetZaxis()->SetTitleOffset(1.5);
+
         //h2_bkg.at(j).at(k)->Draw("colz");
 
         QQBARLabel2(0.3, 0.05, TString::Format("#font[42]{%s, N_{events}=%i}",samples[j].Data(),int(h1_bkg.at(j).at(1)->Integral())), kRed);
 
         Labels(cuts, ipol, lum, 0.7);
+        canvas1->Print(TString::Format("Correlations_%s_cuts%i.eps",samples[j].Data(),cuts));
       }
     }
   } else {
 
     gStyle->SetPadRightMargin(0.2);
-    TCanvas *canvas1 = new TCanvas("canvasproj", "canvasproj", 1600, 800);
-    canvas1->Divide(3, 2);
+    gStyle->SetOptTitle(0);
+
 
     TH1F* htemp[10][10]; 
     TH1F* htemp2[10][10]; 
 
+
     for (int j = 0; j < h2_bkg.size(); j++)
     {
-      canvas1->cd(j + 1);
+
+      TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", j), TString::Format("canvas2d_%i",j), 800, 800);
+      canvas1->cd();
+
+      TLegend *leg = new TLegend(0.5, 0.8, 0.9, 0.9); //(0.4,0.3,0.5,0.6);
+      leg->SetTextSize(0.035);
+
       for(int i=0; i<2; i++) {
-        htemp[j][i] =(TH1F*)h2_bkg.at(j).at(0)->ProjectionY(TString::Format("htemp_%i_%i",j,i),i*25,i*25+25);
-        htemp2[j][i] =(TH1F*)h2_bkg.at(j).at(1)->ProjectionY(TString::Format("htemp2_%i_%i",j,i),i*25,i*25+25);
+        if(i==0) {
+          htemp[j][i] =(TH1F*)h2_bkg.at(j).at(0)->ProjectionY(TString::Format("htemp_%i_%i",j,i),0,16);
+          htemp2[j][i] =(TH1F*)h2_bkg.at(j).at(1)->ProjectionY(TString::Format("htemp2_%i_%i",j,i),0,16);
+        }
+
+        if(i==1) {
+          htemp[j][i] =(TH1F*)h2_bkg.at(j).at(0)->ProjectionY(TString::Format("htemp_%i_%i",j,i),16,30);
+          htemp2[j][i] =(TH1F*)h2_bkg.at(j).at(1)->ProjectionY(TString::Format("htemp2_%i_%i",j,i),16,30);
+        }
         htemp[j][i]->Divide(htemp2[j][i]);
         htemp[j][i]->SetLineColor(i+1);
         htemp[j][i]->SetLineWidth(2);
         htemp[j][i]->Draw("histosame");
-        htemp[j][i]->GetYaxis()->SetRangeUser(0,htemp[j][i]->GetMaximum());
+        htemp[j][i]->GetYaxis()->SetRangeUser(0,2);
+        htemp[j][i]->GetYaxis()->SetTitle("Yield");
+        if(i==0) leg->AddEntry(htemp[j][i],"0<|#Delta y|<1.6");
+        if(i==1) leg->AddEntry(htemp[j][i],"1.6<|#Delta y|<3");
 
+        //htemp[j][i]->GetXaxis()->SetTitleOffset(1.5);
+        //htemp[j][i]->GetYaxis()->SetTitleOffset(1.5);
+        //htemp[j][i]->GetZaxis()->SetTitleOffset(1.5);
       }
+      leg->SetFillStyle(0);
+      leg->SetLineWidth(0);
+      leg->SetLineColor(0);
+      leg->SetBorderSize(0);
+
+      leg->Draw();
 
       QQBARLabel2(0.3, 0.05, TString::Format("#font[42]{%s, N_{events}=%i}",samples[j].Data(),int(h1_bkg.at(j).at(1)->Integral())), kRed);
 
       Labels(cuts, ipol, lum, 0.7);
+      canvas1->Print(TString::Format("Yield%s_cuts%i.eps",samples[j].Data(),cuts));
+
     }
   }
 
@@ -212,9 +246,9 @@ void C2()
 
 
   float lum = 900;
-  int pol = 0;
+  int pol = 2;
   cout << "Events for Polarization " << pol << " (0=left, 1=right, 2=80left,30right, 3=80right,30left) and Lum=" << lum << endl;
-  int cuts = 6;
+  int cuts = 0;
   folder = TString::Format("../results/QCDcorrelations_cuts%i", cuts);
   cout << cuts << " ";
   plotsC2(pol,cuts, 900,true,true);

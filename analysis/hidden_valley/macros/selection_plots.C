@@ -179,6 +179,7 @@ void plotsPL(int ipol = 2, int cuts = 0, float lum = 900)
   {
 
     int sample_index = isample;
+    if(samples[isample]=="qq") sample_index=4;
     std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], ipol, sample_index, lum, histonames);
     h1_bkg.push_back(h1_bkg_temp);
   }
