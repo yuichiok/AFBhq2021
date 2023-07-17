@@ -154,6 +154,82 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
   }*/
 }
 
+
+void plotsPL(int ipol = 2, int cuts = 0, float lum = 900)
+{
+
+  folder = TString::Format("../results/selectionPL_cuts%i", cuts);
+
+  TString samples[] = {
+      "HV_qv100GeV",
+      "qq"};
+
+  // 1d histograms:
+  std::vector<TString> histonames = {"h_minv"};
+
+  TString histo1d_titles[] = {
+      "",
+      "M_{vis} [GeV]"};
+
+
+  std::vector<std::vector<TH1F *>> h1_bkg;
+  std::vector<std::vector<TH2F *>> h2_bkg;
+
+  for (int isample = 0; isample < sizeof(samples) / sizeof(TString); isample++)
+  {
+
+    int sample_index = isample;
+    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], ipol, sample_index, lum, histonames);
+    h1_bkg.push_back(h1_bkg_temp);
+  }
+
+  for (int i = 0; i < h1_bkg.size(); i++)
+  {
+    cout << samples[i] << ": " << h1_bkg.at(i).at(1)->Integral() << " ";
+  }
+  cout << endl;
+
+  SetQQbarStyle();
+  TGaxis::SetMaxDigits(3);
+
+  for (int k = 1; k < sizeof(histo1d_titles) / sizeof(TString); k++)
+  {
+
+
+        float xmin = 0.58, ymin = 0.7, xmax = 0.8, ymax = 0.9;
+
+    TLegend *leg = new TLegend(xmin, 0.7, xmax, 0.9); //(0.4,0.3,0.5,0.6);
+    leg->SetTextSize(0.035);
+
+    TCanvas *canvas1 = new TCanvas(TString::Format("canvas_%i", k), TString::Format("canvas_%i", k), 800, 800);
+    canvas1->cd(1);
+    h1_bkg.at(0).at(k)->GetYaxis()->SetTitle("Entries");
+    h1_bkg.at(0).at(k)->GetXaxis()->SetTitle(histo1d_titles[k]);
+
+    for (int j = 0; j < h1_bkg.size(); j++)
+    {
+      h1_bkg.at(j).at(k)->SetLineColor(j + 1);
+      h1_bkg.at(j).at(k)->SetLineWidth(2);
+      if (j > 2)
+      {
+        h1_bkg.at(j).at(k)->SetLineStyle(2);
+        h1_bkg.at(j).at(k)->SetLineWidth(4);
+      }
+      if(histo1d_titles[k]=="T-principle") h1_bkg.at(j).at(k)->GetXaxis()->SetRangeUser(0.5,1);
+      h1_bkg.at(j).at(k)->Draw("histosame");
+      leg->AddEntry(h1_bkg.at(j).at(k), "#font[42]{" + samples[j] + "}", "l");
+    }
+    leg->SetFillStyle(0);
+    leg->SetLineWidth(0);
+    leg->SetLineColor(0);
+    leg->SetBorderSize(0);
+
+    Labels(cuts, ipol, lum);
+    leg->Draw();
+  }
+
+}
+
 void selection_plots()
 {
 
@@ -163,6 +239,6 @@ void selection_plots()
   for (int cuts = 0; cuts < 1; cuts++)
   {
     cout << cuts << " ";
-    plots(pol, cuts, 900);
+    plotsPL(pol, cuts, 900);
   }
 }
