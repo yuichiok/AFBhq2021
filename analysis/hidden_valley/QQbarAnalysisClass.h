@@ -41,6 +41,7 @@ public:
 
   // analysis
   virtual void Selection(int, int, float, int);
+  virtual void SelectionParticleLevel(int, int, float, int);
   virtual void QCDCorr(int, int, int);
   virtual void FillBkg(std::vector<float>, std::vector<float>, std::vector<float>);
   virtual void FillBkgMC(std::vector<float>, std::vector<float>, std::vector<float>);
