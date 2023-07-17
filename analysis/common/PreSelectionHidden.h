@@ -308,3 +308,30 @@ bool PreSelection(int type = 0, float Kvcut = 25, float acolcut = 0.3)
   // cut_[8]=(cut_[6] && jet_ctag[0]>ctag1 && jet_ctag[1]>ctag2);
   return cut_[type];
 }
+
+bool PreSelectionPL(int type = 0)
+{
+
+  if (jet_E[0] < 0.5 || jet_E[1] < 0.5)
+    return false;
+  
+  float minv_=0;
+  float pxtot_=0, pytot_=0, pztot_=0, etot_=0;
+  
+  for(int i=0; i<mc_stable_n; i++) {
+
+     if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ){
+      pxtot_+=mc_stable_px[i];
+      pytot_+=mc_stable_py[i];
+      pztot_+=mc_stable_pz[i];
+      etot_+=mc_stable_E[i];
+    }
+  }
+  minv_=sqrt(pow(etot_,2)-pow(pxtot_,2)-pow(pytot_,2)-pow(pztot_,2));
+
+  bool cut_[10] = {false};
+  cut_[0] = true;
+  cut_[1] = (minv_<50);
+
+  return cut_[type];
+}
