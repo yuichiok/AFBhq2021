@@ -2,7 +2,7 @@ TString folder = "../results/";
 void Labels(int i = 0, int ipol = 1, float lum = 900, float ildx=0.86)
 {
 
-  QQBARLabel(ildx, 0.953, "");
+  //QQBARLabel(ildx, 0.953, "");
   QQBARLabel2(0.04, 0.04, TString::Format("cuts-%i",i), kOrange + 3);
   /*if (i == 0)
     QQBARLabel2(0.04, 0.07, "[No Cuts]", kOrange + 3);
