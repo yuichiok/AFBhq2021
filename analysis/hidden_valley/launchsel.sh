@@ -1,8 +1,9 @@
 for pol in "eL_pR"
 do
-    #source test_selection_HV.sh HV_qv100GeV $pol
-    #source test_selection_HV.sh HV_qv10GeV $pol
+    source test_selection_HV.sh HV_qv100GeV $pol
     source test_selection_HV.sh HV_qv50GeV $pol
+    source test_selection_HV.sh HV_qv10GeV $pol
+    source test_selection_HV.sh qqSM $pol
     echo $pol
 done
 

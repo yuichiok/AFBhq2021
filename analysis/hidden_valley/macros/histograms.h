@@ -3,7 +3,7 @@ void Labels(int i = 0, int ipol = 1, float lum = 900, float ildx=0.86)
 {
 
   //QQBARLabel(ildx, 0.953, "");
-  QQBARLabel2(0.04, 0.04, TString::Format("cuts-%i",i), kOrange + 3);
+  QQBARLabel2(0.04, 0.04,"Analysis at particle level, Pythia8", kOrange + 3);
   /*if (i == 0)
     QQBARLabel2(0.04, 0.07, "[No Cuts]", kOrange + 3);
   if (i == 1)
@@ -21,7 +21,7 @@ void Labels(int i = 0, int ipol = 1, float lum = 900, float ildx=0.86)
     QQBARLabel2(0.04, 0.04, "& m_{jj} & T<0.8 cuts", kOrange + 3);
   }*/
 
-  QQBARLabel2(0.8, 0.03, TString::Format("Int.Lum=%i fb^{-1}", int(lum)), kGray + 1);
+  /*QQBARLabel2(0.8, 0.03, TString::Format("Int.Lum=%i fb^{-1}", int(lum)), kGray + 1);
 
   if (ipol == 0)
     QQBARLabel2(0.7, 0.03, "e_{L}^{-}e_{R}^{+} ", kGray + 1);
@@ -31,7 +31,7 @@ void Labels(int i = 0, int ipol = 1, float lum = 900, float ildx=0.86)
   if (ipol == 2)
     QQBARLabel2(0.6, 0.03, "e_{L}^{-}e_{R}^{+}(80,30) ", kGray + 1);
   if (ipol == 3)
-    QQBARLabel2(0.6, 0.03, "e_{R}^{-}e_{L}^{+}(80,30)", kGray + 1);
+    QQBARLabel2(0.6, 0.03, "e_{R}^{-}e_{L}^{+}(80,30)", kGray + 1);*/
 }
 
 TH1F * PolHisto(TH1F *h1, TH1F* h2, int pol) {
@@ -114,6 +114,8 @@ std::vector<TH1F *> GetHisto1D(TString sample = "2f_hadronic_sample", int ipol =
   for (int i = 0; i < 2; i++)
   {
 
+    if(ipol<2 && ipol!=i) continue;
+
     TString filename = folder + "_" + sample + "_" + pol[i] + ".root";
     if (sample == "radreturn")
     {
@@ -173,6 +175,9 @@ std::vector<TH2F *> GetHisto2D(TString sample = "2f_hadronic_sample", int ipol =
   std::vector<TH2F *> h1_pol[3];
   for (int i = 0; i < 2; i++)
   {
+
+    if(ipol<2 && ipol!=i) continue;
+
     TString filename = folder + "_" + sample + "_" + pol[i] + ".root";
     if (sample == "radreturn")
     {

@@ -14,18 +14,18 @@ do
     if [ $counter -gt 9 ]; then
         name="0"$counter
     fi
-    
+
     if [ $counter -gt 99 ]; then
         name=$counter
     fi
 
-    for cuts in 0 1 2 3 4 5 6 7 8
+    for cuts in 0
     do
 
 	cat > ${local}/steer/sel_${process}_${pol}_${name}_cuts${cuts}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
 root -l -q ${local}/test_selection.cc\(\"${file}\",\"${process}\",\"${pol}\",${counter},${cuts},$bkg\) > ${local}/output/log_sel_${process}_${pol}_${name}_cuts${cuts}
-mv selection_*cuts${cuts}_${process}_${pol}_file_${name}.root ${local}/output/.
+mv selection*cuts${cuts}_${process}_${pol}_file_${name}.root ${local}/output/.
 EOF
 	
 	cat > ${local}/steer/sel_${process}_${pol}_${name}_cuts${cuts}.sub <<EOF

@@ -15,7 +15,27 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
   TH1F *h_minv = new TH1F("h_minv", "h_minv", 100, 0, 500);
   TH1F *h_minv_radreturn = new TH1F("h_minv_radreturn", "h_minv_radreturn", 100, 0, 500);
 
-  // more distributions to be defined ? for isntance, the thrust variables?
+  TH1F *h_thrust_radreturn = new TH1F("h_thrust_radreturn", "h_thrust_radreturn", 100, 0, 1);
+  TH1F *h_thrust = new TH1F("h_thrust", "h_thrust", 100, 0, 1);
+
+  TH1F *h_major_thrust_radreturn = new TH1F("h_major_thrust_radreturn", "h_major_thrust_radreturn", 100, 0, 1);
+  TH1F *h_major_thrust = new TH1F("h_major_thrust", "h_major_thrust", 100, 0, 1);
+
+  TH1F *h_minor_thrust_radreturn = new TH1F("h_minor_thrust_radreturn", "h_minor_thrust_radreturn", 100, 0, 1);
+  TH1F *h_minor_thrust = new TH1F("h_minor_thrust", "h_minor_thrust", 100, 0, 1);
+
+  TH2F *h_major_minor_thrust_radreturn = new TH2F("h_major_minor_thrust_radreturn", "h_major_minor_thrust_radreturn", 100, 0, 1, 100, 0, 1);
+  TH2F *h_major_minor_thrust = new TH2F("h_major_minor_thrust", "h_major_minor_thrust", 100, 0, 1, 100, 0, 1);
+
+  TH1F *h_nch_radreturn = new TH1F("h_nch_radreturn", "h_nch_radreturn", 101, -0.5, 100.5);
+  TH1F *h_nch = new TH1F("h_nch", "h_nch", 101, -0.5, 100.5);
+
+  TH2F *h_p_vs_costheta_radreturn = new TH2F("h_p_vs_costheta_radreturn", "h_p_vs_costheta_radreturn", 250, -0.5, 124.5, 100, 0, 1);
+  TH2F *h_p_vs_costheta = new TH2F("h_p_vs_costheta", "h_p_vs_costheta",250, -0.5, 124.5, 100, 0, 1);
+
+  TH2F *h_pt_vs_costheta_radreturn = new TH2F("h_pt_vs_costheta_radreturn", "h_pt_vs_costheta_radreturn", 250, -0.5, 124.5, 100, 0, 1);
+  TH2F *h_pt_vs_costheta = new TH2F("h_pt_vs_costheta", "h_pt_vs_costheta",250, -0.5, 124.5, 100, 0, 1);
+
   Long64_t nentries;
   if (n_entries > 0)
     nentries = n_entries;
@@ -34,14 +54,29 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
     float minv = 0;
     float pxtot = 0, pytot = 0, pztot = 0, etot = 0;
 
+    float nch=0;
+
     for (int i = 0; i < mc_stable_n; i++)
     {
 
-     if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ){
-        pxtot += mc_stable_px[i];
-        pytot += mc_stable_py[i];
-        pztot += mc_stable_pz[i];
-        etot += mc_stable_E[i];
+      if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
+        float costheta_qqbar;
+        std::vector<float> p_qqbar;
+        p_qqbar.push_back(mc_stable_px[i]);
+        p_qqbar.push_back(mc_stable_py[i]);
+        p_qqbar.push_back(mc_stable_pz[i]);
+        costheta_qqbar = fabs(GetCostheta(p_qqbar));
+        
+        if(costheta_qqbar<0.99 &&
+        sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i])>0.5 
+        && sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]+mc_stable_pz[i]*mc_stable_pz[i])>1.) 
+        {
+          pxtot += mc_stable_px[i];
+          pytot += mc_stable_py[i];
+          pztot += mc_stable_pz[i];
+          etot += mc_stable_E[i];
+          if(mc_stable_charge[i]!=0) nch++;
+        }
       }
     }
 
@@ -74,16 +109,67 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
     if (bkg == 1)
     {
       h_minv->Fill(minv);
+      h_thrust->Fill(mc_principle_thrust_value);
+      h_major_thrust->Fill(mc_major_thrust_value);
+      h_minor_thrust->Fill(mc_minor_thrust_value);
+      h_major_minor_thrust->Fill(mc_major_thrust_value,mc_minor_thrust_value);
+      h_nch->Fill(nch);
+      for (int i = 0; i < mc_stable_n; i++)    {
+        if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
+          float costheta_mc;
+          std::vector<float> p_mc;
+          p_mc.push_back(mc_stable_px[i]);
+          p_mc.push_back(mc_stable_py[i]);
+          p_mc.push_back(mc_stable_pz[i]);
+          costheta_mc = GetCostheta(p_mc);
+          h_p_vs_costheta->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]+mc_stable_pz[i]*mc_stable_pz[i]),costheta_mc);
+          h_pt_vs_costheta->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]),costheta_mc);
+        }
+      }
     }
     else
     {
       if (gamma_e > Kvcut)
       {
         h_minv_radreturn->Fill(minv);
+        h_thrust_radreturn->Fill(mc_principle_thrust_value);
+        h_major_thrust_radreturn->Fill(mc_major_thrust_value);
+        h_minor_thrust_radreturn->Fill(mc_minor_thrust_value);
+        h_major_minor_thrust_radreturn->Fill(mc_major_thrust_value,mc_minor_thrust_value);
+        h_nch_radreturn->Fill(nch);   
+        for (int i = 0; i < mc_stable_n; i++)    {
+          if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
+            float costheta_mc;
+            std::vector<float> p_mc;
+            p_mc.push_back(mc_stable_px[i]);
+            p_mc.push_back(mc_stable_py[i]);
+            p_mc.push_back(mc_stable_pz[i]);
+            costheta_mc = GetCostheta(p_mc);
+            h_p_vs_costheta_radreturn->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]+mc_stable_pz[i]*mc_stable_pz[i]),costheta_mc);
+            h_pt_vs_costheta_radreturn->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]),costheta_mc);
+          }
+       }  
       }
       else
       {
         h_minv->Fill(minv);
+        h_thrust->Fill(mc_principle_thrust_value);
+        h_major_thrust->Fill(mc_major_thrust_value);
+        h_minor_thrust->Fill(mc_minor_thrust_value);
+        h_major_minor_thrust->Fill(mc_major_thrust_value,mc_minor_thrust_value);
+        h_nch->Fill(nch);
+        for (int i = 0; i < mc_stable_n; i++)    {
+          if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
+            float costheta_mc;
+            std::vector<float> p_mc;
+            p_mc.push_back(mc_stable_px[i]);
+            p_mc.push_back(mc_stable_py[i]);
+            p_mc.push_back(mc_stable_pz[i]);
+            costheta_mc = GetCostheta(p_mc);
+            h_p_vs_costheta->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]+mc_stable_pz[i]*mc_stable_pz[i]),costheta_mc);
+            h_pt_vs_costheta->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]),costheta_mc);
+          }
+       }
       }
     }
   }
@@ -94,6 +180,21 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
   h_costheta_nocuts->Write();
   h_minv->Write();
   h_minv_radreturn->Write();
+
+  h_thrust->Write();
+  h_thrust_radreturn->Write();
+  h_major_thrust->Write();
+  h_major_thrust_radreturn->Write();
+  h_minor_thrust->Write();
+  h_minor_thrust_radreturn->Write();
+  h_major_minor_thrust->Write();
+  h_major_minor_thrust_radreturn->Write();
+  h_nch->Write();
+  h_nch_radreturn->Write();
+  h_p_vs_costheta->Write();
+  h_p_vs_costheta_radreturn->Write();
+  h_pt_vs_costheta->Write();
+  h_pt_vs_costheta_radreturn->Write();
 }
 
 void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, float Kvcut = 50, int bkg = 0)
@@ -659,7 +760,7 @@ std::vector<float> QQbarAnalysisClass::ChargedMCThetaPhi(int ipfo, std::vector<f
 
   float theta_part = GetCostheta(mc_stable_vec_0);
 
-  /*if(fabs(theta_part)>0.99) return result;*/
+  if(fabs(theta_part)>0.99) return result;
 
   std::vector<float> mc_stable_vec;
   mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0, Tmajor));
