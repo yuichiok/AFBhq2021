@@ -26,7 +26,7 @@
 #include "../../common/hidden_cross_sections.h"
 #include "histograms.h"
 
-void plots(int ipol = 2, int cuts = 0, float lum = 900)
+void plotsReco( int cuts = 0, float lum = 900)
 {
 
   folder = TString::Format("../results/selection_cuts%i", cuts);
@@ -35,15 +35,13 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
       "HV_qv100GeV",
       "HV_qv50GeV",
       "HV_qv10GeV",
-      "radreturn",
-      "qq",
-      "4f_ZZ_hadronic",
-      "qqH",
-      "4f_WW_hadronic"};
+      "qqSM"};
 
-  // 1d histograms:
+
+  //-------------------------------
+  // 1d histograms to be plotted.. they have to exist in the selection_XXX.root file
   std::vector<TString> histonames = {"h_mjj", "h_mj1_mj2", "h_y23", "h_d23", "h_thrust", "h_major_thrust", "h_minor_thrust"};
-
+  //labels
   TString histo1d_titles[] = {
       "",
       "M_{j_{1}j_{2}} [GeV]",
@@ -54,9 +52,12 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
       "T-major",
       "T-minor"};
 
-  // 2d histograms
+
+  //-------------------------------
+  // 2d histograms to be plotted
   std::vector<TString> histonames_2d = {"h_nch", "h_npfos", "h_costheta_energy", "h_mw1_mw2", "h_major_minor_thrust", "h_npfos_minv"};
 
+  //labels to be added to the 2d plots
   TString histo2d_titles_x[] = {
       "# tracks j_{1}",
       "# pfos j_{1}",
@@ -79,10 +80,9 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
   for (int isample = 0; isample < sizeof(samples) / sizeof(TString); isample++)
   {
 
-    int sample_index = isample;
-    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], ipol, sample_index, lum, histonames);
+    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], lum, histonames);
     h1_bkg.push_back(h1_bkg_temp);
-    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples[isample], ipol, sample_index, lum, histonames_2d);
+    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples[isample], lum, histonames_2d);
     h2_bkg.push_back(h2_bkg_temp);
   }
 
@@ -127,14 +127,11 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
     leg->SetLineColor(0);
     leg->SetBorderSize(0);
 
-    Labels(cuts, ipol, lum);
+    LabelsReco();
     leg->Draw();
   }
 
-  // if (cuts == 0)
-  //{
-
- /* for (int k = 0; k < sizeof(histo2d_titles_y) / sizeof(TString); k++)
+  for (int k = 0; k < sizeof(histo2d_titles_y) / sizeof(TString); k++)
   {
 
     gStyle->SetPadRightMargin(0.2);
@@ -149,13 +146,13 @@ void plots(int ipol = 2, int cuts = 0, float lum = 900)
       h2_bkg.at(j).at(k)->Draw("colz");
       QQBARLabel2(0.2, 0.85, TString::Format("#font[42]{%s, N_{total}=%i}", samples[j].Data(), int(h1_bkg.at(j).at(1)->Integral())), kRed);
 
-      Labels(k, ipol, lum, 0.7);
+      Labels();
     }
-  }*/
+  }
 }
 
 
-void plotsProcLCWS2023(int ipol = 2, int cuts = 0)
+void plotsProcLCWS2023(int cuts = 0)
 {
 
   folder = TString::Format("../results/selectionPL_cuts%i", cuts);
@@ -191,9 +188,7 @@ void plotsProcLCWS2023(int ipol = 2, int cuts = 0)
   for (int isample = 0; isample < sizeof(samples) / sizeof(TString); isample++)
   {
 
-    int sample_index = isample+1;
-    if(samples[isample]=="qqSM") sample_index=4;
-    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], ipol, sample_index, 1000, histonames);//we use a random luminosity value of 1000 just to have a common noramlization
+    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], 1000, histonames);//we use a random luminosity value of 1000 just to have a common noramlization
     h1_bkg.push_back(h1_bkg_temp);
   }
 
@@ -258,7 +253,7 @@ void plotsProcLCWS2023(int ipol = 2, int cuts = 0)
     leg->SetLineColor(0);
     leg->SetBorderSize(0);
 
-    Labels(cuts, ipol, 1);
+    Labels();
     leg->Draw();
 
     canvas1->Print(TString::Format("%s.eps",histonames[k-1].Data()));
@@ -275,6 +270,8 @@ void selection_plots()
   for (int cuts = 0; cuts < 1; cuts++)
   {
     cout << cuts << " ";
-    plotsProcLCWS2023(pol, cuts);
+    //plotsReco(cuts);
+    plotsProcLCWS2023(cuts);
+
   }
 }
