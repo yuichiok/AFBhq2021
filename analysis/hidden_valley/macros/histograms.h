@@ -23,6 +23,7 @@ std::vector<TH1F *> GetHisto1D(TString sample = "2f_hadronic_sample", float lum 
   std::vector<TH1F *> h0;
 
   TString filename = folder + "_" + sample +  ".root";
+  cout<<filename<<endl;
 
   TFile *f = new TFile(filename);
   TH1F *h_luminosity_cross_2f = (TH1F *)f->Get("h_costheta_nocuts");
@@ -38,7 +39,7 @@ std::vector<TH1F *> GetHisto1D(TString sample = "2f_hadronic_sample", float lum 
     if(cross_section_pairs.at(i).first==sample+"_"+pol) cross_sec_temp=cross_section_pairs.at(i).second;
   }
   if(cross_sec_temp==0) {
-    cout<<" ERRORR !! NO CROSS SECTION FOUND FOR SAMPLE"<<sample<<" ... in GetHisto1D"<<endl;
+    cout<<" ERRORR !! NO CROSS SECTION FOUND FOR SAMPLE "<<sample<<" ... in GetHisto1D"<<endl;
     return h0;
   }
 
