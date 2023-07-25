@@ -1,27 +1,8 @@
-/*
-250GeV, old
-double cross_section[2][5] = {
-  {1405.06,343.03,14866.4,127966,33106.23}, //left, zz, hz, ww, qq, qq+radreturncut
-  {606.71,219.486,136.822,70416.7,10633.8}
-};*/
-//250GeV, new format
-//qvHV100
-double cross_section[2][9] = {
-  {0.002415*127966,0.00251*127966,0.0025*127966,127966,33106.23,1405.06,343.03,14866.4,1.}, //left, HVmqv100, HVmqv50, HVmqv10, qq, qq+radreturncut,  zz, hz, ww, ttbar (not applciable at 250GeV)
-  {0.002415*70416.7,0.00251*70416.7,0.0025*70416.7,70416.7,10633.8,606.71,219.486,136.822,1.}
-};
-//double cross_section[2][7] = {
-//  {0.002415*127966,127966,33106.23,1405.06,343.03,14866.4,1.}, //left, HV, qq, qq+radreturncut,  zz, hz, ww, ttbar (not applciable at 250GeV)
-//  {0.002415*70416.7,70416.7,10633.8,606.71,219.486,136.822,1.}
-//};
-/*cross_section[0][0]=1405.06;//zz eL
-cross_section[1][0]=606.71;//zz eR 
-cross_section[0][1]=343.03;//hz eL
-cross_section[1][1]=219.486;//hz eR 
-cross_section[0][2]=14866.4;//ww eL
-cross_section[1][2]=136.822;//ww eR 
-cross_section[0][3]=127966;//qq eL
-cross_section[1][3]=70416.7;//qq eR 
-cross_section[0][4]=127966;//qq eL + rad ret cut (50GeV)
-cross_section[1][4]=70416.7;//qq eR + rad ret cut (50GeV)
-*/
+std::vector<pair<TString,double> > cross_section
+ {
+  ("qqSM",12200),
+  ("qqSMISR",48000),
+  ("HV_qv100GeV",119.9),
+  ("HV_qv50GeV",124.3),
+  ("HV_qv10GeV",124.4)
+  };
