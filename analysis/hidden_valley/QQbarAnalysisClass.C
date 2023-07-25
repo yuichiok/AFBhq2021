@@ -2,7 +2,7 @@
 #include "QQbarAnalysisClass.h"
 #include "TPad.h"
 
-void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selection_type = 0, float Kvcut = 50, int bkg = 0)
+void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int cut = 0)
 {
 
   TFile *MyFile = new TFile(TString::Format("selectionPL_%s.root", process.Data()), "RECREATE");
@@ -13,30 +13,17 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
 
   // invariant mass
   TH1F *h_minv = new TH1F("h_minv", "h_minv", 100, 0, 500);
-  TH1F *h_minv_radreturn = new TH1F("h_minv_radreturn", "h_minv_radreturn", 100, 0, 500);
-
-  TH1F *h_thrust_radreturn = new TH1F("h_thrust_radreturn", "h_thrust_radreturn", 100, 0, 1);
   TH1F *h_thrust = new TH1F("h_thrust", "h_thrust", 100, 0, 1);
 
-  TH1F *h_major_thrust_radreturn = new TH1F("h_major_thrust_radreturn", "h_major_thrust_radreturn", 100, 0, 1);
   TH1F *h_major_thrust = new TH1F("h_major_thrust", "h_major_thrust", 100, 0, 1);
-
-  TH1F *h_minor_thrust_radreturn = new TH1F("h_minor_thrust_radreturn", "h_minor_thrust_radreturn", 100, 0, 1);
   TH1F *h_minor_thrust = new TH1F("h_minor_thrust", "h_minor_thrust", 100, 0, 1);
-
-  TH2F *h_major_minor_thrust_radreturn = new TH2F("h_major_minor_thrust_radreturn", "h_major_minor_thrust_radreturn", 100, 0, 1, 100, 0, 1);
   TH2F *h_major_minor_thrust = new TH2F("h_major_minor_thrust", "h_major_minor_thrust", 100, 0, 1, 100, 0, 1);
-
-  TH1F *h_nch_radreturn = new TH1F("h_nch_radreturn", "h_nch_radreturn", 101, -0.5, 100.5);
   TH1F *h_nch = new TH1F("h_nch", "h_nch", 101, -0.5, 100.5);
-
-  TH2F *h_p_vs_costheta_radreturn = new TH2F("h_p_vs_costheta_radreturn", "h_p_vs_costheta_radreturn", 250, -0.5, 124.5, 100, 0, 1);
-  TH2F *h_p_vs_costheta = new TH2F("h_p_vs_costheta", "h_p_vs_costheta",250, -0.5, 124.5, 100, 0, 1);
-
-  TH2F *h_pt_vs_costheta_radreturn = new TH2F("h_pt_vs_costheta_radreturn", "h_pt_vs_costheta_radreturn", 250, -0.5, 124.5, 100, 0, 1);
-  TH2F *h_pt_vs_costheta = new TH2F("h_pt_vs_costheta", "h_pt_vs_costheta",250, -0.5, 124.5, 100, 0, 1);
+  TH2F *h_p_vs_costheta = new TH2F("h_p_vs_costheta", "h_p_vs_costheta", 250, -0.5, 124.5, 100, 0, 1);
+  TH2F *h_pt_vs_costheta = new TH2F("h_pt_vs_costheta", "h_pt_vs_costheta", 250, -0.5, 124.5, 100, 0, 1);
 
   Long64_t nentries;
+
   if (n_entries > 0)
     nentries = n_entries;
   else
@@ -54,41 +41,37 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
     float minv = 0;
     float pxtot = 0, pytot = 0, pztot = 0, etot = 0;
 
-    float nch=0;
+    float nch = 0;
 
     for (int i = 0; i < mc_stable_n; i++)
     {
 
-      if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
+      if (mc_stable_isisr[i] == 0 && mc_stable_isoverlay[i] == 0 && mc_stable_E[i] > 0)
+      { // we use only the particcles coming form the main interaction and with E>0 (in case that the array element was not initisialized)
         float costheta_qqbar;
         std::vector<float> p_qqbar;
         p_qqbar.push_back(mc_stable_px[i]);
         p_qqbar.push_back(mc_stable_py[i]);
         p_qqbar.push_back(mc_stable_pz[i]);
         costheta_qqbar = fabs(GetCostheta(p_qqbar));
-        
-        if(costheta_qqbar<0.99 &&
-        sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i])>0.5 
-        && sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]+mc_stable_pz[i]*mc_stable_pz[i])>1.) 
+
+        if (costheta_qqbar < 0.99 &&
+            sqrt(mc_stable_px[i] * mc_stable_px[i] + mc_stable_py[i] * mc_stable_py[i]) > 0.5 && sqrt(mc_stable_px[i] * mc_stable_px[i] + mc_stable_py[i] * mc_stable_py[i] + mc_stable_pz[i] * mc_stable_pz[i]) > 1.)
         {
           pxtot += mc_stable_px[i];
           pytot += mc_stable_py[i];
           pztot += mc_stable_pz[i];
           etot += mc_stable_E[i];
-          if(mc_stable_charge[i]!=0) nch++;
+          if (mc_stable_charge[i] != 0)
+            nch++;
         }
       }
     }
 
     minv = sqrt(pow(etot, 2) - pow(pxtot, 2) - pow(pytot, 2) - pow(pztot, 2));
 
-   
     if (jentry > 1000 && jentry % 1000 == 0)
       std::cout << "Progress: " << 100. * jentry / nentries << " %" << endl;
-
-    float gamma0_e = mc_ISR_E[0];
-    float gamma1_e = mc_ISR_E[1];
-    float gamma_e = gamma0_e + gamma1_e; // if we ara analyzing evetns with qq and ISR, the radiative return is defined as having gamma_e > Kvcut)
 
     float costheta_qqbar;
     std::vector<float> p_qqbar;
@@ -97,79 +80,33 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
     p_qqbar.push_back(jet_pz[0] - jet_pz[1]);
     costheta_qqbar = fabs(GetCostheta(p_qqbar));
     h_costheta_nocuts->Fill(costheta_qqbar);
-    // this is a dummy histogram to be filled always...
+    // this is a dummy histogram to be filled always... for historical reaons I use the costheta of the jet-jet system
     // it will allows for a later normalziation to the luminosity that we want, since we know the total number of events (Engtries of h_costheta_nocuts) and
     // and we know the corss section of the process (in common/hidden_cross_sections.h)
 
     // selection
-    bool selection = PreSelectionPL(selection_type);
+    bool selection = PreSelectionPL(cut);
     if (selection == false)
       continue;
 
-    if (bkg == 1)
+    h_minv->Fill(minv);
+    h_thrust->Fill(mc_principle_thrust_value);
+    h_major_thrust->Fill(mc_major_thrust_value);
+    h_minor_thrust->Fill(mc_minor_thrust_value);
+    h_major_minor_thrust->Fill(mc_major_thrust_value, mc_minor_thrust_value);
+    h_nch->Fill(nch);
+    for (int i = 0; i < mc_stable_n; i++)
     {
-      h_minv->Fill(minv);
-      h_thrust->Fill(mc_principle_thrust_value);
-      h_major_thrust->Fill(mc_major_thrust_value);
-      h_minor_thrust->Fill(mc_minor_thrust_value);
-      h_major_minor_thrust->Fill(mc_major_thrust_value,mc_minor_thrust_value);
-      h_nch->Fill(nch);
-      for (int i = 0; i < mc_stable_n; i++)    {
-        if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
-          float costheta_mc;
-          std::vector<float> p_mc;
-          p_mc.push_back(mc_stable_px[i]);
-          p_mc.push_back(mc_stable_py[i]);
-          p_mc.push_back(mc_stable_pz[i]);
-          costheta_mc = GetCostheta(p_mc);
-          h_p_vs_costheta->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]+mc_stable_pz[i]*mc_stable_pz[i]),costheta_mc);
-          h_pt_vs_costheta->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]),costheta_mc);
-        }
-      }
-    }
-    else
-    {
-      if (gamma_e > Kvcut)
+      if (mc_stable_isisr[i] == 0 && mc_stable_isoverlay[i] == 0 && mc_stable_E[i] > 0)
       {
-        h_minv_radreturn->Fill(minv);
-        h_thrust_radreturn->Fill(mc_principle_thrust_value);
-        h_major_thrust_radreturn->Fill(mc_major_thrust_value);
-        h_minor_thrust_radreturn->Fill(mc_minor_thrust_value);
-        h_major_minor_thrust_radreturn->Fill(mc_major_thrust_value,mc_minor_thrust_value);
-        h_nch_radreturn->Fill(nch);   
-        for (int i = 0; i < mc_stable_n; i++)    {
-          if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
-            float costheta_mc;
-            std::vector<float> p_mc;
-            p_mc.push_back(mc_stable_px[i]);
-            p_mc.push_back(mc_stable_py[i]);
-            p_mc.push_back(mc_stable_pz[i]);
-            costheta_mc = GetCostheta(p_mc);
-            h_p_vs_costheta_radreturn->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]+mc_stable_pz[i]*mc_stable_pz[i]),costheta_mc);
-            h_pt_vs_costheta_radreturn->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]),costheta_mc);
-          }
-       }  
-      }
-      else
-      {
-        h_minv->Fill(minv);
-        h_thrust->Fill(mc_principle_thrust_value);
-        h_major_thrust->Fill(mc_major_thrust_value);
-        h_minor_thrust->Fill(mc_minor_thrust_value);
-        h_major_minor_thrust->Fill(mc_major_thrust_value,mc_minor_thrust_value);
-        h_nch->Fill(nch);
-        for (int i = 0; i < mc_stable_n; i++)    {
-          if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
-            float costheta_mc;
-            std::vector<float> p_mc;
-            p_mc.push_back(mc_stable_px[i]);
-            p_mc.push_back(mc_stable_py[i]);
-            p_mc.push_back(mc_stable_pz[i]);
-            costheta_mc = GetCostheta(p_mc);
-            h_p_vs_costheta->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]+mc_stable_pz[i]*mc_stable_pz[i]),costheta_mc);
-            h_pt_vs_costheta->Fill(sqrt(mc_stable_px[i]*mc_stable_px[i]+mc_stable_py[i]*mc_stable_py[i]),costheta_mc);
-          }
-       }
+        float costheta_mc;
+        std::vector<float> p_mc;
+        p_mc.push_back(mc_stable_px[i]);
+        p_mc.push_back(mc_stable_py[i]);
+        p_mc.push_back(mc_stable_pz[i]);
+        costheta_mc = GetCostheta(p_mc);
+        h_p_vs_costheta->Fill(sqrt(mc_stable_px[i] * mc_stable_px[i] + mc_stable_py[i] * mc_stable_py[i] + mc_stable_pz[i] * mc_stable_pz[i]), costheta_mc);
+        h_pt_vs_costheta->Fill(sqrt(mc_stable_px[i] * mc_stable_px[i] + mc_stable_py[i] * mc_stable_py[i]), costheta_mc);
       }
     }
   }
@@ -179,25 +116,17 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
   // save histograms
   h_costheta_nocuts->Write();
   h_minv->Write();
-  h_minv_radreturn->Write();
 
   h_thrust->Write();
-  h_thrust_radreturn->Write();
   h_major_thrust->Write();
-  h_major_thrust_radreturn->Write();
   h_minor_thrust->Write();
-  h_minor_thrust_radreturn->Write();
   h_major_minor_thrust->Write();
-  h_major_minor_thrust_radreturn->Write();
   h_nch->Write();
-  h_nch_radreturn->Write();
   h_p_vs_costheta->Write();
-  h_p_vs_costheta_radreturn->Write();
   h_pt_vs_costheta->Write();
-  h_pt_vs_costheta_radreturn->Write();
 }
 
-void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, float Kvcut = 50, int bkg = 0)
+void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
 {
 
   TFile *MyFile = new TFile(TString::Format("selection_%s.root", process.Data()), "RECREATE");
@@ -206,45 +135,19 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, f
   // costheta_nocuts
   TH1F *h_costheta_nocuts = new TH1F("h_costheta_nocuts", "h_costheta_nocuts", 20, 0, 1);
 
-  // invariant mass
   TH1F *h_mjj = new TH1F("h_mjj", "h_mjj", 100, 0, 500);
-  TH1F *h_mjj_radreturn = new TH1F("h_mjj_radreturn", "h_mjj_radreturn", 100, 0, 500);
-
-  TH1F *h_y23_radreturn = new TH1F("h_y23_radreturn", "h_y23_radreturn", 400, 0.0001, 0.2501);
   TH1F *h_y23 = new TH1F("h_y23", "h_y23", 400, 0.0001, 0.2501);
-
-  TH1F *h_d23_radreturn = new TH1F("h_d23_radreturn", "h_d23_radreturn", 500, 0.5, 5000.5);
   TH1F *h_d23 = new TH1F("h_d23", "h_d23", 500, 0.5, 5000.5);
-
-  TH1F *h_thrust_radreturn = new TH1F("h_thrust_radreturn", "h_thrust_radreturn", 100, 0, 1);
   TH1F *h_thrust = new TH1F("h_thrust", "h_thrust", 100, 0, 1);
-
-  TH1F *h_major_thrust_radreturn = new TH1F("h_major_thrust_radreturn", "h_major_thrust_radreturn", 100, 0, 1);
   TH1F *h_major_thrust = new TH1F("h_major_thrust", "h_major_thrust", 100, 0, 1);
-
-  TH1F *h_minor_thrust_radreturn = new TH1F("h_minor_thrust_radreturn", "h_minor_thrust_radreturn", 100, 0, 1);
   TH1F *h_minor_thrust = new TH1F("h_minor_thrust", "h_minor_thrust", 100, 0, 1);
-
-  TH2F *h_major_minor_thrust_radreturn = new TH2F("h_major_minor_thrust_radreturn", "h_major_minor_thrust_radreturn", 100, 0, 1, 100, 0, 1);
   TH2F *h_major_minor_thrust = new TH2F("h_major_minor_thrust", "h_major_minor_thrust", 100, 0, 1, 100, 0, 1);
-
-  TH2F *h_costheta_energy_radreturn = new TH2F("h_costheta_energy_radreturn", "h_costheta_energy_radreturn", 100, 0, 1, 150, 0.5, 150.5);
   TH2F *h_costheta_energy = new TH2F("h_costheta_energy", "h_costheta_energy", 100, 0, 1, 150, 0.5, 150.5);
-
-  TH2F *h_npfos_radreturn = new TH2F("h_npfos_radreturn", "h_npfos_radreturn", 101, -0.5, 100.5, 101, -0.5, 100.5);
   TH2F *h_npfos = new TH2F("h_npfos", "h_npfos", 101, -0.5, 100.5, 101, -0.5, 100.5);
-
-  TH2F *h_nch_radreturn = new TH2F("h_nch_radreturn", "h_nch_radreturn", 101, -0.5, 100.5, 101, -0.5, 100.5);
   TH2F *h_nch = new TH2F("h_nch", "h_nch", 101, -0.5, 100.5, 101, -0.5, 100.5);
 
-  // mass of two jets
-  TH1F *h_mj1_mj2_radreturn = new TH1F("h_mj1_mj2_radreturn", "h_mj1_mj2_radreturn", 400, 0, 200);
   TH1F *h_mj1_mj2 = new TH1F("h_mj1_mj2", "h_mj1_mj2", 400, 0, 200);
-
-  TH2F *h_mw1_mw2_radreturn = new TH2F("h_mw1_mw2_radreturn", "h_mw1_mw2_radreturn", 201, -0.5, 200.5, 201, -0.5, 200.5);
   TH2F *h_mw1_mw2 = new TH2F("h_mw1_mw2", "h_mw1_mw2", 201, -0.5, 200.5, 201, -0.5, 200.5);
-
-  TH2F *h_npfos_minv_radreturn = new TH2F("h_npfos_minv_radreturn", "h_npfos_minv_radreturn", 101, -0.5, 100.5, 100, 0, 500);
   TH2F *h_npfos_minv = new TH2F("h_npfos_minv", "h_npfos_minv", 101, -0.5, 100.5, 100, 0, 500);
 
   Long64_t nentries;
@@ -261,12 +164,6 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, f
       break;
     nb = fChain->GetEntry(jentry);
     nbytes += nb;
-
-    //-------------------
-    // Kv parton
-    float gamma0_e = mc_ISR_E[0];
-    float gamma1_e = mc_ISR_E[1];
-    float gamma_e = gamma0_e + gamma1_e;
 
     if (jentry > 1000 && jentry % 1000 == 0)
       std::cout << "Progress: " << 100. * jentry / nentries << " %" << endl;
@@ -286,7 +183,7 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, f
     h_costheta_nocuts->Fill(costheta_qqbar);
 
     // parte importante
-    bool selection = PreSelection(selection_type);
+    bool selection = PreSelection(cut);
     if (selection == false)
       continue;
 
@@ -311,68 +208,22 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, f
 
     // HASTA AQUI Las cosas de PFOs
 
-    if (bkg == 1)
-    {
+    h_mjj->Fill(recomass);
+    h_npfos->Fill(npfo[0], npfo[1]);
+    h_nch->Fill(npfo_charge[0], npfo_charge[1]);
 
-      h_mjj->Fill(recomass);
-      h_npfos->Fill(npfo[0], npfo[1]);
-      h_nch->Fill(npfo_charge[0], npfo_charge[1]);
+    h_y23->Fill(d23 / pow(recomass, 2));
+    h_d23->Fill(d23);
+    h_thrust->Fill(principle_thrust_value);
+    h_major_thrust->Fill(major_thrust_value);
+    h_minor_thrust->Fill(minor_thrust_value);
+    h_major_minor_thrust->Fill(major_thrust_value, minor_thrust_value);
 
-      h_y23->Fill(d23 / pow(recomass, 2));
-      h_d23->Fill(d23);
-      h_thrust->Fill(principle_thrust_value);
-      h_major_thrust->Fill(major_thrust_value);
-      h_minor_thrust->Fill(minor_thrust_value);
-      h_major_minor_thrust->Fill(major_thrust_value, minor_thrust_value);
+    h_mj1_mj2->Fill(reco_b1mass + reco_b2mass);
+    h_costheta_energy->Fill(fabs(photonjet_cos_max), photonjet_e_max);
+    h_mw1_mw2->Fill(mw1mw2.at(0), mw1mw2.at(1));
 
-      h_mj1_mj2->Fill(reco_b1mass + reco_b2mass);
-      h_costheta_energy->Fill(fabs(photonjet_cos_max), photonjet_e_max);
-      h_mw1_mw2->Fill(mw1mw2.at(0), mw1mw2.at(1));
-
-      h_npfos_minv->Fill(npfo[0] + npfo[1], recomass);
-    }
-    else
-    {
-      if (gamma_e > Kvcut)
-      {
-
-        h_costheta_energy_radreturn->Fill(fabs(photonjet_cos_max), photonjet_e_max);
-        h_mjj_radreturn->Fill(recomass);
-        h_npfos_radreturn->Fill(npfo[0], npfo[1]);
-        h_nch_radreturn->Fill(npfo_charge[0], npfo_charge[1]);
-
-        // -------------------------
-        h_y23_radreturn->Fill(d23 / pow(recomass, 2));
-        h_d23_radreturn->Fill(d23);
-        h_thrust_radreturn->Fill(principle_thrust_value);
-        h_major_thrust_radreturn->Fill(major_thrust_value);
-        h_minor_thrust_radreturn->Fill(minor_thrust_value);
-        h_major_minor_thrust_radreturn->Fill(major_thrust_value, minor_thrust_value);
-        h_mj1_mj2_radreturn->Fill(reco_b1mass + reco_b2mass);
-        h_mw1_mw2_radreturn->Fill(mw1mw2.at(0), mw1mw2.at(1));
-        h_npfos_minv_radreturn->Fill(npfo[0] + npfo[1], recomass);
-      }
-      else
-      {
-
-        h_mjj->Fill(recomass);
-        h_npfos->Fill(npfo[0], npfo[1]);
-        h_nch->Fill(npfo_charge[0], npfo_charge[1]);
-
-        h_y23->Fill(d23 / pow(recomass, 2));
-        h_d23->Fill(d23);
-        h_thrust->Fill(principle_thrust_value);
-        h_major_thrust->Fill(major_thrust_value);
-        h_minor_thrust->Fill(minor_thrust_value);
-        h_major_minor_thrust->Fill(major_thrust_value, minor_thrust_value);
-
-        h_mj1_mj2->Fill(reco_b1mass + reco_b2mass);
-        h_costheta_energy->Fill(fabs(photonjet_cos_max), photonjet_e_max);
-
-        h_mw1_mw2->Fill(mw1mw2.at(0), mw1mw2.at(1));
-        h_npfos_minv->Fill(npfo[0] + npfo[1], recomass);
-      }
-    }
+    h_npfos_minv->Fill(npfo[0] + npfo[1], recomass);
   }
 
   cout << TString::Format("selection_%s.root", process.Data()) << endl;
@@ -381,43 +232,24 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int selection_type = 0, f
   h_costheta_nocuts->Write();
 
   h_mjj->Write();
-  h_mjj_radreturn->Write();
-
   h_npfos->Write();
-  h_npfos_radreturn->Write();
-
   h_nch->Write();
-  h_nch_radreturn->Write();
-
   h_y23->Write();
-  h_y23_radreturn->Write();
-
   h_d23->Write();
-  h_d23_radreturn->Write();
 
   h_thrust->Write();
-  h_thrust_radreturn->Write();
   h_major_thrust->Write();
-  h_major_thrust_radreturn->Write();
   h_minor_thrust->Write();
-  h_minor_thrust_radreturn->Write();
   h_major_minor_thrust->Write();
-  h_major_minor_thrust_radreturn->Write();
 
   h_mj1_mj2->Write();
-  h_mj1_mj2_radreturn->Write();
 
   h_costheta_energy->Write();
-  h_costheta_energy_radreturn->Write();
-
   h_mw1_mw2->Write();
-  h_mw1_mw2_radreturn->Write();
-
   h_npfos_minv->Write();
-  h_npfos_minv_radreturn->Write();
 }
 
-void QQbarAnalysisClass::QCDCorr(int n_entries = -1, int selection_type = 0, int type_signal = 1)
+void QQbarAnalysisClass::QCDCorr(int n_entries = -1, int cut = 0)
 {
 
   TString name = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-250GeV/analysis/hidden_valley/output/QCDcorrelations_%s.root", process.Data());
@@ -459,25 +291,13 @@ void QQbarAnalysisClass::QCDCorr(int n_entries = -1, int selection_type = 0, int
     nb = fChain->GetEntry(jentry);
     nbytes += nb;
 
-    //-------------------
-    // Kv parton
-    float gamma0_e = mc_ISR_E[0];
-    float gamma1_e = mc_ISR_E[1];
-    float gamma_e = gamma0_e + gamma1_e;
-
-    h_costheta_nocuts->Fill(0.5);
-
-    if (type_signal == 0 && gamma_e > 30)
-      continue;
-    if (type_signal == -1 && gamma_e < 30)
-      continue;
-
     if (jentry > 1000 && jentry % 1000 == 0)
       std::cout << "Progress: " << 100. * jentry / nentries << " %" << endl;
 
     // parte importante
-    bool selection = PreSelection(selection_type);
-    if(selection_type==-1) selection = PreSelectionPL(-1);
+    bool selection = PreSelection(cut);
+    if (cut == -1)
+      selection = PreSelectionPL(-1);
     if (selection == false)
       continue;
 
@@ -760,7 +580,8 @@ std::vector<float> QQbarAnalysisClass::ChargedMCThetaPhi(int ipfo, std::vector<f
 
   float theta_part = GetCostheta(mc_stable_vec_0);
 
-  if(fabs(theta_part)>0.99) return result;
+  if (fabs(theta_part) > 0.99)
+    return result;
 
   std::vector<float> mc_stable_vec;
   mc_stable_vec.push_back(ProjectionVector(mc_stable_vec_0, Tmajor));
