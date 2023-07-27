@@ -5,7 +5,7 @@
 void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int cut = 0)
 {
 
-  TFile *MyFile = new TFile(TString::Format("selectionPL_%s.root", process.Data()), "RECREATE");
+  TFile *MyFile = new TFile(TString::Format("output/selectionPL_%s.root", process.Data()), "RECREATE");
   MyFile->cd();
 
   // costheta_nocuts
@@ -111,7 +111,6 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int cut = 0)
     }
   }
 
-  cout << TString::Format("selectionPL_%s.root", process.Data()) << endl;
 
   // save histograms
   h_costheta_nocuts->Write();
@@ -129,7 +128,7 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int cut = 0)
 void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
 {
 
-  TFile *MyFile = new TFile(TString::Format("selection_%s.root", process.Data()), "RECREATE");
+  TFile *MyFile = new TFile(TString::Format("output/selection_%s.root", process.Data()), "RECREATE");
   MyFile->cd();
 
   // costheta_nocuts
@@ -252,7 +251,7 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
 void QQbarAnalysisClass::QCDCorr(int n_entries = -1, int cut = 0)
 {
 
-  TString name = TString::Format("/lhome/ific/a/airqui/QQbar/AFBhq2021-250GeV/analysis/hidden_valley/output/QCDcorrelations_%s.root", process.Data());
+  TString name = TString::Format("output/QCDcorrelations_%s.root", process.Data());
 
   TFile *MyFile = new TFile(name, "RECREATE");
   MyFile->cd();

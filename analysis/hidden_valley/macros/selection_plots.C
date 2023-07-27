@@ -82,7 +82,7 @@ void plotsReco( int cuts = 0, float lum = 900)
 
     std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], lum, histonames);
     h1_bkg.push_back(h1_bkg_temp);
-    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples[isample], lum, histonames_2d);
+    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples[isample], lum, histonames_2d,false);
     h2_bkg.push_back(h2_bkg_temp);
   }
 
@@ -238,7 +238,7 @@ void plotsProcLCWS2023(int cuts = 0)
       if(k==1) h1_bkg.at(j).at(k)->GetXaxis()->SetRangeUser(0,250);
       if(k==2) h1_bkg.at(j).at(k)->GetXaxis()->SetRangeUser(0,50);
 
-      if(j==1 && k<3) h1_bkg.at(j).at(k)->GetYaxis()->SetRangeUser(0,h1_bkg.at(j).at(k)->GetMaximum()*1.2);
+      if(j==1 && k<3) h1_bkg.at(j).at(k)->GetYaxis()->SetRangeUser(0,h1_bkg.at(j).at(k)->GetMaximum()*1.5);
       if(j==1 && k==3) h1_bkg.at(j).at(k)->GetYaxis()->SetRangeUser(0,h1_bkg.at(j).at(k)->GetMaximum()*10);
 
       h1_bkg.at(j).at(k)->DrawNormalized("histosame");
@@ -270,8 +270,8 @@ void selection_plots()
   for (int cuts = 0; cuts < 1; cuts++)
   {
     cout << cuts << " ";
-    //plotsReco(cuts);
-    plotsProcLCWS2023(cuts);
+    plotsReco(cuts);
+    //plotsProcLCWS2023(cuts);
 
   }
 }

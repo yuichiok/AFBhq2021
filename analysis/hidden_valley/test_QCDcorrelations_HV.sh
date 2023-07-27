@@ -7,14 +7,19 @@ counter=0
 for file in ${folder}/*
 do
     echo $file $counter
-    name="00"$counter
+    name="000"$counter
     if [ $counter -gt 9 ]; then
-        name="0"$counter
+        name="00"$counter
     fi
     
     if [ $counter -gt 99 ]; then
+        name="0"$counter
+    fi
+
+    if [ $counter -gt 999 ]; then
         name=$counter
     fi
+
 
     for cuts in 0 
     do
