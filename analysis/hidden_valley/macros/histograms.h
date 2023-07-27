@@ -55,7 +55,7 @@ std::vector<TH1F *> GetHisto1D(TString sample = "2f_hadronic_sample", float lum 
 
 
 
-std::vector<TH2F *> GetHisto2D(TString sample = "2f_hadronic_sample", float lum = 900, std::vector<TString> histonames={"h_nch","h_npfos","h_costheta_energy","h_mw1_mw2","h_major_minor_thrust"},bool norm=true, TString pol="unpol")
+std::vector<TH2F *> GetHisto2D(TString sample = "2f_hadronic_sample", float lum = 900, std::vector<TString> histonames={"h_nch","h_npfos","h_costheta_energy","h_mw1_mw2","h_major_minor_thrust"},bool correl_norm=true, TString pol="unpol")
 {
 
   std::vector<TH2F *> h1;
@@ -81,9 +81,19 @@ std::vector<TH2F *> GetHisto2D(TString sample = "2f_hadronic_sample", float lum 
   }
 
   float luminosity_sample = h_luminosity_cross_2f->GetEntries() / cross_sec_temp;
-  if(norm==true) {
-    for (int j = 0; j < h1.size(); j++)
-      h1.at(j)->Scale(lum / luminosity_sample);
+  if(correl_norm==true) {
+    for (int j = 0; j < h1.size(); j++) {
+      // h1.at(j)->Scale(1./h1.at(j)->GetEntries());
+      for(int i1=0; i1<h1.at(j)->GetNbinsX(); i1++) 
+        for(int i2=0; i2<h1.at(j)->GetNbinsY(); i2++) {
+          h1.at(j)->SetBinError(i1+1,i2+1,sqrt(h1.at(j)->GetBinContent(i1+1,i2+1))/h1.at(j)->GetEntries()* luminosity_sample/lum);
+          h1.at(j)->SetBinContent(i1+1,i2+1,h1.at(j)->GetBinContent(i1+1,i2+1)/h1.at(j)->GetEntries());// luminosity_sample);
+        }
+    }
+  } else {
+       for (int j = 0; j < h1.size(); j++) {
+        h1.at(j)->Scale(lum/luminosity_sample);
+    }
   }
 
   return h1;
