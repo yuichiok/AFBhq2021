@@ -270,7 +270,7 @@ void selection_plots()
   for (int cuts = 0; cuts < 1; cuts++)
   {
     cout << cuts << " ";
-    plotsReco(cuts);
+    plotsReco(cuts,lum);
     //plotsProcLCWS2023(cuts);
 
   }
