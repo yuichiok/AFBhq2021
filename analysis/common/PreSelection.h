@@ -16,8 +16,8 @@ double y23cut = 0.007;
 // ----------------------------------
 
 // flavour tagging
-float btag1 = 0.85;
-float btag2 = 0.85;
+float btag1 = 0.7;
+float btag2 = 0.7;
 
 float ctag1 = 0.875;
 float ctag2 = 0.875;

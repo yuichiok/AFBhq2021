@@ -441,13 +441,13 @@ void Rb_calculations() {
     //RPlots_b(pol,900);
     // cout<<"  ------------------------------------------ "<<endl;
     
-    R_b(pol,2000);
+    R_b(pol,1600);
     // cout<<" polarization "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
-    R_bpol(pol,2000);
+    R_bpol(pol,1600);
     // cout<<" bkg "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
-    R_bbkg(pol,2000);
+    R_bbkg(pol,1600);
     //R_theory_vs_reco(pol,900);
     
   }

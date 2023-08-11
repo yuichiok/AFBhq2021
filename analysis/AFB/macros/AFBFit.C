@@ -167,6 +167,7 @@ TH1F *Efficiency (TH1F* h1, TH1F* parton, TH1F* parton2, TString title="",int er
 }
 
 
+
 void Plots_AFB(int quark=4, int ipol=0, float lum=900) {
 
   SetQQbarStyle();
@@ -232,10 +233,15 @@ void Plots_AFB(int quark=4, int ipol=0, float lum=900) {
   TH1F * AFBcorrected=PolHisto(AFB_pqcorrectedreco_effcorr_eL,AFB_pqcorrectedreco_effcorr_eR,ipol,luminosity,lum,1);
   TH1F* eff=Efficiency(AFBcheat,AFBparton,AFBparton2);
   AFBcorrected->Divide(eff);
+
+  AFBcheat->Divide(eff);
+
   
   //***** DRAW
   TF1 *func_parton=fit_histo(AFBparton2, -1,1,false);
   TF1 *func_corrected=fit_histo(AFBcorrected, -0.9,0.9,false);
+  TF1 *func_cheat=fit_histo(AFBcheat, -0.9,0.9,false);
+
 
   TH1F *hparton=new TH1F("hparton","hparton",40,-1,1);
   hparton->Add(func_parton);
@@ -268,7 +274,7 @@ void Plots_AFB(int quark=4, int ipol=0, float lum=900) {
 
   // AFBcorrected->Divide(AFBparton2);
   // AFBcorrected->Draw("ep");
-  Labels(ipol,quark,900,960);
+  Labels(ipol,quark,lum,960);
 
   float plus = func_parton->Integral(0,1);
   float minus = func_parton->Integral(-1,0);
@@ -277,37 +283,37 @@ void Plots_AFB(int quark=4, int ipol=0, float lum=900) {
   float Afb=Afb_v(plus,minus);
   float dAfb=dAfb_v(plus,minus, plus_e, minus_e);
 
-  float plus_corrected = func_corrected->Integral(0,1);
-  float minus_corrected = func_corrected->Integral(-1,0);
-  float plus_e_corrected = func_corrected->IntegralError(0,1);
-  float minus_e_corrected = func_corrected->IntegralError(1,0);
-  float Afb_corrected=Afb_v(plus_corrected,minus_corrected);
-  float dAfb_corrected=dAfb_v(plus_corrected,minus_corrected, plus_e_corrected, minus_e_corrected);
+  float plus_cheat = func_cheat->Integral(0,1);
+  float minus_cheat = func_cheat->Integral(-1,0);
+  float plus_e_cheat = func_cheat->IntegralError(0,1);
+  float minus_e_cheat = func_cheat->IntegralError(1,0);
+  float Afb_cheat=Afb_v(plus_cheat,minus_cheat);
+  float dAfb_cheat=dAfb_v(plus_cheat,minus_cheat, plus_e_cheat, minus_e_cheat);
 
   
-  float ratio=100.*(1-(1-Afb_corrected/Afb)/2.);
-  float eratio=100.*sqrt(pow(dAfb_corrected,2))/Afb;
-  QQBARLabel2(0.55,0.32, TString::Format("#frac{AFB^{fit}_{reco}}{AFB^{fit}_{LO}}=%.1f#pm %.1f (stat.)",ratio,eratio)+"%",kGray+2);
+  float ratio=100.*(1-(1-Afb_cheat/Afb)/2.);
+  float eratio=100.*sqrt(pow(dAfb_cheat,2))/Afb;
+  QQBARLabel2(0.55,0.32, TString::Format("#frac{AFB^{fit}_{reco}}{AFB^{fit}_{LO}}=%.1f#pm %.2f (stat.)",ratio,eratio/sqrt(2.))+"%",kGray+2);
 
-  float plus2 = AFBcorrected->Integral(21,41);
+  float plus2 = AFBcheat->Integral(21,41);
   cout<<plus2<<endl;
-  float minus2 = AFBcorrected->Integral(1,20);
+  float minus2 = AFBcheat->Integral(1,20);
   cout<<minus2<<endl;
   float plus2_e = sqrt(plus2);
   float minus2_e = sqrt(minus2);
   float Afb2=Afb_v(plus2,minus2);
   float dAfb2=dAfb_v(plus2,minus2, plus2_e, minus2_e);
 
-  float plus_corrected2 = func_corrected->Integral(0,0.9);
-  float minus_corrected2 = func_corrected->Integral(-0.9,0);
-  float plus_e_corrected2 = func_corrected->IntegralError(0,0.9);
-  float minus_e_corrected2 = func_corrected->IntegralError(0.9,0);
-  float Afb_corrected2=Afb_v(plus_corrected2,minus_corrected2);
-  float dAfb_corrected2=dAfb_v(plus_corrected2,minus_corrected2, plus_e_corrected2, minus_e_corrected2);
+  float plus_cheat2 = func_cheat->Integral(0,0.9);
+  float minus_cheat2 = func_cheat->Integral(-0.9,0);
+  float plus_e_cheat2 = func_cheat->IntegralError(0,0.9);
+  float minus_e_cheat2 = func_cheat->IntegralError(0.9,0);
+  float Afb_cheat2=Afb_v(plus_cheat2,minus_cheat2);
+  float dAfb_cheat2=dAfb_v(plus_cheat2,minus_cheat2, plus_e_cheat2, minus_e_cheat2);
 
-  float ratio2=100.*(1-(1-Afb_corrected2/Afb2)/2.);
-  float eratio2=100.*sqrt(pow(dAfb_corrected2,2))/Afb2;
-  QQBARLabel2(0.55,0.22, TString::Format("#frac{AFB^{fid.}_{reco}}{AFB^{fid.}_{LO}}=%.1f#pm %.1f (stat.)",ratio2,eratio2)+"%",kGray+2);
+  float ratio2=100.*(1-(1-Afb_cheat2/Afb2)/2.);
+  float eratio2=100.*sqrt(pow(dAfb_cheat2,2))/Afb2;
+  QQBARLabel2(0.55,0.22, TString::Format("#frac{AFB^{fid.}_{reco}}{AFB^{fid.}_{LO}}=%.1f#pm %.1f (stat.)",ratio2,eratio2/sqrt(2.))+"%",kGray+2);
 
   // TString pol_string1 = "e_{L}^{-}e_{R}^{+}";
   // TString pol_string2 = "e_{R}^{-}e_{L}^{+}";
@@ -333,12 +339,14 @@ void Plots_AFB(int quark=4, int ipol=0, float lum=900) {
   leg_b->SetLineColor(0);
   leg_b->SetShadowColor(0);
   leg_b->Draw();
+  QQBARLabel2(0.25,0.954, "ILC500",960,0.05);
 
   c_AFBb->Print(TString::Format("plots_"+energy+"_AFB/Fit_pdg_%i_pol_%i.eps",quark,ipol));
 
   
   
 }
+
 
 void AFBSyst(int quark=4, int ipol=0, float lum=900) {
 
@@ -506,15 +514,15 @@ pol="eR_pL";
 }
 
 
-  void AFBFit() {
-    //Plots_AFB(4,2,900);
-    //Plots_AFB(4,3,900);
-    //Plots_AFB(5,2,900);
-    //Plots_AFB(5,3,900);
-
-    AFBSyst(5,2,2000);
-    AFBSyst(5,3,2000);
-    //AFBPol(5,3,2000);
+void AFBFit() {
+  //Plots_AFB(4,2,1600);
+  //Plots_AFB(4,3,1600);
+  Plots_AFB(5,2,1600);
+  //Plots_AFB(5,3,1600);
+  
+    
+    //AFBSyst(4,3,1800);
+    //AFBPol(4,3,1800);
 
   }
     

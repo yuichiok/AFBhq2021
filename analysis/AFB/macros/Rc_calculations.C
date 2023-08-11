@@ -367,6 +367,8 @@ void RPlots2_c( float lum=-1) {
   leg0->SetShadowColor(0);
   leg0->Draw();
 
+  QQBARLabel2(0.15,0.954, "ILC500",960,0.05);
+
   c_rho_MC->Print(TString::Format("plots_"+energy+"_R/rho_pdg_%i.eps",4));
 
   TCanvas* c_eff_MC = new TCanvas("c_eff_MC","c_eff_MC",800,800);
@@ -398,6 +400,8 @@ void RPlots2_c( float lum=-1) {
   leg1->SetBorderSize(0);
   leg1->SetShadowColor(0);
   leg1->Draw();
+
+  QQBARLabel2(0.15,0.954, "ILC500",960,0.05);
 
   c_eff_MC->Print(TString::Format("plots_"+energy+"_R/eff_DT_pdg_%i.eps",4));
 
@@ -448,6 +452,8 @@ void RPlots2_c( float lum=-1) {
   leg2->SetShadowColor(0);
   leg2->Draw();
 
+  QQBARLabel2(0.15,0.954, "ILC500",960,0.05);
+
   c_misseff_MC->Print(TString::Format("plots_"+energy+"_R/misseff_DT_pdg_%i.eps",4));
 
   TCanvas* c_R_MC = new TCanvas("c_R_MC","c_R_MC",800,800);
@@ -490,6 +496,8 @@ void RPlots2_c( float lum=-1) {
   leg3->SetBorderSize(0);
   leg3->SetShadowColor(0);
   leg3->Draw();
+
+  QQBARLabel2(0.15,0.954, "ILC500",960,0.05);
 
   c_R_MC->Print(TString::Format("plots_"+energy+"_R/R_DT_pdg_%i.eps",4));
   
@@ -600,6 +608,8 @@ void RPlots2_b( float lum=-1) {
   leg0->SetShadowColor(0);
   leg0->Draw();
 
+  QQBARLabel2(0.15,0.954, "ILC500",960,0.05);
+
   b_rho_MC->Print(TString::Format("plots_"+energy+"_R/rho_pdg_%i.eps",5));
 
   TCanvas* b_eff_MC = new TCanvas("b_eff_MC","b_eff_MC",800,800);
@@ -630,6 +640,8 @@ void RPlots2_b( float lum=-1) {
   leg1->SetBorderSize(0);
   leg1->SetShadowColor(0);
   leg1->Draw();
+
+  QQBARLabel2(0.15,0.954, "ILC500",960,0.05);
 
   b_eff_MC->Print(TString::Format("plots_"+energy+"_R/eff_DT_pdg_%i.eps",5));
 
@@ -681,6 +693,8 @@ void RPlots2_b( float lum=-1) {
   leg2->SetShadowColor(0);
   leg2->Draw();
 
+  QQBARLabel2(0.15,0.954, "ILC500",960,0.05);
+
   b_misseff_MC->Print(TString::Format("plots_"+energy+"_R/misseff_DT_pdg_%i.eps",5));
 
   TCanvas* b_R_MC = new TCanvas("b_R_MC","b_R_MC",800,800);
@@ -709,6 +723,8 @@ void RPlots2_b( float lum=-1) {
   //rho_MC->Draw("histoesame");
 
   b_R_MC->Update();
+
+  QQBARLabel2(0.15,0.954, "ILC500",960,0.05);
 
   Labels(-1,5,lum);
 
@@ -1016,8 +1032,8 @@ void R_theory_vs_reco( int pol=0, float lum=-1) {
 void Rc_calculations() {
 
   folder="../results_"+energy+"_dNdx/AFB_PQ_";
-  //RPlots2_c(900);
-  //RPlots2_b(900);
+  //RPlots2_c(1600);
+  //RPlots2_b(1600);
   
   for(int pol=2; pol<3;pol++) {
     cout<<" Plots "<<endl;
@@ -1026,13 +1042,13 @@ void Rc_calculations() {
     //PreSelection(pol,2000);
     //RPlots_c(pol,2000);
     // cout<<"  ------------------------------------------ "<<endl;
-    R_c(pol,2000);
+    R_c(pol,1600);
     // cout<<" polarization "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
-    R_cpol(pol,2000);
+    R_cpol(pol,1600);
     // cout<<" bkg "<<endl;
     // cout<<"  ------------------------------------------ "<<endl;
-    R_cbkg(pol,2000);
+    R_cbkg(pol,1600);
     //    R_theory_vs_reco(pol,2000);
     }
 }

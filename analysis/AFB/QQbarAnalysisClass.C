@@ -993,6 +993,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
   }
 }
 
+
 void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, TString polString = "eL_pR", int bkg = 0)
 {
   // simplistic function to produce suitable distributions for plotting the S/B
@@ -1037,12 +1038,20 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
   TFile *MyFile = new TFile(filename, "RECREATE");
   MyFile->cd();
 
+  TH1F *h_Ntotal_nocuts = new TH1F("h_Ntotal_nocuts", "h_Ntotal_nocuts", 20, 0, 1);
+
+  TH1F *h_AFB[4];
+  TH1F *h_AFBreco_pres[4];
+  TH1F *h_AFBreco_DT[4];
   TH1F *h_AFBreco_cat0[4];
   TH1F *h_AFBreco_cat1[4];
   TH1F *h_AFBreco_cat2[4];
 
   for (int j = 0; j < 4; j++)
   {
+    h_AFB[j] = new TH1F(TString::Format("h_AFB_%i", j), TString::Format("h_AFB_%i", j), 20, 0, 1.0);
+    h_AFBreco_pres[j] = new TH1F(TString::Format("h_AFBreco_pres_%i", j), TString::Format("h_AFBreco_pres_%i", j), 20, 0, 1.0);
+    h_AFBreco_DT[j] = new TH1F(TString::Format("h_AFBreco_DT_%i", j), TString::Format("h_AFBreco_DT_%i", j), 20, 0, 1.0);
     h_AFBreco_cat0[j] = new TH1F(TString::Format("h_AFBreco_cat0_%i", j), TString::Format("h_AFBreco_cat0_%i", j), 20, 0, 1.0);
     h_AFBreco_cat1[j] = new TH1F(TString::Format("h_AFBreco_cat1_%i", j), TString::Format("h_AFBreco_cat1_%i", j), 20, 0, 1.0);
     h_AFBreco_cat2[j] = new TH1F(TString::Format("h_AFBreco_cat2_%i", j), TString::Format("h_AFBreco_cat2_%i", j), 20, 0, 1.0);
@@ -1056,13 +1065,15 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
   // nentries=30000;
 
   Long64_t nbytes = 0, nb = 0;
-  for (Long64_t jentry = 7. * nentries / 10.; jentry < nentries; jentry++)
+  for (Long64_t jentry = 0; jentry < nentries; jentry++)
   {
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0)
       break;
     nb = fChain->GetEntry(jentry);
     nbytes += nb;
+
+    h_Ntotal_nocuts->Fill(0.5); 
 
     //-------------------
     // Kv parton
@@ -1076,24 +1087,6 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
 
     float qqbar_m = sqrt(pow(mc_quark_E[0] + mc_quark_E[1], 2) - pow(mc_quark_px[0] + mc_quark_px[1], 2) - pow(mc_quark_py[0] + mc_quark_py[1], 2) - pow(mc_quark_pz[0] + mc_quark_pz[1], 2));
 
-    int iquark = -1;
-    if (bkg == 0)
-    {
-      if (fabs(mc_quark_pdg[0]) == 5 && acol < acol_cut && qqbar_m > qqbar_m_cut)
-        iquark = 0;
-      if (fabs(mc_quark_pdg[0]) == 4 && acol < acol_cut && qqbar_m > qqbar_m_cut)
-        iquark = 1;
-      if (fabs(mc_quark_pdg[0]) < 4 && acol < acol_cut && qqbar_m > qqbar_m_cut)
-        iquark = 2;
-      if (acol > acol_cut || qqbar_m < qqbar_m_cut)
-        iquark = 3;
-    }
-    else
-    {
-      iquark = 0;
-    }
-    if (iquark == -1)
-      continue;
 
     // jet direction
     std::vector<float> p;
@@ -1107,7 +1100,6 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     float px_pfos[2] = {0};
     float py_pfos[2] = {0};
     float pz_pfos[2] = {0};
-
     for (int ipfo = 0; ipfo < pfo_n; ipfo++)
     {
       if ((pfo_match[ipfo] == 0 || pfo_match[ipfo] == 1) && pfo_charge[ipfo] != 0 && pfo_ntracks[ipfo] == 1)
@@ -1122,6 +1114,26 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     p1.push_back(pz_pfos[0] - pz_pfos[1]);
     float costheta = GetCostheta(p1);
 
+    /// quark under study
+    int iquark = -1;
+    if (bkg == 0)
+    {
+      if (fabs(mc_quark_pdg[0]) == 5 && acol < acol_cut && qqbar_m > qqbar_m_cut) 
+        iquark = 0;
+      if (fabs(mc_quark_pdg[0]) == 4 && acol < acol_cut && qqbar_m > qqbar_m_cut)
+        iquark = 1;
+      if (fabs(mc_quark_pdg[0]) < 4 && acol < acol_cut && qqbar_m > qqbar_m_cut)
+        iquark = 2;
+      if (acol > acol_cut || qqbar_m < qqbar_m_cut)
+        iquark = 3;
+    }
+    else
+    {
+      iquark = 0;
+    }
+
+    h_AFB[iquark]->Fill(fabs(costheta));
+
     if (jentry > 1000 && jentry % 1000 == 0)
       std::cout << "Progress: " << 100. * jentry / nentries << " %" << endl;
 
@@ -1129,8 +1141,11 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     //     float Kv=Kreco();
     bool selection = PreSelection(5);
 
+
     if (selection == false)
       continue;
+
+    h_AFBreco_pres[iquark]->Fill(fabs(costheta));
 
     // jet flavour
     bool jettag[2] = {false, false};
@@ -1183,6 +1198,9 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     if (jettag[0] == false || jettag[1] == false)
       continue;
 
+    h_AFBreco_DT[iquark]->Fill(fabs(costheta));
+
+
     float charge[2][2] = {0};
     for (int ijet = 0; ijet < 2; ijet++)
     {
@@ -1214,13 +1232,18 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
 
   MyFile->cd();
 
-  for (int icat = 0; icat < 4; icat++)
+  h_Ntotal_nocuts->Write();
+  for (int i = 0; i < 4; i++)
   {
-    h_AFBreco_cat0[icat]->Write();
-    h_AFBreco_cat1[icat]->Write();
-    h_AFBreco_cat2[icat]->Write();
+    h_AFB[i]->Write();
+    h_AFBreco_pres[i]->Write();
+    h_AFBreco_DT[i]->Write();
+    h_AFBreco_cat0[i]->Write();
+    h_AFBreco_cat1[i]->Write();
+    h_AFBreco_cat2[i]->Write();
   }
 }
+
 float QQbarAnalysisClass::ChargeVtxJetMethod(int ijet, float pcut = 2.)
 { //, int eff=0.88) {
 
@@ -1275,21 +1298,24 @@ float QQbarAnalysisClass::ChargeKJetMethod(int ijet, float pcut = 2.) // bool ch
     if (nhits_bool == true)
     {
       float dedx_dist = pfo_piddedx_k_dedxdist[ipfo];
-      if (dedxcut == 0)
-      { //        dedx_dist = pfo_piddedx_k_dedxdist_2[ipfo];
-        if (dedx_dist > dedxcut_down && dedx_dist < dedxcut_up && dedx_dist != 0)
-          charge -= pfo_charge[ipfo];
-      }
-      else
-      {
+      if (dedxcut == 0) dedx_dist = pfo_piddedx_k_dedxdist[ipfo];
+      else dedx_dist = pfo_piddedx_k_dedxdist_2[ipfo];
+       //        dedx_dist = pfo_piddedx_k_dedxdist_2[ipfo];
+      if (dedx_dist > dedxcut_down && dedx_dist < dedxcut_up && dedx_dist != 0)
+	charge -= pfo_charge[ipfo];
+      
+      //else
+      /* {
+
         if(fabs(pfo_pdgcheat[ipfo])==321) {
           charge -= pfo_charge[ipfo];
           TRandom *r1 = new TRandom1();
           float x = r1->Uniform(0, 1);
           if (x > 0.95)
             charge *= -1;
-        }
-      }
+	    }
+
+      }*/
     }
   }
   return charge;

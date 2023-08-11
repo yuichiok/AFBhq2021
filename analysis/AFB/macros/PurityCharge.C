@@ -122,6 +122,8 @@ void PurityChargePlots(int quark=5) {
   leg_purity->SetShadowColor(0);
   leg_purity->Draw();
 
+  QQBARLabel2(0.15,0.954, "ILC500",960,0.05);
+
   c_purity_b->Print(TString::Format("plots_"+energy+"_AFB/purity_pdg_%i.eps",quark));
 
 

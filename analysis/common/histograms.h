@@ -236,15 +236,14 @@ TH1F* GetHisto(int iprocess, TString histo, int pol, int iquark, float lum, floa
 
 TH1F* GetHisto2(int iprocess, TString histo, int pol, int iquark, float lum, float norm=1, int cheatmethod=0) {
 
-  TString folder_="../results_500GeV_dNdx/AFB_PQ_";
 
-  TString filename = TString::Format("%spdg%i_%s_eL_pR.root",folder_.Data(),iquark,process[iprocess].Data());
-  cout<<filename<<" "<<histo<<endl;
+  TString filename = TString::Format("%spdg%i_%s_eL_pR.root",folder.Data(),iquark,process[iprocess].Data());
+  if(debug)cout<<filename<<" "<<histo<<endl;
   TFile *f = new TFile(filename);
   TH1F *hstats[2];
   hstats[0]=(TH1F*)f->Get("h_Ntotal_nocuts");
 
-  filename = TString::Format("%spdg%i_%s_eR_pL.root",folder_.Data(),iquark,process[iprocess].Data());
+  filename = TString::Format("%spdg%i_%s_eR_pL.root",folder.Data(),iquark,process[iprocess].Data());
   TFile *f2 = new TFile(filename);
   hstats[1]=(TH1F*)f2->Get("h_Ntotal_nocuts");
 
@@ -254,11 +253,11 @@ TH1F* GetHisto2(int iprocess, TString histo, int pol, int iquark, float lum, flo
   if(hstats[1]->Integral()>0) luminosity[1]=hstats[1]->Integral()/cross_section[1][iprocess];
   else luminosity[1]=0;
 
-  cout<<"Lum0="<<luminosity[0]<<" Lum1="<<luminosity[1]<<endl;
+  if(debug)cout<<"Lum0="<<luminosity[0]<<" Lum1="<<luminosity[1]<<endl;
   
  
   filename = TString::Format("%spdg%i_%s_eL_pR.root",folder.Data(),iquark,process[iprocess].Data());
-  cout<<filename<<" "<<histo<<endl;
+  if(debug)cout<<filename<<" "<<histo<<endl;
   TFile *ff = new TFile(filename);
   TH1F *h[2];
   h[0]= (TH1F*)ff->Get(histo);

@@ -17,11 +17,11 @@ void Labels(int ipol, int iquark, int lum, int color=920){
 
   if(color==920) {
     QQBARLabel2(0.1,0.05, "e^{-}e^{+} #rightarrow "+quark,color+2);
-    if(ipol>-1) QQBARLabel2(0.1,0.02, "P_{e^{-}e^{+}}="+pol[ipol]+ TString::Format(" | Lum = %i fb^{-1}",lum),color+1);
-    else  if(lum>0) QQBARLabel2(0.1,0.02, TString::Format("Lum = %i fb^{-1}",lum),color+1);
+    if(ipol>-1) QQBARLabel2(0.1,0.02, "P_{e^{-}e^{+}}="+pol[ipol]+ TString::Format(" | Lum (per sample) = %i fb^{-1}",lum),color+1);
+    else  if(lum>0) QQBARLabel2(0.1,0.02, TString::Format("Lum (per sample) = %i fb^{-1}",lum),color+1);
   }else {
     QQBARLabel2(0.1,0.05, TString::Format("#bf{e^{-}e^{+} #rightarrow %s}",quark.Data()),color+2);
-    if(ipol>-1) QQBARLabel2(0.1,0.02, TString::Format("#bf{P_{e^{-}e^{+}}=%s | Lum = %i fb^{-1}}",pol[ipol].Data(),lum),color+1);
+    if(ipol>-1) QQBARLabel2(0.1,0.02, TString::Format("#bf{P_{e^{-}e^{+}}=%s | Lum (per sample) = %i fb^{-1}}",pol[ipol].Data(),lum),color+1);
   }
 
   //  kWhite  = 0,   kBlack  = 1,   kGray    = 920,  kRed    = 632,  kGreen  = 416,
