@@ -1037,12 +1037,20 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
   TFile *MyFile = new TFile(filename, "RECREATE");
   MyFile->cd();
 
+  TH1F *h_Ntotal_nocuts = new TH1F("h_Ntotal_nocuts", "h_Ntotal_nocuts", 20, 0, 1);
+
+  TH1F *h_AFB[4];
+  TH1F *h_AFBreco_pres[4];
+  TH1F *h_AFBreco_DT[4];
   TH1F *h_AFBreco_cat0[4];
   TH1F *h_AFBreco_cat1[4];
   TH1F *h_AFBreco_cat2[4];
 
-  for (int j = 0; j < 1; j++)
+  for (int j = 0; j < 4; j++)
   {
+    h_AFB[j] = new TH1F(TString::Format("h_AFB_%i", j), TString::Format("h_AFB_%i", j), 20, 0, 1.0);
+    h_AFBreco_pres[j] = new TH1F(TString::Format("h_AFBreco_pres_%i", j), TString::Format("h_AFBreco_pres_%i", j), 20, 0, 1.0);
+    h_AFBreco_DT[j] = new TH1F(TString::Format("h_AFBreco_DT_%i", j), TString::Format("h_AFBreco_DT_%i", j), 20, 0, 1.0);
     h_AFBreco_cat0[j] = new TH1F(TString::Format("h_AFBreco_cat0_%i", j), TString::Format("h_AFBreco_cat0_%i", j), 20, 0, 1.0);
     h_AFBreco_cat1[j] = new TH1F(TString::Format("h_AFBreco_cat1_%i", j), TString::Format("h_AFBreco_cat1_%i", j), 20, 0, 1.0);
     h_AFBreco_cat2[j] = new TH1F(TString::Format("h_AFBreco_cat2_%i", j), TString::Format("h_AFBreco_cat2_%i", j), 20, 0, 1.0);
@@ -1064,6 +1072,8 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     nb = fChain->GetEntry(jentry);
     nbytes += nb;
 
+    h_Ntotal_nocuts->Fill(0.5); 
+
     //-------------------
     // Kv parton
     float gamma0_e = mc_ISR_E[0];
@@ -1076,22 +1086,6 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
 
     float qqbar_m = sqrt(pow(mc_quark_E[0] + mc_quark_E[1], 2) - pow(mc_quark_px[0] + mc_quark_px[1], 2) - pow(mc_quark_py[0] + mc_quark_py[1], 2) - pow(mc_quark_pz[0] + mc_quark_pz[1], 2));
 
-    int iquark = -1;
-    if (bkg == 0)
-    {
-      if (fabs(mc_quark_pdg[0]) == 5 && acol < acol_cut && qqbar_m > qqbar_m_cut)
-        iquark = 0;
-      if (fabs(mc_quark_pdg[0]) == 4 && acol < acol_cut && qqbar_m > qqbar_m_cut)
-        iquark = 1;
-      if (fabs(mc_quark_pdg[0]) < 4 && acol < acol_cut && qqbar_m > qqbar_m_cut)
-        iquark = 2;
-      if (acol > acol_cut || qqbar_m < qqbar_m_cut)
-        iquark = 3;
-    }
-    else
-    {
-      iquark = 0;
-    }
 
     // jet direction
     std::vector<float> p;
@@ -1119,14 +1113,38 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     p1.push_back(pz_pfos[0] - pz_pfos[1]);
     float costheta = GetCostheta(p1);
 
+    /// quark under study
+    int iquark = -1;
+    if (bkg == 0)
+    {
+      if (fabs(mc_quark_pdg[0]) == 5 && acol < acol_cut && qqbar_m > qqbar_m_cut) 
+        iquark = 0;
+      if (fabs(mc_quark_pdg[0]) == 4 && acol < acol_cut && qqbar_m > qqbar_m_cut)
+        iquark = 1;
+      if (fabs(mc_quark_pdg[0]) < 4 && acol < acol_cut && qqbar_m > qqbar_m_cut)
+        iquark = 2;
+      if (acol > acol_cut || qqbar_m < qqbar_m_cut)
+        iquark = 3;
+    }
+    else
+    {
+      iquark = 0;
+    }
+
+    h_AFB[iquark]->Fill(fabs(costheta));
+
     if (jentry > 1000 && jentry % 1000 == 0)
       std::cout << "Progress: " << 100. * jentry / nentries << " %" << endl;
 
     // reco level distributions
     //     float Kv=Kreco();
     bool selection = PreSelection(5);
+
+
     if (selection == false)
       continue;
+
+    h_AFBreco_pres[iquark]->Fill(fabs(costheta));
 
     // jet flavour
     bool jettag[2] = {false, false};
@@ -1179,6 +1197,9 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     if (jettag[0] == false || jettag[1] == false)
       continue;
 
+    h_AFBreco_DT[iquark]->Fill(fabs(costheta));
+
+
     float charge[2][2] = {0};
     for (int ijet = 0; ijet < 2; ijet++)
     {
@@ -1210,11 +1231,15 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
 
   MyFile->cd();
 
-  for (int icat = 0; icat < 1; icat++)
+  h_Ntotal_nocuts->Write();
+  for (int i = 0; i < 4; i++)
   {
-    h_AFBreco_cat0[icat]->Write();
-    h_AFBreco_cat1[icat]->Write();
-    h_AFBreco_cat2[icat]->Write();
+    h_AFB[i]->Write();
+    h_AFBreco_pres[i]->Write();
+    h_AFBreco_DT[i]->Write();
+    h_AFBreco_cat0[i]->Write();
+    h_AFBreco_cat1[i]->Write();
+    h_AFBreco_cat2[i]->Write();
   }
 }
 float QQbarAnalysisClass::ChargeVtxJetMethod(int ijet, float pcut = 2.)

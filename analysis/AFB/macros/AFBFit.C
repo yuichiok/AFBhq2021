@@ -137,7 +137,7 @@ TH1F *Efficiency (TH1F* h1, TH1F* parton, TH1F* parton2, TString title="",int er
     float eff_pres_=eff_pres_plus;
     if(x<0) eff_pres_=eff_pres_minus;
     if(error==0) {
-      result->SetBinContent(j+1,input->GetBinContent(j+1));//eff_pres_);
+      result->SetBinContent(j+1,eff_pres_);//input->GetBinContent(j+1));//eff_pres_);
       result->SetBinError(j+1,0);
     } else {
       result->SetBinContent(j+1,input->GetBinContent(j+1)+error*0.05*input->GetBinContent(j+1));//eff_pres_);
@@ -507,9 +507,9 @@ pol="eR_pL";
     //Plots_AFB(4,2,900);
     //Plots_AFB(4,3,900);
     //Plots_AFB(5,2,900);
-    //Plots_AFB(5,3,900);
+    Plots_AFB(5,3,900);
 
-    AFBSyst(5,3,900);
+    //AFBSyst(5,3,900);
     //AFBPol(4,3,900);
 
   }
