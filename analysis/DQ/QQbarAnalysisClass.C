@@ -140,8 +140,6 @@ void QQbarAnalysisClass::DQChecks(int n_entries=-1, float Kvcut=35, TString outp
 
     //-------------------
     //reconstructed vtx / sec tracks per jet
-    h_nvtx[ihisto]->Fill(jet_nvtx_j1);
-    h_nvtx[ihisto]->Fill(jet_nvtx_j2);
     
     for(int i=0; i<pfo_n; i++) {
       std::vector< float > anglesmom = CalculateAnglesMom(pfo_px[i],pfo_py[i],pfo_pz[i]);

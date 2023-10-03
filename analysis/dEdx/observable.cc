@@ -255,8 +255,6 @@ void observable::dEdx(int n_entries=-1, TString process="",bool secondary=false,
     float nsectracksjet0=0;
     float nsectracksjet1=0;
     float nvtx=0;
-    if(ijet==0) n_secvtx->Fill(jet_nvtx_j1);
-    if(ijet==1) n_secvtx->Fill(jet_nvtx_j2);
 
     float leading_k=-1;
     float leading_pion=-1;

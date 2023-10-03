@@ -79,18 +79,6 @@ void QQbarAnalysisClass::JetTag(int n_entries = -1, int selection_type = 0, floa
           h_jet_ctag[j]->Fill(0);
           h_jet_ctag[j]->Fill(fabs(mc_quark_pdg[0]));
         }
-        if (jet_btag_2[ijet] > tag)
-        {
-          if (fabs(mc_quark_pdg[0]) < 4)
-          h_jet_btag_cc[j]->Fill(0);
-          h_jet_btag_cc[j]->Fill(fabs(mc_quark_pdg[0]));
-        }
-        if (jet_ctag_2[ijet] > tag)
-        {
-          if (fabs(mc_quark_pdg[0]) < 4)
-          h_jet_ctag_cc[j]->Fill(0);
-          h_jet_ctag_cc[j]->Fill(fabs(mc_quark_pdg[0]));
-        }
       } // for tag
     }   // for ijet
 

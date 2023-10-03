@@ -109,10 +109,7 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
     if (bkg == 1)
     {
       h_minv->Fill(minv);
-      h_thrust->Fill(mc_principle_thrust_value);
-      h_major_thrust->Fill(mc_major_thrust_value);
       h_minor_thrust->Fill(mc_minor_thrust_value);
-      h_major_minor_thrust->Fill(mc_major_thrust_value,mc_minor_thrust_value);
       h_nch->Fill(nch);
       for (int i = 0; i < mc_stable_n; i++)    {
         if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
@@ -132,10 +129,7 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
       if (gamma_e > Kvcut)
       {
         h_minv_radreturn->Fill(minv);
-        h_thrust_radreturn->Fill(mc_principle_thrust_value);
-        h_major_thrust_radreturn->Fill(mc_major_thrust_value);
         h_minor_thrust_radreturn->Fill(mc_minor_thrust_value);
-        h_major_minor_thrust_radreturn->Fill(mc_major_thrust_value,mc_minor_thrust_value);
         h_nch_radreturn->Fill(nch);   
         for (int i = 0; i < mc_stable_n; i++)    {
           if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
@@ -153,10 +147,7 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int selectio
       else
       {
         h_minv->Fill(minv);
-        h_thrust->Fill(mc_principle_thrust_value);
-        h_major_thrust->Fill(mc_major_thrust_value);
         h_minor_thrust->Fill(mc_minor_thrust_value);
-        h_major_minor_thrust->Fill(mc_major_thrust_value,mc_minor_thrust_value);
         h_nch->Fill(nch);
         for (int i = 0; i < mc_stable_n; i++)    {
           if(mc_stable_isisr[i]==0 && mc_stable_isoverlay[i]==0 && mc_stable_E[i]>0 ) {
@@ -557,11 +548,6 @@ void QQbarAnalysisClass::QCDCorr(int n_entries = -1, int selection_type = 0, int
     TprincMC.push_back(mc_principle_thrust_axis[1]);
     TprincMC.push_back(mc_principle_thrust_axis[2]);
 
-    std::vector<float> TmajorMC;
-    TmajorMC.push_back(mc_major_thrust_axis[0]);
-    TmajorMC.push_back(mc_major_thrust_axis[1]);
-    TmajorMC.push_back(mc_major_thrust_axis[2]);
-
     std::vector<float> TminorMC;
     TminorMC.push_back(mc_minor_thrust_axis[0]);
     TminorMC.push_back(mc_minor_thrust_axis[1]);
@@ -572,48 +558,6 @@ void QQbarAnalysisClass::QCDCorr(int n_entries = -1, int selection_type = 0, int
     std::vector<float> rapidity_charged_temp_MC;
     std::vector<float> phi_charged_temp_MC;
     std::vector<int> iMC_temp;
-
-    // MC
-    for (int imc = 0; imc < mc_stable_n; imc++)
-    {
-
-      std::vector<float> angles = ChargedMCThetaPhi(imc, TprincMC, TmajorMC, TminorMC);
-      if (angles.size() == 0)
-        continue;
-      mom_MC->Fill(sqrt(pow(mc_stable_px[imc], 2) + pow(mc_stable_py[imc], 2) + pow(mc_stable_pz[imc], 2)));
-      nMC_charged++;
-
-      theta_charged_temp_MC.push_back(angles.at(0));
-      rapidity_charged_temp_MC.push_back(angles.at(1));
-      phi_charged_temp_MC.push_back(angles.at(2));
-      iMC_temp.push_back(imc);
-    }
-    ncharged_MC->Fill(nMC_charged);
-
-    for (int jmc = 0; jmc < mc_stable_n; jmc++)
-    {
-      std::vector<float> angles = ChargedMCThetaPhi(jmc, TprincMC, TmajorMC, TminorMC);
-      if (angles.size() == 0)
-        continue;
-      float theta2 = angles.at(0);
-      float rapidity2 = angles.at(1);
-      float phi2 = angles.at(2);
-
-      for (int i = 0; i < theta_charged_temp_MC.size(); i++)
-      {
-        if (jmc == iMC_temp.at(i))
-          continue;
-
-        float rapiditydif = rapidity_charged_temp_MC.at(i) - rapidity2;
-        float thetadif = theta_charged_temp_MC.at(i) - theta2;
-        float phidif = phi_charged_temp_MC.at(i) - phi2;
-        S2_MC->Fill(thetadif, phidif);
-        S2_MC_rapidity->Fill(rapiditydif, phidif);
-      }
-      // C2->Fill(thetadif, phidif);
-    }
-
-    FillBkgMC(theta_charged_temp_MC, rapidity_charged_temp_MC, phi_charged_temp_MC);
 
     rapidity_charged_temp_MC.clear();
     theta_charged_temp_MC.clear();

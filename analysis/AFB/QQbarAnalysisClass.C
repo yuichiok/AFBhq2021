@@ -176,13 +176,6 @@ void QQbarAnalysisClass::AFB_histos_for_PQ_analysis(int n_entries = -1, int bkg 
       jet_ctag_used[0] = jet_ctag[0];
       jet_ctag_used[1] = jet_ctag[1];
     }
-    if (dedxcut == 1)
-    {
-      jet_btag_used[0] = jet_btag_2[0];
-      jet_btag_used[1] = jet_btag_2[1];
-      jet_ctag_used[0] = jet_ctag_2[0];
-      jet_ctag_used[1] = jet_ctag_2[1];
-    }
     if (quark == 4)
     {
       if (jet_ctag_used[0] > ctag1)
@@ -831,17 +824,9 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries = -1, int quark = 4, TS
     {
       if (quark == 4)
       {
-        if (jet_ctag_2[0] > ctag1)
-          jettag[0] = true;
-        if (jet_ctag_2[1] > ctag2)
-          jettag[1] = true;
       }
       else if (quark == 5)
       {
-        if (jet_btag_2[0] > btag1)
-          jettag[0] = true;
-        if (jet_btag_2[1] > btag2)
-          jettag[1] = true;
       }
       else
       {
@@ -1175,17 +1160,9 @@ void QQbarAnalysisClass::AFBreconstruction2(int n_entries = -1, int quark = 4, T
     {
       if (quark == 4)
       {
-        if (jet_ctag_2[0] > ctag1)
-          jettag[0] = true;
-        if (jet_ctag_2[1] > ctag2)
-          jettag[1] = true;
       }
       else if (quark == 5)
       {
-        if (jet_btag_2[0] > btag1)
-          jettag[0] = true;
-        if (jet_btag_2[1] > btag2)
-          jettag[1] = true;
       }
       else
       {

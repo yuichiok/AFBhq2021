@@ -129,13 +129,7 @@ void QQbarAnalysisClass::AFBreconstruction(int n_entries=-1, TString process="eL
     bool selection=PreSelection(6,Kvcut);
     if(selection==false) continue;
     //selection 7: both jets with no secondary vtx --> this cleans most of the b's but still not the c's
-    if(jet_nvtx_j1==0 && jet_nvtx_j2==0) {
-      for(int q=1; q<6; q++) {
-	      if(fabs(mc_quark_pdg[0])==q) {
-	        h_N[q][7]->Fill(fabs(costheta));
-	        h_AFB_true[q][7]->Fill(costheta_cheat);
-	      }
-      }
+    if(0) {
     } else continue;
     
     //selection 8: leading K candidate (cheating!)
@@ -353,7 +347,6 @@ void QQbarAnalysisClass::KaonEfficiency(int n_entries=-1, TString process="eL_pR
     float costheta=GetCostheta(p);
     
     bool selection=PreSelection(6,Kvcut);
-    if(selection==false || jet_nvtx_j1>0 || jet_nvtx_j2>0) continue;
 
     for(int q=0; q<6; q++) {
       if(fabs(mc_quark_pdg[0])==q || q==0) {
