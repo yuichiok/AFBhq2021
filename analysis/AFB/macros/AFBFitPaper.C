@@ -270,7 +270,7 @@ void Plots_AFB(int quark=4, float lum=900) {
   // gPad->SetLogy();
   func_parton[ipol]->GetXaxis()->SetTitle("cos #theta");
   func_parton[ipol]->GetYaxis()->SetTitle("entries");
-  func_parton[ipol]->GetYaxis()->SetRangeUser(0,func_parton[ipol]->GetMaximum());
+  func_parton[ipol]->GetYaxis()->SetRangeUser(0,func_parton[ipol]->GetMaximum()*1.25);
   func_parton[ipol]->SetLineColor(kGreen-1);
   func_parton[ipol]->SetLineWidth(4);
   func_parton[ipol]->SetLineStyle(1);
@@ -287,7 +287,9 @@ void Plots_AFB(int quark=4, float lum=900) {
   if(ipol==1) AFBcorrected[ipol]->SetMarkerStyle(4);
   AFBcorrected[ipol]->Draw("esame");
   
-  QQBARLabel(0.86,0.954,"");
+  //  QQBARLabel(0.86,0.954,"");
+  QQBARLabel(0.75,0.83,"",-1, 0.1);
+
   TString squark= "c#bar{c}";
   if(quark==5) squark="b#bar{b}";
   if(quark==0) squark="q#bar{q}";

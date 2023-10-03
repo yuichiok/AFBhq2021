@@ -9,7 +9,7 @@
 
 #include "Rtypes.h"
 
-void QQBARLabel(Double_t x,Double_t y,TString text="",Color_t color=1);
+void QQBARLabel(Double_t x,Double_t y,TString text="",Color_t color=1, Double_t size=0.065);
 void QQBARLabel2(Double_t x,Double_t y,TString text="",Color_t color=1, Double_t textsize=0.03, Double_t angle=0);
 
 

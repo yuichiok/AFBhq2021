@@ -26,15 +26,21 @@
   }
   }*/
 
-void QQBARLabel(Double_t x,Double_t y,TString text,Color_t color)
+void QQBARLabel(Double_t x,Double_t y,TString text,Color_t color, Double_t size)
 {
   TLatex l;
   //l.SetTextAlign(12);
-  l.SetTextSize(0.065);
   l.SetNDC();
   l.SetTextFont(42);
-  l.SetTextColor(color);
+  l.SetTextSize(size);
 
+  if(color>0) l.SetTextColor(color);
+  else {
+    l.SetTextFont(62);
+    Int_t ci = TColor::GetFreeColorIndex();
+    TColor *color = new TColor(ci, 0, 0.259, 0.549);
+    l.SetTextColor(ci);
+  }
   double delx = 1200*gPad->GetWh()/(1000*gPad->GetWw());
   
   l.DrawLatex(x,y,"ILD");

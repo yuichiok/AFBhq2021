@@ -113,7 +113,7 @@ void Plots() {
   // AFBcorrected->Draw("ep");
   // Labels(-1,-1,900);
   //    QQBARLabel2(0.1,0.05, "e^{-}e^{+} #rightarrow "+quark,color+2);
-  QQBARLabel(0.86,0.954,"");
+  QQBARLabel(0.75,0.854,"",-1, 0.1);
   //QQBARLabel2(0.15,0.96, "ILC500 2000 fb^{-1} ",960);
   
   TLegend *leg_b = new TLegend(0.2,0.77,0.4,0.94);
@@ -128,7 +128,7 @@ void Plots() {
   leg_b->SetShadowColor(0);
   leg_b->Draw();
 
-  //c_R_AFB->Print("plots_"+energy+"_final/Observables_Unc.eps");
+  c_R_AFB->Print("stat_AFB_ILC250_ILC500.eps");
 
   
 }
